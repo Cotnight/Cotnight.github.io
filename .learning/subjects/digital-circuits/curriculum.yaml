@@ -1,0 +1,927 @@
+nodes:
+  - id: ch2-kmap-fill
+    title: "卡诺图：真值表排成的方格"
+    kind: 实操
+    objective: "能把真值表或表达式填入卡诺图，方格位置全部正确。"
+    problem: "这门课最终要搭出一只 24 小时制的数字钟：显示那一级要从真值表算出七段段码，计数那一级要算出下一拍该是什么状态，两处都得把一串 1 压成最简式——卡诺图就是这两处共用的那只化简工具，所以第一课从它讲起。真值表是一列到底的，看不出哪几行可以合并；卡诺图把它折成方格，让逻辑上只差一个变量的两格挨在一起。填图这一步做错，后面圈得再漂亮也是错的。"
+    practice: "讲练并重：先讲卡诺图的行列为什么按格雷码排、方格与最小项编号怎样一一对应，再演示从真值表逐格填 1、从表达式拆项填 1 两条路，中间穿插「表达式缺变量时落在哪几格」这类具体判断。练习全部是先填图、再用断言核对每一格。"
+    concepts:
+      - "卡诺图的格雷码排布"
+      - "方格与最小项编号的对应"
+      - "由表达式填图（缺变量时的多格填入）"
+    pitfalls:
+      - "行列标号写成二进制顺序，相邻关系全乱"
+      - "表达式缺变量时只填一格，漏掉该变量取 0 和 1 的两格"
+      - "四变量图的行列顺序记成 00、01、11、10 之外的排法"
+    realworld: "卡诺图是把「能合并的项」排在一起的一张索引表，数字钟段码、计数器次态都用它化简。"
+    resources:
+      - title: "康华光、张林《电子技术基础 数字部分》第7版 §2.4.1 用卡诺图表示逻辑函数"
+        type: book
+        url: "https://xuanshu.hep.com.cn/front/book/findBookDetails?bookId=601f1197966feeeca733405e"
+      - title: "MIT OCW 6.004 第 4 章 Combinational Logic：最简化的系统做法（只借讲法，实验写法不同）"
+        type: article
+        url: "https://ocw.mit.edu/courses/6-004-computation-structures-spring-2017/"
+    prerequisites: []
+    status: "未开始"
+    mastery: 0
+
+  - id: ch2-kmap-circle
+    title: "圈组：从卡诺图读出最简式"
+    kind: 实操
+    objective: "能按圈组规则读出最简与或式，并说明为什么这样圈。"
+    problem: "同样一张填好的卡诺图，有人圈出四项、有人圈出两项——差别只在是否守规则：圈要尽量大、圈数要尽量少、每个 1 至少被圈一次、可以重叠也可以跨边界卷起来。这一节把规则变成能复现的动作。"
+    practice: "以练为主：先在一张三变量卡诺图上演示单个 1、成对、四格、卷边这几种情形各自读出一项，再把「圈大优先、圈少优先」两条排序讲透，随后连续做化简题并要求当场写出每圈消掉了哪个变量。练习以给图取式为主，用 Python 仿真把化简结果与原始真值表逐行断言比对，错了立刻能定位到哪一圈。"
+    concepts:
+      - "圈组规则与优先级"
+      - "卷边相邻与四角相邻"
+      - "由圈读出乘积项（消去变化的变量）"
+    pitfalls:
+      - "只圈互不重叠的圈，圈数变多、表达式不是最简"
+      - "忘记上下、左右可以卷起来相邻，漏掉更大的圈"
+      - "读出乘积项时把圈内变化的变量也写进去"
+      - "漏圈的 1 直接当无关项处理"
+    realworld: "期末卷上「用卡诺图化简为最简与或式」是固定大题，步骤分就在圈的取舍上。"
+    resources:
+      - title: "康华光、张林《电子技术基础 数字部分》第7版 §2.4.2 用卡诺图化简逻辑函数"
+        type: book
+        url: "https://xuanshu.hep.com.cn/front/book/findBookDetails?bookId=601f1197966feeeca733405e"
+      - title: "阎石、王红《数字电子技术基础》第六版：卡诺图化简的另一种表述（无关项与最大项的处理）"
+        type: book
+        url: "https://xuanshu.hep.com.cn/front/book/findBookDetails?bookId=59cf5a91ba9eb884cf822664"
+      - title: "Python 3.13 官方文档 · unittest：用 subTest 逐行比对真值表（已落盘 sources/python-313-unittest.md）"
+        type: official-doc
+        url: "https://docs.python.org/3.13/library/unittest.html"
+    prerequisites:
+      - ch2-kmap-fill
+    status: "未开始"
+    mastery: 0
+
+  - id: ch2-kmap-dontcare
+    title: "无关项与圈零得最简或与式"
+    kind: 实操
+    objective: "能用无关项化简，并写出与非门实现的最简电路。"
+    problem: "8421BCD 只用到 0000 到 1001，剩下的 1010 到 1111 永远不会出现——这些格子填 0 会绑住手脚，填 1 又与实际不符，所以填 d。会不会用这些 d，决定了表达式能不能再省两项。"
+    practice: "以练为主：先讲无关项的两个来源（输入组合不会出现、出现也无所谓），再演示同一条圈怎样借 d 变大、以及借 d 借错了会得到什么错结果；随后讲圈 0 得最简或与式，以及把与或式两次取反换成与非-与非结构的固定动作。练习以「给含 d 的真值表→最简式→与非门电路」整条链为主，用 Python 仿真断言化简前后功能等价。"
+    concepts:
+      - "无关项的来源与记法"
+      - "借无关项扩大圈组"
+      - "圈 0 得最简或与式"
+      - "与非-与非实现"
+    pitfalls:
+      - "把无关项当 1 全用上，圈出一个覆盖不了的项"
+      - "只给与或式不算完，题目要求与非门实现时忘了两次取反"
+      - "圈 0 时把 0 读成 1，或与式里的变量取反关系写反"
+    realworld: "数字钟的 BCD 段码表 6 个非法输入正是无关项所在，这一节直接决定段码表达式能压到多短。"
+    resources:
+      - title: "康华光、张林《电子技术基础 数字部分》第7版 §2.4.2（具有无关项的逻辑函数化简）"
+        type: book
+        url: "https://xuanshu.hep.com.cn/front/book/findBookDetails?bookId=601f1197966feeeca733405e"
+      - title: "秦臻、罗杰《电子技术基础 数字部分 第六版 学习辅导与习题解答》（官方配套题解，取化简题与标准解题过程）"
+        type: book
+        url: "https://xuanshu.hep.com.cn/front/book/findBookDetails?bookId=59ce3d17ba9eb884cf81d13e"
+    prerequisites:
+      - ch2-kmap-circle
+    status: "未开始"
+    mastery: 0
+
+  - id: ch3-gate-external
+    title: "逻辑门的外部特性与参数"
+    kind: 概念
+    objective: "能读懂门的手册参数，并判断两级门能否直接相连。"
+    problem: "同样叫与非门，HC 系列与老的 LS 系列在高电平门限、驱动能力、传输延时上差得很远；把一片的输出直接接到另一片的输入，可能压根认不出高电平。片上不看内部管子，只看手册这几行数。"
+    practice: "以讲为主：先讲逻辑门作为开关的外部行为，再逐个讲输入门限、输出高低电平、噪声容限、扇出、传输延时这几个参数的含义与相互约束，最后用 TI 数据表里的实际数值演示一次「级联能不能直接接」的判断。按学生边界，三极管与 MOS 管的内部结构与逐管分析一律不展开。"
+    concepts:
+      - "输入高/低电平门限与噪声容限"
+      - "扇出与驱动能力"
+      - "传输延时与功耗"
+      - "逻辑电平与正负逻辑"
+    pitfalls:
+      - "把教材上 74LS 的旧参数套到现行 HC 器件上"
+      - "只看逻辑功能不看电平兼容，3.3 V 输出直接驱动 5 V 输入"
+      - "把传输延时当成可以忽略的理想零延时"
+    realworld: "数字钟在面包板上不工作时，一半原因是电平与驱动，不是逻辑写错。"
+    resources:
+      - title: "康华光、张林《电子技术基础 数字部分》第7版 §3.1 逻辑门电路简介、§3.3 CMOS 逻辑门的其他输出结构及参数（主要技术参数）"
+        type: book
+        url: "https://xuanshu.hep.com.cn/front/book/findBookDetails?bookId=601f1197966feeeca733405e"
+      - title: "TI SN74HC138 数据表 ZHCSP53：HC 系列输入门限、输出驱动与传播延时（功能表在 8.4 节，引脚在 5 节）"
+        type: official-doc
+        url: "https://www.ti.com.cn/document-viewer/cn/SN74HC138/datasheet"
+    prerequisites: []
+    status: "未开始"
+    mastery: 0
+
+  - id: ch3-three-state
+    title: "三态门、开路门与等效符号"
+    kind: 概念
+    objective: "能画出三态门与 OD 门的等效符号，并说明总线怎么接。"
+    problem: "多个模块要共用一组线传送数据，谁都不许同时说话——三态门给出的答案是把输出变成高阻。而同一块与非门，画成负逻辑的或非符号往往一看就懂，附录里的等效符号是读图与化简的省力工具。"
+    practice: "以讲为主：先讲三态输出与漏极开路（OD）两种特殊输出结构的用法与上拉电阻的作用，再讲正负逻辑的互换与常用等效符号，最后拿一段总线连接图判断同一时刻允许几个门导通。"
+    concepts:
+      - "三态输出与高阻态"
+      - "漏极开路门与上拉电阻"
+      - "正负逻辑与等效符号"
+    pitfalls:
+      - "总线上同时使能两个门，输出对打"
+      - "OD 门忘了接上拉电阻，输出永远是低"
+      - "把等效符号当成了逻辑功能变了，其实只换了画法"
+    realworld: "校时状态下时、分两路要轮流显示或轮流改写，靠的就是三态与使能。"
+    resources:
+      - title: "康华光、张林《电子技术基础 数字部分》第7版 §3.3 漏极开路门和三态输出门电路、§3.6 逻辑描述中的几个问题"
+        type: book
+        url: "https://xuanshu.hep.com.cn/front/book/findBookDetails?bookId=601f1197966feeeca733405e"
+      - title: "GB/T 4728.12—2008《电气简图用图形符号 第 12 部分：二进制逻辑元件》标准记录（符号以纸书附录 A/B 为准）"
+        type: official-doc
+        url: "https://ndls.cnis.ac.cn/standard/detail/abab88f7b933861aa54560f6c188a610"
+    prerequisites:
+      - ch3-gate-external
+    status: "未开始"
+    mastery: 0
+
+  - id: ch4-analysis
+    title: "组合电路的分析：从电路到功能"
+    kind: 实操
+    objective: "能从给定电路写出表达式、真值表，并判定其功能。"
+    problem: "卷面上常给一张门电路图，问它实现什么功能、有没有冗余。分析题考的是固定动作：写表达式、化简、列真值表、说功能——每一步都能拿分，每一步也都能丢分。"
+    practice: "讲练并重：先把分析的四步固定下来（逐级写出中间表达式→化简→列真值表→用一句话说功能），再完整走几张真实的门电路图，其中包含常见的译码与比较结构。练习以「给电路图说功能」为主，用 Python 仿真按门级连接逐行算出真值表来核对，而不是靠背结论。"
+    concepts:
+      - "组合逻辑电路的定义"
+      - "逐级写表达式与化简"
+      - "由真值表判定功能"
+    pitfalls:
+      - "从输出端往回推时漏掉某一级的中转变量"
+      - "化简到最简式就结束，没有回到真值表验证功能"
+      - "把有反馈的电路也当组合电路分析"
+    realworld: "拿到别人画的一段数字钟进位逻辑，第一件事就是分析它在什么输入下给出进位。"
+    resources:
+      - title: "康华光、张林《电子技术基础 数字部分》第7版 §4.1 组合逻辑电路的分析"
+        type: book
+        url: "https://xuanshu.hep.com.cn/front/book/findBookDetails?bookId=601f1197966feeeca733405e"
+      - title: "Python 3.13 官方文档 · unittest：用 subTest 逐行比对真值表（已落盘 sources/python-313-unittest.md）"
+        type: official-doc
+        url: "https://docs.python.org/3.13/library/unittest.html"
+    prerequisites:
+      - ch2-kmap-circle
+      - ch3-three-state
+    status: "未开始"
+    mastery: 0
+
+  - id: ch4-design
+    title: "组合电路的设计：从要求到门"
+    kind: 实操
+    objective: "能从一段功能要求独立完成设计，直到与非门实现。"
+    problem: "给一句「三台电机同时开机要报警」这样的要求，要自己定输入变量、列真值表、填卡诺图、选器件、画出门级电路。设计题是组合逻辑这门课最实在的一问：要求写得模糊，得自己把边界说清。"
+    practice: "以练为主：先固定设计的五步（定输入输出→列真值表→卡诺图化简→选器件与化简形式→画图），再完整走一个真实需求（含两个以上输出），最后讲「只能用与非门」时把与或式两次取反的替换动作，以及多输出时共享乘积项的优化。练习以改造与复用为主：给一份现成设计，要求加一条约束重做，并用仿真断言新电路仍满足原真值表。"
+    concepts:
+      - "设计流程与输入输出约定"
+      - "多输出函数的共享化简"
+      - "门级实现与器件选择"
+    pitfalls:
+      - "输入变量的 0/1 含义没写清，真值表列得自相矛盾"
+      - "题目限定与非门却交了与或式"
+      - "多输出分别化简，错过了可以共用的乘积项"
+    realworld: "数字钟的「到点进位」「校时使能」都是先有一句功能要求，再这样一步步落到门。"
+    resources:
+      - title: "康华光、张林《电子技术基础 数字部分》第7版 §4.2 组合逻辑电路的设计"
+        type: book
+        url: "https://xuanshu.hep.com.cn/front/book/findBookDetails?bookId=601f1197966feeeca733405e"
+      - title: "阎石、王红《数字电子技术基础》第六版 学习辅导与习题解答（看标准解题格式：真值表怎么列、卡诺图怎么圈）"
+        type: book
+        url: "https://xuanshu.hep.com.cn/front/book/findBookDetails?bookId=59cfb25cba9eb884cf82485e"
+    prerequisites:
+      - ch4-analysis
+      - ch2-kmap-dontcare
+    status: "未开始"
+    mastery: 0
+
+  - id: ch4-hazard
+    title: "竞争冒险：窄脉冲从哪来"
+    kind: 概念
+    objective: "能判断电路中存在哪种冒险，并给出消除办法。"
+    problem: "同一个信号经两条路径到达同一个门，路程一长一短，输出上就冒出本不该有的尖峰。仿真里看不见它，因为仿真默认门没有延时；真电路上它足以让计数器多计一拍。"
+    practice: "以讲为主：先由 A + A'（或 AA'）这一对式子讲清静态冒险的成因，再讲卡诺图上「两个圈相切不相交」这一图形判据，最后讲加冗余项、加选通脉冲、加滤波三种消除办法各适合什么场合。"
+    concepts:
+      - "竞争与冒险的成因"
+      - "静态冒险的卡诺图判据"
+      - "冗余项、选通与滤波"
+    pitfalls:
+      - "以为化简越彻底越好，结果把相切的两个圈合成一个，反而留下冒险"
+      - "在零延时仿真里验证通过就认为电路没问题"
+    realworld: "计数器的进位逻辑若有冒险，显示会偶发跳数——数字钟排错时这是要排查的项。"
+    resources:
+      - title: "康华光、张林《电子技术基础 数字部分》第7版 §4.3 组合逻辑电路中的竞争-冒险"
+        type: book
+        url: "https://xuanshu.hep.com.cn/front/book/findBookDetails?bookId=601f1197966feeeca733405e"
+    prerequisites:
+      - ch4-design
+    status: "未开始"
+    mastery: 0
+
+  - id: ch4-decoder
+    title: "译码器：把最小项排成一行"
+    kind: 实操
+    objective: "能用译码器加与非门实现任意组合函数。"
+    problem: "3 线-8 线译码器的八根输出线，正好是三个变量的八个最小项各占一根——想要哪个组合，取对应的那根就行。所以「用译码器实现逻辑函数」不过是把最小项或起来，也是数字钟段码最省事的做法。"
+    practice: "讲练并重：先讲二进制译码器的结构与使能端的作用，再演示用 74HC138 加与非门实现三变量函数（含低有效输出的取反处理），随后讲二-十进制译码器与显示译码器的区别。练习以「给功能、选译码器、接与非门」为主，用 Python 仿真按芯片功能表逐行断言。"
+    concepts:
+      - "二进制译码器与使能端"
+      - "译码器输出即最小项"
+      - "用译码器实现组合函数"
+      - "显示译码器的定位"
+    pitfalls:
+      - "74HC138 输出低有效，直接或起来得到的是反函数"
+      - "使能端接错，芯片一直不工作"
+      - "把二-十进制译码器当显示译码器用，段码对不上"
+    realworld: "数字钟的显示级就是一片显示译码器加数码管；地址译码、片选也用它。"
+    resources:
+      - title: "康华光、张林《电子技术基础 数字部分》第7版 §4.4.2 译码器/数据分配器"
+        type: book
+        url: "https://xuanshu.hep.com.cn/front/book/findBookDetails?bookId=601f1197966feeeca733405e"
+      - title: "TI SN74HC138 3 线-8 线译码器数据表 ZHCSP53：功能表见 8.4 节、引脚见 5 节"
+        type: official-doc
+        url: "https://www.ti.com.cn/document-viewer/cn/SN74HC138/datasheet"
+    prerequisites:
+      - ch2-kmap-fill
+      - ch4-design
+    status: "未开始"
+    mastery: 0
+
+  - id: ch4-mux-encoder
+    title: "数据选择器与编码器"
+    kind: 实操
+    objective: "能用数据选择器实现逻辑函数，并说出选择端怎么接。"
+    problem: "数据选择器像一排开关，选择端决定哪一路输入通到输出；把输入接成常量或变量，它就变成了一个能实现任意函数的器件。n 个选择端能实现 n+1 个变量的函数——这是期末常考的一句结论。"
+    practice: "讲练并重：先讲 4 选 1 与 8 选 1 的结构与使能端，再演示用 8 选 1 实现三变量函数、用 4 选 1 实现三变量函数（把多余变量接到数据端）两种接法，随后讲优先编码器与普通编码器的区别。练习以改造题为主：给一份已经接好的 MUX 电路，问它实现什么函数、再改一处让它实现另一函数。"
+    concepts:
+      - "数据选择器的结构与使能"
+      - "用 MUX 实现逻辑函数（含变量数多于选择端的情形）"
+      - "优先编码器"
+    pitfalls:
+      - "选择端与数据端的变量分配弄反，函数整个错位"
+      - "忽略使能端低有效，接了高电平导致恒不选通"
+      - "把优先编码器的优先级顺序记反"
+    realworld: "数字钟校时时要在一组输入里选一路送到显示，MUX 是这件事的直接器件。"
+    resources:
+      - title: "康华光、张林《电子技术基础 数字部分》第7版 §4.4.1 编码器、§4.4.3 数据选择器"
+        type: book
+        url: "https://xuanshu.hep.com.cn/front/book/findBookDetails?bookId=601f1197966feeeca733405e"
+      - title: "MIT OCW 6.004 第 4 章 Combinational Logic：用标准模块搭逻辑"
+        type: article
+        url: "https://ocw.mit.edu/courses/6-004-computation-structures-spring-2017/"
+    prerequisites:
+      - ch4-decoder
+    status: "未开始"
+    mastery: 0
+
+  - id: ch4-adder-compare
+    title: "加法器与数值比较器"
+    kind: 概念
+    objective: "能算出行波进位加法器的进位延时，并说出比较器的级联接法。"
+    problem: "四位加法器不是四个全加器一摆了事：进位要从最低位一路爬上去，位数越多越慢，这就是行波进位的代价。比较器同理，级联时高位说了算。这两类延时与级联关系是小题常客。"
+    practice: "以讲为主：先讲半加器、全加器与串行进位加法器的结构，再算一次 n 位的进位延时，随后讲超前进位的思路（只讲为什么快，不推公式），最后讲数值比较器的级联规则。全程以「算延时、算级数」这类可考的小计算为主线。"
+    concepts:
+      - "半加器与全加器"
+      - "串行进位与时延累加"
+      - "超前进位的思路"
+      - "数值比较器的级联"
+    pitfalls:
+      - "进位延时按一级门延时算，忘了一位全加器内部要走几级"
+      - "比较器级联时低位抢了高位的判定权"
+    realworld: "计数器的进位链与加法器的进位链是同一件事：级数越多，最后一位越晚稳定。"
+    resources:
+      - title: "康华光、张林《电子技术基础 数字部分》第7版 §4.4.4 数值比较器、§4.4.5 算术运算电路"
+        type: book
+        url: "https://xuanshu.hep.com.cn/front/book/findBookDetails?bookId=601f1197966feeeca733405e"
+    prerequisites:
+      - ch4-design
+    status: "未开始"
+    mastery: 0
+
+  - id: exp1-seven-seg
+    title: "实验一：七段译码器点亮数码管"
+    kind: 实验
+    objective: "交出七段译码器的 Python 仿真，0～9 显示全部断言通过。"
+    problem: "数字钟的第一块拼图是显示：给四位 BCD，数码管要亮出对应的数字。这一步把真值表、无关项、卡诺图、与非门实现整条链走完，又第一次看见自己写的东西在屏幕上亮起来。"
+    practice: "以练为主（验收为主）：用 Python 标准库写段码译码器，先按最小项实现，再按卡诺图化简后的表达式实现同一功能，两条路必须给出相同的断言结果；非法输入 10～15 按无关项处理，并说明为什么可以这样处理。交付一份能 `python -m unittest` 跑通的测试，用 subTest 逐行比对十个数码与空白的段码。"
+    concepts:
+      - "BCD 到七段段码的真值表"
+      - "无关项在段码表中的使用"
+      - "最小项实现与化简实现的等价性"
+      - "用 subTest 逐行断言"
+    pitfalls:
+      - "段码位序（a～g 谁在高位）与共阴／共阳极性没定清，全表一致地错"
+      - "把数字 6、9 的段码按习惯画法写，与教材真值表对不上"
+      - "非法输入 10～15 当 0 处理却又不说明，仿真过了但原理不清"
+    realworld: "数字钟的显示级成品；后续三个实验都复用它。"
+    resources:
+      - title: "康华光、张林《电子技术基础 数字部分》第7版 §4.4.2 译码器/数据分配器、§2.4.2 具有无关项的化简"
+        type: book
+        url: "https://xuanshu.hep.com.cn/front/book/findBookDetails?bookId=601f1197966feeeca733405e"
+      - title: "Python 3.13 官方文档 · unittest：assertEqual 与 subTest 的用法（已落盘 sources/python-313-unittest.md）"
+        type: official-doc
+        url: "https://docs.python.org/3.13/library/unittest.html"
+      - title: "TI SN74HC138 数据表 ZHCSP53：译码器功能表的读法（低有效输出的处理）"
+        type: official-doc
+        url: "https://www.ti.com.cn/document-viewer/cn/SN74HC138/datasheet"
+    prerequisites:
+      - ch2-kmap-dontcare
+      - ch4-design
+      - ch4-decoder
+    status: "未开始"
+    mastery: 0
+
+  - id: ch4-rom-logic
+    title: "存储器：ROM 就是一张真值表"
+    kind: 概念
+    objective: "能用 ROM 实现组合函数，并算出所需容量与地址位数。"
+    problem: "ROM 里存的是「地址一进去，字就出来」的固定对应关系——这正是组合逻辑要的东西：地址线当输入变量，数据线当输出。于是「用一片 ROM 实现函数」不过是把真值表抄进存储阵列。"
+    practice: "以讲为主：先讲 ROM 的结构（地址译码器加存储阵列）与它为什么等价于最小项之和，再讲用 ROM 实现组合函数的步骤与容量计算（字数×位数），随后讲 RAM 与 ROM 的区别以及容量扩展（位扩展、字扩展）的接法，最后点一句可编程阵列（PLD）只是把这张表做成可改的。半导体工艺与版图不入本课。"
+    concepts:
+      - "ROM 的结构与地址-数据对应"
+      - "用 ROM 实现组合逻辑函数"
+      - "存储容量与地址位数的换算"
+      - "位扩展与字扩展"
+    pitfalls:
+      - "容量按位数算成字节数，与题目要求的字数×位数不符"
+      - "字扩展时片选信号接错，地址范围重叠"
+      - "把 ROM 的地址译码当成组合逻辑的另一回事，看不出两者同源"
+    realworld: "数字钟的段码表可以整张烧进 ROM，换一种显示方式只要换表、不改电路。"
+    resources:
+      - title: "康华光、张林《电子技术基础 数字部分》第7版 §7.1 只读存储器、§7.2 随机存取存储器、§4.5 组合逻辑的可编程电路实现"
+        type: book
+        url: "https://xuanshu.hep.com.cn/front/book/findBookDetails?bookId=601f1197966feeeca733405e"
+    prerequisites:
+      - ch4-decoder
+    status: "未开始"
+    mastery: 0
+
+  - id: ch5-bistable-sr
+    title: "双稳态与 SR 锁存器"
+    kind: 概念
+    objective: "能画出 SR 锁存器的真值表，并说明约束条件为何存在。"
+    problem: "两个与非门首尾相接，输出就稳稳停在两种状态之一——这是数字电路第一次真正「记住」东西。可一旦把两个输入同时置为有效，两条输出会一起变高，撤掉之后停在哪一边全看谁快：这条约束是触发器一章所有问题的源头。"
+    practice: "以讲为主：先讲双稳态电路为什么能保持，再由与非门交叉耦合推出基本 SR 锁存器的真值表，讲清约束项的物理来源，随后加门控端讲电平触发的 SR 锁存器与空翻问题，为 D 锁存器做铺垫。"
+    concepts:
+      - "双稳态与正反馈保持"
+      - "基本 SR 锁存器"
+      - "门控 SR 锁存器与空翻"
+    pitfalls:
+      - "把约束项当成普通无关项，随便填 0 或 1"
+      - "分不清高电平有效与低电平有效的输入记号"
+      - "以为锁存器的输出在使能期间不变，其实它会随输入变化"
+    realworld: "按键消抖、上电初始状态、显示锁存都用到锁存器这种「电平有效期间透明」的元件。"
+    resources:
+      - title: "康华光、张林《电子技术基础 数字部分》第7版 §5.1 基本双稳态电路、§5.2 SR 锁存器"
+        type: book
+        url: "https://xuanshu.hep.com.cn/front/book/findBookDetails?bookId=601f1197966feeeca733405e"
+      - title: "MIT OCW 6.004 第 5 章 Sequential Logic：从双稳态到边沿触发"
+        type: article
+        url: "https://ocw.mit.edu/courses/6-004-computation-structures-spring-2017/"
+    prerequisites:
+      - ch3-three-state
+    status: "未开始"
+    mastery: 0
+
+  - id: ch5-d-latch
+    title: "D 锁存器：电平触发的记忆"
+    kind: 概念
+    objective: "能说清电平触发与边沿触发的差别，并画对输出波形。"
+    problem: "把 SR 锁存器的两个输入用一个反相器连起来，约束项就消失了，只剩一个数据端 D。可它仍是「使能期间透明」的：使能高电平持续多久，输出就跟着输入变多久——这个透明期正是时序电路里许多毛病的来源。"
+    practice: "以讲为主：先由 SR 加反相器推出 D 锁存器，再讲电平触发的工作特点与透明期，配合一段输入波形当场画出输出波形（使能期间跟随、使能撤下后保持），并指出它在计数器里会造成什么问题。"
+    concepts:
+      - "D 锁存器的结构"
+      - "电平触发与透明期"
+      - "锁存器与触发器的区别"
+    pitfalls:
+      - "画波形时在使能期间把输出画成保持，忘了它是透明的"
+      - "使能撤下的瞬间输出取哪个值说不清"
+    realworld: "锁存器单独用作数据暂存很好用，但接进计数器就会因为透明期多计几拍——这就是为什么要触发器。"
+    resources:
+      - title: "康华光、张林《电子技术基础 数字部分》第7版 §5.3 D 锁存器"
+        type: book
+        url: "https://xuanshu.hep.com.cn/front/book/findBookDetails?bookId=601f1197966feeeca733405e"
+    prerequisites:
+      - ch5-bistable-sr
+    status: "未开始"
+    mastery: 0
+
+  - id: ch5-d-flipflop
+    title: "D 触发器：边沿触发的一次采样"
+    kind: 实操
+    objective: "能写出 D 触发器的特性方程，并按边沿画出输出波形。"
+    problem: "把两个锁存器串联、使能信号反相，就得到只在时钟边沿采样一次的主从结构——透明期被彻底消灭了。数字电路里说「存 1 位」，默认指的就是这个元件；它的特性方程是所有状态方程的材料。"
+    practice: "讲练并重：先讲主从结构与边沿触发的机理，再讲上升沿／下降沿的记号、异步清零与置数端的作用，随后写出特性方程 Q* = D，并连做几组「给时钟与 D 波形，画 Q 波形」的题，最后讲建立时间与保持时间对输入变化时刻的限制。练习以波形题为主，用 Python 仿真按边沿采样逐拍断言输出序列。"
+    concepts:
+      - "主从结构与边沿触发"
+      - "特性方程 Q* = D"
+      - "异步清零与置数"
+      - "建立时间与保持时间"
+    pitfalls:
+      - "在时钟高电平期间就让输出跟随 D，把触发器当成了锁存器"
+      - "异步清零与同步清零混用，波形早了一拍"
+      - "画波形时按输入变化时刻更新，而不是按边沿更新"
+    realworld: "数字钟的每一位计数、每一次锁存都由它完成；校时时的置数也走它的异步端。"
+    resources:
+      - title: "康华光、张林《电子技术基础 数字部分》第7版 §5.4 D 触发器"
+        type: book
+        url: "https://xuanshu.hep.com.cn/front/book/findBookDetails?bookId=601f1197966feeeca733405e"
+      - title: "Python 3.13 官方文档 · unittest：逐拍断言输出序列（已落盘 sources/python-313-unittest.md）"
+        type: official-doc
+        url: "https://docs.python.org/3.13/library/unittest.html"
+    prerequisites:
+      - ch5-d-latch
+    status: "未开始"
+    mastery: 0
+
+  - id: ch5-jk-t
+    title: "JK、T 触发器与功能转换"
+    kind: 实操
+    objective: "能写出 JK、T 的特性方程并完成触发器之间的功能转换。"
+    problem: "同一块存储元件，按输入怎么接，就得到不同的特性方程：JK 在 11 时翻转，T 在 1 时翻转。考题常给 D 触发器，要你加几个门改成 JK 或 T——考的是特性方程之间的等价替换。"
+    practice: "讲练并重：先列表比较 D、JK、T、SR 四种触发器的特性方程与真值表，再讲「用 D 触发器实现 JK」这类转换的固定做法（把目标方程写成 D 的表达式），随后讲转换多余输入端的处理。练习以「给触发器类型与目标类型，画出转换电路并用断言验证状态序列」为主。"
+    concepts:
+      - "D、JK、T、SR 的特性方程"
+      - "触发器之间的功能转换"
+      - "翻转与保持的条件"
+    pitfalls:
+      - "JK 的 11 状态按 SR 的约束处理，判成不允许"
+      - "转换时只接对数据端，忘了处理多余输入端的固定电平"
+      - "T 触发器与 D 触发器接反相器当成一回事，边沿与翻转混淆"
+    realworld: "计数器的每一位本质上就是一个 T 触发器；考研题里常指定用 JK 实现计数器。"
+    resources:
+      - title: "康华光、张林《电子技术基础 数字部分》第7版 §5.5 触发器的逻辑功能"
+        type: book
+        url: "https://xuanshu.hep.com.cn/front/book/findBookDetails?bookId=601f1197966feeeca733405e"
+      - title: "秦臻、罗杰《电子技术基础 数字部分 第六版 学习辅导与习题解答》（功能转换题的官方标准解法）"
+        type: book
+        url: "https://xuanshu.hep.com.cn/front/book/findBookDetails?bookId=59ce3d17ba9eb884cf81d13e"
+    prerequisites:
+      - ch5-d-flipflop
+    status: "未开始"
+    mastery: 0
+
+  - id: ch6-seq-basics
+    title: "时序逻辑的三种描述"
+    kind: 概念
+    objective: "能由电路写出驱动方程、状态方程、输出方程与状态转换图。"
+    problem: "组合逻辑一张真值表就说完了，时序电路不行：它的输出还取决于「现在处在哪个状态」。于是描述要写成三组方程加一张图——状态表、状态转换图、时序图。这三件是后续所有分析与设计的共同语言。"
+    practice: "以讲为主：先讲时序电路的结构（组合部分加存储部分）与同步、异步之分，再讲驱动方程、状态方程、输出方程的写法与它们之间的推导顺序，随后讲状态表、状态转换图、时序图三种表达如何互转，并用一个两位计数器做完整示例。"
+    concepts:
+      - "时序电路的结构与分类"
+      - "驱动方程、状态方程、输出方程"
+      - "状态表、状态转换图、时序图"
+      - "米利型与穆尔型"
+    pitfalls:
+      - "把驱动方程当成状态方程交上去"
+      - "状态转换图的边只写输入不写输出，或只写输出不写输入"
+      - "画状态图时漏掉无效状态"
+    realworld: "数字钟的每个计数级都能画成一张状态转换图：00 到 59 再回 00。"
+    resources:
+      - title: "康华光、张林《电子技术基础 数字部分》第7版 §6.1 时序逻辑电路的基本概念"
+        type: book
+        url: "https://xuanshu.hep.com.cn/front/book/findBookDetails?bookId=601f1197966feeeca733405e"
+      - title: "MIT OCW 6.004 第 6 章 Finite State Machines：状态机的写法与设计流程"
+        type: article
+        url: "https://ocw.mit.edu/courses/6-004-computation-structures-spring-2017/"
+    prerequisites:
+      - ch4-analysis
+      - ch5-d-flipflop
+    status: "未开始"
+    mastery: 0
+
+  - id: ch6-sync-analysis
+    title: "同步时序电路的分析"
+    kind: 实操
+    objective: "能独立算完一道同步时序分析题，并判断电路是否自启动。"
+    problem: "给一张触发器加门的电路图，要求状态方程、状态转换图，还要判断它能不能自启动——这是期末时序大题的第一种。自启动这一问专治「只算到状态图就收笔」：无效状态的去向必须单独追一遍。"
+    practice: "以练为主：先把分析步骤固定成四步（写驱动方程→代入特性方程得状态方程→列状态表与状态图→分析功能与自启动），再拿含无效状态的电路完整走一遍。练习以整题为主，给电路与触发器类型，要求交出方程、状态图与自启动结论；用 Python 仿真从任意初始状态跑若干拍，核对状态图上的每条边。"
+    concepts:
+      - "同步时序分析的四步"
+      - "由状态图判定功能"
+      - "自启动判断"
+    pitfalls:
+      - "状态表只列有效状态，无效状态的次态没算，自启动无从判断"
+      - "特性方程代入时把 Q 与 Q* 混用"
+      - "把时钟方程在同步电路里也单列一遍（同步电路共用一个时钟）"
+    realworld: "拿到一片现成计数器芯片，第一件事就是按这套步骤分析它的模值与自启动特性。"
+    resources:
+      - title: "康华光、张林《电子技术基础 数字部分》第7版 §6.2 同步时序逻辑电路的分析"
+        type: book
+        url: "https://xuanshu.hep.com.cn/front/book/findBookDetails?bookId=601f1197966feeeca733405e"
+      - title: "Python 3.13 官方文档 · unittest：逐拍断言状态序列（已落盘 sources/python-313-unittest.md）"
+        type: official-doc
+        url: "https://docs.python.org/3.13/library/unittest.html"
+    prerequisites:
+      - ch6-seq-basics
+      - ch2-kmap-circle
+    status: "未开始"
+    mastery: 0
+
+  - id: ch6-sync-design
+    title: "同步时序电路的设计"
+    kind: 实操
+    objective: "能从功能要求设计出同步时序电路，写出全部驱动方程。"
+    problem: "给一段功能文字——「收到三连击才开锁」「序列里出现 101 就输出 1」——要自己定状态、画状态图、做状态化简与编码、圈次态卡诺图，最后落到触发器的驱动方程。这一步走通，才算真会设计时序电路。"
+    practice: "以练为主：先把设计步骤固定下来（定状态与含义→画原始状态图→状态化简→状态编码→写次态卡诺图→选触发器求驱动方程→画电路→检查自启动），再走序列检测与模 N 计数这两类常见需求，其中一次故意用 JK 触发器以便比较驱动方程的繁简。练习以整题设计为主，交付方程加电路，并用仿真断言输入序列下的输出。"
+    concepts:
+      - "状态定义与原始状态图"
+      - "状态化简与状态编码"
+      - "次态卡诺图与驱动方程"
+      - "无效状态与自启动处理"
+    pitfalls:
+      - "状态定义含糊，同一个状态被定义为两个含义"
+      - "状态编码后没检查相邻编码，卡诺图圈不出简项"
+      - "驱动方程算完不回头验证：电路在无效状态上死锁"
+    realworld: "数字钟的「校时」其实是一台小状态机：正常走时、改时、改分、确认，四个状态来回转。"
+    resources:
+      - title: "康华光、张林《电子技术基础 数字部分》第7版 §6.3 同步时序逻辑电路的设计"
+        type: book
+        url: "https://xuanshu.hep.com.cn/front/book/findBookDetails?bookId=601f1197966feeeca733405e"
+      - title: "MIT OCW 6.004 第 6 章 Finite State Machines：状态机的写法与设计流程"
+        type: article
+        url: "https://ocw.mit.edu/courses/6-004-computation-structures-spring-2017/"
+    prerequisites:
+      - ch6-sync-analysis
+      - ch2-kmap-dontcare
+    status: "未开始"
+    mastery: 0
+
+  - id: ch6-async-analysis
+    title: "异步时序电路的分析"
+    kind: 实操
+    objective: "能按时钟方程逐个分析异步电路，指出它多计或少计几拍。"
+    problem: "异步计数器的触发器不是一个时钟：低位的输出当地高位的时钟。于是每位的翻转时刻不同，状态图不再是整拍同步跳变——分析时必须先写时钟方程，再逐位判「这一拍它到底有没有收到时钟」。多计一拍、少计一拍这类题都出在这里。"
+    practice: "以练为主：先讲异步与同步的区别、时钟方程的写法，再用一个异步二进制计数器演示「有的触发器不翻转」这一拍的判定方法，随后分析一个异步十进制计数器，指出它实际是模几、为什么。练习以排错与判断为主：给电路与期望模值，找出它多计一拍的原因。"
+    concepts:
+      - "时钟方程与逐位判翻转"
+      - "异步计数器的模值分析"
+      - "异步与同步的取舍"
+    pitfalls:
+      - "照同步电路的办法整拍套用，忘了某位的时钟这一拍没来"
+      - "把下降沿触发的触发器按上升沿判翻转"
+      - "异步级联的延时累积导致显示上的瞬时错码被当成逻辑错"
+    realworld: "异步计数器接线简单、成本低，数字钟的分频级常用它；代价是状态译码时会出现瞬时错码。"
+    resources:
+      - title: "康华光、张林《电子技术基础 数字部分》第7版 §6.4 异步时序逻辑电路的分析"
+        type: book
+        url: "https://xuanshu.hep.com.cn/front/book/findBookDetails?bookId=601f1197966feeeca733405e"
+    prerequisites:
+      - ch6-sync-analysis
+    status: "未开始"
+    mastery: 0
+
+  - id: ch6-register-shift
+    title: "寄存器和移位寄存器"
+    kind: 概念
+    objective: "能说清寄存器与移位寄存器的差别，并画出串并转换的时序。"
+    problem: "一组触发器并排就是寄存器，能把一个字节同时存住；把它们的输出接到下一个的输入，数据就会一拍一拍地移动。串行进并行出与并行进串行出这两件事，是显示缓冲与校时改写都要用的。"
+    practice: "以讲为主：先讲寄存器的并行入并行出与使能保持，再讲移位寄存器的四种输入输出组合与移位方向，随后用一段时序图演示串并转换需要几拍，最后讲它在数字钟里能放在哪：校时数据的暂存与显示的锁存。"
+    concepts:
+      - "寄存器与并行存取"
+      - "移位寄存器的四种工作方式"
+      - "串并转换的拍数"
+    pitfalls:
+      - "移位方向与触发器串接顺序不一致，读出的位序整体颠倒"
+      - "忽略移位所需拍数，少移一位就取数"
+    realworld: "显示缓冲、校时值的暂存、按键长按判定都能用移位寄存器。"
+    resources:
+      - title: "康华光、张林《电子技术基础 数字部分》第7版 §6.5.1 寄存器和移位寄存器"
+        type: book
+        url: "https://xuanshu.hep.com.cn/front/book/findBookDetails?bookId=601f1197966feeeca733405e"
+    prerequisites:
+      - ch5-d-flipflop
+      - ch6-seq-basics
+    status: "未开始"
+    mastery: 0
+
+  - id: ch6-counter-basics
+    title: "计数器：同步、异步与任意进制"
+    kind: 实操
+    objective: "能分析现成计数器，并用置零或置数把它改成任意进制。"
+    problem: "计数器的模值不一定要是 2 的幂：要模 10，就让它在数到 9 之后回 0。做法有两种——反馈置零与反馈置数，两者的进位时刻差一拍，这一拍的差错是计数器题最常见的失分点。"
+    practice: "讲练并重：先讲同步二进制计数器与十进制计数器的结构和工作波形，再讲用集成计数器改成任意模值的两种方法（异步置零、同步置数）与它们各自的有效状态数，随后讲级联时的进位输出接法。练习以「给芯片功能表，要求改成模 N」为主，并用 Python 仿真断言整个状态序列不含无效态。"
+    concepts:
+      - "同步与异步计数器"
+      - "模值与有效状态"
+      - "反馈置零与反馈置数"
+      - "进位输出与级联"
+    pitfalls:
+      - "异步置零有瞬态，实际只停了 N-1 个状态却按 N 算"
+      - "置数法里预置值算错，模值差一"
+      - "把模 10 的 BCD 计数器当模 16 的二进制计数器级联，进制算错"
+    realworld: "数字钟的秒、分是模 60、时是模 24，全靠这一节的改造办法做出来。"
+    resources:
+      - title: "康华光、张林《电子技术基础 数字部分》第7版 §6.5.2 计数器"
+        type: book
+        url: "https://xuanshu.hep.com.cn/front/book/findBookDetails?bookId=601f1197966feeeca733405e"
+      - title: "TI SN74HC161 四位同步二进制计数器数据表（使能、进位输出与级联的官方功能表）"
+        type: official-doc
+        url: "https://www.ti.com.cn/document-viewer/cn/SN74HC161/datasheet"
+      - title: "Python 3.13 官方文档 · unittest：断言整个状态序列（已落盘 sources/python-313-unittest.md）"
+        type: official-doc
+        url: "https://docs.python.org/3.13/library/unittest.html"
+    prerequisites:
+      - ch6-sync-analysis
+    status: "未开始"
+    mastery: 0
+
+  - id: exp2-mod10
+    title: "实验二：搭出模 10 计数器"
+    kind: 实验
+    objective: "交出模 10 计数器仿真，二十拍状态序列断言全部通过。"
+    problem: "数字钟的秒位本质是一台模 10 计数器：数到 9 就归零，同时向十位交一个进位。这一次不用现成芯片，用触发器加门自己搭出来，才算把触发器和次态卡诺图真正接上了。"
+    practice: "以练为主（验收为主）：用 Python 仿真 D 触发器，按同步设计的步骤搭出 8421 模 10 计数器；再从无效状态 10～15 出发各跑几拍，验证能自动回到有效循环（自启动）；最后接出进位输出。交付物是能 `python -m unittest` 跑通的模块，用 subTest 逐拍断言状态序列与进位时刻，并附一句话说明为何选同步而非异步。"
+    concepts:
+      - "同步模 10 计数器的次态卡诺图"
+      - "驱动方程到门级实现"
+      - "自启动验证"
+      - "进位输出的产生时刻"
+    pitfalls:
+      - "最常卡在无效状态：10～15 的次态没设计，仿真跑到死锁状态就停住"
+      - "进位在 9 时就给，导致十位多计一拍"
+      - "用异步置零的写法做同步设计，拍数对不上"
+    realworld: "数字钟的个位与十位两次计数都由它改造而来；后续两个实验在它上面级联。"
+    resources:
+      - title: "康华光、张林《电子技术基础 数字部分》第7版 §6.3 同步时序逻辑电路的设计、§6.5.2 计数器"
+        type: book
+        url: "https://xuanshu.hep.com.cn/front/book/findBookDetails?bookId=601f1197966feeeca733405e"
+      - title: "Python 3.13 官方文档 · unittest：assertEqual 与 subTest 的用法（已落盘 sources/python-313-unittest.md）"
+        type: official-doc
+        url: "https://docs.python.org/3.13/library/unittest.html"
+      - title: "TI SN74HC161 数据表：同步计数器的使能与进位输出功能表"
+        type: official-doc
+        url: "https://www.ti.com.cn/document-viewer/cn/SN74HC161/datasheet"
+    prerequisites:
+      - ch5-d-flipflop
+      - ch6-counter-basics
+    status: "未开始"
+    mastery: 0
+
+  - id: ch6-counter-cascade
+    title: "级联计数：60 与 24 进制"
+    kind: 实操
+    objective: "能设计 60 进制与 24 进制的计数级联，进位不多计一拍。"
+    problem: "秒钟是两位十进制：个位模 10、十位模 6，合起来才是模 60。分秒要 60 进制、时要 24 进制，且 24 与 60 都不是 2 的幂——只能靠「个位进位给十位、十位到顶再给下一级」的级联做出来。进位取哪一拍的信号，决定了整体会不会跳数。"
+    practice: "以练为主：先讲两位级联的接法（整体置零与分别置零的差别、进位取哪一位的输出），再讲 60 进制（个位恒模 10、十位模 6）与 24 进制（十位到 2 且个位到 3 时归零）的具体判据，随后讲异步级联的延时累积与显示瞬时错码怎么处理。练习以「给进制要求，交出级联方案与进位逻辑」为主，用仿真断言 59→00、23→00 的边界拍。"
+    concepts:
+      - "两级级联的进位取法"
+      - "分别置零与整体置零"
+      - "24 进制的边界判据"
+      - "异步级联的瞬时错码"
+    pitfalls:
+      - "60 进制当成模 60 的单一计数器，个位到 9 不进位或十位数到 5 没归零"
+      - "24 进制的判据写成个位到 4 就进位，23 点跳不过去"
+      - "进位信号取自个位的 9 而不是十位的到顶，多进一拍"
+    realworld: "数字钟的走时核心就是这条级联链，实验三直接验收它。"
+    resources:
+      - title: "康华光、张林《电子技术基础 数字部分》第7版 §6.5.2 计数器（级联与任意进制）"
+        type: book
+        url: "https://xuanshu.hep.com.cn/front/book/findBookDetails?bookId=601f1197966feeeca733405e"
+      - title: "TI SN74HC161 数据表：级联时使能与进位输出（RCO）的接法"
+        type: official-doc
+        url: "https://www.ti.com.cn/document-viewer/cn/SN74HC161/datasheet"
+    prerequisites:
+      - ch6-counter-basics
+    status: "未开始"
+    mastery: 0
+
+  - id: exp3-clock-cascade
+    title: "实验三：时、分、秒级联走时"
+    kind: 实验
+    objective: "交出时分秒走时引擎，能连走 24 小时不跳变。"
+    problem: "把两个实验接起来：模 10 计数器当秒的个位，再配十位模 6 得模 60；分钟照样来一遍；小时用 24 进制。从 00:00:00 一路走到 23:59:59 再回零，中间任何一处进位早一拍或晚一拍，都会在某个时刻暴露出来。"
+    practice: "以练为主（验收为主）：用 Python 搭出完整的走时引擎，输入一个节拍信号，输出时分秒的 BCD 位；再用实验一的段码译码器把结果转成七段码，做到「一拍进、显示出」。交付物要断言的是：一天 86400 拍的总数、59→00 与 23→00 的边界、以及每拍的显示码与 BCD 对得上。并交一张框图，说明三块为什么这样划分。"
+    concepts:
+      - "级联链的整体框图"
+      - "进制判据的落地"
+      - "显示与计数的接口"
+      - "一天 86400 拍的核对"
+    pitfalls:
+      - "最常卡在 60 与 24 的边界：秒位 59→00 时分的进位时刻差一拍，第一次跨分钟就暴露"
+      - "个位与十位的 BCD 拆位写错，显示成 6 进制或 10 进制混合"
+      - "把总计拍数当成 24×60×60 却不验证，实际少一或两拍"
+    realworld: "数字钟走到了「能走时」这一步；剩下的就是给它一个真实的时基和校时功能。"
+    resources:
+      - title: "康华光、张林《电子技术基础 数字部分》第7版 §6.5.2 计数器、§6.7.4 数字钟的 Verilog 建模（只读结论与框图，不学 HDL）"
+        type: book
+        url: "https://xuanshu.hep.com.cn/front/book/findBookDetails?bookId=601f1197966feeeca733405e"
+      - title: "Python 3.13 官方文档 · unittest：逐拍断言状态序列（已落盘 sources/python-313-unittest.md）"
+        type: official-doc
+        url: "https://docs.python.org/3.13/library/unittest.html"
+      - title: "TI SN74HC161 数据表：级联与进位输出（RCO）的官方功能表"
+        type: official-doc
+        url: "https://www.ti.com.cn/document-viewer/cn/SN74HC161/datasheet"
+    prerequisites:
+      - exp2-mod10
+      - ch6-counter-cascade
+    status: "未开始"
+    mastery: 0
+
+  - id: ch9-pulse-shaping
+    title: "施密特与单稳态：整形与去抖"
+    kind: 概念
+    objective: "能用施密特电路整形去抖，并定出单稳态的脉宽。"
+    problem: "按一下校时按钮，机械触点会在几毫秒里弹跳十几次；钟的计数器分不清这是按了一次还是十次。施密特触发电路把抖动的边沿整成一个干净的跳变，单稳态电路把「按一下」变成一段固定宽度的脉冲。"
+    practice: "以讲为主：先讲施密特触发电路的滞回特性与两个门限，再讲它整形的用法，随后讲单稳态的输出脉宽由 RC 决定、以及可重复触发与不可重复触发的区别，最后落到数字钟的按键去抖该用哪一种。"
+    concepts:
+      - "施密特触发的滞回与门限"
+      - "整形与去抖"
+      - "单稳态与输出脉宽"
+    pitfalls:
+      - "以为门限只有一个，把施密特电路当反相器用"
+      - "脉宽公式里 RC 单位不统一，算出的时间差一千倍"
+      - "可重复触发的单稳态在按键长按时输出被不断延长，周期判定出错"
+    realworld: "校时按钮的去抖、时钟信号边沿的整形，都靠这两块；前置的 RC 瞬态知识在此直接用上。"
+    resources:
+      - title: "康华光、张林《电子技术基础 数字部分》第7版 §9.1 单稳态电路、§9.2 施密特触发电路"
+        type: book
+        url: "https://xuanshu.hep.com.cn/front/book/findBookDetails?bookId=601f1197966feeeca733405e"
+    prerequisites:
+      - ch3-gate-external
+    status: "未开始"
+    mastery: 0
+
+  - id: ch9-oscillator-555
+    title: "多谐振荡与 555 时基"
+    kind: 概念
+    objective: "能按频率要求算出 555 的 R、C，并定出分频级数。"
+    problem: "钟要自己走，就得有个节拍源。555 接成多谐振荡器，靠电容充放电自激出方波；但它的频率随 RC 漂，做不到准的 1 Hz——于是电路上的标准做法是：先振出较高频率，再用计数器一级级分频下来。"
+    practice: "以讲为主：先讲多谐振荡器为什么能自激，再给 555 多谐接法的振荡频率与占空比公式，当场算一组 R、C 得到 1 kHz；随后讲为什么不能直接振到 1 Hz（RC 漂移与占空比），以及用多少级二进制计数器能分频到 1 Hz。石英晶体振荡只讲结论：频率准，用于要求高的场合。"
+    concepts:
+      - "多谐振荡的自激条件"
+      - "555 多谐接法的频率与占空比"
+      - "分频级数与 1 Hz 的得到"
+      - "RC 振荡与晶体振荡的取舍"
+    pitfalls:
+      - "频率公式里漏掉充电回路的两个电阻，算出的频率差一倍"
+      - "占空比按 50% 假设，实际充放电回路不对称"
+      - "分频级数按 2 的幂反推却忘了时基本身不是整 1 Hz，累积误差"
+    realworld: "数字钟的时基：555 出脉冲、计数器分频，实验四把这一级接上整钟。"
+    resources:
+      - title: "康华光、张林《电子技术基础 数字部分》第7版 §9.3 多谐振荡电路、§9.4 555 定时器及其应用"
+        type: book
+        url: "https://xuanshu.hep.com.cn/front/book/findBookDetails?bookId=601f1197966feeeca733405e"
+      - title: "TI NE555 定时器数据表 ZHCSMS9：6.3.1 单稳态、6.3.2 非稳态、6.3.3 分频器三节"
+        type: official-doc
+        url: "https://www.ti.com.cn/document-viewer/cn/NE555/datasheet"
+    prerequisites:
+      - ch9-pulse-shaping
+      - ch6-counter-basics
+    status: "未开始"
+    mastery: 0
+
+  - id: exp4-clock-integration
+    title: "实验四：分频、校时与整钟验收"
+    kind: 实验
+    objective: "交出能走时、能校时的整钟，24 小时仿真断言全部通过。"
+    problem: "最后一块拼图是时基与校时：给钟一个 1 kHz 的输入脉冲，靠分频链得到 1 Hz；再让「校时」按钮能把时、分改到正确值而不误触。做完这一课，桌面上那只钟第一次是一个完整的系统，而不是三个练习。"
+    practice: "以练为主（验收为主）：把前三个实验串成一份程序，输入是高频率脉冲，输出是七段显示码。要交付的是：分频链（说明所需级数与为什么）、校时状态（进入、逐位加、确认、返回走时，用去抖后的单脉冲驱动）、以及一份能 `python -m unittest` 跑通的验收测试——连走 24 小时、跨 59→00、按键长按只加一次、无效状态能自恢复。最后交一张框图并逐块说明职责。"
+    concepts:
+      - "分频链与时基"
+      - "校时状态机与按键去抖"
+      - "整钟的模块划分与接口"
+      - "端到端验收断言"
+    pitfalls:
+      - "最常卡在分频链路：时基频率与分频级数对不上，走时快慢一眼看不出，跑几小时才暴露"
+      - "按键去抖没做，长按一次校时值加了十几"
+      - "校时期间忘了暂停计数，确认后时间又被推着走"
+    realworld: "贯穿项目的收尾：这就是 MISSION 里「给出功能要求能独立画出框图、跑出正确走时并说清模块为什么这样划分」那一条。"
+    resources:
+      - title: "康华光、张林《电子技术基础 数字部分》第7版 §6.5.2 计数器、§9.4 555 定时器及其应用"
+        type: book
+        url: "https://xuanshu.hep.com.cn/front/book/findBookDetails?bookId=601f1197966feeeca733405e"
+      - title: "Python 3.13 官方文档 · unittest：assertEqual、subTest 与命令行运行方式（已落盘 sources/python-313-unittest.md）"
+        type: official-doc
+        url: "https://docs.python.org/3.13/library/unittest.html"
+      - title: "TI NE555 数据表 ZHCSMS9：6.3.3 分频器一节（分频的官方说明）"
+        type: official-doc
+        url: "https://www.ti.com.cn/document-viewer/cn/NE555/datasheet"
+    prerequisites:
+      - exp3-clock-cascade
+      - ch9-pulse-shaping
+      - ch9-oscillator-555
+    status: "未开始"
+    mastery: 0
+
+  - id: ch10-dac-adc
+    title: "D/A 与 A/D 转换"
+    kind: 概念
+    objective: "能算 D/A 的分辨率与 A/D 的量化误差这两类小题。"
+    problem: "数字电路最终要跟模拟世界打一次照面：扬声器的音量、传感器的电压。D/A 把一串 0/1 变成电压，A/D 反过来。这一章在期末通常只占一道小题，但分辨率、满量程、量化误差这几个数一算就能拿到。"
+    practice: "以讲为主：先讲 D/A 的权电阻与 R-2R 两种结构（只看外部输出关系，不拆内部），再算分辨率与满量程输出；随后讲 A/D 的采样、量化、编码三步与量化误差的数量级，最后比较逐次逼近与双积分两种做法的速度与精度取舍。"
+    concepts:
+      - "D/A 的分辨率与输出关系"
+      - "A/D 的采样、量化与编码"
+      - "量化误差"
+      - "逐次逼近与双积分的取舍"
+    pitfalls:
+      - "分辨率按位数报成电压值，问的是 1/2^n 还是 V_FS/2^n 混着答"
+      - "量化误差取成 1 个 LSB 而不是半个 LSB"
+      - "采样定理的条件记成「大于」而不是「不小于两倍」"
+    realworld: "数字钟的走时是纯数字的，但校时用的旋钮与显示亮度调节会碰到这一章；考研也把它当小题考。"
+    resources:
+      - title: "康华光、张林《电子技术基础 数字部分》第7版 §10.1 D/A 转换器、§10.2 A/D 转换器"
+        type: book
+        url: "https://xuanshu.hep.com.cn/front/book/findBookDetails?bookId=601f1197966feeeca733405e"
+      - title: "MIT OCW 6.004 第 1 章 Basics of Information：编码与精度（量化误差的另一角度讲法）"
+        type: article
+        url: "https://ocw.mit.edu/courses/6-004-computation-structures-spring-2017/"
+    prerequisites:
+      - ch4-adder-compare
+    status: "未开始"
+    mastery: 0
+
+  - id: final-review
+    title: "期末冲刺：两类题的固定套路"
+    kind: 实操
+    objective: "能在限时内独立完成组合与时序各一套卷，并自查错因。"
+    problem: "卷面上真正决定分数的只有两类题：组合逻辑的「化简加实现」与时序逻辑的「分析或设计」。这两类题的解法都已经学过，剩下要练的是在限时里不出错——把每题拆成能勾掉的步骤，错在哪里一眼能定位。"
+    practice: "以练为主：先各做一套限时的组合卷与时序卷（题型按教材例题与两本官方题解的格式组织），再逐题按步骤打分——卡诺图圈错、状态表漏无效状态、驱动方程算错分别扣在哪一步。做完把错因归到具体节点，回补那一课。这一课只练答题的固定动作与自查清单，不引入新知识。"
+    concepts:
+      - "组合题的固定步骤与自查"
+      - "时序题的固定步骤与自查"
+      - "错因归位到具体节点"
+    pitfalls:
+      - "会做但超时，步骤写得过细或卡在化简上反复"
+      - "只对答案不记错因，同类错误在下一套卷再犯一次"
+      - "把新题型当没见过，其实只是换了器件类型"
+    realworld: "这一课直接对应 MISSION 的最后一条：期末卷上组合与时序两类题不丢分，考研同类题能看出考点在哪。"
+    resources:
+      - title: "康华光、张林《电子技术基础 数字部分》第7版 §2.4、§4.1～4.2、§6.2～6.3（两类大题的出题范围）"
+        type: book
+        url: "https://xuanshu.hep.com.cn/front/book/findBookDetails?bookId=601f1197966feeeca733405e"
+      - title: "秦臻、罗杰《电子技术基础 数字部分 第六版 学习辅导与习题解答》（官方配套题解，用于取题与对照标准解题过程）"
+        type: book
+        url: "https://xuanshu.hep.com.cn/front/book/findBookDetails?bookId=59ce3d17ba9eb884cf81d13e"
+      - title: "王淑娟、蔡惟铮《数字电子技术基础 学习指导与考研指南》（核对某些考点在考研里的深度，翻目录后再用）"
+        type: book
+        url: "https://xuanshu.hep.com.cn/front/book/findBookDetails?bookId=59cd90ecba9eb884cf81b286"
+    prerequisites:
+      - ch4-design
+      - ch6-sync-analysis
+      - ch6-sync-design
+      - exp4-clock-integration
+    status: "未开始"
+    mastery: 0
+
+edges:
+  - from: ch2-kmap-fill
+    to: ch4-decoder
+    reason: "译码器的每一路输出就是一个最小项，第一课里做的编号与真值表列写正是「用译码器实现函数」的原理"
+  - from: ch2-kmap-circle
+    to: ch4-design
+    reason: "设计的第 4 步就是圈卡诺图写出最简式，圈组规则直接复用"
+  - from: ch2-kmap-dontcare
+    to: ch6-sync-design
+    reason: "次态卡诺图里无效状态当 d 用的做法与组合逻辑的无关项同源"
+  - from: ch3-gate-external
+    to: ch4-hazard
+    reason: "竞争冒险源于不同路径上门传输延时不同，延时参数是前提"
+  - from: ch3-gate-external
+    to: ch5-bistable-sr
+    reason: "锁存器靠两个门的高低电平互相锁定，门限与噪声容限决定它能否稳住"
+  - from: ch4-decoder
+    to: ch4-rom-logic
+    reason: "ROM 的地址译码就是一台最小项发生器，与译码器同构"
+  - from: ch4-mux-encoder
+    to: ch6-sync-design
+    reason: "次态逻辑也可以用 MUX 实现：选择端接状态变量、数据端接输入变量"
+  - from: ch4-adder-compare
+    to: ch6-counter-cascade
+    reason: "行波进位的延时累加与异步计数级联的延时累积是同一个问题"
+  - from: ch4-hazard
+    to: ch6-counter-cascade
+    reason: "级联计数器的进位毛刺要靠消除冒险的办法看待，否则会多计"
+  - from: ch5-d-flipflop
+    to: ch6-sync-analysis
+    reason: "状态方程由特性方程代入而来，不认识 D 的特性方程就写不出状态方程"
+  - from: ch5-jk-t
+    to: ch6-sync-design
+    reason: "设计最后一步按选定触发器求驱动方程，JK 的驱动表在这里用"
+  - from: ch5-jk-t
+    to: ch6-counter-basics
+    reason: "计数器的每一位本质是 T 触发器，翻转条件由此而来"
+  - from: ch6-sync-design
+    to: exp2-mod10
+    reason: "模 10 计数器就是一次完整的同步设计，本课的方法在实验里落地"
+  - from: ch6-counter-basics
+    to: exp3-clock-cascade
+    reason: "走时链由多级计数器级联构成，计数器改造办法是前提"
+  - from: ch6-async-analysis
+    to: final-review
+    reason: "异步分析是时序大题的另一种出法，期末卷上会出现"
+  - from: exp1-seven-seg
+    to: exp4-clock-integration
+    reason: "显示级要接进整钟一起验收，段码接口在此复用"
+  - from: ch6-register-shift
+    to: exp4-clock-integration
+    reason: "校时按下后要把时、分一次置成指定值，寄存器与置数的做法在此复用"
+  - from: ch9-pulse-shaping
+    to: exp4-clock-integration
+    reason: "校时按钮必须先整形去抖，否则一次按键会加出十几分钟"
+  - from: ch4-rom-logic
+    to: final-review
+    reason: "期末小题里常考 ROM 容量与地址位数的换算"
+  - from: ch10-dac-adc
+    to: final-review
+    reason: "D/A、A/D 在卷面上通常是一道计算小题，冲刺时一并过一遍"

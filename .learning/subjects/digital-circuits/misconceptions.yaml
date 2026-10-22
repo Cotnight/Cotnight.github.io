@@ -1,0 +1,12 @@
+date: "2026-10-19"
+subject: digital-circuits
+items:
+  - id: 1
+    topic: "布尔代数：求反函数与长非号的逐层剥离"
+    question: "选择题：Y = A + \\overline{BCD} 的反函数是哪一个（他选了 D：Ā·B(C̄+D̄)）"
+    misunderstanding: "把「反函数」理解成「把每个字母分别加横线」，于是长非号只剥掉一层中的一部分：B 去了横线、C 与 D 被拆成或、还多保留了 B 与括号相乘。正确做法是把 Y 整体取一次反，按德摩根逐层剥：A + X → Ā·X̄，X = \\overline{BCD} → X̄ = BCD。"
+    answer_summary: "Ȳ = Ā·BCD（= 选项 B 的 Ā·\\overline{B̄+C̄+D̄}）。反函数 = 或与互换 + 原反互换 + 长非号逐层剥。"
+    follow_up: "做 3 道「求反函数」题：Y=A+\u0305BCD、Y=\u0305A+BC、Y=AB+\u0305CD，写完用一组取值代入验证"
+    importance: high
+notes:
+  - "2026-10-19：此题暴露的是被删掉的「布尔代数定律」那一块——数电大纲里该节点已按学生要求删除，需在卡诺图之后补一小段「长非号剥离」的练习（可放在 ch2-kmap-dontcare 的排错题里，或另插一节）。"

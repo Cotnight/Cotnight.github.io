@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="zh-CN" data-theme="dark">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>命题逻辑作业自评（2026-10-19） · 离散数学</title>
+<link rel="stylesheet" href="../../../assets/sayo/sayo.css">
+<link rel="stylesheet" href="../../../assets/learn-theme.css">
+<link rel="stylesheet" href="../assets/style.css">
+<script src="../../../assets/learn-theme.js"></script>
+<script>LearnTheme.apply();</script>
+<style>
+.lesson h1 {
+  margin: var(--syo-space-2, 8px) 0 var(--syo-space-4, 16px);
+  font-size: clamp(1.6rem, 3.2vw, 2.25rem);
+  font-weight: 700;
+  line-height: 1.25;
+  letter-spacing: -0.02em;
+  color: var(--syo-fg-default);
+}
+</style>
+</head>
+<body class="lesson-body">
+<nav class="lesson-bar">
+  <a href="../index.html">← 返回科目</a>
+  <span>离散数学</span>
+  <span class="lesson-bar__no">学习记录</span>
+  <label class="syo-toggle syo-toggle--theme lesson-bar__toggle" title="切换深浅主题" aria-label="切换深浅主题">
+    <input type="checkbox" id="attachment-theme-checkbox" checked>
+    <span class="syo-toggle-track"></span>
+    <span class="syo-toggle-knob">
+      <svg class="syo-toggle-sun" viewBox="0 0 20 20" fill="none" aria-hidden="true"><circle cx="10" cy="10" r="3.5" stroke="#f57c00" stroke-width="1.5"/><path d="M10 2v2.5M10 15.5V18M2 10h2.5M15.5 10H18M4.34 4.34l1.77 1.77M13.89 13.89l1.77 1.77M4.34 15.66l1.77-1.77M13.89 6.11l1.77-1.77" stroke="#f57c00" stroke-width="1.2" stroke-linecap="round"/></svg>
+      <svg class="syo-toggle-moon" viewBox="0 0 20 20" fill="none" aria-hidden="true"><path d="M16.5 12.5A6 6 0 019 4.5a6 6 0 007.5 8z" stroke="#5c6bc0" stroke-width="1.5" stroke-linejoin="round"/></svg>
+    </span>
+  </label>
+</nav>
+
+<article class="lesson">
+<h1>命题逻辑作业自评（2026-10-19）</h1>
+<p>Status: active<br>日期: "2026-10-19"<br>节点: logic-normal-form（对偶与范式）— 尚未正式开课</p>
+<h2>可观察的证据</h2>
+<p>学生把作业两页拍照发来（习题6/7/8，共 11 道题）。逐题复算后：</p>
+<ol>
+<li><strong>范式求对了</strong>：<code>(p→q)∧(q→r)</code> 给出 Σm(m0,m1,m3,m7)、ΠM(M2,M4,M5,M6)，与真值表逐行复算一致（1,1,0,1,0,0,0,1）。<code>(p→(q∧r))∧(¬p→(¬q∧¬r))</code> 给出 m0∨m7 / M1..M6，也正确。说明他已能用「展开 + 数项」这条路线拿到正确答案。</li>
+<li><strong>推理证明基本会写</strong>：习题8 的 8 道推理题，P/T 标注、假言推理、拒取式、析取三段论、CP 规则（附加前提）用法都对，含 <code>(t→¬u)→¬s</code> 与 <code>¬(¬p∧s)</code> 这两道需要否号处理与德摩根配合的题。</li>
+<li><strong>用主合取范式判等价做对了</strong>：<code>(p→q)→r</code> 与 <code>p→(q→r)</code> 分别化成 M0∧M2∧M6 与 M6，结论"不等价"正确。</li>
+</ol>
+<h2>暴露的两处真实缺口</h2>
+<ul>
+<li><strong>德摩根</strong>：习题6 第3题(3) 末尾把 <code>¬p∨¬q</code> 写成 <code>¬(p∨q)</code>（应为 <code>¬(p∧q)</code>）——差异只在括号里一个符号，属"会做但符号层不稳"。</li>
+<li><strong>对偶含与非/或非</strong>：<code>(p∧q)↑r</code> 的对偶写成 <code>(p∨q)↑r</code>（应为 <code>(p∨q)↓r</code>）。</li>
+</ul>
+<h2>自述需求</h2>
+<p>"化简成范式、证明都还不会，公式一直记不住"——与上述证据不符：<strong>能算，但缺固定动作与自检</strong>；公式记忆需要"从主干现推"的路子。</p>
+<h2>主教练更正</h2>
+<p>起初把范式判成错（给出 Σm(0,1,2,3,5,7) 那组），复算后确认错在我、学生对。已从误解库删除该条并记下更正，不再按错答案判他。</p>
+  <footer class="lesson-footer">
+    StudyMate · 命题逻辑作业自评（2026-10-19） · 本地学习工作区
+  </footer>
+</article>
+
+<script src="../../../assets/sayo/sayo.js"></script>
+<script>LearnTheme.wire(document.getElementById('attachment-theme-checkbox'));</script>
+</body>
+</html>

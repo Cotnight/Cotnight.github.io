@@ -1,0 +1,377 @@
+<!DOCTYPE html>
+<html lang="zh-CN" data-theme="dark">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>初等函数：指数、三角与对数 · 复变函数与积分变换</title>
+
+<!-- 共享层在 .learning/assets/，课件在 .learning/subjects/<slug>/lessons/ 下，所以是 ../../../assets/ -->
+<link rel="stylesheet" href="../../../assets/sayo/sayo.css">
+<link rel="stylesheet" href="../../../assets/learn-theme.css">
+<link rel="stylesheet" href="../assets/style.css">
+
+<!-- 主题要在首帧前应用，避免闪白/闪黑 -->
+<script src="../../../assets/learn-theme.js"></script>
+<script>LearnTheme.apply();</script>
+</head>
+
+<body class="lesson-body">
+
+<nav class="lesson-bar">
+  <a href="../index.html">← 返回课程</a>
+  <span>复变函数与积分变换</span>
+  <span class="lesson-bar__no">0001</span>
+  <!-- 课件页自带主题开关：学生从文件管理器直接打开课件时也能切暗色 -->
+  <label class="syo-toggle syo-toggle--theme lesson-bar__toggle" title="切换深浅主题" aria-label="切换深浅主题">
+    <input type="checkbox" id="lesson-theme-checkbox" checked>
+    <span class="syo-toggle-track"></span>
+    <span class="syo-toggle-knob">
+      <svg class="syo-toggle-sun" viewBox="0 0 20 20" fill="none" aria-hidden="true"><circle cx="10" cy="10" r="3.5" stroke="#f57c00" stroke-width="1.5"/><path d="M10 2v2.5M10 15.5V18M2 10h2.5M15.5 10H18M4.34 4.34l1.77 1.77M13.89 13.89l1.77 1.77M4.34 15.66l1.77-1.77M13.89 6.11l1.77-1.77" stroke="#f57c00" stroke-width="1.2" stroke-linecap="round"/></svg>
+      <svg class="syo-toggle-moon" viewBox="0 0 20 20" fill="none" aria-hidden="true"><path d="M16.5 12.5A6 6 0 019 4.5a6 6 0 007.5 8z" stroke="#5c6bc0" stroke-width="1.5" stroke-linejoin="round"/></svg>
+    </span>
+  </label>
+</nav>
+
+<article class="lesson">
+
+  <header class="lesson-header">
+    <span class="lesson-header__eyebrow">0001 · 初等函数：指数、三角与对数</span>
+    <h1>初等函数：指数、三角与对数</h1>
+    <p class="lesson-goal"><b>本节目标：</b>能算出 <span class="math-inline">e^z</span>、<span class="math-inline">\operatorname{Ln} z</span> 与 <span class="math-inline">z^\alpha</span> 的值，并说清其中的多值性、全部值怎么写。</p>
+  </header>
+
+  <!-- ── 正文：渲染器按内容文件（lessons/<序号>-<节点id>.md）产出，块词汇见 docs/规范/课件内容格式.md ── -->
+
+  <h2>卷面考哪些</h2>
+
+  <p>公开试卷里，本节固定出现在两处：</p>
+
+  <ul>
+    <li>解答题第 2 题（6 分）：解 <span class="math-inline">\sin z = 2\cos z</span>、<span class="math-inline">\cos z = \frac{5}{4}</span> 这一类的三角方程，或者求 <span class="math-inline">\operatorname{Ln}(1+\sqrt3 i)</span> 的值。</li>
+    <li>填空与选择（3～4 分）：判断某条等式在复数范围内是否成立、求 <span class="math-inline">i^i</span> 一类幂的值、比较 <span class="math-inline">f(z)=\sin z</span> 与 <span class="math-inline">g(x)=\sin x</span> 的性质异同（概念简答，3 分）。</li>
+  </ul>
+
+  <p>这一节的分数都落在「按定义代进去算」上：定义写对、多值性不漏，就是满分卷面。</p>
+
+  <h2>指数函数</h2>
+
+  <p>先接一句级数。实变量上有 <span class="math-inline">e^x = 1 + x + \frac{x^2}{2!} + \cdots</span>，把 <span class="math-inline">x</span> 换成复数 <span class="math-inline">z</span> 之后这个幂级数在整个复平面上仍然收敛，所以 <span class="math-inline">e^z</span> 可以按同一串幂写开。教材采用的是与它等价的写法：</p>
+
+  <div class="math-block">e^z = e^{x+iy} = e^x(\cos y + i \sin y), \qquad z = x + iy.</div>
+
+  <p>取 <span class="math-inline">x = 0</span> 就得到欧拉公式 <span class="math-inline">e^{iy} = \cos y + i \sin y</span>；把 <span class="math-inline">z</span> 写成指数表示 <span class="math-inline">z = re^{i\theta}</span> 时用的正是这一条，其中 <span class="math-inline">r = |z|</span> 是模，<span class="math-inline">\theta = \arg z</span> 是辐角，落在 <span class="math-inline">(-\pi,\pi]</span> 内的那个值叫主值，记 <span class="math-inline">\operatorname{Arg} z</span>。</p>
+
+  <p><span class="math-inline">e^z</span> 的结论都从上面那个式子直接读出来：</p>
+
+  <table>
+    <thead>
+      <tr><th>问的</th><th>答</th></tr>
+    </thead>
+    <tbody>
+      <tr><td>模</td><td><span class="math-inline">|e^z| = e^x</span>，只由实部决定</td></tr>
+      <tr><td>辐角</td><td><span class="math-inline">\arg e^z = y + 2k\pi</span>，<span class="math-inline">k \in \mathbb Z</span></td></tr>
+      <tr><td>周期</td><td><span class="math-inline">e^{z+2\pi i} = e^z</span>，周期为 <span class="math-inline">2\pi i</span></td></tr>
+      <tr><td>取值</td><td>永不为零，因为 <span class="math-inline">e^x &gt; 0</span></td></tr>
+      <tr><td>乘法</td><td><span class="math-inline">e^{z_1}e^{z_2} = e^{z_1+z_2}</span></td></tr>
+    </tbody>
+  </table>
+
+  <p>例：<span class="math-inline">e^{1+i} = e(\cos 1 + i\sin 1) \approx 1.4687 + 2.2874i</span>，模是 <span class="math-inline">e \approx 2.7183</span>，辐角是 <span class="math-inline">1 + 2k\pi</span>。</p>
+
+  <p>「永不为零」与「以 <span class="math-inline">2\pi i</span> 为周期」这两条合起来说明：<span class="math-inline">w = e^z</span> 的取值里没有 <span class="math-inline">0</span>，而每个不为零的 <span class="math-inline">w</span> 都有无穷多个原像。后面 <span class="math-inline">\operatorname{Ln} z</span> 的多值性就从这里来。</p>
+
+  <div class="quiz" data-quiz='[
+  {
+    "q": "$z=-1+i$，其中 $k\\in\\mathbb Z$。\n$e^z$ 的模与辐角分别是哪一个？",
+    "opts": [
+      "$|e^z|=e^{-1}$，$\\arg e^z=1+2k\\pi$",
+      "$|e^z|=e^{-1}$，$\\arg e^z=-1+2k\\pi$",
+      "$|e^z|=e^{1}$，$\\arg e^z=1+2k\\pi$",
+      "$|e^z|=e^{-1}$，$\\arg e^z=\\pi+2k\\pi$"
+    ],
+    "ans": 0,
+    "why": "模只由实部定：$|e^z|=e^{x}$，这里 $x=-1$。\n辐角就是虚部 $1$ 再加周期 $2k\\pi$。"
+  }
+]'></div>
+
+  <h2>三角与双曲函数</h2>
+
+  <p>由 <span class="math-inline">e^{iz}</span> 与 <span class="math-inline">e^{-iz}</span> 联立解出 <span class="math-inline">\sin z</span> 与 <span class="math-inline">\cos z</span>，得到它们在复数范围内的定义：</p>
+
+  <div class="math-block">\sin z = \frac{e^{iz} - e^{-iz}}{2i}, \qquad \cos z = \frac{e^{iz} + e^{-iz}}{2}, \qquad \tan z = \frac{\sin z}{\cos z}.</div>
+
+  <p>双曲函数写法相近：</p>
+
+  <div class="math-block">\sinh z = \frac{e^{z} - e^{-z}}{2}, \qquad \cosh z = \frac{e^{z} + e^{-z}}{2}.</div>
+
+  <p>两组之间的关系是 <span class="math-inline">\sin iz = i\sinh z</span>、<span class="math-inline">\cos iz = \cosh z</span>。</p>
+
+  <p>照原样继承下来的部分：<span class="math-inline">\sin^2 z + \cos^2 z = 1</span>、和差角公式、周期 <span class="math-inline">2\pi</span>、零点 <span class="math-inline">z = k\pi</span>（<span class="math-inline">\sin z</span>）与 <span class="math-inline">z = \frac{\pi}{2} + k\pi</span>（<span class="math-inline">\cos z</span>）。</p>
+
+  <p>改变的一条必须记住：实轴上 <span class="math-inline">|\sin x| \le 1</span> 恒成立，复数范围内不再有界。取 <span class="math-inline">z = iy</span>，由 <span class="math-inline">\sin(iy) = i\sinh y</span> 得 <span class="math-inline">|\sin(iy)| = |\sinh y|</span>，<span class="math-inline">|y|</span> 增大时按指数增长：<span class="math-inline">y = 2</span> 时已是 <span class="math-inline">3.63</span>，<span class="math-inline">y = 3</span> 时超过 <span class="math-inline">10</span>。同一个事实也说明 <span class="math-inline">\sin z = 3</span> 这类方程在复数范围内有解，第 7 节就要解它。</p>
+
+  <figure class="lesson-figure">
+    <img src="../assets/img/pool/初等函数-三角函数-无界性-本机-03.png" alt="两条曲线对照，横轴的同一位置分别代表实部与虚部，实轴上的正弦绝对值始终不超过 1，虚轴上按双曲正弦增长到 10 以上">
+    <figcaption>图 1 · 沿实轴有界、沿虚轴指数增长，复数范围内的 sin z 无界。（来源：本机生成（<code>assets/img/gen/初等函数-三角函数-无界性-本机-03.py</code>），许可：本项目自产）</figcaption>
+  </figure>
+
+  <div class="lesson-warn">
+    <b>有界性是考场原题</b>
+    <p>2022 与 2024 年各有一道 3 分简答，要求写 <span class="math-inline">f(z) = \sin z</span> 与 <span class="math-inline">g(x) = \sin x</span> 的异同，其中最好拿分的一条就是 <span class="math-inline">\sin z</span> 无界、<span class="math-inline">\sin x</span> 有界。2025 年的选择题又把 <span class="math-inline">\cos 2z + \sin^2 z = 1</span> 当干扰项：成立的是 <span class="math-inline">\cos^2 z + \sin^2 z = 1</span> 与 <span class="math-inline">\cos 2z = 1 - 2\sin^2 z</span>，两条拼在一起就不成立。</p>
+  </div>
+
+  <div class="quiz" data-quiz='[
+  {
+    "q": "同学写了 3 分简答，里面有两处错。\n找出来，每处各改一句：\n\n「$\\sin z$ 与 $\\sin x$ 性质相同：\n都有 $|\\sin z|\\le 1$，都以 $2\\pi$ 为周期，\n都满足 $\\cos 2z+\\sin^2 z=1$。」\n\n① 第一处错在哪？② 第二处错在哪？",
+    "answer": "① 无界性错：$|\\sin z|\\le 1$ 只在实轴上成立。\n取 $z=iy$，$\\sin(iy)=i\\sinh y$，\n$|\\sin 2i|=\\sinh 2\\approx 3.63&gt;1$。\n② 恒等式错：$\\cos 2z+\\sin^2 z=1$ 不成立。\n成立的是 $\\cos^2 z+\\sin^2 z=1$ 与\n$\\cos 2z=1-2\\sin^2 z$，两条拼起来对不上。\n（「以 $2\\pi$ 为周期」这条是对的。）",
+    "criteria": "① 要点出复域内 $\\sin z$ 无界，并给虚轴的例子\n（$|\\sin(iy)|=|\\sinh y|$ 或某个具体数值）。\n② 要点出错在把 $\\cos^2 z$ 写成了 $\\cos 2z$。\n两处只改对一处算部分通过；\n只说「不一定成立」却给不出例子，①按不通过记。\n「以 $2\\pi$ 为周期」这条本来是对的，指它算错判不通过。"
+  }
+]'></div>
+
+  <h2>对数函数</h2>
+
+  <p><span class="math-inline">\operatorname{Ln} z</span> 定义为方程 <span class="math-inline">e^w = z</span> 的解 <span class="math-inline">w</span>。把 <span class="math-inline">z</span> 写成指数表示 <span class="math-inline">z = re^{i\theta}</span>，令 <span class="math-inline">w = u + iv</span> 代入，比较模与辐角得 <span class="math-inline">e^u = r</span>、<span class="math-inline">v = \theta + 2k\pi</span>，于是</p>
+
+  <div class="math-block">\operatorname{Ln} z = \ln|z| + i\arg z = \ln|z| + i(\operatorname{Arg} z + 2k\pi), \qquad k \in \mathbb Z.</div>
+
+  <p>把辐角限制在 <span class="math-inline">(-\pi,\pi]</span> 得到的那个值叫主值，记 <span class="math-inline">\ln z = \ln|z| + i\operatorname{Arg} z</span>。<span class="math-inline">\ln|z|</span> 是正实数的自然对数，与多值无关；多值性全部来自辐角那一项。</p>
+
+  <p>两个例子：</p>
+
+  <ul>
+    <li><span class="math-inline">\operatorname{Ln}(-1) = \ln 1 + i(\pi + 2k\pi) = (2k+1)\pi i</span>，主值 <span class="math-inline">\ln(-1) = \pi i</span>。</li>
+    <li><span class="math-inline">\operatorname{Ln}(1+\sqrt3 i)</span>：<span class="math-inline">|z| = 2</span>、<span class="math-inline">\operatorname{Arg} z = \frac{\pi}{3}</span>，所以 <span class="math-inline">\operatorname{Ln}(1+\sqrt3 i) = \ln 2 + i\left(\frac{\pi}{3} + 2k\pi\right)</span>，主值取 <span class="math-inline">k = 0</span> 那一支。这就是解答题第 2 题的一种考法。</li>
+  </ul>
+
+  <p>动作固定三步：先把 <span class="math-inline">z</span> 化成 <span class="math-inline">re^{i\theta}</span>，再写 <span class="math-inline">\ln r + i\theta</span>，最后补 <span class="math-inline">2k\pi</span>。</p>
+
+  <p>同一个 <span class="math-inline">z</span> 的全部对数值相差 <span class="math-inline">2k\pi i</span>，在 <span class="math-inline">w</span> 平面上排成一列；主值只是其中一支。</p>
+
+  <figure class="lesson-figure">
+    <img src="../assets/img/pool/初等函数-对数函数-多值分支-本机-02.png" alt="左栏复平面上标出一个点，右栏 w 平面上它的对数值排成一列、相邻两个相差 2πi，浅色横带标出主值所在的那一支">
+    <figcaption>图 2 · 同一个点的无穷多个对数值，相邻两个相差 2πi。（来源：本机生成（<code>assets/img/gen/初等函数-对数函数-多值分支-本机-02.py</code>），许可：本项目自产）</figcaption>
+  </figure>
+
+  <p>两条运算要分清，选择题的原题就出在这里：</p>
+
+  <ul>
+    <li><span class="math-inline">\operatorname{Ln}(z_1z_2) = \operatorname{Ln} z_1 + \operatorname{Ln} z_2</span> 成立，两边都是值的集合，逐项加起来对得上。</li>
+    <li><span class="math-inline">\operatorname{Arg}(z_1z_2) = \operatorname{Arg} z_1 + \operatorname{Arg} z_2</span> 一般不成立：主值被压在 <span class="math-inline">(-\pi,\pi]</span> 内，两角相加越界就要减去或加上 <span class="math-inline">2\pi</span>。</li>
+  </ul>
+
+  <p>主值分支 <span class="math-inline">\ln z</span> 在去掉原点与负实轴的区域内是单值且连续的，负实轴就是把两支接起来的地方（上面那张图里的虚线）。后面讨论解析性时，<span class="math-inline">\operatorname{Ln} z</span> 都要先指定到这样一条分支上。</p>
+
+  <div class="quiz" data-quiz='[
+  {
+    "q": "$z=-1+\\sqrt3 i$，回答三个小问：\n① $|z|$ 与 $\\operatorname{Arg} z$ 各是多少？\n② 写出 $\\operatorname{Ln} z$ 的全部值。\n③ 写出主值 $\\ln z$。",
+    "answer": "① $|z|=2$，$\\operatorname{Arg} z=\\frac{2\\pi}{3}$。\n② $\\operatorname{Ln} z=\\ln 2+i\\left(\\frac{2\\pi}{3}+2k\\pi\\right)$，$k\\in\\mathbb Z$。\n③ $\\ln z=\\ln 2+\\frac{2\\pi}{3}i$。",
+    "criteria": "① 模 $2$ 与辐角 $\\frac{2\\pi}{3}$ 两项都要对。\n② 必须带 $2k\\pi$ 与 $k\\in\\mathbb Z$；漏了就是卷面\n直接丢的两分（参考答案按「只有主值」扣）。\n③ 主值必须落在 $(-\\pi,\\pi]$：③ 里带 $2k\\pi$，\n或把辐角写成 $-\\frac{4\\pi}{3}$，都算错。"
+  }
+]'></div>
+
+  <h2>幂函数</h2>
+
+  <p><span class="math-inline">z^\alpha = e^{\alpha \operatorname{Ln} z}</span>，<span class="math-inline">\alpha</span> 为复常数，<span class="math-inline">z \ne 0</span>。右端含 <span class="math-inline">\operatorname{Ln} z</span>，所以 <span class="math-inline">z^\alpha</span> 取几个值由 <span class="math-inline">\alpha</span> 决定：</p>
+
+  <table>
+    <thead>
+      <tr><th><span class="math-inline">\alpha</span> 是哪类数</th><th>值的情况</th><th>例</th></tr>
+    </thead>
+    <tbody>
+      <tr><td>整数</td><td>单值</td><td><span class="math-inline">z^2</span>、<span class="math-inline">z^{-1}</span></td></tr>
+      <tr><td>有理数 <span class="math-inline">p/q</span>（既约，<span class="math-inline">q &gt; 1</span>）</td><td>恰 <span class="math-inline">q</span> 个值</td><td><span class="math-inline">z^{1/3}</span> 三个、<span class="math-inline">z^{2/3}</span> 三个</td></tr>
+      <tr><td>无理数或复数</td><td>无穷多值</td><td><span class="math-inline">i^i</span>、<span class="math-inline">z^{\sqrt2}</span></td></tr>
+    </tbody>
+  </table>
+
+  <p><span class="math-inline">z^{1/n}</span> 就是 <span class="math-inline">n</span> 次方根，公式为</p>
+
+  <div class="math-block">z^{1/n} = \sqrt[n]{r}\, e^{i\frac{\theta + 2k\pi}{n}}, \qquad k = 0,1,\dots,n-1,</div>
+
+  <p><span class="math-inline">n</span> 个值均匀分布在以原点为心、半径 <span class="math-inline">\sqrt[n]{r}</span> 的圆上。</p>
+
+  <p>两个必会：</p>
+
+  <ul>
+    <li><span class="math-inline">(-1)^{1/3} = e^{\frac{1}{3}\operatorname{Ln}(-1)} = e^{\frac{(2k+1)\pi}{3}i}</span>，取 <span class="math-inline">k = 0,1,2</span> 得 <span class="math-inline">\frac{1}{2} + \frac{\sqrt3}{2}i</span>、<span class="math-inline">-1</span>、<span class="math-inline">\frac{1}{2} - \frac{\sqrt3}{2}i</span>。<span class="math-inline">k</span> 再往上取就与这三个重复，所以恰三个值。</li>
+    <li><span class="math-inline">i^i = e^{i\operatorname{Ln} i} = e^{i\left(\frac{\pi}{2} + 2k\pi\right)i} = e^{-\frac{\pi}{2} - 2k\pi}</span>，<span class="math-inline">k \in \mathbb Z</span>。全部值是无穷多个实数，主值 <span class="math-inline">e^{-\pi/2} \approx 0.2079</span>。</li>
+  </ul>
+
+  <p>算 <span class="math-inline">z^\alpha</span> 时先把 <span class="math-inline">\alpha \operatorname{Ln} z</span> 完整写出来（含 <span class="math-inline">2k\pi</span>）再取指数；模由实部决定，<span class="math-inline">|z^\alpha| = e^{\operatorname{Re}(\alpha \operatorname{Ln} z)}</span>。</p>
+
+  <div class="quiz" data-quiz='[
+  {
+    "q": "下面哪个幂对每个 $z\\neq 0$ 都只取一个值？",
+    "opts": [
+      "$z^{1/2}$",
+      "$z^{2/3}$",
+      "$z^{\\pi}$",
+      "$z^{4}$"
+    ],
+    "ans": 3,
+    "why": "$\\alpha$ 是整数时，$\\alpha\\operatorname{Ln} z$ 里的\n$2k\\pi$ 被整数倍吃掉，只剩一个值。\n另三个分别取 $2$ 个、$3$ 个、无穷多个值。"
+  }
+]'></div>
+
+  <div class="quiz" data-quiz='[
+  {
+    "q": "求 $\\sqrt[3]{-8}$ 的全部值。\n三个都要写出来，写成 $a+bi$ 的形式。",
+    "answer": "$-8=8e^{i\\pi}$，故 $\\sqrt[3]{-8}=2e^{i\\frac{\\pi+2k\\pi}{3}}$，$k=0,1,2$。\n三个值：$1+\\sqrt3 i$、$-2$、$1-\\sqrt3 i$。",
+    "criteria": "三个值齐全才算通过：$1+\\sqrt3 i$、$-2$、$1-\\sqrt3 i$\n（顺序可换，写成 $2e^{i\\pi/3}$、$2e^{i\\pi}$、$2e^{i5\\pi/3}$ 也算对）。\n只写 $-2$ 是不通过：漏掉 $k=1,2$，卷面只按一个根给分。\n辐角取 $\\pi$ 或 $-\\pi$ 都对，但 $k$ 只能取 $0,1,2$；\n再往上取就是重复这三个值。"
+  }
+]'></div>
+
+  <h2>映照特点</h2>
+
+  <p>把 <span class="math-inline">w = e^z</span> 拆成模与辐角两条对照着看，<span class="math-inline">z = x + iy</span>：</p>
+
+  <div class="math-block">|w| = e^x, \qquad \arg w = y.</div>
+
+  <p>于是：</p>
+
+  <ul>
+    <li>水平带 <span class="math-inline">0 &lt; y &lt; 2\pi</span> 映成 <span class="math-inline">w</span> 平面上去掉正实轴的整个区域；<span class="math-inline">y</span> 在像平面里充当辐角，从 <span class="math-inline">0</span> 走到 <span class="math-inline">2\pi</span> 正好绕原点一周。</li>
+    <li>水平线 <span class="math-inline">y = c</span>（<span class="math-inline">0 &lt; c &lt; 2\pi</span>）映成射线 <span class="math-inline">\arg w = c</span>。</li>
+    <li>竖直线 <span class="math-inline">x = c</span> 映成圆 <span class="math-inline">|w| = e^c</span>，竖直线越靠右，圆越大。</li>
+  </ul>
+
+  <p>换到幂函数一侧，<span class="math-inline">w = z^n</span> 把角域 <span class="math-inline">0 &lt; \arg z &lt; \theta</span> 张成 <span class="math-inline">0 &lt; \arg w &lt; n\theta</span>：角度放大 <span class="math-inline">n</span> 倍，模变成 <span class="math-inline">r^n</span>；<span class="math-inline">w = z^{1/n}</span> 反过来把角域缩成原来的 <span class="math-inline">1/n</span>。</p>
+
+  <figure class="lesson-figure">
+    <img src="../assets/img/pool/初等函数-指数函数-映照特点-本机-01.png" alt="四格对照图，上排是复平面上的水平带与它映成的上半平面，下排是一条竖直线与它映成的圆，每格标出对应的水平线、射线、圆半径">
+    <figcaption>图 3 · 指数函数的映照：水平带映成角域，竖直线映成圆。（来源：本机生成（<code>assets/img/gen/初等函数-指数函数-映照特点-本机-01.py</code>），许可：本项目自产）</figcaption>
+  </figure>
+
+  <p>前面讲主值分支时那张图里的浅色带，对应的正是竖直带 <span class="math-inline">-\pi &lt; y &lt; \pi</span>：把这个带映过去得到 <span class="math-inline">w</span> 平面去掉负实轴的区域，<span class="math-inline">\ln z</span> 就单值地落在带内。</p>
+
+  <p>这两条是实验三「保角映射的网格实验」要画的东西：方格纸按 <span class="math-inline">w = e^z</span> 与 <span class="math-inline">w = z^2</span> 变形之后，格子会弯、会拉伸，交角仍是直角。填空里问「指数函数把水平带映成什么」，答案就是第一条。</p>
+
+  <div class="quiz" data-quiz='[
+  {
+    "q": "$w=e^z$ 把带形域 $0&lt;\\operatorname{Im} z&lt;2\\pi$\n映成哪个区域？",
+    "opts": [
+      "$w$ 平面去掉正实轴的区域",
+      "$w$ 平面去掉负实轴的区域",
+      "$w$ 平面去掉原点的区域",
+      "$w$ 平面去掉单位圆外的区域"
+    ],
+    "ans": 0,
+    "why": "$\\operatorname{Im} z$ 在像平面里充当辐角：\n$(0,2\\pi)$ 正好绕原点一整圈。\n缺的那条边就是辐角为 $0$ 的正实轴。"
+  }
+]'></div>
+
+  <h2>解三角方程的套路</h2>
+
+  <p>解答题第 2 题的标准动作有五步：</p>
+
+  <ol>
+    <li>用 <span class="math-inline">e^{iz}</span> 写出题面里的 <span class="math-inline">\sin z</span> 或 <span class="math-inline">\cos z</span>。</li>
+    <li>两边乘开，整理成 <span class="math-inline">e^{iz}</span> 的二次方程。</li>
+    <li>解出 <span class="math-inline">e^{iz}</span>，两根都留。</li>
+    <li>取对数：<span class="math-inline">e^{iz} = t</span> 时 <span class="math-inline">iz = \operatorname{Ln} t</span>，把 <span class="math-inline">2k\pi i</span> 写进去。</li>
+    <li>除以 <span class="math-inline">i</span> 化简，结论后挂 <span class="math-inline">k \in \mathbb Z</span>。</li>
+  </ol>
+
+  <p>以 <span class="math-inline">\sin z = 2\cos z</span> 为例（2022 年原题，6 分）：</p>
+
+  <div class="math-block">\frac{e^{iz} - e^{-iz}}{2i} = 2\cdot\frac{e^{iz} + e^{-iz}}{2} \;\Longrightarrow\; e^{iz} - e^{-iz} = 2i\left(e^{iz} + e^{-iz}\right) \;\Longrightarrow\; e^{2iz} = \frac{1+2i}{1-2i} = \frac{-3+4i}{5}.</div>
+
+  <p>右端的模为 <span class="math-inline">1</span>，辐角为 <span class="math-inline">\pi - \arctan\frac{4}{3}</span>，所以</p>
+
+  <div class="math-block">2iz = i\left(\pi - \arctan\frac{4}{3} + 2k\pi\right) \;\Longrightarrow\; z = \frac{\pi}{2} - \frac{1}{2}\arctan\frac{4}{3} + k\pi, \qquad k \in \mathbb Z.</div>
+
+  <p>参考答案把最后这个式子写成 <span class="math-inline">\arctan 2 + k\pi</span>，两者是同一个数。</p>
+
+  <p>这一题的给分来自参考答案：化成 <span class="math-inline">e^{2iz}</span> 得 3 分，取对数写出 <span class="math-inline">2k\pi</span> 得 1 分，结论带 <span class="math-inline">k \in \mathbb Z</span> 得 2 分，旁边注着「只有主值得 1 分」。</p>
+
+  <p>另一类方程：<span class="math-inline">\cos z = \frac{5}{4}</span> 整理得 <span class="math-inline">t^2 - \frac{5}{2}t + 1 = 0</span>（<span class="math-inline">t = e^{iz}</span>），解出 <span class="math-inline">t = 2</span> 或 <span class="math-inline">t = \frac{1}{2}</span>，取对数得 <span class="math-inline">iz = \ln 2 + 2k\pi i</span> 或 <span class="math-inline">iz = -\ln 2 + 2k\pi i</span>，所以 <span class="math-inline">z = 2k\pi \pm i\ln 2</span>，<span class="math-inline">k \in \mathbb Z</span>。</p>
+
+  <div class="lesson-warn">
+    <b>两个扣分点</b>
+    <p>一是漏掉 <span class="math-inline">k\pi</span> 或 <span class="math-inline">2k\pi</span>，二是把 <span class="math-inline">\operatorname{Ln}</span> 当单值用。这类方程的解有无穷多个，卷面上不写 <span class="math-inline">k \in \mathbb Z</span>，参考答案按「只有主值」处理，直接丢两分。</p>
+  </div>
+
+  <div class="quiz" data-quiz='[
+  {
+    "q": "解方程 $\\cos z=2$，写出全部根。\n做法：设 $t=e^{iz}$，先化成 $t$ 的二次方程。\n要写出三样：两根 $t$、取对数、最后的 $z$。",
+    "answer": "由 $\\frac{t+t^{-1}}{2}=2$ 得 $t^2-4t+1=0$，\n$t=2\\pm\\sqrt3$，两根都是正实数。\n$iz=\\ln(2\\pm\\sqrt3)+2k\\pi i$，故\n$z=2k\\pi\\pm i\\ln(2+\\sqrt3)$，$k\\in\\mathbb Z$。\n（$\\ln(2-\\sqrt3)=-\\ln(2+\\sqrt3)$，两支都算在 $\\pm$ 里。）",
+    "criteria": "① 化成 $t^2-4t+1=0$（或 $e^{2iz}-4e^{iz}+1=0$），这步对才有分。\n② 两根 $2+\\sqrt3$ 与 $2-\\sqrt3$ 都要留，只留一根算部分通过。\n③ 结论必须带 $2k\\pi$ 与 $k\\in\\mathbb Z$：只写主值那一支，\n按参考答案只给 1 分（2022 年原题就扣在这里）。\n④ 虚部符号写 $\\pm$ 即可；写成 $\\ln(2-\\sqrt3)$ 也算对。"
+  }
+]'></div>
+
+  <h2>练习：三组换算</h2>
+
+  <div class="lesson-practice">
+    <div class="lesson-practice__head">
+      <span class="lesson-practice__level">上手做</span>
+      <span class="lesson-practice__title">四条命令核对换算</span>
+    </div>
+
+      <p>Python 标准库 <code>cmath</code> 提供复数的指数与对数，<code>cmath.log</code> 只返回主值。四条命令各对应本节一个结论，跑之前先按公式手算一遍。</p>
+
+      <pre data-lang="python"><code>import cmath
+print(cmath.exp(1 + 1j))                    # e^{1+i}
+print(cmath.exp(1 + 1j + 2j * cmath.pi))    # 再加一个 2πi
+print(cmath.log(-1))                        # Ln(-1) 的主值
+print(cmath.exp(1j * cmath.log(1j)))        # i^i 的主值</code></pre>
+
+      <ol>
+        <li>第 1 条打出 <code>1.4686939399158851+2.2873552871788423j</code>：实部是 <span class="math-inline">e\cos 1</span>，虚部是 <span class="math-inline">e\sin 1</span>，模等于 <span class="math-inline">e</span>，与前面指数函数那张表对得上。</li>
+        <li>第 2 条与第 1 条数值相同，末位可能差一两位，那是浮点舍入；这就是 <span class="math-inline">2\pi i</span> 周期。</li>
+        <li>第 3 条打出 <code>3.141592653589793j</code>：库里只有主值 <span class="math-inline">\pi i</span>，卷面要写 <span class="math-inline">(2k+1)\pi i</span>。</li>
+        <li>第 4 条打出 <code>0.20787957635076193+0j</code>：这就是 <span class="math-inline">i^i</span> 的主值 <span class="math-inline">e^{-\pi/2}</span>，全部值再乘 <span class="math-inline">e^{-2k\pi}</span>。</li>
+      </ol>
+
+      <p>本机没有 Python 时，按同样三组数（<span class="math-inline">e^{1+i}</span>、<span class="math-inline">\operatorname{Ln}(-1)</span>、<span class="math-inline">i^i</span>）在纸上算一遍，与上面的输出对照。</p>
+  </div>
+
+  <h2>带走的公式卡</h2>
+
+  <table>
+    <thead>
+      <tr><th>函数</th><th>定义</th><th>多值性</th><th>卷面考点</th></tr>
+    </thead>
+    <tbody>
+      <tr><td><span class="math-inline">e^z</span></td><td><span class="math-inline">e^x(\cos y + i\sin y)</span></td><td>单值，周期 <span class="math-inline">2\pi i</span>，不为零</td><td>求模与辐角、周期</td></tr>
+      <tr><td><span class="math-inline">\sin z,\ \cos z</span></td><td>用 <span class="math-inline">e^{iz}</span> 与 <span class="math-inline">e^{-iz}</span> 表出</td><td>单值，周期 <span class="math-inline">2\pi</span>，无界</td><td>有界性、解三角方程</td></tr>
+      <tr><td><span class="math-inline">\operatorname{Ln} z</span></td><td><span class="math-inline">\ln|z| + i(\operatorname{Arg} z + 2k\pi)</span></td><td>无穷多值</td><td>写全部值与主值</td></tr>
+      <tr><td><span class="math-inline">z^\alpha</span></td><td><span class="math-inline">e^{\alpha \operatorname{Ln} z}</span></td><td>整数单值，<span class="math-inline">p/q</span> 有 <span class="math-inline">q</span> 个，其它无穷多</td><td><span class="math-inline">i^i</span>、方根</td></tr>
+    </tbody>
+  </table>
+
+  <ul class="lesson-resources">
+    <li>李君、于非非《复变函数与积分变换》§1.3 初等函数<span class="lesson-resources__meta">书 · 纸质教材，本节的公式与例题顺序以它为准</span></li>
+    <li><a href="http://faculty.hfut.edu.cn/_resources/group1/M00/00/1C/rB_zR2ks_QyAOcheAAP1H6_9avI556.pdf">合肥工业大学期末试卷（含答案与逐题分值）</a><span class="lesson-resources__meta">试卷 · 解答题第 2 题就是本节题型，可看每一分给在哪一步</span></li>
+  </ul>
+
+  <!-- ── 提问提示：固定写法，别删 ── -->
+
+  <div class="lesson-ask">
+    <b>没看懂？随时问</b>
+    把看不懂的段落（或报错）原样复制回会话，说一句哪里不懂就行，我只解释这一段，不打断你的进度。
+  </div>
+
+  <!-- ── 上/下节课指针由渲染器按 curriculum.yaml 的 nodes 顺序算（第一课无 --prev、最后一课无 --next） ── -->
+
+  <nav class="lesson-nav" aria-label="上一课 / 下一课">
+    <a class="lesson-nav__link lesson-nav__link--next" href="0002-ch1-analytic.html">
+      <span class="lesson-nav__dir">下节课</span>
+      <span class="lesson-nav__title">可导与解析的判定</span>
+    </a>
+  </nav>
+
+  <footer class="lesson-footer">
+    StudyMate · 0001 初等函数：指数、三角与对数 · 本地学习工作区
+  </footer>
+
+</article>
+
+<script src="../../../assets/sayo/sayo.js"></script>
+<link rel="stylesheet" href="../../../assets/katex/katex.min.css">
+<script src="../../../assets/katex/katex.min.js" defer></script>
+<script src="../../../assets/lesson-math.js" defer></script>
+<script src="../assets/quiz.js" defer></script>
+<script src="../assets/lesson-toc.js" defer></script>
+<script>LearnTheme.wire(document.getElementById('lesson-theme-checkbox'));</script>
+</body>
+</html>

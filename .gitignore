@@ -1,0 +1,4 @@
+# 会话与暂存产物不进仓库
+.learning/subjects/*/.stage/
+__pycache__/
+*.pyc

@@ -1,0 +1,443 @@
+<!DOCTYPE html>
+<html lang="zh-CN" data-theme="dark">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>可导与解析的判定 · 复变函数与积分变换</title>
+
+<!-- 共享层在 .learning/assets/，课件在 .learning/subjects/<slug>/lessons/ 下，所以是 ../../../assets/ -->
+<link rel="stylesheet" href="../../../assets/sayo/sayo.css">
+<link rel="stylesheet" href="../../../assets/learn-theme.css">
+<link rel="stylesheet" href="../assets/style.css">
+
+<!-- 主题要在首帧前应用，避免闪白/闪黑 -->
+<script src="../../../assets/learn-theme.js"></script>
+<script>LearnTheme.apply();</script>
+</head>
+
+<body class="lesson-body">
+
+<nav class="lesson-bar">
+  <a href="../index.html">← 返回课程</a>
+  <span>复变函数与积分变换</span>
+  <span class="lesson-bar__no">0002</span>
+  <!-- 课件页自带主题开关：学生从文件管理器直接打开课件时也能切暗色 -->
+  <label class="syo-toggle syo-toggle--theme lesson-bar__toggle" title="切换深浅主题" aria-label="切换深浅主题">
+    <input type="checkbox" id="lesson-theme-checkbox" checked>
+    <span class="syo-toggle-track"></span>
+    <span class="syo-toggle-knob">
+      <svg class="syo-toggle-sun" viewBox="0 0 20 20" fill="none" aria-hidden="true"><circle cx="10" cy="10" r="3.5" stroke="#f57c00" stroke-width="1.5"/><path d="M10 2v2.5M10 15.5V18M2 10h2.5M15.5 10H18M4.34 4.34l1.77 1.77M13.89 13.89l1.77 1.77M4.34 15.66l1.77-1.77M13.89 6.11l1.77-1.77" stroke="#f57c00" stroke-width="1.2" stroke-linecap="round"/></svg>
+      <svg class="syo-toggle-moon" viewBox="0 0 20 20" fill="none" aria-hidden="true"><path d="M16.5 12.5A6 6 0 019 4.5a6 6 0 007.5 8z" stroke="#5c6bc0" stroke-width="1.5" stroke-linejoin="round"/></svg>
+    </span>
+  </label>
+</nav>
+
+<article class="lesson">
+
+  <header class="lesson-header">
+    <span class="lesson-header__eyebrow">0002 · 可导与解析的判定</span>
+    <h1>可导与解析的判定</h1>
+    <p class="lesson-goal"><b>本节目标：</b>能判定解析性，并由调和函数求出解析函数 <span class="math-inline">f(z)</span>。</p>
+  </header>
+
+  <!-- ── 正文：渲染器按内容文件（lessons/<序号>-<节点id>.md）产出，块词汇见 docs/规范/课件内容格式.md ── -->
+
+  <h2>卷面怎么考</h2>
+
+  <p>公开试卷里本节固定占两处：</p>
+
+  <ul>
+    <li>解答题的一道 8～10 分大题：题给含参数的实部 <span class="math-inline">u</span> 或虚部 <span class="math-inline">v</span>（形如 <span class="math-inline">x^2+xy+ay^2</span>），先由调和条件定出参数，再求出解析函数 <span class="math-inline">f(z)</span>；有的题还追加 <span class="math-inline">f(0)=0</span>、<span class="math-inline">f(2)=i</span> 这类条件，用来定常数。</li>
+    <li>填空与选择（3～4 分）：问 <span class="math-inline">f(z)</span> 在 <span class="math-inline">z_0</span> 可导的充要条件是哪一条、下面哪个函数在 <span class="math-inline">z=0</span> 处不可导、哪个函数不能作解析函数的虚部、函数在区域内可导与解析是什么关系。概念简答还会单独问「判别解析的方法有哪几种」（西建大 10 分）。</li>
+  </ul>
+
+  <p>这两类题考的是同一串动作：拆出 <span class="math-inline">u</span> 与 <span class="math-inline">v</span> → 求四个偏导 → 验柯西-黎曼条件 → 代导数公式。本节按这串动作推进，收在「由 <span class="math-inline">u</span> 或 <span class="math-inline">v</span> 求 <span class="math-inline">f(z)</span>」的大题上。</p>
+
+  <h2>先唤醒偏导数</h2>
+
+  <p>本节用到多元微积分的三条结论，先花几分钟捡回来。</p>
+
+  <p>第一，偏导的算法。对 <span class="math-inline">x</span> 求偏导时把 <span class="math-inline">y</span> 看成常数。取 <span class="math-inline">u(x,y)=x^2y+y^3</span>，则</p>
+
+  <div class="math-block">u_x = 2xy, \qquad u_y = x^2+3y^2, \qquad u_{xx} = 2y, \qquad u_{yy} = 6y.</div>
+
+  <p><span class="math-inline">u_x</span> 与 <span class="math-inline">\frac{\partial u}{\partial x}</span> 是同一个记号，卷面两种写法都行。</p>
+
+  <p>第二，可微。实二元函数 <span class="math-inline">u</span> 在一点的增量若能写成</p>
+
+  <div class="math-block">\Delta u = u_x\Delta x + u_y\Delta y + o(\rho), \qquad \rho=\sqrt{\Delta x^2+\Delta y^2},</div>
+
+  <p>则称 <span class="math-inline">u</span> 在该点可微，等价于存在全微分 <span class="math-inline">du = u_x\,dx + u_y\,dy</span>。多项式与初等函数在定义域内都可微。这一条下一节用得上：柯西-黎曼条件单独只是必要条件，补上可微才成为充要条件。</p>
+
+  <p>第三，二阶混合偏导相等，<span class="math-inline">u_{xy}=u_{yx}</span>。所以后面写 <span class="math-inline">u_{xy}</span> 与 <span class="math-inline">u_{yx}</span> 不区分，推 <span class="math-inline">u_{xx}+u_{yy}=0</span> 时正要用它。</p>
+
+  <p>后面每一步都要把 <span class="math-inline">f(z)</span> 拆成 <span class="math-inline">u+iv</span>，先记下三条基本关系：<span class="math-inline">z=x+iy</span> 的实部是 <span class="math-inline">x</span>、虚部是 <span class="math-inline">y</span>；<span class="math-inline">\bar z = x-iy</span> 称为 <span class="math-inline">z</span> 的共轭复数；<span class="math-inline">|z|^2 = z\bar z = x^2+y^2</span>。例如</p>
+
+  <div class="math-block">f(z) = (\bar z)^2 = (x-iy)^2 = (x^2-y^2) - 2xy i,</div>
+
+  <p>于是 <span class="math-inline">u=x^2-y^2</span>、<span class="math-inline">v=-2xy</span>。拆分的动作就是把含 <span class="math-inline">i</span> 的项归并到虚部。</p>
+
+  <h2>复变函数的导数</h2>
+
+  <p>导数定义与实函数同形：</p>
+
+  <div class="math-block">f'(z_0) = \lim_{\Delta z\to 0}\frac{f(z_0+\Delta z)-f(z_0)}{\Delta z}.</div>
+
+  <p>区别在 <span class="math-inline">\Delta z</span> 是复数：它可以从平面上任何方向趋于 <span class="math-inline">0</span>，而这个极限只允许取一个值。实函数只有左右两个方向，复变函数有无穷多个方向，可导的要求因此严格得多。</p>
+
+  <p>求导法则照搬实函数的结论，常见函数不必回到定义：</p>
+
+  <div class="math-block">(z^n)' = nz^{n-1}, \qquad \left(\frac{1}{z}\right)' = -\frac{1}{z^2}\ \ (z\ne 0), \qquad (e^z)' = e^z.</div>
+
+  <p>和、差、积、商与复合函数的求导公式同样成立。可导必连续，连续不一定可导。</p>
+
+  <p>导数的模与辐角各有一个几何意思：<span class="math-inline">|f'(z_0)|</span> 是映射在该点的伸缩率，<span class="math-inline">\arg f'(z_0)</span> 是旋转角。西建大填空题考过「<span class="math-inline">w=z^2</span> 在 <span class="math-inline">z=-i</span> 处的伸缩率」：由 <span class="math-inline">(z^2)'=2z</span> 得 <span class="math-inline">f'(-i)=-2i</span>，伸缩率是 <span class="math-inline">|-2i|=2</span>。伸缩率与保角的关系留给实验三，这里只取这一条计算。</p>
+
+  <h2>柯西-黎曼条件</h2>
+
+  <p>设 <span class="math-inline">f(z)=u(x,y)+iv(x,y)</span> 在 <span class="math-inline">z_0</span> 可导。既然极限只有一个值，让 <span class="math-inline">\Delta z</span> 沿两条简单的方向趋于 <span class="math-inline">0</span>，算出的结果必须相同。</p>
+
+  <p>沿水平方向取 <span class="math-inline">\Delta z=\Delta x</span>（实数），增量只来自 <span class="math-inline">x</span>：<span class="math-inline">\Delta u=u_x\Delta x</span>、<span class="math-inline">\Delta v=v_x\Delta x</span>，于是</p>
+
+  <div class="math-block">f'(z_0) = \frac{\Delta u+i\Delta v}{\Delta x} = u_x + i v_x.</div>
+
+  <p>沿竖直方向取 <span class="math-inline">\Delta z=i\Delta y</span>：<span class="math-inline">\Delta u=u_y\Delta y</span>、<span class="math-inline">\Delta v=v_y\Delta y</span>，除以 <span class="math-inline">i\Delta y</span> 得</p>
+
+  <div class="math-block">f'(z_0) = \frac{(u_y+i v_y)\Delta y}{i\Delta y} = v_y - i u_y.</div>
+
+  <p>两式相等，分离实部与虚部：</p>
+
+  <div class="math-block">u_x = v_y, \qquad u_y = -v_x.</div>
+
+  <p>这两个方程称为柯西-黎曼条件（Cauchy–Riemann conditions）。卷面写全称，口头常说 CR 条件。</p>
+
+  <figure class="lesson-figure">
+    <img src="../assets/img/pool/可导与解析-柯西黎曼条件-两路逼近-本机-01.png" alt="左图是 z 平面上的一点 z0 与两条逼近方向，水平方向标 Δz 等于 Δx、竖直方向标 Δz 等于 iΔy；右图两个框给出两条路的差商与算出的导数表达式；底部横条写出合并后的两个方程">
+    <figcaption>图 1 · 两条逼近方向必须给出同一个导数，由此得到柯西-黎曼条件。（来源：本机生成（<code>assets/img/gen/可导与解析-柯西黎曼条件-两路逼近-本机-01.py</code>），许可：本项目自产）</figcaption>
+  </figure>
+
+  <p>同一条条件可以改写成四种导数写法，已知哪几个偏导就用哪一个：</p>
+
+  <table>
+    <thead>
+      <tr><th>已知</th><th>用哪一式</th><th>出现在哪里</th></tr>
+    </thead>
+    <tbody>
+      <tr><td><span class="math-inline">u</span> 与 <span class="math-inline">v</span> 都有</td><td><span class="math-inline">f'(z)=u_x+i v_x</span></td><td>一般计算</td></tr>
+      <tr><td>只给 <span class="math-inline">u</span></td><td><span class="math-inline">f'(z)=u_x-i u_y</span></td><td>由实部求 <span class="math-inline">f(z)</span> 的大题</td></tr>
+      <tr><td>只给 <span class="math-inline">v</span></td><td><span class="math-inline">f'(z)=v_y+i v_x</span></td><td>由虚部求 <span class="math-inline">f(z)</span> 的大题</td></tr>
+    </tbody>
+  </table>
+
+  <p>一个计算示范。设 <span class="math-inline">f(z)=x^2-y^2+2xy i</span>，求 <span class="math-inline">f'(z)</span>（西建大填空原题）：</p>
+
+  <div class="math-block">u_x=2x, \qquad u_y=-2y, \qquad v_x=2y, \qquad v_y=2x.</div>
+
+  <p><span class="math-inline">u_x=v_y</span> 与 <span class="math-inline">u_y=-v_x</span> 对一切 <span class="math-inline">(x,y)</span> 成立，所以 <span class="math-inline">f</span> 处处可导，且</p>
+
+  <div class="math-block">f'(z)=u_x+i v_x = 2x+2iy = 2z.</div>
+
+  <p>认出这个函数就是 <span class="math-inline">z^2</span> 时可以直接求导得到同一个结果，算完可拿它自查。</p>
+
+  <p>柯西-黎曼条件本身只是必要条件。补上可微才成为可导的充要条件：</p>
+
+  <p><b>判据</b>：<span class="math-inline">f(z)=u+iv</span> 在 <span class="math-inline">z_0</span> 可导，当且仅当 <span class="math-inline">u</span>、<span class="math-inline">v</span> 作为实二元函数在 <span class="math-inline">(x_0,y_0)</span> 可微，且在该点满足柯西-黎曼条件。</p>
+
+  <p>2022 年卷的选择题就考这个排列：四个选项分别是「<span class="math-inline">u,v</span> 连续」「<span class="math-inline">u,v</span> 有偏导数」「<span class="math-inline">u,v</span> 可微」「<span class="math-inline">u,v</span> 可微且满足 C-R 方程」，答案取最后一个。前三条各自都差一步。</p>
+
+  <p>填空题的另一种考法是把参数放在 <span class="math-inline">u</span> 与 <span class="math-inline">v</span> 里，用「处处解析」逼出参数。2022 年卷的填空：设 <span class="math-inline">f(z)=x^2-2xy-y^2+i(ax^2+bxy+cy^2)</span> 在复平面上处处解析，求 <span class="math-inline">a+b+c</span>。处处解析意味着柯西-黎曼条件对一切 <span class="math-inline">x,y</span> 成立，把四个偏导算出来比较系数：</p>
+
+  <div class="math-block">u_x=2x-2y=v_y=bx+2cy, \qquad u_y=-2x-2y=-v_x=-(2ax+by).</div>
+
+  <p>第一式给 <span class="math-inline">b=2</span>、<span class="math-inline">2c=-2</span> 即 <span class="math-inline">c=-1</span>；第二式给 <span class="math-inline">2a=2</span> 即 <span class="math-inline">a=1</span>。于是 <span class="math-inline">a+b+c=2</span>。</p>
+
+  <div class="quiz" data-quiz='[
+  {
+    "q": "设 $f(z)=x^2-y^2-6xy+i(3x^2-3y^2+2xy)$，\n按解答题格式写四样：\n\n① 拆出实部 $u$ 与虚部 $v$；\n② 求四个偏导 $u_x$、$u_y$、$v_x$、$v_y$；\n③ 写出 CR 条件成立的点集，\n再据此说它在哪里可导；\n④ 在可导的点求 $f&#39;(z)$，\n并改写成只含 $z$ 的式子。",
+    "answer": "① $u=x^2-y^2-6xy$，$v=3x^2-3y^2+2xy$。\n\n② $u_x=2x-6y$，$u_y=-2y-6x$，\n$v_x=6x+2y$，$v_y=2x-6y$。\n\n③ $u_x=v_y$ 对一切 $(x,y)$ 成立，\n$u_y=-v_x$ 也恒成立。\n点集是全平面，故处处可导，\n且在复平面内解析。\n\n④ $f&#39;=u_x+iv_x=(2x-6y)+i(6x+2y)$\n$=(2+6i)(x+iy)=(2+6i)z$。\n自查：$f=(1+3i)z^2$，求导得同一结果。",
+    "criteria": "四样都写全才算通过，按卷面给分：\n① 拆对 $u$ 与 $v$。\n② 四个偏导全对：$2x-6y$、$-2y-6x$、\n$6x+2y$、$2x-6y$。\n③ 必须写出点集是“全平面”，\n并由此说“处处可导、在复平面解析”。\n只说“条件成立”不写点集，按部分通过。\n④ 停在 $(2x-6y)+i(6x+2y)$ 要扣分：\n卷面要求化成 $z$ 的表达式，\n得 $(2+6i)z$ 才算写对。\n偏导错一处，③④ 连带错，按不通过记。"
+  }
+]'></div>
+
+  <h3>极坐标下的形式</h3>
+
+  <p>函数以 <span class="math-inline">r</span>、<span class="math-inline">\theta</span> 的形式给出时（<span class="math-inline">z=re^{i\theta}</span>），柯西-黎曼条件换成</p>
+
+  <div class="math-block">u_r = \frac{1}{r}v_\theta, \qquad v_r = -\frac{1}{r}u_\theta \qquad (r&gt;0),</div>
+
+  <p>导数写成 <span class="math-inline">f'(z)=e^{-i\theta}(u_r+i v_r)</span>。</p>
+
+  <p>用 <span class="math-inline">1/z</span> 核对一遍。<span class="math-inline">\frac{1}{z}=\frac{1}{r}e^{-i\theta}</span>，故 <span class="math-inline">u=\frac{\cos\theta}{r}</span>、<span class="math-inline">v=-\frac{\sin\theta}{r}</span>，</p>
+
+  <div class="math-block">u_r=-\frac{\cos\theta}{r^2}, \quad v_\theta=-\frac{\cos\theta}{r}, \quad v_r=\frac{\sin\theta}{r^2}, \quad u_\theta=-\frac{\sin\theta}{r},</div>
+
+  <p>两条式子都成立。这一套在函数本身就是极坐标形式时省事，卷面出现得少，记住两条式子即可。</p>
+
+  <div class="quiz" data-quiz='[
+  {
+    "q": "下面哪一组 $u$、$v$（写在极坐标下）\n满足两条柯西-黎曼条件：\n$u_r=\\frac{1}{r}v_\\theta$，\n$v_r=-\\frac{1}{r}u_\\theta$。",
+    "opts": [
+      "$u=r^2\\cos 2\\theta$，$v=r^2\\sin 2\\theta$",
+      "$u=r^2\\sin 2\\theta$，$v=r^2\\cos 2\\theta$",
+      "$u=r^2\\cos 2\\theta$，$v=2r^2\\sin 2\\theta$",
+      "$u=r\\cos 2\\theta$，$v=-r\\sin 2\\theta$"
+    ],
+    "ans": 0,
+    "why": "这一组正是 $z^2$ 的极坐标写法。\n代进两条式子都成立，\n另三组各差一个因子（多一个 2 或少一个 $r$）。"
+  }
+]'></div>
+
+  <h2>可导与解析</h2>
+
+  <p>解析是本节的中心概念。若 <span class="math-inline">f(z)</span> 在 <span class="math-inline">z_0</span> 的某个邻域内处处可导，则称 <span class="math-inline">f</span> 在 <span class="math-inline">z_0</span> 解析；若 <span class="math-inline">f</span> 在区域 <span class="math-inline">D</span> 内处处解析，称 <span class="math-inline">f</span> 是 <span class="math-inline">D</span> 内的解析函数。</p>
+
+  <p>一点可导与解析只差一整个邻域，这一条把绝大多数函数挡在解析之外。最简单的例子是 <span class="math-inline">f(z)=|z|^2</span>：<span class="math-inline">u=x^2+y^2</span>、<span class="math-inline">v=0</span>，柯西-黎曼条件化为 <span class="math-inline">2x=0</span> 与 <span class="math-inline">2y=0</span>，只在原点成立。于是 <span class="math-inline">f</span> 只在 <span class="math-inline">z=0</span> 可导；以原点为心的任意小邻域里都有不可导的点，所以它在 <span class="math-inline">z=0</span> 也不解析。</p>
+
+  <p>「在区域内」与「在一点」要分开看，填空原题就落在这里（西建大）：</p>
+
+  <ul>
+    <li><span class="math-inline">f</span> 在区域 <span class="math-inline">D</span> 内可导与 <span class="math-inline">f</span> 在 <span class="math-inline">D</span> 内解析是同一件事（充要条件）。理由只有一句：<span class="math-inline">D</span> 是开集，<span class="math-inline">D</span> 内任一点的小邻域仍落在 <span class="math-inline">D</span> 内，「区域内处处可导」逐点满足了解析的定义。</li>
+    <li><span class="math-inline">f</span> 在一点可导，推不出它在该点解析。</li>
+  </ul>
+
+  <p>解析函数对四则运算与复合封闭：两个解析函数的和、差、积、商（分母不为零）与复合仍解析。所以 <span class="math-inline">z^2</span>、<span class="math-inline">1/z</span>、<span class="math-inline">e^z</span>、<span class="math-inline">\sin z</span> 在各自定义域内解析。<span class="math-inline">\operatorname{Ln} z</span> 要先选定分支：主值分支 <span class="math-inline">\ln z</span> 在去掉原点与负实轴的区域内解析，这一点上一课已经交代。</p>
+
+  <div class="quiz" data-quiz='[
+  {
+    "q": "$f(z)=x^2+3xyi$，只答两问：\n\n① 求出 CR 条件成立的点集，\n再据此说它在 $z=0$ 可导吗？\n② 它在 $z=0$ 解析吗？\n理由要落在“邻域”上。",
+    "answer": "拆出 $u=x^2$、$v=3xy$。\n$u_x=2x$、$u_y=0$、$v_x=3y$、$v_y=3x$。\n$u_x=v_y$ 给 $2x=3x$，即 $x=0$；\n$u_y=-v_x$ 给 $0=-3y$，即 $y=0$。\n点集只有原点。\n\n① 可导：$f&#39;(0)=u_x+iv_x=0$。\n② 不解析：原点的任何邻域里\n都有 $x\\neq 0$ 的点，\n那里 CR 不成立、不可导；\n邻域内不是处处可导，按定义不解析。",
+    "criteria": "① 要写出点集只有原点，\n并给出 $2x=3x$ 与 $0=-3y$ 这两步。\n只答“可导”不写点集，按部分通过。\n② 关键词是“邻域”：\n必须点出邻域内还有不可导的点。\n写成“只在一点可导，所以不解析”也算通；\n只写“不解析”不给理由，②按不通过记。"
+  }
+]'></div>
+
+  <h3>处处不解析的常见函数</h3>
+
+  <p>选择题反复用这几个函数。判定只需一行：算出 <span class="math-inline">u_x,u_y,v_x,v_y</span>，看柯西-黎曼条件在哪些点成立。</p>
+
+  <table>
+    <thead>
+      <tr><th><span class="math-inline">f(z)</span></th><th><span class="math-inline">u</span>、<span class="math-inline">v</span></th><th>条件成立的点</th><th>结论</th></tr>
+    </thead>
+    <tbody>
+      <tr><td><span class="math-inline">\bar z</span></td><td><span class="math-inline">u=x,\ v=-y</span></td><td>无</td><td>处处不可导，处处不解析</td></tr>
+      <tr><td><span class="math-inline">|z|^2</span></td><td><span class="math-inline">u=x^2+y^2,\ v=0</span></td><td>只有原点</td><td>仅在 <span class="math-inline">z=0</span> 可导，不解析</td></tr>
+      <tr><td><span class="math-inline">\operatorname{Re} z</span></td><td><span class="math-inline">u=x,\ v=0</span></td><td>无</td><td>处处不可导，处处不解析</td></tr>
+      <tr><td><span class="math-inline">\operatorname{Im} z</span></td><td><span class="math-inline">u=0,\ v=y</span></td><td>无</td><td>处处不可导，处处不解析</td></tr>
+      <tr><td><span class="math-inline">2x+3yi</span></td><td><span class="math-inline">u=2x,\ v=3y</span></td><td>无</td><td>处处不可导，处处不解析</td></tr>
+      <tr><td><span class="math-inline">2x^2+3y^2i</span></td><td><span class="math-inline">u=2x^2,\ v=3y^2</span></td><td>直线 <span class="math-inline">4x=6y</span> 上</td><td>沿线每点可导，处处不解析</td></tr>
+      <tr><td><span class="math-inline">x^2-xyi</span></td><td><span class="math-inline">u=x^2,\ v=-xy</span></td><td>只有原点</td><td>仅在 <span class="math-inline">z=0</span> 可导，不解析</td></tr>
+      <tr><td><span class="math-inline">z^2,\ 1/z,\ e^z,\ \sin z</span></td><td>—</td><td>定义域内处处</td><td>解析</td></tr>
+    </tbody>
+  </table>
+
+  <p>第三列是关键：条件成立的范围决定结论。范围是一整片区域才谈得上解析；只有一两个点，就只能说那一点可导。</p>
+
+  <figure class="lesson-figure">
+    <img src="../assets/img/pool/可导与解析-柯西黎曼条件-成立点集-本机-03.png" alt="三格复平面对照，第一格 z 平方的整块平面都被着色、标为条件处处成立，第二格 z 模平方只有原点一个红点成立，第三格 z 共轭一个成立点也没有">
+    <figcaption>图 2 · 三个函数上柯西-黎曼条件成立的点集；可导与解析的差别就落在这个点集的大小上。（来源：本机生成（<code>assets/img/gen/可导与解析-柯西黎曼条件-成立点集-本机-03.py</code>），许可：本项目自产）</figcaption>
+  </figure>
+
+  <div class="lesson-note">
+    <b>这张对照后面要画成可运行的图</b>
+    <p>图像画廊的实验二会把上面这张对照搬到复平面上：在网格上逐点估计偏导、逐点检验柯西-黎曼条件，画出 <span class="math-inline">z^2</span> 与 <span class="math-inline">\bar z</span> 的模—辐角着色对照，再把检验结果叠在同一批点上。课上的判据在那里变成逐点的数值测试。</p>
+  </div>
+
+  <div class="quiz" data-quiz='[
+  {
+    "q": "下面四个函数，哪个在 $z=0$ 可导、\n在别的点都不可导？",
+    "opts": [
+      "$f(z)=2xy+i(x^2-y^2)$",
+      "$f(z)=2x+3y+i(y-2x)$",
+      "$f(z)=x^2+i(2xy+y^2)$",
+      "$f(z)=2x-y+i(x+2y)$"
+    ],
+    "ans": 0,
+    "why": "这是 $\\overline z^2$ 那一支：\n$u_x=2y$ 与 $v_y=-2y$ 只给 $y=0$，\n$u_y=2x$ 与 $v_x=-2x$ 只给 $x=0$，\n点集只有原点。\n注意 $x^2+i(2xy+y^2)$ 的 CR 在整条实轴上成立，\n它不只在 $z=0$ 可导。"
+  }
+]'></div>
+
+  <h2>调和函数</h2>
+
+  <p>物理里求势场（静电场、稳定温度场）时得到的是拉普拉斯方程，满足它的实二元函数在本课程里叫调和函数。</p>
+
+  <p><b>定义</b>：若实二元函数 <span class="math-inline">u(x,y)</span> 在区域 <span class="math-inline">D</span> 内有二阶连续偏导，且</p>
+
+  <div class="math-block">u_{xx}+u_{yy}=0</div>
+
+  <p>在 <span class="math-inline">D</span> 内处处成立，则称 <span class="math-inline">u</span> 是 <span class="math-inline">D</span> 内的调和函数。</p>
+
+  <p>解析函数的实部与虚部都调和。以 <span class="math-inline">u</span> 为例：由 <span class="math-inline">u_x=v_y</span> 对 <span class="math-inline">x</span> 求偏导得 <span class="math-inline">u_{xx}=v_{yx}</span>，由 <span class="math-inline">u_y=-v_x</span> 对 <span class="math-inline">y</span> 求偏导得 <span class="math-inline">u_{yy}=-v_{xy}</span>；混合偏导相等，两式相加得 <span class="math-inline">u_{xx}+u_{yy}=0</span>。<span class="math-inline">v</span> 同理。</p>
+
+  <p>反过来，若 <span class="math-inline">u</span> 是单连通区域 <span class="math-inline">D</span> 内的调和函数，则 <span class="math-inline">D</span> 内存在以 <span class="math-inline">u</span> 为实部的解析函数 <span class="math-inline">f</span>，且这样的 <span class="math-inline">f</span> 之间相差一个纯虚常数。于是与 <span class="math-inline">u</span> 配对的虚部 <span class="math-inline">v</span> 被确定到一个实常数之内，这个 <span class="math-inline">v</span> 称为 <span class="math-inline">u</span> 的共轭调和函数。</p>
+
+  <p>考试有两条入口：</p>
+
+  <ul>
+    <li>判断一个函数能否作解析函数的实部或虚部，先验它是否调和，即 <span class="math-inline">\Delta u=u_{xx}+u_{yy}=0</span>。2023 年卷的选择题问「下面哪个函数不能作为解析函数的虚部」，四个选项里 <span class="math-inline">2x^2+3y^2</span> 的 <span class="math-inline">u_{xx}+u_{yy}=4+6=10\ne 0</span>，不是调和函数，直接排除；另外三个都满足。</li>
+    <li>由调和函数求解析函数 <span class="math-inline">f(z)</span>，是下一节那套动作，也是本课分值最高的大题。</li>
+  </ul>
+
+  <p><span class="math-inline">\Delta u</span> 是 <span class="math-inline">u_{xx}+u_{yy}</span> 的简写，参考答案里直接写 <span class="math-inline">\Delta v=v_{xx}+v_{yy}=0</span>。</p>
+
+  <div class="quiz" data-quiz='[
+  {
+    "q": "下面四个二元函数，哪一个不能作\n解析函数的实部或虚部？\n判据是 $\\Delta u=u_{xx}+u_{yy}=0$。",
+    "opts": [
+      "$u=x^2-y^2$",
+      "$u=2xy+3y$",
+      "$u=3x^2+y^2$",
+      "$u=x^3-3xy^2$"
+    ],
+    "ans": 2,
+    "why": "只有 $3x^2+y^2$ 不调和：\n它的 $\\Delta u=6+2=8$，不为零；\n另三个都满足 $\\Delta u=0$。\n再记一条：单连通区域里与它配对的 $v$，\n被确定到一个实常数之内（差一个实常数）。"
+  }
+]'></div>
+
+  <h3>判别解析的三条路</h3>
+
+  <p>概念简答问「判别解析的方法有哪几种」时，按这三条写：</p>
+
+  <ol>
+    <li><b>按定义</b>：验证 <span class="math-inline">f</span> 在 <span class="math-inline">z_0</span> 的某个邻域内处处可导。定义在卷面上不便直接算，主要用来回答概念题。</li>
+    <li><b>按充要条件</b>：拆出 <span class="math-inline">u</span>、<span class="math-inline">v</span>，验二者可微，且柯西-黎曼条件在该点成立；条件在区域 <span class="math-inline">D</span> 内处处成立，则 <span class="math-inline">f</span> 在 <span class="math-inline">D</span> 内解析。判可导、判解析的计算题都走这一条。</li>
+    <li><b>按共轭调和函数</b>：<span class="math-inline">u</span>、<span class="math-inline">v</span> 都是调和函数，且 <span class="math-inline">v</span> 是 <span class="math-inline">u</span> 的共轭调和函数，则 <span class="math-inline">f=u+iv</span> 解析。下一节的大题给的正是这个配置。</li>
+  </ol>
+
+  <h2>四步求出 f(z)</h2>
+
+  <p>大题的动作固定，参考答案按四步给分。</p>
+
+  <ol>
+    <li><b>验调和、定参数</b>。把题给分量的四个偏导算完，让 <span class="math-inline">u_{xx}+u_{yy}=0</span>（或 <span class="math-inline">v_{xx}+v_{yy}=0</span>）对一切 <span class="math-inline">x,y</span> 成立；按 <span class="math-inline">x</span>、<span class="math-inline">y</span> 的各次项系数逐一比较，解出参数。</li>
+    <li><b>写导数、整理成 <span class="math-inline">z</span></b>。题给 <span class="math-inline">u</span> 时用 <span class="math-inline">f'(z)=u_x-i u_y</span>，题给 <span class="math-inline">v</span> 时用 <span class="math-inline">f'(z)=v_y+i v_x</span>；把结果按 <span class="math-inline">z=x+iy</span> 归并成一个 <span class="math-inline">z</span> 的式子。这一步是明确的给分点，停在 <span class="math-inline">(2x-2y-2)+i(2x+y)</span> 这样的形式要丢分。</li>
+    <li><b>积分、补常数</b>。<span class="math-inline">f(z)=\int f'(z)\,dz+C</span>，<span class="math-inline">C</span> 取实常数：<span class="math-inline">u</span>、<span class="math-inline">v</span> 都是实值函数，常数里带 <span class="math-inline">i</span> 就错。</li>
+    <li><b>定常数、取分量</b>。把题给条件（<span class="math-inline">f(0)=0</span>、<span class="math-inline">f(2)=i</span> 一类）代进去定出 <span class="math-inline">C</span>；题问 <span class="math-inline">u</span> 或 <span class="math-inline">v</span>，就取 <span class="math-inline">f</span> 的实部或虚部，再把结果代回题给分量核对。</li>
+  </ol>
+
+  <figure class="lesson-figure">
+    <img src="../assets/img/pool/可导与解析-解析性判定-求fz四步-本机-02.png" alt="四个流程框自上而下依次是，验调和定参数、写导数并整理成 z、积分补常数、定常数取分量，每一步写着对应的公式与给分提示">
+    <figcaption>图 3 · 由调和函数求 f(z) 的四步，也是这道 10 分题的给分顺序。（来源：本机生成（<code>assets/img/gen/可导与解析-解析性判定-求fz四步-本机-02.py</code>），许可：本项目自产）</figcaption>
+  </figure>
+
+  <p>完整例题（2024 年卷 A 第 5 题，10 分）：设 <span class="math-inline">v(x,y)=x^2+xy+ay^2-2y</span> 是调和函数，求 <span class="math-inline">a</span> 以及 <span class="math-inline">u(x,y)</span>，使 <span class="math-inline">f(z)=u+iv</span> 解析且 <span class="math-inline">f(0)=0</span>。</p>
+
+  <p>第一步，求偏导并令 <span class="math-inline">\Delta v=0</span>：</p>
+
+  <div class="math-block">v_x=2x+y, \quad v_y=2x+2ay-2, \quad v_{xx}=2, \quad v_{yy}=2a, $$ $$ \Delta v = 2+2a=0 \ \Longrightarrow\ a=-1.</div>
+
+  <p>第二步，写导数并归并成 <span class="math-inline">z</span>：</p>
+
+  <div class="math-block">f'(z)=v_y+i v_x = (2x-2y-2)+i(2x+y) = (1+2i)(x+iy)-2 = (1+2i)z-2.</div>
+
+  <p>第三步，积分：</p>
+
+  <div class="math-block">f(z)=\frac{1+2i}{2}z^2-2z+C.</div>
+
+  <p>第四步，由 <span class="math-inline">f(0)=0</span> 得 <span class="math-inline">C=0</span>。展开取实部：</p>
+
+  <div class="math-block">f(z)=\frac{1+2i}{2}(x^2-y^2+2xy i)-2(x+iy), $$ $$ u(x,y)=\frac{x^2-y^2}{2}-2xy-2x.</div>
+
+  <p>核对：这个 <span class="math-inline">f</span> 的虚部是 <span class="math-inline">(x^2-y^2)+xy-2y</span>，与题给的 <span class="math-inline">v</span> 在 <span class="math-inline">a=-1</span> 时一致。</p>
+
+  <p>题给 <span class="math-inline">u</span> 的情形只改第二步的公式。2025 年卷 A 第 7 题：<span class="math-inline">u=3x^2+2xy+ay^2</span>，求 <span class="math-inline">v</span> 使 <span class="math-inline">f(z)=u+iv</span> 解析且 <span class="math-inline">f(0)=0</span>。</p>
+
+  <div class="math-block">\Delta u=6+2a=0 \ \Longrightarrow\ a=-3, \qquad f'(z)=u_x-i u_y=(6x+2y)-i(2x-6y)=(6-2i)z, $$ $$ f(z)=(3-i)z^2+C, \quad C=0, \qquad v=\operatorname{Im} f(z)=6xy-x^2+y^2.</div>
+
+  <div class="lesson-warn">
+    <b>四个扣分点</b>
+    <ul>
+      <li>常数项漏掉，或写成复常数。参考答案里明写「没有常数项得 1 分」，并注明常数取实数。</li>
+      <li><span class="math-inline">f'(z)</span> 不整理成 <span class="math-inline">z</span> 的表达式。2022 年卷的原话是「<span class="math-inline">f'(z)</span> 需要写成 <span class="math-inline">z</span> 的表达式」，这一步单独给分。</li>
+      <li>题给条件没有代。<span class="math-inline">f(0)=0</span>、<span class="math-inline">f(2)=i</span> 这类条件是定常数用的，不用就丢掉最后一分。</li>
+      <li>跳过验调和直接定参数。参数是从 <span class="math-inline">\Delta=0</span> 解出来的，跳过这一步参数无从得到。</li>
+    </ul>
+  </div>
+
+  <p>参考答案对这类题还给了一条「另解」：先由 <span class="math-inline">u_x=v_y</span> 积分得 <span class="math-inline">u=\cdots+\psi(y)</span>，再由 <span class="math-inline">u_y=-v_x</span> 解出 <span class="math-inline">\psi'(y)</span>。两条路给分相同；主线走 <span class="math-inline">f'(z)</span> 积分更快，因为顺带就把 <span class="math-inline">f</span> 写成了 <span class="math-inline">z</span> 的式子。</p>
+
+  <div class="quiz" data-quiz='[
+  {
+    "q": "设 $v=x^2+2xy+by^2+3x$ 是调和函数，\n求 $b$，并求 $u$ 使 $f=u+iv$ 解析\n且 $f(0)=0$。\n按四步写全：\n① 验调和定 $b$；\n② 写 $f&#39;(z)$ 并归并成 $z$ 的式子；\n③ 积分，常数取实常数；\n④ 定常数、取实部，最后回代核对。",
+    "answer": "① $v_x=2x+2y+3$，$v_y=2x+2by$，\n$v_{xx}=2$，$v_{yy}=2b$，\n$\\Delta v=2+2b=0$ 给 $b=-1$。\n\n② $f&#39;(z)=v_y+iv_x=(2x-2y)+i(2x+2y+3)$\n$=(2+2i)(x+iy)+3i=(2+2i)z+3i$。\n\n③ $f(z)=(1+i)z^2+3iz+C$，$C$ 取实常数。\n\n④ $f(0)=0$ 给 $C=0$。取实部：\n$u=x^2-y^2-2xy-3y$。\n回代：$u_x=2x-2y=v_y$，\n$u_y=-2x-2y-3=-v_x$，核对通过。",
+    "criteria": "按卷面 10 分的四步拆，缺一步按部分通过：\n① 3 分：$v_x$、$v_y$ 算对，\n$\\Delta v=0$ 解出 $b=-1$。\n跳过验调和直接给 $b$，这步不得分。\n② 3 分：用 $f&#39;=v_y+iv_x$，且必须归并成\n$z$ 的式子 $(2+2i)z+3i$；\n停在 $(2x-2y)+i(2x+2y+3)$ 只给 1 分。\n③ 2 分：积成 $f(z)=(1+i)z^2+3iz+C$，\n$C$ 必须是实常数，写成复常数扣这分。\n④ 2 分：用 $f(0)=0$ 定 $C=0$，\n取实部得 $u=x^2-y^2-2xy-3y$，\n并回代核对 $u_x=v_y$。"
+  }
+]'></div>
+
+  <h2>上手做：判定卡</h2>
+
+  <div class="lesson-practice">
+    <div class="lesson-practice__head">
+      <span class="lesson-practice__level">上手做</span>
+      <span class="lesson-practice__title">判定卡与一道 10 分题</span>
+    </div>
+
+      <p>这一课动手做两件事。</p>
+
+      <ol>
+        <li>写一张判定卡。卡片上半是判可导与解析的四行：拆出 <span class="math-inline">u</span>、<span class="math-inline">v</span> → 求四个偏导 → 验 <span class="math-inline">u_x=v_y</span> 与 <span class="math-inline">u_y=-v_x</span> → 写出条件成立的点集，再按点集下结论（整片区域：解析；一两个点：只说那点可导）。卡片下半列判别解析的三种方法：按定义、按可微加柯西-黎曼条件、按共轭调和函数。这张卡收进纸笔题型整理册，后面每章判解析都翻它。</li>
+      </ol>
+
+      <ol>
+        <li>按大题格式独立算完一道「由 <span class="math-inline">u</span> 或 <span class="math-inline">v</span> 求 <span class="math-inline">f(z)</span>」的 10 分题，四步全写出来，最后用题给分量回代核对。</li>
+      </ol>
+
+      <p>本课的小 lab 收在科目目录的 <a href="../lab/">lab/</a> 下、目录名以 <code>0002</code> 开头：任务书、断言与参考解都在那里，<code>lab/README.md</code> 写着任务表与卡壳时的提示顺序。</p>
+  </div>
+
+  <h2>带走的公式卡</h2>
+
+  <table>
+    <thead>
+      <tr><th>要判什么</th><th>用什么</th><th>卷面位置</th></tr>
+    </thead>
+    <tbody>
+      <tr><td>在一点是否可导</td><td><span class="math-inline">u,v</span> 可微且满足 <span class="math-inline">u_x=v_y</span>、<span class="math-inline">u_y=-v_x</span></td><td>填空、选择</td></tr>
+      <tr><td>在区域是否解析</td><td>区域内处处满足柯西-黎曼条件</td><td>填空原题「区域内可导是解析的什么条件」</td></tr>
+      <tr><td>哪些函数处处不解析</td><td><span class="math-inline">\bar z</span>、<span class="math-inline">|z|^2</span>、<span class="math-inline">\operatorname{Re} z</span>、<span class="math-inline">\operatorname{Im} z</span></td><td>选择</td></tr>
+      <tr><td>能否作实部或虚部</td><td>验 <span class="math-inline">\Delta u=u_{xx}+u_{yy}=0</span></td><td>填空、选择</td></tr>
+      <tr><td>由 <span class="math-inline">u</span> 或 <span class="math-inline">v</span> 求 <span class="math-inline">f(z)</span></td><td><span class="math-inline">\Delta=0</span> 定参数 → 写 <span class="math-inline">f'(z)</span> 并归并成 <span class="math-inline">z</span> → 积分补实常数 → 定 <span class="math-inline">C</span> 后取分量</td><td>8～10 分大题</td></tr>
+      <tr><td>极坐标下的判定</td><td><span class="math-inline">u_r=\frac{1}{r}v_\theta</span>，<span class="math-inline">v_r=-\frac{1}{r}u_\theta</span></td><td>少见，备用</td></tr>
+    </tbody>
+  </table>
+
+  <ul class="lesson-resources">
+    <li>李君、于非非《复变函数与积分变换》§1.4 复变函数的可导与解析<span class="lesson-resources__meta">书 · 纸质教材，导数、解析与充要条件的先后顺序以它为准</span></li>
+    <li><a href="http://faculty.hfut.edu.cn/_resources/group1/M00/00/1C/rB_zR2ks_QyAOcheAAP1H6_9avI556.pdf">合肥工业大学期末试卷（含答案与逐题分值）</a><span class="lesson-resources__meta">试卷 · 每套卷都有一道由调和函数求 <span class="math-inline">f(z)</span> 的 10 分题，可看每一步的分值</span></li>
+    <li><a href="https://netedu.xauat.edu.cn/jpkc/netclass/jpkc/fbhs/dir/other/复变函数与积分变换试题及答案12.pdf">西安建筑科技大学期末试卷（含答案）</a><span class="lesson-resources__meta">试卷 · 填空与计算题各有一处本节题型</span></li>
+  </ul>
+
+  <!-- ── 提问提示：固定写法，别删 ── -->
+
+  <div class="lesson-ask">
+    <b>没看懂？随时问</b>
+    把看不懂的段落（或报错）原样复制回会话，说一句哪里不懂就行，我只解释这一段，不打断你的进度。
+  </div>
+
+  <!-- ── 上/下节课指针由渲染器按 curriculum.yaml 的 nodes 顺序算（第一课无 --prev、最后一课无 --next） ── -->
+
+  <nav class="lesson-nav" aria-label="上一课 / 下一课">
+    <a class="lesson-nav__link lesson-nav__link--prev" href="0001-ch1-elementary.html">
+      <span class="lesson-nav__dir">上节课</span>
+      <span class="lesson-nav__title">初等函数：指数、三角与对数</span>
+    </a>
+    <a class="lesson-nav__link lesson-nav__link--next" href="0003-exp1-complex-gallery.html">
+      <span class="lesson-nav__dir">下节课</span>
+      <span class="lesson-nav__title">实验一：把复数画上复平面</span>
+    </a>
+  </nav>
+
+  <footer class="lesson-footer">
+    StudyMate · 0002 可导与解析的判定 · 本地学习工作区
+  </footer>
+
+</article>
+
+<script src="../../../assets/sayo/sayo.js"></script>
+<link rel="stylesheet" href="../../../assets/katex/katex.min.css">
+<script src="../../../assets/katex/katex.min.js" defer></script>
+<script src="../../../assets/lesson-math.js" defer></script>
+<script src="../assets/quiz.js" defer></script>
+<script src="../assets/lesson-toc.js" defer></script>
+<script>LearnTheme.wire(document.getElementById('lesson-theme-checkbox'));</script>
+</body>
+</html>

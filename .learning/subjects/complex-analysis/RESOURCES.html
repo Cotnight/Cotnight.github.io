@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="zh-CN" data-theme="dark">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>资源清单 · 复变函数与积分变换</title>
+<link rel="stylesheet" href="../../assets/sayo/sayo.css">
+<link rel="stylesheet" href="../../assets/learn-theme.css">
+<link rel="stylesheet" href="assets/style.css">
+<script src="../../assets/learn-theme.js"></script>
+<script>LearnTheme.apply();</script>
+<style>
+.lesson h1 {
+  margin: var(--syo-space-2, 8px) 0 var(--syo-space-4, 16px);
+  font-size: clamp(1.6rem, 3.2vw, 2.25rem);
+  font-weight: 700;
+  line-height: 1.25;
+  letter-spacing: -0.02em;
+  color: var(--syo-fg-default);
+}
+</style>
+</head>
+<body class="lesson-body">
+<nav class="lesson-bar">
+  <a href="index.html">← 返回科目</a>
+  <span>复变函数与积分变换</span>
+  <span class="lesson-bar__no">资源清单</span>
+  <label class="syo-toggle syo-toggle--theme lesson-bar__toggle" title="切换深浅主题" aria-label="切换深浅主题">
+    <input type="checkbox" id="attachment-theme-checkbox" checked>
+    <span class="syo-toggle-track"></span>
+    <span class="syo-toggle-knob">
+      <svg class="syo-toggle-sun" viewBox="0 0 20 20" fill="none" aria-hidden="true"><circle cx="10" cy="10" r="3.5" stroke="#f57c00" stroke-width="1.5"/><path d="M10 2v2.5M10 15.5V18M2 10h2.5M15.5 10H18M4.34 4.34l1.77 1.77M13.89 13.89l1.77 1.77M4.34 15.66l1.77-1.77M13.89 6.11l1.77-1.77" stroke="#f57c00" stroke-width="1.2" stroke-linecap="round"/></svg>
+      <svg class="syo-toggle-moon" viewBox="0 0 20 20" fill="none" aria-hidden="true"><path d="M16.5 12.5A6 6 0 019 4.5a6 6 0 007.5 8z" stroke="#5c6bc0" stroke-width="1.5" stroke-linejoin="round"/></svg>
+    </span>
+  </label>
+</nav>
+
+<article class="lesson">
+<h1>复变函数与积分变换 Resources</h1>
+<blockquote><p>定位：<strong>延伸阅读 + 易变内容的核对来源</strong>，不是"知识来源清单"（模型已掌握稳定基础知识）。<br>稳定知识节点可以不在这里留条目；易变/版本相关内容必须在这里有核对过的官方来源。</p><p>本科目盘问结论（决定本清单的取舍）：<strong>应试定位</strong>——只考前题型识别与计算熟练度，<strong>不看定理证明</strong>；<br><strong>共形映射、数值方法一律不要</strong>。学生<strong>没有往年卷子、没有习题册</strong>，手上只有第 1 章的四节课件。<br>因此本清单的权重偏向「考试怎么考 / 用哪条公式 / 典型题型长什么样」的入口，以及能补上"没题可做"的资源。</p></blockquote>
+<h2>Knowledge</h2>
+<h3>主教材与出版社官方资源（贴学生自己的章节顺序）</h3>
+<ul>
+<li><a href="http://cs.cmpedu.com/books/book/5604703.htm" target="_blank" rel="noopener">Book: 复变函数与积分变换 by 李君、于非非（机械工业出版社）· 官方图书页</a><br>一行说明：<strong>学生手上那本主教材的官方页面</strong>（ISBN 978-7-111-68218-9，2021-08-18）。最有价值的是页面上出版社自己列出的<strong>逐节目录</strong>，与学生拍来的纸质书目录<strong>逐字一致</strong>（第一章第四节叫「复变函数的可导与解析」、第三章第五节叫「留数与留数定理」、附录 B 叫「常用积分变换表」，第 129 页起）。<strong>用于核对"学生手上是第几版、章节顺序有没有变"</strong>，也是下游大纲对齐章节顺序的第一依据。</li>
+</ul>
+<ul>
+<li><a href="reference/01-复数及其运算.md">Local: 第 1 章四节课件（老师发的 PPTX，已转 Markdown）</a><br>一行说明：学生实际拿到的<strong>唯一本地讲义</strong>。四份分别是 <a href="reference/01-复数及其运算.md">复数及其运算</a>（33 页）、<a href="reference/02-复变函数.md">复变函数</a>（22 页）、<a href="reference/03-初等函数.md">初等函数</a>（11 页）、<a href="reference/04-复变函数的可导与解析.md">复变函数的可导与解析</a>（32 页），对应教材第一章四节。<br>⚠️ <strong>可用性只有"骨架"级，别当讲解依据</strong>：这 4 份课件是 MathType 制作的，公式/定理/例题全部是 <strong>OLE 对象</strong>（4 份合计 304 个），在 PPT 里以 EMF 预览图呈现，<strong>文本层里根本没有公式</strong>。转换后全文只剩 <strong>2126 个字符</strong>的标题与小标题（例如第二节 22 页里只有 531 字符，多页整页只有"第二节 复数函数"一行），26 页留了 <code>[公式图片，未提取]</code> 标记（转换方按"不编造"原则留空，未猜公式）。<strong>用途限定为：确认老师讲了哪些小节、每节的例题顺序</strong>；定理表述与例题解答必须从下面"主教材官方页"和学生纸质书取。</li>
+</ul>
+<ul>
+<li><a href="http://www.cmpedu.com/books/book/5611278.htm" target="_blank" rel="noopener">Book: 复变函数与积分变换 第2版 by 李君、于非非（机械工业出版社，2026-08）· 官方图书页</a><br>一行说明：同一作者的<strong>新版</strong>（ISBN 978-7-111-81578-5）。用于核对<strong>版本差异</strong>：第 2 版第二章第二节改名为「柯西积分公式与柯西导数公式」（第 1 版叫「柯西积分公式」）、第三节仍是「柯西积分定理及其推广」；第 2 版目录里把附录 B「常用积分变换表」挪到第 123 页起。学生若在别处看到「柯西导数公式」这个说法，出处在这里。</li>
+</ul>
+<ul>
+<li><a href="http://www.cmpedu.com/ziyuans/ziyuan/34411.htm" target="_blank" rel="noopener">Doc: 机工教育服务网 · 本教材配套课件资源页（KJ_68218）</a><br>一行说明：出版社登记的官方配套文件 <code>KJ_68218《复变函数与积分变换》_李君（中文电子课件）汤嘉</code>。<strong>用途是核对"官方配套资源是否存在、属于哪个书号"，不是给学生下载的</strong>——页面脚本要求教师认证 + 10 积分才能下（已抓正文存档：<code>sources/cmpedu-kj-68218-li-jun-courseware-page.md</code>）。</li>
+</ul>
+<ul>
+<li><a href="https://aijiaocai.com/textbook/details?textbook_id=12789682" target="_blank" rel="noopener">Doc: 全国大中专教材网络采选系统 · 同名系列教材条目（陈丽娟、张蕾，ISBN 9787111782940）</a><br>一行说明：<strong>另一本</strong>机工社「普通高等教育基础课系列教材」同名书（2025-06）。它的公开目录里明写「附录A 傅里叶变换简表 / 附录B 拉普拉斯变换简表」，是<strong>"附录式积分变换表"长什么样</strong>的公开可比对样本——学生自己教材的附录 B 是「常用积分变换表」，对照着看就知道该记哪些变换对。</li>
+</ul>
+<h3>同课异版的公认教材（换讲解角度、查标准说法）</h3>
+<ul>
+<li><a href="https://mall.hep.com.cn/goods-29787.html" target="_blank" rel="noopener">Book: 复变函数与积分变换（第五版）by 李红、谢松法（华中科技大学数学与统计学院，高等教育出版社）</a><br>一行说明：国内工科这门课<strong>最常被选用的经典教材</strong>（ISBN 9787040504811）。用途不是通读，是<strong>当学生的题型卡住、想换一种讲法看同一个知识点时查标准说法</strong>；也用于核对"柯西积分公式 / 高阶导数 / 留数计算规则"这些点的通用表述。配套的习题全解见下一条。</li>
+</ul>
+<ul>
+<li><a href="https://mall.hep.com.cn/goods-30400.html" target="_blank" rel="noopener">Book: 复变函数与积分变换（第五版）学习辅导与习题全解（高等教育出版社）</a><br>一行说明：上面那本的<strong>官方习题全解</strong>。学生"没有习题册"这一点靠它补：讲解要做练习时，可从这里挑<strong>同章节的计算题</strong>当参考题型（注意是别人教材的题，需按学生教材章节顺序筛选）。</li>
+</ul>
+<h3>其余中文同名教材（可选，练手/查说法）</h3>
+<ul>
+<li><a href="http://www.cmpedu.com/ziyuans/ziyuan/34144.htm" target="_blank" rel="noopener">Book: 复变函数与积分变换（叶润萍等，机械工业出版社，ISBN 978-7-111-61653-5）配套课件与习题解答页</a><br>一行说明：同一出版社的另一本同名书，官方配套里<strong>同时有习题解答和电子课件</strong>（已抓正文存档：<code>sources/cmpedu-kj-61653-ye-runping-courseware-page.md</code>）。用途：当学生教材某节缺例题时，用同出版社的题量补一补；下载同样要教师认证与积分。</li>
+</ul>
+<h3>学生可免费看的完整课程（按学生教材章节顺序）</h3>
+<ul>
+<li><a href="https://higher.smartedu.cn/course/62354cf69906eace048e4797" target="_blank" rel="noopener">Doc: 国家高等教育智慧教育平台 · 复变函数与积分变换（收录课程，含"复数与复变函数 / 解析函数 / 初等函数"逐节目录）</a><br>一行说明：<strong>官方免费在线课程</strong>，页面把章节拆到"复数的代数运算 / 复数的几何表示 / 复数的乘幂与方根 / 函数解析的充要条件 / 初等函数"这一级，<strong>与学生教材第一章四节的切分方式高度一致</strong>，最适合当"上课没听懂、按节补一遍"的入口。已核对页面确实含这些逐节标题。</li>
+</ul>
+<ul>
+<li><a href="https://higher.smartedu.cn/course/6439d66eaf1f1b5d3ed179ce" target="_blank" rel="noopener">Doc: 国家高等教育智慧教育平台 · 复变函数与积分变换（含复球面、区域与曲线等小节）</a><br>一行说明：同平台上另一门完整课，章节粒度更细（「复球面及无穷大」「区域与曲线」「函数解析的充要条件（上/下）」）。<strong>适合按"卡住的那一小节"精确找视频</strong>；注意视频需登录才能预览。</li>
+</ul>
+<ul>
+<li><a href="https://higher.smartedu.cn/course/6a5ea0adb44e493c768f999a" target="_blank" rel="noopener">Doc: 国家高等教育智慧教育平台 · 复变函数与积分变换（课程简介明写"复数与复变函数、解析函数、复变函数的积分、级数和留数共五章"+ 傅里叶/拉普拉斯两章）</a><br>一行说明：这一门课的官方简介<strong>逐字列出了与学生教材完全相同的五章主干 + 两章积分变换</strong>，是"学生这门课的章节顺序就是国内工科标准切法"的旁证，也是给学生看的路线图入口。（若该 id 打不开，用同平台搜索"复变函数与积分变换"取同门课。）</li>
+</ul>
+<ul>
+<li><a href="https://www.icourse163.org/course/detail.htm?cid=1206630836" target="_blank" rel="noopener">Doc: 中国大学 MOOC（icourse163）· 复变函数与积分变换课程页（高等教育出版社 + 网易共建平台）</a><br>一行说明：慕课平台上这门课的课程入口，走的是<strong>高教社官方平台</strong>。用途：找<strong>按章节组织的讲课视频与随堂题</strong>，适合"整章重学"而不是"补一节课"。该站课程列表是前端渲染，直接抓页面只能拿到外框（见下方抓取说明）。</li>
+</ul>
+<ul>
+<li><a href="https://www.icourse163.org/course/HUST-1001983008" target="_blank" rel="noopener">Doc: 中国大学 MOOC · 复变函数与积分变换（华中科技大学）</a><br>一行说明：开设学校是<strong>华中科技大学</strong>，与上面高教社那本经典教材（李红、谢松法，华中科大数学与统计学院）同源，<strong>课程内容与教材顺序对齐度高</strong>，用来交叉验证某章到底该讲哪些题型。</li>
+</ul>
+<ul>
+<li><a href="https://www.icourse163.org/course/SDU-1461093165" target="_blank" rel="noopener">Doc: 中国大学 MOOC · 复变函数与积分变换（山东大学）</a><br>一行说明：山东大学开设的同名课，<strong>用于在两种讲法之间挑更适合自己的那一种</strong>（同一节换个人讲往往就通了）。</li>
+</ul>
+<ul>
+<li><a href="https://www.icourse163.org/course/NWPU-1460966164" target="_blank" rel="noopener">Doc: 中国大学 MOOC · 复变函数与积分变换（西北工业大学 / 西安建筑科技大学 / 沈阳工业大学等）</a><br>一行说明：工科院校（尤其电信、自动化方向）的同名课集合入口。电信类专业的课通常<strong>更强调傅里叶/拉普拉斯变换的应用</strong>，与学生"电信类必修"的定位更贴。</li>
+</ul>
+<h3>「没有题做」的补充练习与试卷（本节是本科目最缺的一块）</h3>
+<ul>
+<li><a href="https://netedu.xauat.edu.cn/jpkc/netclass/jpkc/fbhs/dir/other/复变函数与积分变换试题及答案12.pdf" target="_blank" rel="noopener">Source: 复变函数与积分变换 试题及答案（西安建筑科技大学精品课程站）</a> · 已落盘 <code>sources/xauat-complex-exam-with-answers.pdf</code> · <strong>文本抽取稿已就位：<code>sources/xauat-complex-exam-with-answers-文本.md</code></strong><br>一行说明：<strong>高校课程站公开的整份试卷（带答案）</strong>，共 8 页，题目是留数、柯西积分公式这一类的标准计算题——<strong>最接近学生缺的"往年卷子"的东西</strong>。已可文本检索（主教练装了 <code>pypdf</code> 并逐页抽取）；抽取稿里公式结构基本保住，但复杂分式会错位，出题重排时以 PDF 原页为准。</li>
+</ul>
+<ul>
+<li><a href="https://netedu.xauat.edu.cn/jpkc/netclass/jpkc/fbhs/dir/other/复变函数与积分变换试题及答案13.pdf" target="_blank" rel="noopener">Source: 复变函数与积分变换 试题及答案（同站，另一份）</a> · 已落盘 <code>sources/xauat-complex-exam-with-answers-13.pdf</code> · <strong>文本抽取稿已就位：<code>sources/xauat-complex-exam-with-answers-13-文本.md</code></strong><br>一行说明：同上，9 页另一套，<strong>两份合起来够拼出一套期末篇幅的混合练习</strong>。已可文本检索。</li>
+</ul>
+<ul>
+<li><a href="https://netedu.xauat.edu.cn/jpkc/netclass/jpkc/fbhs/dir/other/复变积分B集习题.pdf" target="_blank" rel="noopener">Source: 复变积分解题集 B 集习题（西安建筑科技大学精品课程站）</a> · 已落盘 <code>sources/xauat-exercises-B.pdf</code> · <strong>文本抽取稿已就位：<code>sources/xauat-exercises-B-文本.md</code></strong><br>一行说明：按 B1～B6 分辑、每辑再分节（2.1、2.2、3.1…）的<strong>分章习题集</strong>，20 页。它的目录是<strong>可提取的纯文本</strong>，已确认覆盖到第 6 章（积分变换部分）。用途：讲解要布置分层练习时，按"第几节"直接找对应题组。</li>
+</ul>
+<ul>
+<li><a href="http://faculty.hfut.edu.cn/_resources/group1/M00/00/1C/rB_zR2ks_QyAOcheAAP1H6_9avI556.pdf" target="_blank" rel="noopener">Source: 复变函数与积分变换 试题与答案（合肥工业大学教师主页）</a> · 已落盘 <code>sources/hfut-complex-exam-with-answers.pdf</code> · <strong>文本抽取稿已就位：<code>sources/hfut-complex-exam-with-answers-文本.md</code>（41 页、44318 字，抽取质量最好的一份）</strong><br>一行说明：高校教师个人主页上的公开试卷，含<strong>逐题分值</strong>（如"3. (6分) 设 C 为 …求 ∫_C (3z²+1)dz"），适合拿来<strong>估一道题该花多久、值多少分</strong>，练习时按分值分配时间好过按题号顺序做。</li>
+</ul>
+<ul>
+<li><a href="http://www.lamda.nju.edu.cn/yehj/dsp2020/9.pdf" target="_blank" rel="noopener">Doc: 拉普拉斯变换与傅里叶变换（南京大学 数字信号处理课程讲义）</a> · 已落盘 <code>sources/nju-dsp-laplace-fourier.pdf</code> · <strong>文本抽取稿已就位：<code>sources/nju-dsp-laplace-fourier-文本.md</code></strong><br>一行说明：南京大学课程讲义，把拉普拉斯与傅里叶放在一起对比。<strong>用途是"附录 B 怎么用"</strong>：学生教材附录 B 是「常用积分变换表」，这份讲义按同一逻辑整理变换对与性质（平移、卷积、微分），可以帮助记表、也方便解释"为什么要背这张表"。电信专业的后续课也用得上。</li>
+</ul>
+<ul>
+<li><a href="http://www.lamda.nju.edu.cn/wangw/dsp2022/slides/09.pdf" target="_blank" rel="noopener">Doc: 傅里叶变换的计算（南京大学 数字信号处理课件）</a> · 已落盘 <code>sources/nju-dsp-fourier-laplace-slides.pdf</code> · <strong>文本抽取稿已就位：<code>sources/nju-dsp-fourier-laplace-slides-文本.md</code></strong><br>一行说明：同上课程的计算专题课件，<strong>偏"怎么算"而不是"为什么"</strong>，正对学生"只要题型识别与计算熟练度"的定位。用于傅里叶变换性质那几节的例题对照。</li>
+</ul>
+<ul>
+<li><a href="https://netedu.xauat.edu.cn/jpkc/netclass/jpkc/fbhs/ShowArticle.asp?id=1381" target="_blank" rel="noopener">Doc: 《复变函数与积分变换》课程教学大纲（西安建筑科技大学精品课程站，含 56 学时知识模块表）</a><br>一行说明：公开教学大纲，把全课拆成「复数与复变函数(6) / 复变函数的导数(6) / 复变函数的积分(6) / 级数(6) / 留数(6) / 共形映射(8) / 傅里叶变换(8) / 拉普拉斯变换(4) / 总结(2)」共 56 学时，并写明重点与难点。<strong>用于核对"哪些是真的会考、考多少"</strong>：注意共形映射占 8 学时却按学生要求排除，说明这份大纲不能直接当本科目的路线图，只能当"国内这门课的常规配比"参照。同页还有考核方式与试卷批阅规则，可用来推断题型分布。</li>
+</ul>
+<h2>Gaps</h2>
+<ul>
+<li><strong>公开网页版「附录 B 常用积分变换表」找不到</strong>。试过的方向：机工社官方页只给出附录页码（第 1 版 129 页 / 第 2 版 123 页）；高教社商城的《复变函数与积分变换（第五版）》<strong>有</strong>官方页面，但<strong>目录与附录清单没有在页面上展开</strong>（只有封面与商品信息）；清华云盘那份《常用公式（含 L 与 F 变换）》跨域被拦（403）、且需要授权，不算可长期访问的公开来源。<strong>结论：附录 B 的核对请以学生纸质书为准</strong>，本清单用同系列教材（陈丽娟版）的公开附录目录 + 南大 DSP 讲义做形状对照；不要在这一项上等公开速查页。</li>
+<li><strong>前置基础（多元微积分 / 级数收敛 / 线性代数 / 常微分方程）四项学生自评"学过但忘了"，没找到权威的"针对复变课的一次性唤醒"材料</strong>。各校都有《高等数学》公开课，但那是<strong>整门课</strong>，不是"复变课用得上的那几条结论"的速查。本清单没有为它凑条目——<strong>这一块建议在主教练/讲解角色内部产出"多元微积分与级数关键结论速查"</strong>（属于稳定知识，模型掌握，不需要外部来源）。</li>
+<li><strong>没有找到可推荐的活跃学生社区</strong>（求批改、问实践问题）。该课程的中文讨论主要集中在文库类与问答站，其中知乎抓取返回 403，文库/聚合站按本角色规则一律不进清单。因此<strong>本清单不设"社区"条目</strong>，需要同伴讨论时请主教练另想渠道。</li>
+<li><strong>【已解决，2026-10-14 更新】西安建筑科技大学与合肥工业大学那四份 PDF 原来无法自动抽文字，现已可检索</strong>。主教练按学生同意装了 <code>pypdf 6.20.1</code> + <code>fontTools 4.67.0</code>，逐页抽取后写出 6 份文本稿（<code>sources/*-文本.md</code>）：合肥工大试卷 41 页 / 44318 字（质量最好）、西建大两份试卷各 8～9 页、B 集习题 20 页、南大两份讲义 77 + 45 页，<strong>全部 0 空页</strong>。抽取稿开头都写了"公式可能残缺、以原 PDF 为准"的提示；<strong>复杂分式与根号会错位，出题时必须回原 PDF 核对</strong>。原 PDF 保留，仍可人工翻看。<br>遗留：<strong>第 1 章那 4 份课件的 304 个公式图片仍未 OCR</strong>——已与学生确认<strong>不做 OCR</strong>（他有纸质教材，公式以教材为准，课件只用来确认小节顺序）。</li>
+<li><strong>第 2～5 章没有任何本地课件</strong>（老师只发了第 1 章四节）。已核对的替代入口是国家高等教育智慧教育平台与中国大学 MOOC 上的同名课程，但<strong>那些是视频，不是可检索的讲义</strong>，讲解角色无法像第一章那样直接引用本地文件。</li>
+<li><strong>第 1 章那 4 份课件里，公式一律不可提取（这是本科目最影响下游的一条）</strong>。转换方探查确认：课件由 MathType + 内嵌 Word 制作，公式是 <code>Equation.DSMT4</code>/<code>Equation.3</code> 与 <code>Word.Document.12</code> 这类 OLE 对象（4 份共 304 个），以 EMF 预览图落在页面上，<strong>文本层里没有公式</strong>；连内嵌 Word 里的残句也已被剥掉符号（形如"定义：对于 ，称形如或的表达式为复数"）。<strong>要拿到公式只能 OCR 那些 EMF 预览图，或改从教材取正文。</strong> 我没有安排 OCR（不在本角色职责内，且需要额外工具），把决定权交给主教练。</li>
+<li><strong><code>ch01.pptx</code> / <code>ch02.pptx</code> / <code>ch03.pptx</code> 经抽取正文确认不是这门课的内容，已排除</strong>（各抽取 2～3 条标题证据：ch01 是「1 绪论 / 1.1 信号 / 1.2 信号的频谱 / 1.4 放大电路模型」，ch02 是「2 运算放大器 / 2.2 理想运算放大器」，ch03 是「3 二极管及其基本电路 / 3.1 半导体的基本知识」；三份中"复变/解析函数/柯西/积分变换/拉普拉斯"命中次数均为 0）。判定为<strong>模拟电子技术基础</strong>课件，<strong>未转换、未落 <code>reference/</code></strong>。同目录另有 <code>CH01--2026.9.13修改.ppt</code>（旧版二进制 .ppt，python-pptx 读不了），同样未转。</li>
+<li><strong>共形映射按学生要求排除，但它在西建大大纲里占 8 学时、是本课最重的模块之一</strong>。若学生后面发现考试确实考它，本清单的取舍要重做；支持"排除"的最强证据是<strong>学生自己的教材（李君版）目录里没有共形映射章</strong>。</li>
+</ul>
+  <footer class="lesson-footer">
+    StudyMate · 资源清单 · 本地学习工作区
+  </footer>
+</article>
+
+<script src="../../assets/sayo/sayo.js"></script>
+<script>LearnTheme.wire(document.getElementById('attachment-theme-checkbox'));</script>
+</body>
+</html>

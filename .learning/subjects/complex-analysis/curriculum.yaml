@@ -1,0 +1,768 @@
+nodes:
+  - id: ch1-intro
+    title: "绪论：从相量到曼德博集"
+    kind: 概念
+    objective: "能举出交流电路与分形图形的例子，并指认五章各自主考的题型。"
+    problem: "交流电路的阻抗是一个复数，z²+c 的反复迭代画出了曼德博集——同一个 i 同时出现在工程计算与图形生成里。本课要讲清这门课为什么值得用复数，并把公开试卷上的卷面结构（填空、选择、解答各考哪一章）摆在开头。"
+    practice: "以讲为主：用电路相量与分形图像两段引子开场，沿着「算复数 → 判解析 → 算积分 → 展开与留数 → 积分变换」把五章串成一张题型地图，点明卷面上 8～10 分的大题集中在哪几类，收尾说明本课程只求会算、不求证明，并交代图像画廊项目会与课程同步推进。"
+    concepts:
+      - "相量法"
+      - "解析函数"
+      - "留数"
+      - "积分变换"
+      - "应试主线与卷面结构"
+    pitfalls:
+      - "把本课程当数学分析来读，纠缠定理证明，时间花在不会考的地方"
+      - "跳过绪论的路线图，后面每章都当新知识从头学"
+      - "按教材章节平均分配时间，而没有按卷面分值分配"
+    realworld: "交流电路的相量计算与 Python 数值计算里的复数类型；本课同时是「复变函数图像画廊」项目的起点，后面每个概念都会落成一张图。"
+    resources:
+      - title: "李君、于非非《复变函数与积分变换》全书目录与主线（机械工业出版社，ISBN 978-7-111-68218-9，纸质教材）"
+        type: book
+        url: "http://cs.cmpedu.com/books/book/5604703.htm"
+      - title: "合肥工业大学 2022 年期末试卷（含答案与逐题分值：填空 3 分乘 5、选择 3 分乘 5、解答 6～10 分；文本抽取稿 sources/hfut-complex-exam-with-answers-文本.md，公式形态错位，只取题型与分值）"
+        type: article
+        url: "http://faculty.hfut.edu.cn/_resources/group1/M00/00/1C/rB_zR2ks_QyAOcheAAP1H6_9avI556.pdf"
+      - title: "国家高等教育智慧教育平台·复变函数与积分变换（课程简介逐字列出与本教材相同的五章主干）"
+        type: article
+        url: "https://higher.smartedu.cn/course/6a5ea0adb44e493c768f999a"
+    prerequisites: []
+    status: "未开始"
+    mastery: 0
+
+  - id: ch1-complex-basics
+    title: "复数的运算与几何表示"
+    kind: 概念
+    objective: "能独立完成复数的四则、共轭、模与辐角计算，并写出全部 n 次方根。"
+    problem: "公开试卷的解答题第一题稳定是「求 z 的模和辐角」，填空里还考主值、方根方程与不等式表示的区域。这些分只靠运算熟练度，本课把它们一次拿到手。"
+    practice: "以讲为主：先用极坐标与三角恒等式唤醒高中内容，再把四则、共轭、模、辐角主值、三角与指数形式依次过一遍，方根的多值性用 n 个根均匀分布在圆周上这一几何事实说清，末尾练习把圆盘、环域、半平面写成复数不等式。"
+    concepts:
+      - "复数四则与共轭"
+      - "模与辐角主值"
+      - "三角形式与指数形式"
+      - "乘幂与方根的多值性"
+      - "平面点集与区域"
+    pitfalls:
+      - "辐角主值取 (-π, π]，写方根时漏掉 k 就只得到一个根"
+      - "求模与辐角时只给主值不给 2kπ，卷面按参考答案要扣分"
+      - "把 |z-z₀|<r 展开成实部虚部不等式时符号写错"
+      - "用不等式描述区域时忘记开闭（含不含边界）"
+    realworld: "并联阻抗的模与相位、方根在复平面上的均匀分布；图像画廊实验一直接画这两件事。"
+    resources:
+      - title: "李君、于非非《复变函数与积分变换》§1.1 复数及其运算、§1.2 复变函数（平面点集）"
+        type: book
+        url: "http://cs.cmpedu.com/books/book/5604703.htm"
+      - title: "第 1 节、第 2 节课件转换稿（MathType 公式不可提取，仅够确认老师讲了哪些小节）"
+        type: article
+        url: "reference/01-复数及其运算.md"
+      - title: "复变函数与积分变换 试题及答案（西安建筑科技大学精品课程站，填空 3 分乘 10；文本抽取稿 sources/xauat-complex-exam-with-answers-文本.md）"
+        type: article
+        url: "https://netedu.xauat.edu.cn/jpkc/netclass/jpkc/fbhs/dir/other/复变函数与积分变换试题及答案12.pdf"
+    prerequisites:
+      - ch1-intro
+    status: "未开始"
+    mastery: 0
+
+  - id: exp1-complex-gallery
+    title: "实验一：把复数画上复平面"
+    kind: 实验
+    objective: "做出能画出方根分布与 z²+c 迭代图的 Notebook。"
+    problem: "纸上的模与辐角落到屏幕上才看得见结构：n 个方根为什么围成正多边形，z²+c 反复迭代为什么有的点逃向无穷、有的被牢牢抓住。本课验收「复数会算」能不能变成「复数会画」。"
+    practice: "以练为主（验收为主）：在 Jupyter Notebook 里用 NumPy 复数数组完成方根分布图与曼德博／朱利亚缩略图，处理好复平面坐标轴、模与辐角的着色；产出的 notebook 是图像画廊的第一块，后续实验都在它上面接着长。"
+    concepts:
+      - "复数数组与向量化运算"
+      - "复平面作图"
+      - "辐角着色"
+      - "迭代与逃逸判据"
+    pitfalls:
+      - "最常卡在复平面作图：把复数整体喂给散点图，必须显式分离实部与虚部"
+      - "方根用角度制算辐角，图案整体转错角度"
+      - "迭代次数取太小，逃逸边界糊成一片，看不出分形结构"
+    realworld: "图像画廊项目第一阶段；相量图与分形图就是这门课在工程与图形里的样子。"
+    resources:
+      - title: "李君、于非非《复变函数与积分变换》§1.2 复数的几何表示与几何运算、§1.1 乘幂与方根"
+        type: book
+        url: "http://cs.cmpedu.com/books/book/5604703.htm"
+      - title: "第 1 节课件转换稿（仅小节骨架，公式不可提取）"
+        type: article
+        url: "reference/01-复数及其运算.md"
+    prerequisites:
+      - ch1-complex-basics
+    status: "未开始"
+    mastery: 0
+
+  - id: ch1-elementary
+    title: "初等函数：指数、三角与对数"
+    kind: 概念
+    objective: "能算出 e^z、Ln z、z^a 的值并说清哪一个多值。"
+    problem: "公开试卷的解答题第二题稳定考初等函数：解 sinz 与 cosz 的方程、求负数的三个方根、求 Ln 的值与连续区域，填空还问指数函数与幂函数的映照特点。这一题靠的是定义与多值性，不是技巧。"
+    practice: "以讲为主：先用 e^x 的幂级数唤醒级数知识，再依次给出指数、三角、双曲、对数与幂函数的定义，把 Ln z = ln|z| + i·arg z 的多值性与主值讲透，收尾用 e^{1+i}、i^i、Ln(-1) 校验换算，并交代指数函数与幂函数的映照特点（这一问在填空里考过，也直接给图像画廊提供素材）。"
+    concepts:
+      - "指数函数与欧拉公式"
+      - "三角函数与双曲函数"
+      - "对数函数与主值分支"
+      - "幂函数与多值性"
+      - "初等函数的映照特点"
+    pitfalls:
+      - "把 Ln 当单值函数用，漏掉 2kπi"
+      - "解三角方程时只给主值解，漏掉周期带来的全部根"
+      - "以为 |sin z| ≤ 1（复域内不再有界）"
+    realworld: "相量的指数写法与 DSP 里的复指数信号 e^{jωt}；指数函数与幂函数的映照特点也是图像画廊实验三的素材。"
+    resources:
+      - title: "李君、于非非《复变函数与积分变换》§1.3 初等函数"
+        type: book
+        url: "http://cs.cmpedu.com/books/book/5604703.htm"
+      - title: "第 3 节课件转换稿（仅小节骨架：指数 / 三角 / 对数 / 幂函数）"
+        type: article
+        url: "reference/03-初等函数.md"
+      - title: "合肥工业大学 2022 年期末试卷（解答题第二题即此类；文本抽取稿 sources/hfut-complex-exam-with-answers-文本.md）"
+        type: article
+        url: "http://faculty.hfut.edu.cn/_resources/group1/M00/00/1C/rB_zR2ks_QyAOcheAAP1H6_9avI556.pdf"
+    prerequisites:
+      - ch1-complex-basics
+    status: "未开始"
+    mastery: 0
+
+  - id: ch1-analytic
+    title: "可导与解析的判定"
+    kind: 实操
+    objective: "能判定解析性，并由调和函数求出解析函数 f(z)。"
+    problem: "两份公开试卷里都有一道 8～10 分的大题：给一个含参数的实部或虚部，先由调和条件定参数，再求出解析函数 f(z)。同一套柯西-黎曼条件在填空与选择里还负责判断哪个函数可导、哪个是调和函数——本课把它固化成可以默写的动作。"
+    practice: "讲练并重：先唤醒多元微积分的偏导数与全微分，再写柯西-黎曼条件与可导的充要条件，按「拆出 u 与 v → 求四个偏导 → 验 CR → 代导数公式」练到不查书；随后接上 8～10 分的大题套路（验调和定参数 → 用 CR 求另一个分量 → 回写成 z 的函数并补常数），配套纸笔题型整理册写下判定卡与「判别解析的几种方法」清单（定义、充要条件、共轭调和函数）。"
+    concepts:
+      - "导数与微分"
+      - "解析函数"
+      - "柯西-黎曼条件"
+      - "调和函数与共轭调和函数"
+      - "由实部或虚部求解析函数"
+    pitfalls:
+      - "CR 条件成立只说明该点可导，解析还要求邻域内处处可导"
+      - "由 v 求 u 时漏掉常数，或忘记用 f 在某点的取值定常数"
+      - "求出的 u 与 v 没有回写成 z 的表达式，答案形式不对"
+      - "极坐标形式的 CR 条件记错"
+    realworld: "判断一个复场会不会保角、保能量的前提；图像画廊实验二用数值方式检验 CR 条件。"
+    resources:
+      - title: "李君、于非非《复变函数与积分变换》§1.4 复变函数的可导与解析"
+        type: book
+        url: "http://cs.cmpedu.com/books/book/5604703.htm"
+      - title: "第 4 节课件转换稿（仅小节骨架：导数 / 解析函数 / 可导与解析的充要条件）"
+        type: article
+        url: "reference/04-复变函数的可导与解析.md"
+      - title: "合肥工业大学 2022 年期末试卷（解答题含由调和函数求解析函数的 8～10 分大题；文本抽取稿 sources/hfut-complex-exam-with-answers-文本.md）"
+        type: article
+        url: "http://faculty.hfut.edu.cn/_resources/group1/M00/00/1C/rB_zR2ks_QyAOcheAAP1H6_9avI556.pdf"
+      - title: "《复变函数与积分变换（第五版）》学习辅导与习题全解（高等教育出版社，同章节计算题参考题型）"
+        type: book
+        url: "https://mall.hep.com.cn/goods-30400.html"
+    prerequisites:
+      - ch1-complex-basics
+    status: "未开始"
+    mastery: 0
+
+  - id: exp2-analytic-gallery
+    title: "实验二：解析函数长什么样"
+    kind: 实验
+    objective: "做出解析与非解析函数的图像对照，并数值验证柯西-黎曼条件。"
+    problem: "解析函数在图上有一个明显签名：模的等值线与辐角的等值线处处正交。本课验收「判定解析性」能不能从公式变成看得见的图。"
+    practice: "以练为主（验收为主）：用模—辐角着色画出 e^z、sin z、Ln z 与 z̄、|z|² 的对照图，再在同一批点上数值估计偏导数、逐点检验柯西-黎曼条件，把结论写进 notebook 的结论段。"
+    concepts:
+      - "模—辐角着色"
+      - "正交网格"
+      - "数值偏导"
+      - "解析性判据的数值检验"
+    pitfalls:
+      - "最常卡在有限差分：步长取太大，CR 检验在奇点附近假失败"
+      - "Ln z 的分支切割线画成一条硬边，被误判为不解析"
+      - "把某点 CR 成立直接写成解析"
+    realworld: "图像画廊项目第二阶段；工程上判断复场是否保角、保能量，用的就是这套检验。"
+    resources:
+      - title: "李君、于非非《复变函数与积分变换》§1.4 可导与解析、§1.3 初等函数"
+        type: book
+        url: "http://cs.cmpedu.com/books/book/5604703.htm"
+    prerequisites:
+      - ch1-analytic
+      - exp1-complex-gallery
+    status: "未开始"
+    mastery: 0
+
+  - id: exp3-mapping-grid
+    title: "实验三：保角映射的网格实验"
+    kind: 实验
+    objective: "做出 z²、e^z、1/z 的网格变形图，指出直角是否被保持。"
+    problem: "把一张方格纸按 w=z² 与 w=e^z 变形，格子会弯、会拉伸，交角却仍是直角——除非落在 f′(z)=0 的点上。本课验收「解析」与「保角」之间那条等号。"
+    practice: "以练为主（验收为主）：在复平面上铺参数网格，逐点映射后画出变形网格与局部放大图，重点看原点（z² 的临界点）与 1/z 的极点附近角度怎样坏掉，图上标出结论：保角成立的条件是导数非零。"
+    concepts:
+      - "映射的像"
+      - "网格变形"
+      - "保角性与导数非零"
+      - "临界点"
+    pitfalls:
+      - "最常卡在只看整体网格，错过导数零点附近的角度被压缩"
+      - "映射 z² 时把多值逆的不同分支混在一起画"
+      - "以为保角对任意函数成立（如 z̄ 处处不保角）"
+    realworld: "图像画廊项目第三阶段；电磁场与流体里的等势线、流线，就是把规则网格映成曲线网格。本课只做可视化，不展开共形映射理论（本教材没有该章）。"
+    resources:
+      - title: "李君、于非非《复变函数与积分变换》§1.4 导数的几何意义（伸缩率与旋转角）、§1.3 指数函数与幂函数的映照特点"
+        type: book
+        url: "http://cs.cmpedu.com/books/book/5604703.htm"
+    prerequisites:
+      - ch1-elementary
+      - ch1-analytic
+      - exp2-analytic-gallery
+    status: "未开始"
+    mastery: 0
+
+  - id: ch2-integral-direct
+    title: "复积分的概念与直接计算"
+    kind: 概念
+    objective: "能用参数化法直接算出一段曲线上的复积分。"
+    problem: "公开试卷的解答题第三题稳定是 6～7 分：沿一段直线、折线或参数曲线求积分。被积函数解析时还可以用原函数代端点，本课把这两条路分清楚。"
+    practice: "以讲为主：先唤醒多元微积分的曲线参数化与定积分，再把复积分的定义、基本性质与参数化计算法（把 z 写成 z(t)、dz 换成 z′(t)dt）走一遍，对比「用原函数代端点」与「只能参数化硬算」两类例题，收尾交代估值不等式。"
+    concepts:
+      - "复积分定义"
+      - "参数化计算法"
+      - "原函数与积分与路径无关"
+      - "估值不等式"
+    pitfalls:
+      - "dz 忘记换成 z′(t)dt，直接把 z(t) 代进去就积"
+      - "被积函数含 z̄ 时当解析函数处理，套错结论"
+      - "折线分段时漏掉其中一段，或端点代错方向"
+      - "闭合路径方向写反（逆时针为正）"
+    realworld: "把积分看成沿路径累加的位移；图像画廊实验四里的围道就是这个 C。"
+    resources:
+      - title: "李君、于非非《复变函数与积分变换》§2.1 复变函数积分的概念"
+        type: book
+        url: "http://cs.cmpedu.com/books/book/5604703.htm"
+      - title: "合肥工业大学 2022 年期末试卷（解答题第三题即沿折线或参数曲线的积分；文本抽取稿 sources/hfut-complex-exam-with-answers-文本.md）"
+        type: article
+        url: "http://faculty.hfut.edu.cn/_resources/group1/M00/00/1C/rB_zR2ks_QyAOcheAAP1H6_9avI556.pdf"
+      - title: "复变积分 B 集习题（按 B1～B6 与节次分组的题源；文本抽取稿 sources/xauat-exercises-B-文本.md）"
+        type: book
+        url: "https://netedu.xauat.edu.cn/jpkc/netclass/jpkc/fbhs/dir/other/复变积分B集习题.pdf"
+    prerequisites:
+      - ch1-complex-basics
+    status: "未开始"
+    mastery: 0
+
+  - id: ch2-cauchy-formula
+    title: "柯西积分公式与高阶导数"
+    kind: 实操
+    objective: "能用柯西积分公式与高阶导数公式算出闭路积分。"
+    problem: "分母只要出现 (z-z₀)ⁿ，题目就变成「把 z₀ 代进去、求几阶导、除以阶乘、乘上 2πi」。这是公开试卷里 7～10 分的大题，也是全卷最容易靠熟练度拿满的地方。"
+    practice: "讲练并重：先回头确认解析性判定，再写柯西积分公式与高阶导数公式，按「找奇点 → 看它在不在围道内 → 凑成标准形式 → 套公式」过一遍各类分子（多项式、指数、三角），配套纸笔题型整理册写下「分母幂次决定用哪个公式」的对照卡，并标出与留数定理的分工。"
+    concepts:
+      - "柯西积分公式"
+      - "高阶导数公式"
+      - "标准形式配凑"
+      - "奇点在围道内外的判定"
+    pitfalls:
+      - "z₀ 在围道外时公式不适用，答案应是 0"
+      - "高阶导数公式里的 1/n! 与 2πi 位置写反"
+      - "分子里还留着 (z-z₀) 的因子，没有先约掉就套公式"
+      - "围道内有两个奇点时只算一个"
+    realworld: "考试里最高频的一道大题；也是图像画廊实验四要画的「围道把奇点圈住」那件事。"
+    resources:
+      - title: "李君、于非非《复变函数与积分变换》§2.2 柯西积分公式"
+        type: book
+        url: "http://cs.cmpedu.com/books/book/5604703.htm"
+      - title: "合肥工业大学 2022 年期末试卷（解答题第四题为沿正向圆周的闭路积分，含逐题分值；文本抽取稿 sources/hfut-complex-exam-with-answers-文本.md）"
+        type: article
+        url: "http://faculty.hfut.edu.cn/_resources/group1/M00/00/1C/rB_zR2ks_QyAOcheAAP1H6_9avI556.pdf"
+      - title: "复变函数与积分变换 试题及答案（西安建筑科技大学精品课程站，第四大题为闭路积分；文本抽取稿 sources/xauat-complex-exam-with-answers-文本.md）"
+        type: article
+        url: "https://netedu.xauat.edu.cn/jpkc/netclass/jpkc/fbhs/dir/other/复变函数与积分变换试题及答案12.pdf"
+    prerequisites:
+      - ch2-integral-direct
+      - ch1-analytic
+    status: "未开始"
+    mastery: 0
+
+  - id: ch2-cauchy-theorem
+    title: "柯西积分定理及其推广"
+    kind: 实操
+    objective: "能判断积分是否为零，并用复合闭路处理有奇点的题。"
+    problem: "解析区域内的闭路积分一律为零，可奇点偏偏躲在围道里——「挖洞」（复合闭路）就是把这条例外搬回正轨的办法。西建大的填空还考 Ln z 的连续区域，问的正是「哪里可以让定理成立」。"
+    practice: "讲练并重：先唤醒多元微积分里「区域有没有洞」的直觉，再讲柯西积分定理、复合闭路定理、原函数与不定积分，按「围道内有没有奇点 → 有就挖洞把小围道替换大围道 → 换成标准形式」练；配套纸笔题型整理册把本章的三条路（参数化、柯西定理、柯西公式与高阶导数）做成一张选型卡。"
+    concepts:
+      - "柯西积分定理"
+      - "单连通与复连通区域"
+      - "复合闭路定理"
+      - "原函数与不定积分"
+    pitfalls:
+      - "把定理用在不解析的地方（如 1/z 沿含原点的围道）"
+      - "挖洞时漏掉内圈方向与大圈相反"
+      - "把「积分为零」与「被积函数恒为零」混为一谈"
+    realworld: "电路里的守恒量与无旋场的闭合回路积分；三条路的选型就是考试里最快拿分的地方。"
+    resources:
+      - title: "李君、于非非《复变函数与积分变换》§2.3 柯西积分定理及其推广"
+        type: book
+        url: "http://cs.cmpedu.com/books/book/5604703.htm"
+      - title: "复变积分 B 集习题（积分部分按节分组的题源；文本抽取稿 sources/xauat-exercises-B-文本.md）"
+        type: book
+        url: "https://netedu.xauat.edu.cn/jpkc/netclass/jpkc/fbhs/dir/other/复变积分B集习题.pdf"
+      - title: "《复变函数与积分变换（第五版）》学习辅导与习题全解（同章节计算题参考题型）"
+        type: book
+        url: "https://mall.hep.com.cn/goods-30400.html"
+    prerequisites:
+      - ch2-integral-direct
+      - ch1-analytic
+      - ch2-cauchy-formula
+    status: "未开始"
+    mastery: 0
+
+  - id: ch3-power-series
+    title: "幂级数与收敛半径"
+    kind: 概念
+    objective: "能求出幂级数的收敛半径并判定复数项级数收敛。"
+    problem: "同一个幂级数在圆内收敛、圆外发散，圆上还要单独查。收敛半径在公开试卷里是填空与选择级的小题（每处 3 分），判据只有比值法与根值法两条，本课只求稳、不铺开。"
+    practice: "以讲为主：先唤醒高等数学里数项级数的收敛判别与比值法，再讲复数项级数的收敛（实部虚部同时收敛）、阿贝尔定理、收敛半径的比值与根值求法，以及幂级数在收敛圆内的分析性质；练的重点是把系数与圆心看准，能一口气写出半径。"
+    concepts:
+      - "复数项级数的收敛"
+      - "阿贝尔定理"
+      - "收敛半径"
+      - "幂级数的分析性质"
+    pitfalls:
+      - "比值法算出的是相邻系数之比，别把 R 写反"
+      - "默认收敛圆上的点也收敛"
+      - "把 ∑aₙzⁿ 与 ∑aₙ(z-z₀)ⁿ 的展开中心搞混"
+    realworld: "DSP 里滤波器的传递函数就是 z 的幂级数，收敛域对应系统的稳定范围。"
+    resources:
+      - title: "李君、于非非《复变函数与积分变换》§3.1 复数项级数、§3.2 幂级数"
+        type: book
+        url: "http://cs.cmpedu.com/books/book/5604703.htm"
+      - title: "合肥工业大学 2022 年期末试卷（收敛半径出现在填空与选择，每题 3 分；文本抽取稿 sources/hfut-complex-exam-with-answers-文本.md）"
+        type: article
+        url: "http://faculty.hfut.edu.cn/_resources/group1/M00/00/1C/rB_zR2ks_QyAOcheAAP1H6_9avI556.pdf"
+    prerequisites:
+      - ch1-complex-basics
+    status: "未开始"
+    mastery: 0
+
+  - id: ch3-taylor-laurent
+    title: "泰勒级数与洛朗级数"
+    kind: 实操
+    objective: "能把函数在指定区域展开成泰勒级数或洛朗级数。"
+    problem: "同一个 f(z)=1/((z-1)(z-2))，在 |z|<1、1<|z|<2、|z|>2 三个环域里展开出的级数完全不同。洛朗展开在公开试卷里稳定是一道 10 分大题，考法固定：先定环域，再选中心，再套几何级数。"
+    practice: "讲练并重：先唤醒实函数的泰勒展开与几何级数求和 1/(1-x)=∑xⁿ，再讲泰勒级数的系数来源（高阶导数公式）、洛朗级数的环形域与负幂项，按「定环域 → 部分分式拆开 → 凑成 1/(1±w) 的形式 → 写出成立范围」练；配套源码加测试的「复变计算工具」，把每道展开题的系数写成断言，与现成库的展开结果对照。"
+    concepts:
+      - "泰勒级数"
+      - "洛朗级数"
+      - "环形域"
+      - "间接展开法"
+      - "负幂项"
+    pitfalls:
+      - "洛朗展开只写正幂项就交卷，负幂部分是得分点"
+      - "凑 1/(1-w) 时忘写 |w|<1 这个成立范围"
+      - "把展开中心选在奇点上"
+      - "两个环域的展开式抄串（一个用 z 的正幂，一个用 z 的负幂）"
+    realworld: "DSP 里把传递函数展开成 z 的级数看系统响应；图像画廊实验四用洛朗的 c₋₁ 解释留数。"
+    resources:
+      - title: "李君、于非非《复变函数与积分变换》§3.3 泰勒级数与洛朗级数"
+        type: book
+        url: "http://cs.cmpedu.com/books/book/5604703.htm"
+      - title: "合肥工业大学 2022 年期末试卷（解答题含圆环域洛朗展开的 10 分大题；文本抽取稿 sources/hfut-complex-exam-with-answers-文本.md）"
+        type: article
+        url: "http://faculty.hfut.edu.cn/_resources/group1/M00/00/1C/rB_zR2ks_QyAOcheAAP1H6_9avI556.pdf"
+      - title: "复变函数与积分变换 试题及答案（西安建筑科技大学精品课程站，第五大题为圆环内罗朗展式；文本抽取稿 sources/xauat-complex-exam-with-answers-文本.md）"
+        type: article
+        url: "https://netedu.xauat.edu.cn/jpkc/netclass/jpkc/fbhs/dir/other/复变函数与积分变换试题及答案12.pdf"
+      - title: "复变积分 B 集习题（对应节的展开题组）"
+        type: book
+        url: "https://netedu.xauat.edu.cn/jpkc/netclass/jpkc/fbhs/dir/other/复变积分B集习题.pdf"
+    prerequisites:
+      - ch3-power-series
+      - ch2-cauchy-formula
+    status: "未开始"
+    mastery: 0
+
+  - id: ch3-zeros-poles
+    title: "奇点分类：零点与极点"
+    kind: 概念
+    objective: "能判定奇点类型与极点的阶，并写出零点阶。"
+    problem: "留数能不能用现成规则算，全看奇点是可去的、m 阶极点还是本性奇点。公开试卷的填空与选择都直接考「谁是几阶极点」，大题的第一步也永远是找奇点定阶。"
+    practice: "以讲为主：从函数的零点及其阶讲起，再按洛朗展开的负幂项把孤立奇点分成可去奇点、极点与本 性奇点三类，给出极点阶的判定办法（看分母零点的阶、用极限判别），末尾交代无穷远点的奇点与「有限复平面内的奇点」这个问法。"
+    concepts:
+      - "零点及其阶"
+      - "孤立奇点的分类"
+      - "极点的阶"
+      - "无穷远点的奇点"
+    pitfalls:
+      - "分子分母零点相互抵消后阶数变了（如 sin z / z³）"
+      - "把本性奇点当极点套留数规则"
+      - "只写有限复平面的奇点却漏了原点，或反过来把无穷远点也算进去"
+    realworld: "控制系统里极点的位置决定稳定性——这门课的极点就是这个极点。"
+    resources:
+      - title: "李君、于非非《复变函数与积分变换》§3.4 零点与极点"
+        type: book
+        url: "http://cs.cmpedu.com/books/book/5604703.htm"
+      - title: "合肥工业大学 2022 年期末试卷（填空与选择考极点、零点阶；文本抽取稿 sources/hfut-complex-exam-with-answers-文本.md）"
+        type: article
+        url: "http://faculty.hfut.edu.cn/_resources/group1/M00/00/1C/rB_zR2ks_QyAOcheAAP1H6_9avI556.pdf"
+      - title: "《复变函数与积分变换（第五版）》学习辅导与习题全解（同章节计算题参考题型）"
+        type: book
+        url: "https://mall.hep.com.cn/goods-30400.html"
+    prerequisites:
+      - ch3-taylor-laurent
+    status: "未开始"
+    mastery: 0
+
+  - id: ch3-residue
+    title: "留数与留数定理"
+    kind: 实操
+    objective: "能算出各类极点的留数并用留数定理求闭路积分。"
+    problem: "两份公开试卷都有 10 分大题：求函数在有限复平面内的奇点与相应留数，或用留数定理算一整圈积分。围道里塞了几个奇点，柯西公式要一个个拆开算，留数定理一次性加成 2πi 乘留数之和。"
+    practice: "以练为主：先讲清留数就是洛朗展开里 c₋₁ 这一项，再给出一阶极点、m 阶极点与本性奇点三种算法，按「定奇点与阶 → 选规则 → 算留数 → 求和乘 2πi」反复练到熟练；配套「复变计算工具」手写留数函数，用数值围道积分做断言对照。"
+    concepts:
+      - "留数的定义"
+      - "一阶极点的留数公式"
+      - "m 阶极点的留数公式"
+      - "留数定理"
+      - "无穷远点的留数"
+    pitfalls:
+      - "m 阶极点公式忘乘 1/(m-1)! 或求导阶数写错"
+      - "分母有重根时仍用一阶公式"
+      - "围道内外奇点没数清，或把落在围道上的点也算进去"
+      - "题目要求「奇点与相应留数」时只算围道内的，漏掉其余奇点"
+    realworld: "本课程收益最高的题型之一；实验四把围道、极点与留数画在同一张图上。"
+    resources:
+      - title: "李君、于非非《复变函数与积分变换》§3.5 留数与留数定理"
+        type: book
+        url: "http://cs.cmpedu.com/books/book/5604703.htm"
+      - title: "复变函数与积分变换 试题及答案（西安建筑科技大学精品课程站，第三、四大题即留数应用；文本抽取稿 sources/xauat-complex-exam-with-answers-文本.md）"
+        type: article
+        url: "https://netedu.xauat.edu.cn/jpkc/netclass/jpkc/fbhs/dir/other/复变函数与积分变换试题及答案12.pdf"
+      - title: "复变函数与积分变换 试题及答案（同站另一套；文本抽取稿 sources/xauat-complex-exam-with-answers-13-文本.md）"
+        type: article
+        url: "https://netedu.xauat.edu.cn/jpkc/netclass/jpkc/fbhs/dir/other/复变函数与积分变换试题及答案13.pdf"
+      - title: "复变积分 B 集习题（留数题组；文本抽取稿 sources/xauat-exercises-B-文本.md）"
+        type: book
+        url: "https://netedu.xauat.edu.cn/jpkc/netclass/jpkc/fbhs/dir/other/复变积分B集习题.pdf"
+    prerequisites:
+      - ch3-zeros-poles
+    status: "未开始"
+    mastery: 0
+
+  - id: exp4-residue-contour
+    title: "实验四：围道上的留数"
+    kind: 实验
+    objective: "做出围道—极点—留数三者对照的可视化，并核验留数定理。"
+    problem: "留数定理说闭路积分等于 2πi 乘圈内留数之和。把极点画出来、把围道画出来、把数值积分算出来，三者在同一张图上对得上，这条定理才算真的拿到手。"
+    practice: "以练为主（验收为主）：把前三个实验的图并进同一份画廊 notebook，再叠上极点与围道这一层；为若干被积函数画极点分布与可选围道，用沿圆周采样的数值围道积分与 2πi 乘留数之和对照，并故意换一条把奇点漏在外面的围道看结果怎样变，结论写进 notebook 结论段。"
+    concepts:
+      - "围道的选取"
+      - "极点分布图"
+      - "数值围道积分"
+      - "留数定理的数值核验"
+    pitfalls:
+      - "最常卡在采样点数：沿围道采样太稀，光滑函数也积不准"
+      - "极点落在围道附近，数值结果漂移却以为公式错了"
+      - "把 2πi 与 1/(2πi) 用反（后面做正逆变换会踩同一个坑）"
+    realworld: "图像画廊项目第四阶段，也是整门课「算得对」的最终检验。"
+    resources:
+      - title: "李君、于非非《复变函数与积分变换》§3.5 留数与留数定理、§2.3 复合闭路"
+        type: book
+        url: "http://cs.cmpedu.com/books/book/5604703.htm"
+    prerequisites:
+      - ch3-residue
+      - ch2-cauchy-theorem
+      - exp3-mapping-grid
+    status: "未开始"
+    mastery: 0
+
+  - id: ch4-fourier-series
+    title: "傅里叶级数与正交展开"
+    kind: 概念
+    objective: "能把周期函数展开成傅里叶级数并写出系数。"
+    problem: "方波能被一串正弦波叠加出来——为什么可行、系数怎么求，是傅里叶变换那一章的地基。据公开试卷，这一节基本只出填空级小题，本课求看懂频谱与系数公式，不为它多花时间。"
+    practice: "以讲为主：先用三角函数系的正交性与定积分唤醒级数知识，再讲周期函数的三角形式与复指数形式傅里叶级数、系数公式与狄利克雷收敛条件，并以方波为例把系数计算完整走一遍；末尾点明「级数到变换」这一步是怎么跨过去的。"
+    concepts:
+      - "三角函数系的正交性"
+      - "傅里叶级数（三角形式）"
+      - "复指数形式"
+      - "狄利克雷条件"
+      - "频谱"
+    pitfalls:
+      - "周期取错，2π 与 2l 两套系数公式混用"
+      - "奇偶函数没利用对称性，白算一半积分"
+      - "间断点处写成 f(x)，而应是左右极限的平均"
+    realworld: "频谱概念的来源；电信后续课程里所有的「频域」都从这里开始。"
+    resources:
+      - title: "李君、于非非《复变函数与积分变换》§4.1 积分变换的预备知识、§4.2 傅里叶级数"
+        type: book
+        url: "http://cs.cmpedu.com/books/book/5604703.htm"
+      - title: "拉普拉斯变换与傅里叶变换（南京大学数字信号处理课程讲义，变换对与性质的整理方式；文本抽取稿 sources/nju-dsp-laplace-fourier-文本.md）"
+        type: article
+        url: "http://www.lamda.nju.edu.cn/yehj/dsp2020/9.pdf"
+    prerequisites:
+      - ch1-elementary
+    status: "未开始"
+    mastery: 0
+
+  - id: ch4-fourier-transform
+    title: "傅里叶变换：定义与性质"
+    kind: 实操
+    objective: "能查附录 B 用性质算出常用函数的傅里叶变换与逆变换。"
+    problem: "矩形脉冲变成 sinc、δ 函数的变换是 1、求导变成乘 iω。公开试卷里傅里叶变换稳定出现在填空与选择（求某个函数的变换、求常值函数的逆变换、判断谁不存在变换），靠的就是「查表加性质」两步。"
+    practice: "讲练并重：先唤醒反常积分与「线性运算可叠加」的直觉，再给出傅里叶变换的定义与存在条件，随后把线性、位移、微分、积分、卷积、对称性逐条配上典型例题，练「先查表再套性质、少动积分」的写法；用定义直接验证一组变换对（δ 函数那一类，卷面上出现过这种 5 分小题），并配套「复变计算工具」用 FFT 数值对照自己算出的变换对。"
+    concepts:
+      - "傅里叶变换的定义"
+      - "存在条件"
+      - "附录 B 常用变换表"
+      - "位移与微分性质"
+      - "卷积定理"
+      - "δ 函数与变换对"
+    pitfalls:
+      - "1/√(2π) 与 1/(2π) 两套约定混用（以本教材附录 B 为准）"
+      - "位移性质里指数因子的符号写反"
+      - "δ 函数的变换与常数函数的变换张冠李戴"
+      - "问「哪个函数不存在傅里叶变换」时忘记绝对可积这个前提"
+    realworld: "DSP 的核心工具；附录 B 就是这门课发给你的变换对速查表。"
+    resources:
+      - title: "李君、于非非《复变函数与积分变换》§4.3 傅里叶变换的概念、§4.4 傅里叶变换的性质、§4.5 应用（轻带）、附录 B 常用积分变换表（纸质书第 129 页起）"
+        type: book
+        url: "http://cs.cmpedu.com/books/book/5604703.htm"
+      - title: "合肥工业大学 2022 年期末试卷（填空与选择考傅里叶变换与逆变换、δ 函数，每题 3 分；文本抽取稿 sources/hfut-complex-exam-with-answers-文本.md）"
+        type: article
+        url: "http://faculty.hfut.edu.cn/_resources/group1/M00/00/1C/rB_zR2ks_QyAOcheAAP1H6_9avI556.pdf"
+      - title: "傅里叶变换的计算（南京大学数字信号处理课件，偏「怎么算」而不是「为什么」；文本抽取稿 sources/nju-dsp-fourier-laplace-slides-文本.md）"
+        type: article
+        url: "http://www.lamda.nju.edu.cn/wangw/dsp2022/slides/09.pdf"
+    prerequisites:
+      - ch4-fourier-series
+    status: "未开始"
+    mastery: 0
+
+  - id: ch5-laplace-concept
+    title: "拉普拉斯变换：定义与查表"
+    kind: 概念
+    objective: "能查表写出常用函数的拉普拉斯变换并说明收敛域。"
+    problem: "傅里叶变换要求函数绝对可积，e^{at} 就不合格；乘上一个衰减因子 e^{-σt} 之后，绝大多数工程函数都能变换。公开试卷的填空直接考定义式与常用变换对，本课先把这两样记牢。"
+    practice: "以讲为主：先唤醒反常积分与含参量积分的收敛判断，再从傅里叶变换的局限引出拉普拉斯变换的定义与存在定理，用定义直算常数、指数、正弦与幂函数，随后转成查附录 B 的动作，并交代收敛域（σ 的下界）怎么写。"
+    concepts:
+      - "拉普拉斯变换的定义"
+      - "存在定理与收敛域"
+      - "常用变换对"
+      - "查表法"
+    pitfalls:
+      - "收敛域写成 s>0，而实际是 s>a"
+      - "单位阶跃与 δ 函数的变换记混"
+      - "把 t 域与 s 域的性质搬错（拉氏变换里乘法没有简单对应）"
+    realworld: "电路瞬态分析与控制系统的传递函数——本课程里最贴电信专业的一章。"
+    resources:
+      - title: "李君、于非非《复变函数与积分变换》§5.1 拉普拉斯变换的概念、附录 B 常用积分变换表"
+        type: book
+        url: "http://cs.cmpedu.com/books/book/5604703.htm"
+      - title: "复变函数与积分变换 试题及答案（西安建筑科技大学精品课程站，填空考拉氏积分定义式；文本抽取稿 sources/xauat-complex-exam-with-answers-文本.md）"
+        type: article
+        url: "https://netedu.xauat.edu.cn/jpkc/netclass/jpkc/fbhs/dir/other/复变函数与积分变换试题及答案12.pdf"
+      - title: "拉普拉斯变换与傅里叶变换（南京大学数字信号处理课程讲义，把两者放在一起对比、整理变换对与性质；文本抽取稿 sources/nju-dsp-laplace-fourier-文本.md）"
+        type: article
+        url: "http://www.lamda.nju.edu.cn/yehj/dsp2020/9.pdf"
+    prerequisites:
+      - ch4-fourier-transform
+    status: "未开始"
+    mastery: 0
+
+  - id: ch5-laplace-properties
+    title: "拉氏变换的性质与计算"
+    kind: 实操
+    objective: "能用微分、位移、卷积性质算出正变换。"
+    problem: "考试几乎不会让你用定义积出来：看到 t·e^{at}、看到 f′(t)、看到分段函数，对应的是哪条性质，才是拿分点。最后那道大题的第一步就是「把微分方程变换过去」，靠的全是这条性质。"
+    practice: "讲练并重：按线性、微分、积分、位移、延迟、相似、卷积逐条讲并即时练，重点是「把题面凑成表里的标准形式」；配套纸笔题型整理册，把性质与常用变换对合成一张速查卡。"
+    concepts:
+      - "线性性质"
+      - "微分与积分性质"
+      - "位移与延迟性质"
+      - "卷积定理"
+      - "标准形式配凑"
+    pitfalls:
+      - "延迟性质的 e^{-sτ} 与位移性质的 F(s-a) 张冠李戴"
+      - "微分性质里漏掉初值 f(0)，这一步写错后面全错"
+      - "分段函数直接查表，没有先用阶跃函数拼成整体"
+    realworld: "传递函数运算与系统串联的卷积；也是逆变换那一课的准备。"
+    resources:
+      - title: "李君、于非非《复变函数与积分变换》§5.2 拉普拉斯变换的性质、附录 B"
+        type: book
+        url: "http://cs.cmpedu.com/books/book/5604703.htm"
+      - title: "合肥工业大学 2022 年期末试卷（解答题最后第二题用拉氏变换解初值问题，9 分；文本抽取稿 sources/hfut-complex-exam-with-answers-文本.md）"
+        type: article
+        url: "http://faculty.hfut.edu.cn/_resources/group1/M00/00/1C/rB_zR2ks_QyAOcheAAP1H6_9avI556.pdf"
+    prerequisites:
+      - ch5-laplace-concept
+    status: "未开始"
+    mastery: 0
+
+  - id: ch5-laplace-inverse-apply
+    title: "逆变换：部分分式与查表"
+    kind: 实操
+    objective: "能用部分分式与查表求出逆变换并解微分方程。"
+    problem: "两份公开试卷都有一道 9～10 分大题：用拉普拉斯变换解微分方程初值问题（西建大那份还是方程组）。通道固定——变换过去、解出像函数、部分分式拆开、倒查表回来；拆得对不对、拆到几项，决定卷面能不能收尾。"
+    practice: "以练为主：先唤醒线性代数里解待定系数方程组、以及常微分方程的特征方程，再按「分母因式分解 → 部分分式（含重根与不可约二次因式）→ 倒查表 → 用初值定常数」练到能独立收尾，末尾把初值问题的完整流程走通（含两个方程联立的题型）。"
+    concepts:
+      - "拉普拉斯逆变换"
+      - "部分分式分解"
+      - "重根与二次因式"
+      - "用变换解微分方程与方程组"
+    pitfalls:
+      - "重根项少写一层 A/(s-a)²"
+      - "部分分式系数解错却继续往下算，整题报废"
+      - "倒查表时忘了乘 e^{at} 或符号写反"
+      - "解出像函数就交卷，没有逆变换回 t 域"
+    realworld: "电路瞬态响应与控制系统输出；考试里性价比最高的一道大题。"
+    resources:
+      - title: "李君、于非非《复变函数与积分变换》§5.3 拉普拉斯逆变换、§5.4 拉普拉斯变换的应用、附录 B"
+        type: book
+        url: "http://cs.cmpedu.com/books/book/5604703.htm"
+      - title: "合肥工业大学 2022 年期末试卷（解答题用拉氏变换解初值问题，9 分；文本抽取稿 sources/hfut-complex-exam-with-answers-文本.md）"
+        type: article
+        url: "http://faculty.hfut.edu.cn/_resources/group1/M00/00/1C/rB_zR2ks_QyAOcheAAP1H6_9avI556.pdf"
+      - title: "复变函数与积分变换 试题及答案（西安建筑科技大学精品课程站，第七大题为用拉氏变换解方程组，10 分；文本抽取稿 sources/xauat-complex-exam-with-answers-文本.md）"
+        type: article
+        url: "https://netedu.xauat.edu.cn/jpkc/netclass/jpkc/fbhs/dir/other/复变函数与积分变换试题及答案12.pdf"
+      - title: "复变积分 B 集习题（覆盖到积分变换部分的分章题组；文本抽取稿 sources/xauat-exercises-B-文本.md）"
+        type: book
+        url: "https://netedu.xauat.edu.cn/jpkc/netclass/jpkc/fbhs/dir/other/复变积分B集习题.pdf"
+    prerequisites:
+      - ch5-laplace-properties
+    status: "未开始"
+    mastery: 0
+
+  - id: final-mock-exam
+    title: "期末模拟卷与答题顺序"
+    kind: 实操
+    objective: "能在一份限时模拟卷上按题型顺序独立做完，含概念简答。"
+    problem: "会算不等于考得完：先做哪道、卡住多久就跳，直接决定分数。公开试卷还固定留一道概念简答（3～10 分，如「判别解析的方法有哪几种」「sinz 与 sinx 的性质异同」「复积分有哪些计算方法」），这类题不写就白丢分。本课用一份混合卷把五章主线串起来实战一次。"
+    practice: "以练为主：按公开试卷的卷面结构（填空、选择、解答）从三套试卷与 B 集习题里拼一份覆盖判解析性、由调和函数求解析函数、复积分、洛朗展开、留数与极点阶、拉氏变换解微分方程的卷子，限时独立做完；做题前先把纸笔题型整理册里的判定卡、选型卡、速查卡翻一遍，做完按「错题归到哪一章、是识别错还是算错」归因，并专门补上概念简答那一道的答题要点。"
+    concepts:
+      - "题型识别"
+      - "时间分配与答题顺序"
+      - "错题归因"
+      - "概念性简答的答题要点"
+    pitfalls:
+      - "在留数大题上耗太久，后面的变换小题没时间做"
+      - "把「不会做」与「算错」混成一类，复习方向就错了"
+      - "概念简答空着不写，直接丢掉 3～10 分"
+      - "只看答案不动笔，限时卷变成阅读卷"
+    realworld: "直接对标期末；这份卷子的错题清单就是最后一周的复习计划。"
+    resources:
+      - title: "合肥工业大学 2022 年期末试卷（含答案与逐题分值，可作卷面结构模板；文本抽取稿 sources/hfut-complex-exam-with-answers-文本.md）"
+        type: article
+        url: "http://faculty.hfut.edu.cn/_resources/group1/M00/00/1C/rB_zR2ks_QyAOcheAAP1H6_9avI556.pdf"
+      - title: "复变函数与积分变换 试题及答案（西安建筑科技大学精品课程站，两份带答案的整卷；文本抽取稿 sources/xauat-complex-exam-with-answers-文本.md 与 sources/xauat-complex-exam-with-answers-13-文本.md）"
+        type: article
+        url: "https://netedu.xauat.edu.cn/jpkc/netclass/jpkc/fbhs/dir/other/复变函数与积分变换试题及答案12.pdf"
+      - title: "复变积分 B 集习题（分章题组，可拼混合练习；文本抽取稿 sources/xauat-exercises-B-文本.md）"
+        type: book
+        url: "https://netedu.xauat.edu.cn/jpkc/netclass/jpkc/fbhs/dir/other/复变积分B集习题.pdf"
+      - title: "李君、于非非《复变函数与积分变换》各章习题（纸质教材）"
+        type: book
+        url: "http://cs.cmpedu.com/books/book/5604703.htm"
+    prerequisites:
+      - ch1-analytic
+      - ch2-cauchy-theorem
+      - ch3-residue
+      - ch4-fourier-transform
+      - ch5-laplace-inverse-apply
+    status: "未开始"
+    mastery: 0
+
+edges:
+  - from: ch1-intro
+    to: ch1-complex-basics
+    reason: "绪论给出全书主线与卷面结构，复数运算是第一个可算的对象"
+  - from: ch1-complex-basics
+    to: exp1-complex-gallery
+    reason: "实验一验收复数的模、辐角与方根：画得出来才算会算"
+  - from: ch1-complex-basics
+    to: ch1-elementary
+    reason: "初等函数的定义建立在复数运算与指数形式之上"
+  - from: ch1-complex-basics
+    to: ch1-analytic
+    reason: "柯西-黎曼条件要拆实部虚部并求偏导，先得会算复数的实部与虚部"
+  - from: ch1-analytic
+    to: exp2-analytic-gallery
+    reason: "实验二验收解析性判定，并把柯西-黎曼条件转成数值检验"
+  - from: exp1-complex-gallery
+    to: exp2-analytic-gallery
+    reason: "复用实验一的复平面作图与着色代码，缩短第二次的项目启动成本"
+  - from: ch1-elementary
+    to: exp3-mapping-grid
+    reason: "保角网格实验要画 e^z 与幂函数的像，先得会算初等函数"
+  - from: ch1-analytic
+    to: exp3-mapping-grid
+    reason: "保角性来自导数非零，判据与导数计算都出自本课"
+  - from: exp2-analytic-gallery
+    to: exp3-mapping-grid
+    reason: "实验三在实验二的着色与网格工具上继续做映射变形图"
+  - from: ch1-complex-basics
+    to: ch2-integral-direct
+    reason: "复积分的参数化计算要用复数的指数形式与曲线方程"
+  - from: ch2-integral-direct
+    to: ch2-cauchy-formula
+    reason: "先会按定义算积分，才知道公式省下了哪一步"
+  - from: ch1-analytic
+    to: ch2-cauchy-formula
+    reason: "公式的条件是被积函数在区域内解析，解析性判定是前置"
+  - from: ch2-integral-direct
+    to: ch2-cauchy-theorem
+    reason: "定理断言的是这类积分为零，先要有积分概念与算例"
+  - from: ch1-analytic
+    to: ch2-cauchy-theorem
+    reason: "定理要求区域内的点处处解析"
+  - from: ch2-cauchy-formula
+    to: ch2-cauchy-theorem
+    reason: "先会用公式处理有奇点的题，再看「挖洞」与推广怎样解释它（本教材把公式排在定理推广之前）"
+  - from: ch1-complex-basics
+    to: ch3-power-series
+    reason: "复数项级数的收敛要借助复数的模来定义"
+  - from: ch3-power-series
+    to: ch3-taylor-laurent
+    reason: "展开出的级数首先要在指定环域收敛，收敛半径是前提"
+  - from: ch2-cauchy-formula
+    to: ch3-taylor-laurent
+    reason: "泰勒系数来自高阶导数公式，展开的合法性也由解析性保证"
+  - from: ch3-taylor-laurent
+    to: ch3-zeros-poles
+    reason: "奇点分类按洛朗展开的负幂项判定"
+  - from: ch3-zeros-poles
+    to: ch3-residue
+    reason: "留数规则按极点的阶选用，类型判错则整题算错"
+  - from: ch3-residue
+    to: exp4-residue-contour
+    reason: "实验四验收留数定理，用数值围道积分核对留数之和"
+  - from: ch2-cauchy-theorem
+    to: exp4-residue-contour
+    reason: "围道选取与复合闭路的做法来自本课"
+  - from: exp3-mapping-grid
+    to: exp4-residue-contour
+    reason: "把前三阶段的图并进同一份画廊 notebook，再叠上极点与围道这一层"
+  - from: ch1-elementary
+    to: ch4-fourier-series
+    reason: "复指数形式的傅里叶级数要用欧拉公式与 e^{iθ}"
+  - from: ch4-fourier-series
+    to: ch4-fourier-transform
+    reason: "变换是周期趋于无穷时级数的极限，先由级数与频谱过渡"
+  - from: ch4-fourier-transform
+    to: ch5-laplace-concept
+    reason: "拉普拉斯变换是给傅里叶变换乘上衰减因子后的推广"
+  - from: ch5-laplace-concept
+    to: ch5-laplace-properties
+    reason: "性质的每一条都要与定义和常用变换对对照着记"
+  - from: ch5-laplace-properties
+    to: ch5-laplace-inverse-apply
+    reason: "逆变换靠性质与查表倒推，先把正变换的性质练熟"
+  - from: ch1-analytic
+    to: final-mock-exam
+    reason: "模拟卷里判定解析性与由调和函数求解析函数是必考大题"
+  - from: ch2-cauchy-theorem
+    to: final-mock-exam
+    reason: "模拟卷的复积分大题按三条路的选型出题"
+  - from: ch3-residue
+    to: final-mock-exam
+    reason: "留数题是卷面分值最高的部分"
+  - from: ch4-fourier-transform
+    to: final-mock-exam
+    reason: "填空与选择里的变换题要求查表加性质的熟练度"
+  - from: ch5-laplace-inverse-apply
+    to: final-mock-exam
+    reason: "用拉氏变换解微分方程是卷面最后一道大题"

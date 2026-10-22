@@ -1,0 +1,379 @@
+<!DOCTYPE html>
+<html lang="zh-CN" data-theme="dark">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>左孝凌《离散数学》课件 2（本地转化稿） · 离散数学</title>
+<link rel="stylesheet" href="../../../assets/sayo/sayo.css">
+<link rel="stylesheet" href="../../../assets/learn-theme.css">
+<link rel="stylesheet" href="../assets/style.css">
+<script src="../../../assets/learn-theme.js"></script>
+<script>LearnTheme.apply();</script>
+<style>
+.lesson h1 {
+  margin: var(--syo-space-2, 8px) 0 var(--syo-space-4, 16px);
+  font-size: clamp(1.6rem, 3.2vw, 2.25rem);
+  font-weight: 700;
+  line-height: 1.25;
+  letter-spacing: -0.02em;
+  color: var(--syo-fg-default);
+}
+</style>
+</head>
+<body class="lesson-body">
+<nav class="lesson-bar">
+  <a href="../index.html">← 返回科目</a>
+  <span>离散数学</span>
+  <span class="lesson-bar__no">参考文档</span>
+  <label class="syo-toggle syo-toggle--theme lesson-bar__toggle" title="切换深浅主题" aria-label="切换深浅主题">
+    <input type="checkbox" id="attachment-theme-checkbox" checked>
+    <span class="syo-toggle-track"></span>
+    <span class="syo-toggle-knob">
+      <svg class="syo-toggle-sun" viewBox="0 0 20 20" fill="none" aria-hidden="true"><circle cx="10" cy="10" r="3.5" stroke="#f57c00" stroke-width="1.5"/><path d="M10 2v2.5M10 15.5V18M2 10h2.5M15.5 10H18M4.34 4.34l1.77 1.77M13.89 13.89l1.77 1.77M4.34 15.66l1.77-1.77M13.89 6.11l1.77-1.77" stroke="#f57c00" stroke-width="1.2" stroke-linecap="round"/></svg>
+      <svg class="syo-toggle-moon" viewBox="0 0 20 20" fill="none" aria-hidden="true"><path d="M16.5 12.5A6 6 0 019 4.5a6 6 0 007.5 8z" stroke="#5c6bc0" stroke-width="1.5" stroke-linejoin="round"/></svg>
+    </span>
+  </label>
+</nav>
+
+<article class="lesson">
+<h1>左孝凌《离散数学》课件 2（本地转化稿）</h1>
+<blockquote><p>本地课件转化稿。原文件：<code>D:\Program Files\WXWork\1688855286727418\Cache\File\2026-10\左孝凌离散数学课件2.ppt</code><br>由 LibreOffice 转成 .pptx 后用 python-pptx 逐页提取文字与表格；图形与公式图片未提取，需要看图时以原课件为准。</p></blockquote>
+<p>共 84 页。</p>
+<h2>第 1 页</h2>
+<p>离散数学(Discrete Mathematics)</p>
+<h2>第 2 页</h2>
+<p>第二章  谓词逻辑（Predicate Logic）</p>
+<p>2.1谓词的概念与表示(Predicate  and its expression)<br>2.2命题函数与量词(Propositional functions &amp; Quantifiers)<br>2.3谓词公式与翻译(Predicate formulae)<br>2.4变元的约束(Bound of variable)<br>2.5谓词演算的等价式与蕴含式(Equivalences &amp;<br>implications of predicate calculus)<br>2.6前束范式(Prenex normal form)<br>2.7谓词演算的推理理论(Inference theory of<br>predicate calculus)</p>
+<h2>第 3 页</h2>
+<p>第二章  谓词逻辑（Predicate Logic）  2.1谓词的概念与表示(Predicate  and Its Expression)</p>
+<p>命题逻辑的局限性：<br>在命题逻辑中，命题是命题演算的基本单位，不再对原子<br>命题进行分解，因而无法研究命题的内部结构、成分及命<br>题之间的内在联系，甚至无法处理一些简单而又常见的推<br>理过程。例如，下列推理：<br>所有的人都是要死的。<br>苏格拉底是人。<br>苏格拉底是要死的。<br>众所周知,这是真命题。但在命题逻辑中,如果用P,Q,R表<br>示以上三个命题，则上述推理过程为：（P∧Q）R。借<br>助命题演算的推理理论不能证明其为重言式。</p>
+<h2>第 4 页</h2>
+<p>第二章  谓词逻辑（Predicate Logic）  2.1谓词的概念与表示(Predicate  and Its Expression)</p>
+<p>原因：命题逻辑不能将命题之间的内在联系和数量关<br>系反映出来。<br>解决办法：将命题进行分解。<br>2.1谓词的概念与表示(Predicate  and its expression)<br>在谓词逻辑中，可将原子命题划分为客体和谓词两部分。<br>客体：可以独立存在的具体事物的或抽象的概念。<br>例如，电子计算机、李明、玫瑰花、黑板、实数、中国、<br>思想、唯物主义等，客体也可称之为主语。</p>
+<h2>第 5 页</h2>
+<p>第二章  谓词逻辑（Predicate Logic）  2.1谓词的概念与表示(Predicate  and Its Expression)</p>
+<p>谓词：用来刻划客体的性质或客体之间的相互关系的词。<br>例如在下面命题中：<br>（1）张明是个劳动模范。<br>（2）李华是个劳动模范。  刻划客体的性质<br>（3）王红是个大学生。<br>（4）小李比小赵高2cm。<br>（5）点a在b与c之间。        刻划客体之间的相互关系<br>（6）阿杜与阿寺同岁。<br>“是个劳动模范”、“是个大学生”、“…比…高2cm”、 “…<br>在…与…之间”都是谓词。</p>
+<h2>第 6 页</h2>
+<p>第二章  谓词逻辑（Predicate Logic）  2.1谓词的概念与表示(Predicate  and Its Expression)</p>
+<p>刻划一个客体性质的词称之为一元谓词,刻划n个客体之间关系的词称之为n元谓词.<br>一般我们用大写英文字母表示谓词，用小写英文字母表示客体名称，例如，将上述谓词分别记作大写字母F、G、H、R，S则上述命题可表示为：<br>(1) F(a)  a：张明        (2) F(b)  b：李华<br>(3) G(c)  c：王红        (4) H(s,t) s：小李    t：小赵<br>(5) R(a,b,c)                 (6)  S(a,b)   a:阿杜。b:阿寺。<br>其中(1)、(2)、 (3)为一元谓词， (4) 、 (6)为二元谓词，<br>(5)为三元谓词。</p>
+<h2>第 7 页</h2>
+<p>第二章  谓词逻辑（Predicate Logic）  2.1谓词的概念与表示(Predicate  and Its Expression)</p>
+<p>注:<br>(1)单独一个谓词并不是命题，在谓词字母后填上客体所得到的式子称之为谓词填式。<br>(2)在谓词填式中，若客体确定，则A(a1，a2...an)就变成了命题<br>(3)在多元谓词表达式中，客体字母出现的先后次序与事先约定有关,一般不可以随意交换位置(如,上例中H(s,t) 与H(t, s)代表两个不同的命题) 。</p>
+<h2>第 8 页</h2>
+<p>第二章  谓词逻辑（Predicate Logic）  2.1谓词的概念与表示(Predicate  and Its Expression)</p>
+<p>小结:本节将原子命题进行分解,分为客体和谓词<br>两部分.进而介绍了客体和谓词、一元谓词和n元<br>谓词的概念。重点掌握一元谓词和n元谓词的概<br>念。<br>作业: 1.预习第二章§2.2, §2.3</p>
+<h2>第 9 页</h2>
+<p>&lt;number&gt;</p>
+<p>离散数学(Discrete Mathematics)</p>
+<h2>第 10 页</h2>
+<p>&lt;number&gt;</p>
+<p>第二章  谓词逻辑（Predicate Logic）</p>
+<p>2.1谓词的概念与表示(Predicate  and its expression)<br>2.2命题函数与量词(Propositional functions &amp; Quantifiers)<br>2.3谓词公式与翻译(Predicate formulae)<br>2.4变元的约束(Bound of variable)<br>2.5谓词演算的等价式与蕴含式(Equivalences &amp;<br>implications of predicate calculus)<br>2.6前束范式(Prenex normal form)<br>2.7谓词演算的推理理论(Inference theory of<br>predicate calculus)</p>
+<h2>第 11 页</h2>
+<p>&lt;number&gt;</p>
+<p>第二章  谓词逻辑（Predicate Logic）  2.2命题函数与量词(Propositional functions &amp; Quantifiers)</p>
+<p>2.2.1 命题函数 (Propositional functions)<br>2.2.2 量词(Quantifiers)</p>
+<h2>第 12 页</h2>
+<p>&lt;number&gt;</p>
+<p>第二章  谓词逻辑（Predicate Logic）  2.2命题函数与量词(Propositional functions &amp; Quantifiers)</p>
+<p>2.2.1 命题函数 (Propositional functions)<br>设谓词H表示“是劳动模范”, a表示客体名称张明, b表示客<br>体名称李华,c表示客体名称这只老虎，那么H(a) 、 H(b)、<br>H(c)表示三个不同的命题, 但它们有一个共同的形式,即<br>H(x).一般地， H(x)表示客体x具有性质H。这里x表示<br>抽象的或泛指的客体，称为客体变元，常用小写英文字母<br>x,y,z, …表示。相应地，表示具体或特定的客体的词称为<br>客体常项，常用小写英文字母a,b,c, …表示。<br>同理，客体变元x，y具有关系L，记作L(x,y);客体变元x,y,z具有关系A，记作A(x,y,z).</p>
+<h2>第 13 页</h2>
+<p>&lt;number&gt;</p>
+<p>第二章  谓词逻辑（Predicate Logic）  2.2命题函数与量词(Propositional functions &amp; Quantifiers)</p>
+<p>H(x)、L(x,y) 、A(x,y,z)本身并不是一个命题.只有用<br>特定的客体取代客体变元x,y,z后，它们才成为命题。我<br>们称H(x)、L(x,y) 、A(x,y,z)为命题函数。一般地我们<br>有<br>定义2.2.1:由一个谓词H和n个客体变元组成的表达式H(x1, x2 , …, xn)称为n元简单命题函数.<br>由定义可知, n元谓词就是有n个客体变元的命题函数.当<br>n=0时,称为0元谓词.因此,一般情况下,命题函数不是命题;<br>特殊情况0元谓词就变成一个命题.</p>
+<h2>第 14 页</h2>
+<p>&lt;number&gt;</p>
+<p>第二章  谓词逻辑（Predicate Logic）  2.2命题函数与量词(Propositional functions &amp; Quantifiers)</p>
+<p>复合命题函数:由一个或几个简单命题函数以及逻辑联结词组合而成的表达式.<br>例1:若x的学习好,则x的工作好<br>设S(x):x学习好；W(x):x工作好<br>则有S(x)  W(x)<br>例2:将下列命题用0元谓词符号化.<br>(1) 2是素数且是偶数.<br>(2) 如果2大于3,则2大于4.<br>(3) 如果张明比李民高, 李民比赵亮高,则张明比赵亮高.</p>
+<h2>第 15 页</h2>
+<p>&lt;number&gt;</p>
+<p>第二章  谓词逻辑（Predicate Logic）  2.2命题函数与量词(Propositional functions &amp; Quantifiers)</p>
+<p>解:(1) 设F(x): x是素数.   G(x): x是偶数.<br>则命题符号化为： F(2)∧G(2)<br>(2) 设L(x,y) ：x大于y.<br>则命题符号化为： L(2,3)  L(2,4)<br>(3) 设 H(x,y): x比y高. a:张明   b:李民   c：赵亮<br>则命题符号化为： H(a,b)∧H(b ,c)H(a,c)<br>注意:命题函数中,客体变元在哪些范围内取特定的值,对<br>命题的真值极有影响.</p>
+<h2>第 16 页</h2>
+<p>&lt;number&gt;</p>
+<p>第二章  谓词逻辑（Predicate Logic）  2.2命题函数与量词(Propositional functions &amp; Quantifiers)</p>
+<p>例如: H(x,y)∧H(y ,z)H(x,z)<br>若H(x,y)解释为: x大于y,当x,y,z都在实数中取值时,则这个式子表示“若x大于y 且y 大于z，则x大于z” 。这是一个永真式。<br>如果H(x,y)解释为: “x是y的儿子”, 当x,y,z都指人时，则这个式子表示“若x为y的儿子 且y 是z的儿子，则x是z的儿子” 。这是一个永假式。<br>如果H(x,y)解释为: “x距y10米”, 当x,y,z为平面上的点，则这个式子表示“若x距y10米且y距z10米，则x距z10米” 。这个命题的真值将由x,y,z的具体位置而定，它可能是1，也可能是0。</p>
+<h2>第 17 页</h2>
+<p>&lt;number&gt;</p>
+<p>第二章  谓词逻辑（Predicate Logic）  2.2命题函数与量词(Propositional functions &amp; Quantifiers)</p>
+<p>在命题函数中，客体变元的取值范围称为个体域，又称之为论域。个体域可以是有限事物的集合，也可以是无限事物的集合。<br>全总个体域：宇宙间一切事物组成的个体域称为全总个体域。</p>
+<h2>第 18 页</h2>
+<p>&lt;number&gt;</p>
+<p>第二章  谓词逻辑（Predicate Logic）  2.2命题函数与量词(Propositional functions &amp; Quantifiers)</p>
+<p>2.2.2 量词(Quantifiers)<br>量词：分为全称量词()和存在量词()<br>1.全称量词(The Universal Quantifiers)<br>对日常语言中的“一切”、“所有”、“凡”、“每一<br>个”、“任意”等词，用符号“” 表示， ｘ表示<br>对个体域里的所有个体， ｘＦ(ｘ)表示个体域<br>里的所有个体具有性质F.符号“”称为全称量词.</p>
+<h2>第 19 页</h2>
+<p>&lt;number&gt;</p>
+<p>第二章  谓词逻辑（Predicate Logic）  2.2命题函数与量词(Propositional functions &amp; Quantifiers)</p>
+<p>例3：在谓词逻辑中将下列命题符号化.<br>（1）凡是人都呼吸。<br>（2）每个学生都要参加考试。<br>(3)  任何整数或是正的或是负的。<br>解: (1) 当个体域为人类集合时：<br>令F(x): x呼吸。则（1）符号化为xF(x)<br>当个体域为全总个体域时：<br>令M(x): x是人。则（1）符号化为<br>x(M(x) F(x)).</p>
+<h2>第 20 页</h2>
+<p>&lt;number&gt;</p>
+<p>第二章  谓词逻辑（Predicate Logic）  2.2命题函数与量词(Propositional functions &amp; Quantifiers)</p>
+<p>(2) 当个体域为全体学生的集合时：<br>令P(x): x要参加考试。则（2）符号化为xP(x).<br>当个体域为全总个体域时：<br>令S(x): x是学生。则（2）符号化为<br>x(S(x) P(x)).<br>(3) 当个体域为全体整数的集合时：<br>令P(x): x是正的。N(x): x是负的。则（3）符号化为<br>x(P(x)∨N(x)) .<br>当个体域为全总个体域时：<br>令I(x): x是整数。则（3）符号化为<br>x(I(x)(P(x)∨N(x))).</p>
+<h2>第 21 页</h2>
+<p>&lt;number&gt;</p>
+<p>第二章  谓词逻辑（Predicate Logic）  2.2命题函数与量词(Propositional functions &amp; Quantifiers)</p>
+<p>2.存在量词(The Existential Quantifiers)<br>对日常语言中的“有一个”、“有的”、“存在着”、“至少<br>有一个”、 “存在一些”等词，用符号“” 表示， ｘ表<br>示存在个体域里的个体， ｘＦ(ｘ)表示存在个体域里<br>的个体具有性质F.符号“”称为存在量词.<br>例4：在谓词逻辑中将下列命题符号化.<br>（1）一些数是有理数。<br>（2）有些人活百岁以上。</p>
+<h2>第 22 页</h2>
+<p>&lt;number&gt;</p>
+<p>第二章  谓词逻辑（Predicate Logic）  2.2命题函数与量词(Propositional functions &amp; Quantifiers)</p>
+<p>解: (1)令Q(x): x是有理数。则（1）符号化为ｘQ(x)。<br>（2）当个体域为人类集合时：<br>令G(x): x活百岁以上。则（2）符号化为xG(x)。<br>当个体域为全总个体域时：<br>令M(x): x是人。则（2）符号化为<br>x(M(x) ∧ G(x))</p>
+<h2>第 23 页</h2>
+<p>&lt;number&gt;</p>
+<p>第二章  谓词逻辑（Predicate Logic）  2.2命题函数与量词(Propositional functions &amp; Quantifiers)</p>
+<p>有时需要同时使用多个量词。<br>例5. 命题“对任意的x,存在y, 使得x+y=5”, 取个体域为实<br>数集合,则该命题符号化为: x y H(x,y).<br>其中H(x,y): x+y=5. 这是个真命题.</p>
+<ol>
+<li>使用量词时应注意的问题</li>
+</ol>
+<p>（1）在不同的个体域，同一命题的符号化形式可能相同也可能不同。<br>（2）在不同的个体域，同一命题的真值可能相同也可能不同。(如,R(x)表示x为大学生。如果个体域为大学里的某个班级的学生，则x R(x)为真；若个体域为中学里的某个班级的学生，则x R（x）为假.).</p>
+<h2>第 24 页</h2>
+<p>&lt;number&gt;</p>
+<p>第二章  谓词逻辑（Predicate Logic）  2.2命题函数与量词(Propositional functions &amp; Quantifiers)</p>
+<p>（3）约定以后如不指定个体域，默认为全总个体域。对每个客体变元的变化范围,用特性谓词加以限制.<br>特性谓词:限定客体变元变化范围的谓词(如例3中的M（x）).<br>一般而言，对全称量词，特性谓词常作蕴含的前<br>件，如（x）(M(x) F(x))；对存在量词，特性<br>谓词常作合取项，如（ x）(M(x)∧ G(x)).</p>
+<h2>第 25 页</h2>
+<p>&lt;number&gt;</p>
+<p>第二章  谓词逻辑（Predicate Logic）  2.2命题函数与量词(Propositional functions &amp; Quantifiers)</p>
+<p>(4)一般来说，当多个量词同时出现时，它们的顺序不能随意调换。如：<br>在实数域上用H(x,y)表示x+y=5,则命题“对于任意的x,都存在y使得x+y=5”可符号化为： xyH(x,y) ,其真值为1.若调换量词顺序后为： yxH(x,y) , 其真值为0。<br>(5) 当个体域为有限集合时,如D={a1, a2 …, an},对任意<br>谓词A(x),有<br>(x) A(x)A(a1)∧A(a2)∧…∧A(an )<br>（x）A(x)A(a1)∨A(a2)∨…∨A(an )</p>
+<h2>第 26 页</h2>
+<p>&lt;number&gt;</p>
+<p>第二章  谓词逻辑（Predicate Logic）  2.2命题函数与量词(Propositional functions &amp; Quantifiers)</p>
+<p>例6：在谓词逻辑中将下列命题符号化.<br>（1）所有的人都长头发。<br>（2）有的人吸烟。<br>（3）没有人登上过木星。<br>（4）清华大学的学生未必都是高素质的。<br>解：令　M(x): x是人。（特性谓词）<br>（1）    令F(x): x长头发。则符号化为：<br>（x）(M(x) F(x))</p>
+<h2>第 27 页</h2>
+<p>&lt;number&gt;</p>
+<p>第二章  谓词逻辑（Predicate Logic）  2.2命题函数与量词(Propositional functions &amp; Quantifiers)</p>
+<p>（2）   令S(x): x吸烟。则符号化为：<br>（x）(M(x)∧S(x))<br>（3）   令D(x): x登上过木星。则符号化为：<br>（x）(M(x)∧D(x))<br>（4）令Q(x):x是清华大学的学生。H(x):x是高素质的。则符号化为：<br>（x）(Q(x) H(x))</p>
+<h2>第 28 页</h2>
+<p>&lt;number&gt;</p>
+<p>第二章  谓词逻辑（Predicate Logic）  2.2命题函数与量词(Propositional functions &amp; Quantifiers)</p>
+<p>小结:本节介绍了n元谓词、命题函数、全称量词和存在量词等概念。重点掌握全称量词和存在量词及量化命题的符号化。<br>作业：P59 （2）单数</p>
+<h2>第 29 页</h2>
+<p>&lt;number&gt;</p>
+<p>离散数学(Discrete Mathematics)</p>
+<h2>第 30 页</h2>
+<p>&lt;number&gt;</p>
+<p>第二章  谓词逻辑（Predicate Logic）</p>
+<p>2.1谓词的概念与表示(Predicate  and its expression)<br>2.2命题函数与量词(Propositional functions &amp; Quantifiers)<br>2.3谓词公式与翻译(Predicate formulae)<br>2.4变元的约束(Bound of variable)<br>2.5谓词演算的等价式与蕴含式(Equivalences &amp;<br>implications of predicate calculus)<br>2.6前束范式(Prenex normal form)<br>2.7谓词演算的推理理论(Inference theory of<br>predicate calculus)</p>
+<h2>第 31 页</h2>
+<p>&lt;number&gt;</p>
+<p>第二章  谓词逻辑（Predicate Logic）  2.3谓词公式与翻译(Predicate formulae)</p>
+<p>2.3谓词公式与翻译(Predicate formulae)<br>n元谓词A(x1，x2...xn) 称为谓词演算的原子公式。<br>定义2.3.1谓词演算的合式公式,可由下述各条组成:<br>（1）原子公式是合式公式。<br>（2）若A 是合式公式，则(A)也是合式公式。<br>（3）若A，B是合式公式，则(A ∧ B)，(A ∨ B)，(A  B)，(A  B)也是合式公式。<br>（4）若A是合式公式，x是A中出现的任何变元,则(x)A , (x)A，也是合式公式。<br>(5)只有有限次应用(1)~(4)得到的公式是合式公式.</p>
+<h2>第 32 页</h2>
+<p>&lt;number&gt;</p>
+<p>第二章  谓词逻辑（Predicate Logic）  2.3谓词公式与翻译(Predicate formulae)</p>
+<p>例1：在谓词逻辑中将下列命题符号化.<br>（1）凡正数都大于零。<br>（2）存在小于2的素数。<br>（3）没有不能表示成分数的有理数。<br>（4）并不是所有参加考试的人都能取得好成绩。<br>解：<br>（1）    令F(x): x是正数。M(x):x大于零。则符号化为：<br>（x）(F(x)M(x))</p>
+<h2>第 33 页</h2>
+<p>&lt;number&gt;</p>
+<p>第二章  谓词逻辑（Predicate Logic）  2.3谓词公式与翻译(Predicate formulae)</p>
+<p>（2）令E(x): x小于2。S(x):x是素数。则符号化为：<br>（x)(E(x)∧S(x))　　　真值为0。<br>（3）令D(x): x是有理数。F(x):x能表示成分数。则符号化为： (x)(D(x) F(x))    或<br> (x)(D(x)∧ F(x))　　　真值为１。<br>（4）令M(x)：x是人.Q(x):x参加考试。H(x):x取得好成绩。则符号化为：<br> (x)(M(x)∧Q(x)H(x))  或<br>(x)(M(x)∧Q(x)∧ H(x))</p>
+<h2>第 34 页</h2>
+<p>&lt;number&gt;</p>
+<p>第二章  谓词逻辑（Predicate Logic）  2.2命题函数与量词(Propositional functions &amp; Quantifiers)</p>
+<p>例2：在谓词逻辑中将下列命题符号化.<br>（1）所有运动员都钦佩某些教练.<br>（2）有些运动员不钦佩教练.<br>设：L(x):x是运动员    J(y):y是教练<br>A(x,y):x钦佩y<br>(1) (x)(L(x) （y)(J(y)∧A(x,y)))<br>(2)（x)(L(x) ∧(y)(J(y)A(x,y)))</p>
+<h2>第 35 页</h2>
+<p>&lt;number&gt;</p>
+<p>第二章  谓词逻辑（Predicate Logic）  2.2命题函数与量词(Propositional functions &amp; Quantifiers)</p>
+<p>例3：在谓词逻辑中将下列命题符号化.<br>（1）那位戴眼镜的用功的大学生在看这本大而厚的巨著.<br>（2）P63 (7)<br>解: (1)设：S(x):x是大学生.   A(x):x戴眼镜.<br>B(x):x用功.   D(x):x是巨著. F(x,y):x看y.<br>E(y):y是大的.   G(y):y是厚的. a:那位   b:这本<br>(1)符号化为: A(a)∧B(a)∧S(a)∧D(b)∧E(b)∧G(b)∧F(a,b)</p>
+<h2>第 36 页</h2>
+<p>&lt;number&gt;</p>
+<p>第二章  谓词逻辑（Predicate Logic）  2.2命题函数与量词(Propositional functions &amp; Quantifiers)</p>
+<p>（2）设：P(x,y):x在y连续. Q(x,y):x大于y.<br>(2)符号化为:<br>P(f,a)(ε)(Q(ε,0)((δ) Q(δ,0)∧<br>(x) (Q(δ,        )Q(ε,                 ))))<br>P(f,a)(ε)(δ)(x)(Q(ε,0)<br>(Q(δ,0)∧(Q(δ,        )Q(ε,               )))).</p>
+<h2>第 37 页</h2>
+<p>&lt;number&gt;</p>
+<p>第二章  谓词逻辑（Predicate Logic）  2.2命题函数与量词(Propositional functions &amp; Quantifiers)</p>
+<p>小结：本节介绍了谓词合式公式的概念，重点掌握谓词公式的翻译.<br>作业: P63 (5)</p>
+<h2>第 38 页</h2>
+<p>&lt;number&gt;</p>
+<p>离散数学(Discrete Mathematics)</p>
+<h2>第 39 页</h2>
+<p>&lt;number&gt;</p>
+<p>第二章  谓词逻辑（Predicate Logic） 2.4变元的约束(Bound of variable)</p>
+<p>2.1谓词的概念与表示(Predicate  and its expression)<br>2.2命题函数与量词(Propositional functions &amp; Quantifiers)<br>2.3谓词公式与翻译(Predicate formulae)<br>2.4变元的约束(Bound of variable)<br>2.5谓词演算的等价式与蕴含式(Equivalences &amp;<br>implications of predicate calculus)<br>2.6前束范式(Prenex normal form)<br>2.7谓词演算的推理理论(Inference theory of<br>predicate calculus)</p>
+<h2>第 40 页</h2>
+<p>&lt;number&gt;</p>
+<p>第二章  谓词逻辑（Predicate Logic） 2.4变元的约束(Bound of variable)</p>
+<p>2.4变元的约束(Bound of variable)<br>2.4.1变元的约束<br>2.4.2</p>
+<p>约束变元的换名与自由变元的代入</p>
+<h2>第 41 页</h2>
+<p>&lt;number&gt;</p>
+<p>第二章  谓词逻辑（Predicate Logic） 2.4变元的约束(Bound of variable)</p>
+<p>2.4.1变元的约束 (Bound of variable)<br>定义2.4.1:在谓词公式中,形如(x)P(x)和(x)P(x)的部<br>分,称为谓词公式的x约束部分. (x)P(x)或(x)P(x)中<br>的x叫做量词的指导变元或作用变元，P(x)称为相应量<br>词的作用域或辖域。<br>在x和x的辖域中，x的所有出现都称为约束出现，相<br>应的x称为约束变元; P(x)中除约束变元以外出现的变<br>元称为是自由变元。<br>例1： 1、x( H(x,y)y(W(y) ∧ L(x,y,z)))<br>2、 x( H(x)W(y))  y( F(x) ∧L(x,y,z))</p>
+<h2>第 42 页</h2>
+<p>&lt;number&gt;</p>
+<p>第二章  谓词逻辑（Predicate Logic） 2.4变元的约束(Bound of variable)</p>
+<p>说明:<br>(1)n元谓词公式A(x1，x2...xn) 中有n个自由变元,若对其中的k(k≤n)个进行约束,则构成了n-k元谓词;如果一个公式中没有自由变元出现,则该公式就变成了一个命题<br>(2)一个公式的约束变元所使用的名称符号是无关紧要的,如(x)M(x)与(y)M(y)意义相同.</p>
+<h2>第 43 页</h2>
+<p>&lt;number&gt;</p>
+<p>第二章  谓词逻辑（Predicate Logic） 2.4变元的约束(Bound of variable)</p>
+<p>2.4.2 约束变元的换名与自由变元的代入规则<br>在例1中,一个变元在同一个公式中既是自由出现又是约束出现,这样在理解上容易发生混淆.为了避免这种混乱,可对约束变元进行换名.<br>换名规则: (对约束变元而言）<br>对约束变元进行换名,使得一个变元在一个公式中只呈一<br>种形式出现<br>(1)约束变元可以换名,其更改的变元名称范围是量词中的指导变元以及该量词作用域中所出现的该变元,公式的其余部分不变<br>(2)换名时一定要更改为作用域中没有出现的变元名称</p>
+<h2>第 44 页</h2>
+<p>&lt;number&gt;</p>
+<p>第二章  谓词逻辑（Predicate Logic） 2.4变元的约束(Bound of variable)</p>
+<p>例1: x( P(x)R(x,y))∧ L(x,y)<br>换名为t( P(t)R(t,y))∧ L(x,y)</p>
+<p>x( H(x,y)y(W(y) ∧ L(x,y,z)))<br>换名为x( H(x,y)s(W(s) ∧ L(x,s,z)))</p>
+<h2>第 45 页</h2>
+<p>&lt;number&gt;</p>
+<p>第二章  谓词逻辑（Predicate Logic） 2.4变元的约束(Bound of variable)</p>
+<p>代入规则（对自由变元而言）<br>对公式中自由变元的更改称为代入<br>(1)对于谓词公式中的自由变元可以作代入,代入时需要对公式中出现该自由变元的每一处进行;<br>(2)用以代入的变元与原公式中所有变元的名称不能相同.<br>例如对例1中的公式x( P(x)R(x,y))∧ L(x,y)<br>自由变元y用z来代入,得<br>x( P(x)R(x,z))∧ L(x,z)</p>
+<h2>第 46 页</h2>
+<p>&lt;number&gt;</p>
+<p>第二章  谓词逻辑（Predicate Logic） 2.4变元的约束(Bound of variable)</p>
+<p>小结：本节介绍了约束变元、自由变元的概念，重点掌握约束变元的换名与自由变元的代入.<br>作业: P66 (4)a， （5）b</p>
+<h2>第 47 页</h2>
+<p>&lt;number&gt;</p>
+<p>离散数学(Discrete Mathematics)</p>
+<h2>第 48 页</h2>
+<p>&lt;number&gt;</p>
+<p>第二章  谓词逻辑（Predicate Logic）</p>
+<p>2.1谓词的概念与表示(Predicate  and its expression)<br>2.2命题函数与量词(Propositional functions &amp; Quantifiers)<br>2.3谓词公式与翻译(Predicate formulae)<br>2.4变元的约束(Bound of variable)<br>2.5谓词演算的等价式与蕴含式(Equivalences &amp;<br>implications of predicate calculus)<br>2.6前束范式(Prenex normal form)<br>2.7谓词演算的推理理论(Inference theory of<br>predicate calculus)</p>
+<h2>第 49 页</h2>
+<p>&lt;number&gt;</p>
+<p>第二章  谓词逻辑（Predicate Logic）  2.5谓词演算的等价式与蕴含式</p>
+<p>2.5谓词演算的等价式与蕴含式(Equivalences &amp;<br>implications of predicate calculus)<br>2.5.1谓词的等价和永真的概念<br>2.5.2谓词演算的等价式与蕴含式</p>
+<h2>第 50 页</h2>
+<p>&lt;number&gt;</p>
+<p>第二章  谓词逻辑（Predicate Logic）  2.5谓词演算的等价式与蕴含式</p>
+<p>2.5.1谓词的等价和永真的概念<br>定义2.5.1:给定任意的谓词公式A,其个体域为E,对于A的所有赋值,公式A都为真,则称A在E上是永真的(或有效的);若对于A的所有赋值,公式A都为假,则称A在E上是永假的(或不可满足的);若至少存在着一种赋值使得公式A为真,则称A在E上是可满足的.<br>定义2.5.2:给定任何两个谓词公式A、B，设它们有共同的个体域E，若对A和B的任一组变元进行赋值，所得命题的真值相同，则称谓词公式A和B在E上等价，并记为A  B</p>
+<h2>第 51 页</h2>
+<p>&lt;number&gt;</p>
+<p>第二章  谓词逻辑（Predicate Logic）  2.5谓词演算的等价式与蕴含式</p>
+<p>1、命题公式的推广<br>在命题公式中成立的式子，用谓词公式去代换其中相应的命题变元，得到的公式依然成立<br>如： x( P(x)Q(x))  x( P(x) ∨ Q(x))<br>P(x) ∨  Q(x)   （P(x) ∧ Q(x)）等<br>2、量词与之间的关系<br>（x）P(x) （x） P(x)<br>（x）P(x）（x） P(x)</p>
+<h2>第 52 页</h2>
+<p>&lt;number&gt;</p>
+<p>第二章  谓词逻辑（Predicate Logic）  2.5谓词演算的等价式与蕴含式</p>
+<p>3、量词辖域的扩张与收缩<br>量词辖域中如果有合取或析取项，且其中有一个是命题，则可将该命题移至量词辖域之外。如：<br>（x）（A(x)∨B）（x）A(x)∨B<br>（x）（A(x)∧B）（x）A(x)∧ B<br>（x）（A(x)∨B）（x）A(x)∨B<br>（x）（A(x)∧B）（x）A(x)∧B</p>
+<h2>第 53 页</h2>
+<p>&lt;number&gt;</p>
+<p>第二章  谓词逻辑（Predicate Logic）  2.5谓词演算的等价式与蕴含式</p>
+<p>量词辖域的扩张<br>（xA(x)B）（x) (A(x) B）<br>(（x)A(x) B)(x) (A(x)B）<br>(B  (x)A(x)）（x)(B A(x)）<br>(B  (x)A(x))(x)(B A(x))<br>另有多个公式见课本70页<br>4、量词分配等值式<br>设A(x)、B(x)是任意的含自由出现个体变元x的公式，则<br>(1) x(A(x)∧B(x)) x A(x) ∧ x B(x)<br>(2)x(A(x)∨B(x)) x A(x) ∨  x B(x)<br>(3)x(A(x)∨B(x)) ≠ x A(x)∨ x B(x)<br>(4)  x(A(x)∧B(x)) ≠ x A(x)∧ x B(x)</p>
+<h2>第 54 页</h2>
+<p>&lt;number&gt;</p>
+<p>第二章  谓词逻辑（Predicate Logic）  2.5谓词演算的等价式与蕴含式</p>
+<p>小结：本节介绍了约束变元、自由变元的概念，重点掌握约束变元的换名与自由变元的代入.<br>作业: P66 (4)a， （5）b</p>
+<h2>第 55 页</h2>
+<p>&lt;number&gt;</p>
+<p>离散数学(Discrete Mathematics)</p>
+<h2>第 56 页</h2>
+<p>&lt;number&gt;</p>
+<p>第二章  谓词逻辑（Predicate Logic）</p>
+<p>2.1谓词的概念与表示(Predicate  and its expression)<br>2.2命题函数与量词(Propositional functions &amp; Quantifiers)<br>2.3谓词公式与翻译(Predicate formulae)<br>2.4变元的约束(Bound of variable)<br>2.5谓词演算的等价式与蕴含式(Equivalences &amp;<br>implications of predicate calculus)<br>2.6前束范式(Prenex normal form)<br>2.7谓词演算的推理理论(Inference theory of<br>predicate calculus)</p>
+<h2>第 57 页</h2>
+<p>&lt;number&gt;</p>
+<p>第二章  谓词逻辑（Predicate Logic）  2. 6前束范式(Prenex normal form)</p>
+<p>2.6前束范式(Prenex normal form)<br>2.6.1前束范式(Prenex normal form)<br>2.6.2前束析取范式和前束合取范式(Prenex<br>disjunctive normal form &amp; Prenex<br>conjunctive normal form)</p>
+<h2>第 58 页</h2>
+<p>&lt;number&gt;</p>
+<p>第二章  谓词逻辑（Predicate Logic）  2. 6前束范式(Prenex normal form)</p>
+<p>2.6.1前束范式(Prenex normal form)<br>定义2.6.1:任何一个谓词公式A，如果具有如下形式：<br>(□x1) (□x2)… (□xn)B<br>其中□可能是量词或量词， xi（i=1，… n）是客体变<br>元，B是不含量词的谓词公式，则称A是前束范式。<br>说明:前束范式的量词均在全式的开头,它们的作用域延伸到整个公式的末尾。<br>例1:   xy（（F(x)∧G(y)）∧ H(x,y)） √<br>xy(F(x,y)∧G(y,z))∨ x H(x,y,z) ×</p>
+<h2>第 59 页</h2>
+<p>&lt;number&gt;</p>
+<p>第二章  谓词逻辑（Predicate Logic）  2. 6前束范式(Prenex normal form)</p>
+<p>定理2.6.1:任何一个谓词公式,均和一个前束范式等价。<br>前束范式的求法：<br>第一步：否定深入。即利用量词转化公式，把否定联结<br>词深入到命题变元和谓词填式的前面。<br>第二步：改名。即利用换名规则、代入规则更换一些变元的名称，以便消除混乱。<br>第三步：量词前移。即利用量词辖域的收缩与扩张把量词移到前面。这样便可求出与公式等价的前束范式。</p>
+<h2>第 60 页</h2>
+<p>&lt;number&gt;</p>
+<p>第二章  谓词逻辑（Predicate Logic）  2. 6前束范式(Prenex normal form)</p>
+<p>例2:求下列公式的前束范式。</p>
+<h2>第 61 页</h2>
+<p>&lt;number&gt;</p>
+<p>第二章  谓词逻辑（Predicate Logic）  2. 6前束范式(Prenex normal form)</p>
+<p>解:</p>
+<h2>第 62 页</h2>
+<p>&lt;number&gt;</p>
+<p>第二章  谓词逻辑（Predicate Logic）  2. 6前束范式(Prenex normal form)</p>
+<h2>第 63 页</h2>
+<p>&lt;number&gt;</p>
+<p>第二章  谓词逻辑（Predicate Logic）  2. 6前束范式(Prenex normal form)</p>
+<h2>第 64 页</h2>
+<p>&lt;number&gt;</p>
+<p>第二章  谓词逻辑（Predicate Logic）  2. 6前束范式(Prenex normal form)</p>
+<h2>第 65 页</h2>
+<p>&lt;number&gt;</p>
+<p>第二章  谓词逻辑（Predicate Logic）  2. 6前束范式(Prenex normal form)</p>
+<p>2.6.2前束析取范式和前束合取范式(Prenex disjunctive<br>normal form &amp; Prenex conjunctive normal form)<br>在前束范式的基础上,可以定义前束析(合)取范式.<br>定义2.6.2:任何一个谓词公式A，如果具有如下形式则称为前束合取范式：<br>(□x1)(□x2)…(□xn)[(A11∨A12∨…∨A1k1)∧ (A21∨A22∨…∨A2k2 )∧…∧(Am1∨Am2∨…∨Amkm)] 其中n大于等于1,Aij(j=1, …,ki ,i=1,2,3,…,m)为原子谓词公式或其否定,□为量词或量词， xi（i=1，… n）为客体变元.</p>
+<h2>第 66 页</h2>
+<p>&lt;number&gt;</p>
+<p>第二章  谓词逻辑（Predicate Logic）  2. 6前束范式(Prenex normal form)</p>
+<p>任何一个谓词公式A，如果具有如下形式则称为前束析取范式：<br>(□x1) (□x2)…(□xn)[(A11∧A12∧…∧A1k1)∨<br>(A21∧A22∧…∧A2k2 )∨…∨(Am1∧Am2∧…∧Amkm)]<br>其中n大于等于1,Aij(j=1, …,ki ,i=1,2,3,…,m)为原子谓词公式或其否定,□为量词或量词， xi（i=1，… n）为客体变元.<br>定理2.6.2:每一个谓词公式都可以转化为与其等价的前束析(合)取范式.</p>
+<h2>第 67 页</h2>
+<p>&lt;number&gt;</p>
+<p>第二章  谓词逻辑（Predicate Logic）  2. 6前束范式(Prenex normal form)</p>
+<p>例2:求下列公式的前束析取范式和前束合取范式.</p>
+<p>解:</p>
+<h2>第 68 页</h2>
+<p>&lt;number&gt;</p>
+<p>第二章  谓词逻辑（Predicate Logic）  2. 6前束范式(Prenex normal form)</p>
+<p>小结：本节介绍了谓词公式的前束范式、前束析取范式和前束合取范式.重点掌握前束析取范式和前束合取范式求法。</p>
+<p>作业: P75 (2) b，d</p>
+<h2>第 69 页</h2>
+<p>离散数学(Discrete Mathematics)</p>
+<p>&lt;number&gt;</p>
+<h2>第 70 页</h2>
+<p>&lt;number&gt;</p>
+<p>第二章  谓词逻辑（Predicate Logic）</p>
+<p>2.1谓词的概念与表示(Predicate  and its expression)<br>2.2命题函数与量词(Propositional functions &amp; Quantifiers)<br>2.3谓词公式与翻译(Predicate formulae)<br>2.4变元的约束(Bound of variable)<br>2.5谓词演算的等价式与蕴含式(Equivalences &amp;<br>implications of predicate calculus)<br>2.6前束范式(Prenex normal form)<br>2.7谓词演算的推理理论(Inference theory of<br>predicate calculus)</p>
+<h2>第 71 页</h2>
+<p>&lt;number&gt;</p>
+<p>第二章  谓词逻辑（Predicate Logic）  2.7谓词演算的推理理论(Inference theory of      predicate calculus)</p>
+<p>2.7谓词演算的推理理论(Inference theory of<br>predicate calculus)<br>2.7.1推理规则(Rules of inference)<br>2.7.2证明举例 (Examples of proof)</p>
+<h2>第 72 页</h2>
+<p>&lt;number&gt;</p>
+<p>第二章  谓词逻辑（Predicate Logic）  2.7谓词演算的推理理论(Inference theory of      predicate calculus)</p>
+<p>2.7.1推理规则(Rules of inference)<br>在谓词演算中，推理的形式结构仍为<br>H1H2H3....HnC<br>若 H1H2H3....HnC是永真式，则称由前提<br>H1,H2,H3,.…,Hn逻辑的推出结论C，但在谓词逻<br>辑中, H1,H2,H3,.…,Hn , C均为谓词公式。<br>命题演算中的推理规则，可在谓词推理理论中应用。</p>
+<h2>第 73 页</h2>
+<p>&lt;number&gt;</p>
+<p>第二章  谓词逻辑（Predicate Logic）  2.7谓词演算的推理理论(Inference theory of      predicate calculus)</p>
+<p>与量词有关的四条重要推理规则：<br>1、全称指定规则（US规则）<br>2、全称推广规则（UG规则）<br>3、存在指定规则（ES规则）<br>4、存在推广规则（EG规则）<br>注意：只能对前束范式适用上述规则。</p>
+<h2>第 74 页</h2>
+<p>&lt;number&gt;</p>
+<p>第二章  谓词逻辑（Predicate Logic）  2.7谓词演算的推理理论(Inference theory of      predicate calculus)</p>
+<ol>
+<li>全称指定规则（ US ）：<br>x P(x)<br>∴P(c)</li>
+</ol>
+<p>使用此规则时要注意：<br>（1）x是P(x)中的自由变元；<br>（2）y为任意不在P(x)中约束出现的个体变元；<br>（3） c是论域中的某个任意的客体.<br>关于（2）的反例：</p>
+<h2>第 75 页</h2>
+<p>&lt;number&gt;</p>
+<p>第二章  谓词逻辑（Predicate Logic）  2.7谓词演算的推理理论(Inference theory of      predicate calculus)</p>
+<p>关于（2）的反例：<br>设                               则                                        , x,y的 个体域为R，  是一真命题.<br>若应用US得                    ，则是错误的。<br>正确的做法是换成<br>2.全称推广规则（UG）：<br>P(y)<br>∴ x P(x)</p>
+<h2>第 76 页</h2>
+<p>&lt;number&gt;</p>
+<p>第二章  谓词逻辑（Predicate Logic）  2.7谓词演算的推理理论(Inference theory of      predicate calculus)</p>
+<p>使用此规则时注意:<br>(1)   y在P(y)中自由出现，且y取任何值时P均为真。<br>(2)   x不在A(y)中约束出现.<br>3.存在指定规则(ES):<br>x P(x)<br>∴ P(c)<br>注:c是论域中的某些客体,c并不是任意的</p>
+<h2>第 77 页</h2>
+<p>&lt;number&gt;</p>
+<p>第二章  谓词逻辑（Predicate Logic）  2.7谓词演算的推理理论(Inference theory of      predicate calculus)</p>
+<p>使用此规则时应注意：<br>（1）c  是使P为真的特定客体；<br>（2）如果P(x)中有其他自由变元出现，且x是随其他自由变元变化的，那么不能使用此规则。<br>(4)存在推广规则(EG):<br>P(c)<br>∴ x P(x)</p>
+<h2>第 78 页</h2>
+<p>&lt;number&gt;</p>
+<p>第二章  谓词逻辑（Predicate Logic）  2.7谓词演算的推理理论(Inference theory of      predicate calculus)</p>
+<p>使用此规则时注意:<br>(1) c是个体域中某个确定的个体。<br>(2) 代替c的x不能已在A(c)中出现。<br>2.7.2证明举例 (Examples of proof)</p>
+<h2>第 79 页</h2>
+<p>&lt;number&gt;</p>
+<p>第二章  谓词逻辑（Predicate Logic）  2.7谓词演算的推理理论(Inference theory of      predicate calculus)</p>
+<p>例1证明苏格拉底三段论:凡是人都是要死的。苏格拉底是人。苏格拉底是要死的。<br>设：M(x):x是人。D(x):x 是要死的。a:苏格拉底。则：<br>前提：x(M(x)D(x))，M(a）.<br>结论： D(a) .<br>证明：① x (M(x)D(x))   P<br>② M(a)D(a)        US ①<br>③ M(a)              P<br>④ D(a)              T② ③ I11<br>(直接证法)</p>
+<h2>第 80 页</h2>
+<p>&lt;number&gt;</p>
+<p>第二章  谓词逻辑（Predicate Logic）  2.7谓词演算的推理理论(Inference theory of      predicate calculus)</p>
+<p>例2:前提：x(F(x)∨G(x))，  x G(x).<br>结论： x F(x) .<br>证明：①  x G(x)           P<br>② x  G(x)          T① 置换规则<br>③  G(a)             US ②<br>④ x(F(x)∨G(x))     P<br>⑤ F(a)∨G(a)         US ④<br>⑥ F(a)               T③  ⑤,I<br>⑦ x F(x)            EG ⑥</p>
+<h2>第 81 页</h2>
+<p>&lt;number&gt;</p>
+<p>第二章  谓词逻辑（Predicate Logic）  2.7谓词演算的推理理论(Inference theory of      predicate calculus)</p>
+<p>例3:前提： x (A(x)B(x))， x A(x)<br>结论： x B(x)<br>证明：① x A(x)                         P前提引入<br>② A(c)              ES ①<br>③ x (A(x)B(x))  P前提引入<br>④ A(c)B(c)        US ③<br>⑤ B(c)                               T② ④<br>⑥ x B(x)           EG ⑤<br>注意： ① ③引入的顺序不可更改！</p>
+<h2>第 82 页</h2>
+<p>&lt;number&gt;</p>
+<p>第二章  谓词逻辑（Predicate Logic）  2.7谓词演算的推理理论(Inference theory of      predicate calculus)</p>
+<p>例4:前提：x(F(x)∨G(x)), x( R(x)∨  G(x)), x R(x).<br>结论： x F(x) .(归谬法)<br>证明：①  x F(x)              P结论否定引入<br>② x  F(x)              T①<br>③  F(a)                 ES ②<br>④ x(F(x) ∨ G(x))       P<br>⑤ F(a) ∨ G(a)            US ④<br>⑥ G(a)                    T③⑤<br>⑦x( R(x)∨  G(x))     P<br>⑧  R(a)∨  G(a)         US ⑦<br>⑨  R(a)                   T⑥ ⑧<br>⑩ x R(x)                  P<br>(11)  R(a)                                          US ⑩<br>(12)  R(a) ∧ R(a)                       矛盾式</p>
+<h2>第 83 页</h2>
+<p>&lt;number&gt;</p>
+<p>第二章  谓词逻辑（Predicate Logic）  2.7谓词演算的推理理论(Inference theory of      predicate calculus)</p>
+<p>例5:证明: x(P(x)∨Q(x))=&gt;(x)P(x) (x)Q(x)     (附加前提法)<br>证明：(1) (x)P(x)        P(附加前提)<br>(2) (x)P(x)        T(1)<br>(3) P(c)            ES(2)<br>(4) x(P(x)∨Q(x))   P<br>(5) P(c)∨Q(c)       US(4)<br>(6) Q(c)             T(3)(5)<br>(7)(x)Q(x)          EG(6)<br>(8) (x)P(x) (x)Q(x)    CP</p>
+<h2>第 84 页</h2>
+<p>&lt;number&gt;</p>
+<p>第二章  谓词逻辑（Predicate Logic）  2.7谓词演算的推理理论(Inference theory of      predicate calculus)</p>
+<p>小结：本节介绍了谓词演算的推理规则,并举例说明了它们的应用. 重点:深刻理解四个推理规则,会应用它们推理证明.<br>作业: P79 (1)d,(2) a,(3)a</p>
+  <footer class="lesson-footer">
+    StudyMate · 左孝凌《离散数学》课件 2（本地转化稿） · 本地学习工作区
+  </footer>
+</article>
+
+<script src="../../../assets/sayo/sayo.js"></script>
+<script>LearnTheme.wire(document.getElementById('attachment-theme-checkbox'));</script>
+</body>
+</html>

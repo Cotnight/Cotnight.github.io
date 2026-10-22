@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="zh-CN" data-theme="dark">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>实验一：把推理判成有效 · 离散数学</title>
+
+<!-- 共享层在 .learning/assets/，课件在 .learning/subjects/<slug>/lessons/ 下，所以是 ../../../assets/ -->
+<link rel="stylesheet" href="../../../assets/sayo/sayo.css">
+<link rel="stylesheet" href="../../../assets/learn-theme.css">
+<link rel="stylesheet" href="../assets/style.css">
+
+<!-- 主题要在首帧前应用，避免闪白/闪黑 -->
+<script src="../../../assets/learn-theme.js"></script>
+<script>LearnTheme.apply();</script>
+</head>
+
+<body class="lesson-body">
+
+<nav class="lesson-bar">
+  <a href="../index.html">← 返回课程</a>
+  <span>离散数学</span>
+  <span class="lesson-bar__no">0003</span>
+  <!-- 课件页自带主题开关：学生从文件管理器直接打开课件时也能切暗色 -->
+  <label class="syo-toggle syo-toggle--theme lesson-bar__toggle" title="切换深浅主题" aria-label="切换深浅主题">
+    <input type="checkbox" id="lesson-theme-checkbox" checked>
+    <span class="syo-toggle-track"></span>
+    <span class="syo-toggle-knob">
+      <svg class="syo-toggle-sun" viewBox="0 0 20 20" fill="none" aria-hidden="true"><circle cx="10" cy="10" r="3.5" stroke="#f57c00" stroke-width="1.5"/><path d="M10 2v2.5M10 15.5V18M2 10h2.5M15.5 10H18M4.34 4.34l1.77 1.77M13.89 13.89l1.77 1.77M4.34 15.66l1.77-1.77M13.89 6.11l1.77-1.77" stroke="#f57c00" stroke-width="1.2" stroke-linecap="round"/></svg>
+      <svg class="syo-toggle-moon" viewBox="0 0 20 20" fill="none" aria-hidden="true"><path d="M16.5 12.5A6 6 0 019 4.5a6 6 0 007.5 8z" stroke="#5c6bc0" stroke-width="1.5" stroke-linejoin="round"/></svg>
+    </span>
+  </label>
+</nav>
+
+<article class="lesson">
+
+  <header class="lesson-header">
+    <span class="lesson-header__eyebrow">0003 · 实验一：把推理判成有效</span>
+    <h1>实验一：把推理判成有效</h1>
+    <p class="lesson-goal"><b>本节目标：</b>用标准库写出真值表引擎，把课件 1.8 的整批推理一次判定，并对上你纸上写的那几份证明。</p>
+  </header>
+
+  <!-- ── 正文：渲染器按内容文件（lessons/<序号>-<节点id>.md）产出，块词汇见 docs/规范/课件内容格式.md ── -->
+
+  <h2>这一节不引入新知识</h2>
+
+  <p>前面两课已经把两样东西交给你了：第 1 课给了一套编号（小项 <span class="math-inline">m_i</span>、大项 <span class="math-inline">M_i</span>，以及 <span class="math-inline">\Sigma m</span> 与 <span class="math-inline">\Pi M</span> 的写法），第 2 课给了一套证明（前提逐条写 <span class="math-inline">P</span>、结论拆成蕴含、三条路线各自的首行与末行）。</p>
+
+  <p>这一节把这两样接起来，做成<b>一个能跑的东西</b>：给它一组前提和一个结论，它穷举全部赋值，判出这个推理有效还是无效，并指出依据——有效时说"全部 <span class="math-inline">2^n</span> 个赋值里没有一个反例"，无效时给出那个反例赋值。</p>
+
+  <p>手算只判过一题，课件 1.8 上却有几十道。这件事本来就该交给程序。</p>
+
+  <h2>要做出什么</h2>
+
+  <p>三样，都是可观察的产物：</p>
+
+  <ol>
+    <li><code>engine.py</code> 里 7 个留白函数填完，<code>python -m unittest -v test_engine</code> <b>21 条全绿</b>；</li>
+    <li><code>python report.py</code> 打出 <b>16 行</b>，每行是「编号｜判定｜依据｜出处」——判无效的那 5 道带出反例赋值，判有效的 11 道写「反例 0 / <span class="math-inline">2^n</span>」；</li>
+    <li><code>audit.py</code> 里的 <code>MY_ANSWERS</code> 填满 16 道，<code>python audit.py</code> 打出两轮对账、<b>对不上 0 道</b>：第一轮引擎与课件答案，第二轮引擎与你纸上写的。</li>
+  </ol>
+
+  <p>第 3 样才是这次实验的正题。前两样是手段。</p>
+
+  <h2>怎么算过</h2>
+
+  <p>照被验收的两课的 <code>objective</code> 逐条落地，四条都过才算过。</p>
+
+  <p><b>一、编号要对得上第 1 课。</b> 第 1 课的要求是「把公式化成主析取范式，并读出它的成真赋值」。这里把它反过来用：给它一个公式，程序要能算出 <span class="math-inline">\Sigma m</span> 的那组编号，并说出每个编号对应的赋值是什么。判据是 <code>TestMinterms</code> 那三条——<code>$P\to Q$</code> 的 <span class="math-inline">\Sigma m</span> 是 <span class="math-inline">[0,1,3]</span>（只有 <span class="math-inline">10</span> 那一行是假），三个变元时 <span class="math-inline">P\wedge Q</span> 是 <span class="math-inline">[6,7]</span>，重言式占满全部编号、矛盾式是空表，<span class="math-inline">\Sigma m</span> 与 <span class="math-inline">\Pi M</span> 合起来正好占满 <span class="math-inline">0\ldots 2^n-1</span>。<b>编号规则与纸上那张表逐字一致</b>：变元按字母顺序排，第一个变元占最高位，真记 1。</p>
+
+  <p><b>二、判定要落在「前提合取蕴含结论是重言式」这一句上。</b> 这是第 1 课末尾埋的那句话，也是第 2 课定义 1.8.1 的原话。落到程序里就一行：<b>反例 = 前提全真且结论为假的赋值</b>；反例一个都没有，推理有效。判据是题库 16 道的判定与课件答案<b>逐道相等</b>（<code>TestBank</code>），而且判「无效」的每一道都拿得出反例——这正是 <code>report.py</code> 中间那一栏。</p>
+
+  <p><b>三、要与纸上那 8 道证明对账。</b> 第 2 课验收的是「用 P、T 规则写出三步以上的推理证明，格式不空转」。这一课验同一批题的另一面：<b>你纸上写得出证明的题，引擎必须判有效</b>；引擎判无效的那几道，你纸上一定写不出证明——因为证明的每一行要么引前提、要么按规则从已有的行推出，而"前提真、结论假"的那个赋值会让其中的某一步当场断掉。对不上的那一题，你要能指出它断在第几行（通常是偷偷把结论当成前提写成了 <span class="math-inline">P</span> 行）。</p>
+
+  <p><b>四、交付物要自证。</b> 两轮对账都打出 0 道，且 <code>report.py</code> 的每一行都有依据。这不是"我觉得对了"，是程序把 16 道逐题算了一遍、再与两份答案表逐题比了一遍。</p>
+
+  <p>四句话说完：<b>要做出什么</b>是一台能判有效性的真值表引擎；<b>怎么算过</b>是它的编号对上第 1 课、判定对上课件、结论对上你纸上那 8 道证明，两轮对账 0 道差异。</p>
+
+  <h2>从哪一步开始</h2>
+
+  <p>任务书在 <a href="../lab/0003-truth-engine/真值表引擎.md">lab · 真值表引擎</a>，六步：穷举赋值 → 递归求值 → <span class="math-inline">\Sigma m</span> 编号 → 反例与有效性 → 对账 → 看报告。每步都是"一小段讲解 + 立刻能跑的断言"，跑完那一步的类再往下走。索引与文件分工在 <a href="../lab/README.md">lab 总目录</a>。</p>
+
+  <p>数据格式与前两节完全相同（<code>'P'</code>、<code>('imp','P','Q')</code> 这套嵌套元组），题库、报告、对账三份文件都已写好，你只填 <code>engine.py</code> 的 7 个函数和 <code>audit.py</code> 里的 <code>MY_ANSWERS</code>。</p>
+
+  <div class="lesson-practice">
+    <div class="lesson-practice__head">
+      <span class="lesson-practice__level">上手做</span>
+      <span class="lesson-practice__title">交 lab：把引擎跑绿</span>
+    </div>
+
+      <p>先进目录、跑一次，看清红在哪：</p>
+
+      <pre data-lang="sh"><code>cd lab/0003-truth-engine
+python -m unittest -v test_engine</code></pre>
+
+      <p>这时全是 <code>NotImplementedError: 任务 1：……</code>。按任务书的第 1 步往下填，填一段跑一段：</p>
+
+      <pre data-lang="sh"><code>python -m unittest -v test_engine.TestValuations
+python -m unittest -v test_engine.TestEvaluate
+python -m unittest -v test_engine.TestMinterms
+python -m unittest -v test_engine.TestValidity</code></pre>
+
+      <p>四类都绿了再填对账那一步，然后看两份输出：</p>
+
+      <pre data-lang="sh"><code>python report.py
+python audit.py</code></pre>
+
+      <p>保底提示：<code>MY_ANSWERS</code> <b>先在纸上判</b>，再填。倒过来做（拿 <code>report.py</code> 的输出抄进去），这一课就只剩格式，看不出你哪一题判反了——而对账的全部意义就在那几道对不上的题上。</p>
+  </div>
+
+  <h2>自查清单</h2>
+
+  <ul>
+    <li><code>python -m unittest -v test_engine</code> 21 条全绿；<code>python report.py</code> 16 行；<code>python audit.py</code> 两轮 0 道。</li>
+    <li>判无效的 5 道（<code>C11</code>、<code>C12</code>、<code>C13</code>、<code>C15</code>、<code>C16</code>）报告里都带反例赋值，且你逐一代回前提验过一次。</li>
+    <li>不看代码能说出：反例为什么必须<b>同时</b>满足「前提全真」与「结论为假」；漏掉前者会让哪几道判反。</li>
+    <li>不看代码能说出：「无效」不等于「结论为假」——举 <code>C11</code> 的一个赋值说明。</li>
+    <li>不看代码能说出：<span class="math-inline">n</span> 个变元有几个赋值、编号怎么排、<span class="math-inline">\Sigma m</span> 与 <span class="math-inline">\Pi M</span> 为什么互补。</li>
+    <li>能说出 <code>C14</code>（前提是 <span class="math-inline">P</span> 与 <span class="math-inline">\neg P</span>）为什么判有效，以及它与你纸上写归谬法时"推出矛盾"那一步是同一件事。</li>
+    <li>那 8 道纸上写过的题：引擎判定与你的证明对得上；对不上的那一题，你已指出它断在第几行。</li>
+  </ul>
+
+  <h2>最可能卡在哪</h2>
+
+  <p><b>一、编号的位序写反。</b> 这是第 1 课就埋下的坑，这次由断言逐题报出来。表现有两种：<code>TestValuations</code> 报「第 5 项应当是 101」，或者 <code>TestMinterms</code> 报 <code>Σm 编号不对</code>。麻烦在于位序反了之后，编号<b>看起来照样像编号</b>——<code>P∧Q</code> 会算出 <code>[3, 7]</code> 而不是 <code>[6, 7]</code>，只差一次镜像而对不上任何手算结果。自查一句：三个变元时 <span class="math-inline">P</span> 乘 4、<span class="math-inline">Q</span> 乘 2、<span class="math-inline">R</span> 乘 1，<span class="math-inline">P=1,Q=0,R=1</span> 是 5。</p>
+
+  <p><b>二、反例只判了一半。</b> 只写 <code>evaluate(conclusion, env) == 0</code>（漏"前提全真"），会把"前提本来就不成立"的赋值也算成反例，于是 16 道全判无效；只写前提全真，则结论为真的行也被算进去。<code>TestBank</code> 会一次报四五道，报错信息里那几道基本都集中在 <code>C14</code>（前提自相矛盾）周围——它反例为零，最容易被误判。修法就一句：两个条件用 <code>and</code> 连起来。</p>
+
+  <p><b>三、把「无效」读成「结论为假」。</b> 无效只说明<b>存在</b>一个赋值让结论落空，结论在别的赋值上照样可以为真。这一条不会让测试变红，却会让对账表失去意义：<code>C11</code> 的反例是 <code>01</code>，依据是"<span class="math-inline">P\to Q</span> 与 <span class="math-inline">Q</span> 在这个赋值上全真，而 <span class="math-inline">P=0</span>"，而不是"<span class="math-inline">P</span> 算错了"。报告里那一栏写的就是这件事——中间那一格是<b>反例赋值</b>，不是结论的真值表。</p>
+
+  <h2>这一块地基后面一直要用</h2>
+
+  <p>这套东西不是实验一用完就算：贯穿项目是「关系与图算法工具包」，同一套编号与断言风格要在后面四个实验里反复出现——实验二的关系矩阵按同样的位序编号、同样的对账表与教材逐格比；实验三的等价类与拓扑序复用这里的断言三段式；实验四、五的手算表同样要能一列一列对上程序输出。<b>把编号写对、把反例判准、把对账做成一张能一眼看出差异的表</b>，这四件事在这一节练熟，后面四个实验每个都省一半力气。</p>
+
+  <!-- ── 提问提示：固定写法，别删 ── -->
+
+  <div class="lesson-ask">
+    <b>没看懂？随时问</b>
+    把看不懂的段落（或报错）原样复制回会话，说一句哪里不懂就行，我只解释这一段，不打断你的进度。
+  </div>
+
+  <!-- ── 上/下节课指针由渲染器按 curriculum.yaml 的 nodes 顺序算（第一课无 --prev、最后一课无 --next） ── -->
+
+  <nav class="lesson-nav" aria-label="上一课 / 下一课">
+    <a class="lesson-nav__link lesson-nav__link--prev" href="0002-logic-inference.html">
+      <span class="lesson-nav__dir">上节课</span>
+      <span class="lesson-nav__title">推理理论：证明怎么写</span>
+    </a>
+    <a class="lesson-nav__link lesson-nav__link--next" href="0004-pred-predicate.html">
+      <span class="lesson-nav__dir">下节课</span>
+      <span class="lesson-nav__title">谓词、命题函数与量词</span>
+    </a>
+  </nav>
+
+  <footer class="lesson-footer">
+    StudyMate · 0003 实验一：把推理判成有效 · 本地学习工作区
+  </footer>
+
+</article>
+
+<script src="../../../assets/sayo/sayo.js"></script>
+<link rel="stylesheet" href="../../../assets/katex/katex.min.css">
+<script src="../../../assets/katex/katex.min.js" defer></script>
+<script src="../../../assets/lesson-math.js" defer></script>
+<script src="../assets/quiz.js" defer></script>
+<script src="../assets/lesson-toc.js" defer></script>
+<script>LearnTheme.wire(document.getElementById('lesson-theme-checkbox'));</script>
+</body>
+</html>

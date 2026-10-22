@@ -1,0 +1,550 @@
+<!DOCTYPE html>
+<html lang="zh-CN" data-theme="dark">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>对偶与范式 · 离散数学</title>
+
+<!-- 共享层在 .learning/assets/，课件在 .learning/subjects/<slug>/lessons/ 下，所以是 ../../../assets/ -->
+<link rel="stylesheet" href="../../../assets/sayo/sayo.css">
+<link rel="stylesheet" href="../../../assets/learn-theme.css">
+<link rel="stylesheet" href="../assets/style.css">
+
+<!-- 主题要在首帧前应用，避免闪白/闪黑 -->
+<script src="../../../assets/learn-theme.js"></script>
+<script>LearnTheme.apply();</script>
+</head>
+
+<body class="lesson-body">
+
+<nav class="lesson-bar">
+  <a href="../index.html">← 返回课程</a>
+  <span>离散数学</span>
+  <span class="lesson-bar__no">0001</span>
+  <!-- 课件页自带主题开关：学生从文件管理器直接打开课件时也能切暗色 -->
+  <label class="syo-toggle syo-toggle--theme lesson-bar__toggle" title="切换深浅主题" aria-label="切换深浅主题">
+    <input type="checkbox" id="lesson-theme-checkbox" checked>
+    <span class="syo-toggle-track"></span>
+    <span class="syo-toggle-knob">
+      <svg class="syo-toggle-sun" viewBox="0 0 20 20" fill="none" aria-hidden="true"><circle cx="10" cy="10" r="3.5" stroke="#f57c00" stroke-width="1.5"/><path d="M10 2v2.5M10 15.5V18M2 10h2.5M15.5 10H18M4.34 4.34l1.77 1.77M13.89 13.89l1.77 1.77M4.34 15.66l1.77-1.77M13.89 6.11l1.77-1.77" stroke="#f57c00" stroke-width="1.2" stroke-linecap="round"/></svg>
+      <svg class="syo-toggle-moon" viewBox="0 0 20 20" fill="none" aria-hidden="true"><path d="M16.5 12.5A6 6 0 019 4.5a6 6 0 007.5 8z" stroke="#5c6bc0" stroke-width="1.5" stroke-linejoin="round"/></svg>
+    </span>
+  </label>
+</nav>
+
+<article class="lesson">
+
+  <header class="lesson-header">
+    <span class="lesson-header__eyebrow">0001 · 对偶与范式</span>
+    <h1>对偶与范式</h1>
+    <p class="lesson-goal"><b>本节目标：</b>按一套固定动作把公式化成主析取范式与主合取范式，读出成真赋值，并写出任意公式的对偶式。</p>
+  </header>
+
+  <!-- ── 正文：渲染器按内容文件（lessons/<序号>-<节点id>.md）产出，块词汇见 docs/规范/课件内容格式.md ── -->
+
+  <h2>这一课要交什么</h2>
+
+  <p>这一节对应教材第一章 1.7，分三块：对偶式与对偶原理（1.7.1）、析取范式与合取范式（1.7.2）、主析取范式与主合取范式（1.7.3）。课上 1.1–1.6 的命题、五个联结词、真值表、等值演算在本课当工具用，不重讲；公式一律按教材写法用 <span class="math-inline">P</span>、<span class="math-inline">Q</span>、<span class="math-inline">R</span>，小写 <span class="math-inline">p</span>、<span class="math-inline">q</span>、<span class="math-inline">r</span> 同义。</p>
+
+  <p>试卷对这一节有三种问法：</p>
+
+  <ul>
+    <li>求某公式的析取范式与合取范式；</li>
+    <li>求某公式的主析取范式与主合取范式，并写出成真赋值、成假赋值，或判断公式类型；</li>
+    <li>判断两个公式是否等价。</li>
+  </ul>
+
+  <p>三种问法共用一个产出：公式唯一的标准形，以及它的编号表。本课练的就是把任意公式推到那个标准形，编号一个不漏。推理证明属于 1.8，本课不涉及。</p>
+
+  <p>这一节还有第二重用处：1.8 判定"推理有效"靠的是"前提合取蕴含结论是重言式"，而认重言式最省事的工具就是主范式。编号写对，判有效才落得下去。</p>
+
+  <figure class="lesson-figure lesson-figure--inline" role="img" aria-label="从原式到主范式的四步流程">
+<svg viewBox="0 0 560 380" role="img" aria-hidden="true">
+  <g fill="none" stroke="currentColor" stroke-width="1.5">
+    <rect x="24" y="16" width="196" height="48" rx="8"/>
+    <rect x="24" y="116" width="196" height="48" rx="8"/>
+    <rect x="24" y="216" width="196" height="48" rx="8"/>
+    <rect x="24" y="316" width="196" height="48" rx="8"/>
+    <path d="M122 64v36"/>
+    <path d="M122 164v36"/>
+    <path d="M122 264v36"/>
+  </g>
+  <g fill="currentColor" stroke="none">
+    <polygon points="122,114 116,100 128,100"/>
+    <polygon points="122,214 116,200 128,200"/>
+    <polygon points="122,314 116,300 128,300"/>
+  </g>
+  <g fill="currentColor" font-size="16" text-anchor="middle">
+    <text x="122" y="46">原式</text>
+    <text x="122" y="146">范式（不唯一）</text>
+    <text x="122" y="246">主范式（唯一）</text>
+    <text x="122" y="346">编号与赋值</text>
+  </g>
+  <g fill="currentColor" font-size="16">
+    <text x="240" y="80">① 化归 ② 否号内移</text>
+    <text x="240" y="104">③ 拆括号定向</text>
+    <text x="240" y="192">④ 补缺变元</text>
+    <text x="240" y="292">按编号写 m 或 M</text>
+  </g>
+</svg>
+    <figcaption>图 1 · 四步固定动作，各自的产出与最终编号</figcaption>
+  </figure>
+
+  <h2>六条主干，其余现推</h2>
+
+  <p>教材 1.4 的命题定律表（P15 表1-4.8）有二十多条式子。范式演算里真正反复用到的只有下面六条，其余条目现推，不必背表。</p>
+
+  <table>
+    <thead>
+      <tr><th>主干</th><th>式子</th></tr>
+    </thead>
+    <tbody>
+      <tr><td>① 蕴含消除</td><td><span class="math-inline">A\to B\Leftrightarrow\neg A\vee B</span></td></tr>
+      <tr><td>② 等价消除</td><td><span class="math-inline">A\leftrightarrow B\Leftrightarrow(A\to B)\wedge(B\to A)</span></td></tr>
+      <tr><td>③ 双重否定</td><td><span class="math-inline">\neg\neg A\Leftrightarrow A</span></td></tr>
+      <tr><td>④ 德摩根</td><td><span class="math-inline">\neg(A\wedge B)\Leftrightarrow\neg A\vee\neg B</span></td></tr>
+      <tr><td>⑤ 分配</td><td><span class="math-inline">C\wedge(A\vee B)\Leftrightarrow(C\wedge A)\vee(C\wedge B)</span></td></tr>
+      <tr><td>⑥ 0 与 1</td><td><span class="math-inline">A\vee1\Leftrightarrow1</span>、<span class="math-inline">A\wedge0\Leftrightarrow0</span>、<span class="math-inline">A\vee0\Leftrightarrow A</span>、<span class="math-inline">A\wedge1\Leftrightarrow A</span>、<span class="math-inline">A\vee\neg A\Leftrightarrow1</span>、<span class="math-inline">A\wedge\neg A\Leftrightarrow0</span></td></tr>
+    </tbody>
+  </table>
+
+  <p>先推吸收律 <span class="math-inline">A\vee(A\wedge B)\Leftrightarrow A</span>：</p>
+
+  <div class="math-block">A\vee(A\wedge B)\Leftrightarrow(A\wedge1)\vee(A\wedge B)\Leftrightarrow A\wedge(1\vee B)\Leftrightarrow A\wedge1\Leftrightarrow A</div>
+
+  <p>再推幂等律 <span class="math-inline">A\vee A\Leftrightarrow A</span>：</p>
+
+  <div class="math-block">A\vee A\Leftrightarrow(A\vee A)\wedge1\Leftrightarrow(A\vee A)\wedge(A\vee\neg A)\Leftrightarrow A\vee(A\wedge\neg A)\Leftrightarrow A\vee0\Leftrightarrow A</div>
+
+  <p>两个推导的每一步都只用上表六条之一，其中 <span class="math-inline">A\wedge(1\vee B)</span> 与 <span class="math-inline">A\vee(A\wedge\neg A)</span> 两处把 ⑤ 反着用。这么推出来的式子不用记，要用时重推一次。对偶（下一节）再送两条：把上两式各取对偶，得到 <span class="math-inline">A\wedge(A\vee B)\Leftrightarrow A</span> 与 <span class="math-inline">A\wedge A\Leftrightarrow A</span>。一条主干配一次对偶，抵两条公式。</p>
+
+  <div class="lesson-practice">
+    <div class="lesson-practice__head">
+      <span class="lesson-practice__level">练习</span>
+      <span class="lesson-practice__title">第 1 步 · 只用主干推一次</span>
+    </div>
+
+      <p>下面三条里任选两条，各写一行推导链，每一步标出用的是第几条主干（1.6 里 <span class="math-inline">\uparrow</span>、<span class="math-inline">\downarrow</span> 的定义可以当辅助）：</p>
+
+      <ul>
+        <li><span class="math-inline">A\wedge(A\vee B)\Leftrightarrow A</span></li>
+        <li><span class="math-inline">\neg(A\to B)\Leftrightarrow A\wedge\neg B</span></li>
+        <li><span class="math-inline">(A\wedge B)\vee A\Leftrightarrow A</span></li>
+      </ul>
+
+      <p>写完抽一组取值自查，例如 <span class="math-inline">A=1</span>、<span class="math-inline">B=0</span>，两侧结果必须相同。</p>
+  </div>
+
+  <h2>对偶：∧ 与 ∨ 对调</h2>
+
+  <p>教材 1.7.1 开头给了来由：1.4 的命题定律表里，多数等价式成对出现，每一对只差把 ∧ 与 ∨ 互换。把这个规律固定成定义，就得到对偶式。</p>
+
+  <p>定义 1.7.1（教材原文）：设命题公式 <span class="math-inline">A</span> 仅含联结词 <span class="math-inline">\neg</span>、<span class="math-inline">\wedge</span>、<span class="math-inline">\vee</span>，在 <span class="math-inline">A</span> 中将 <span class="math-inline">\vee</span>、<span class="math-inline">\wedge</span>、<span class="math-inline">1</span>、<span class="math-inline">0</span> 分别换以 <span class="math-inline">\wedge</span>、<span class="math-inline">\vee</span>、<span class="math-inline">0</span>、<span class="math-inline">1</span> 得出公式，则此公式称为 <span class="math-inline">A</span> 的对偶公式，记作 <span class="math-inline">A^{\ast}</span>。</p>
+
+  <p>替换共三组；命题变元、括号、否定号一概不动：</p>
+
+  <ul>
+    <li><span class="math-inline">\wedge</span> 与 <span class="math-inline">\vee</span> 互换；</li>
+    <li><span class="math-inline">1</span> 与 <span class="math-inline">0</span> 互换；</li>
+    <li>公式里出现与非 <span class="math-inline">\uparrow</span> 或 或非 <span class="math-inline">\downarrow</span> 时，<span class="math-inline">\uparrow</span> 与 <span class="math-inline">\downarrow</span> 互换。依据是 1.6 的两条定义 <span class="math-inline">P\uparrow Q\Leftrightarrow\neg(P\wedge Q)</span> 与 <span class="math-inline">P\downarrow Q\Leftrightarrow\neg(P\vee Q)</span>，教材 1.7.1 由此给出 <span class="math-inline">(P\uparrow Q)^{\ast}=P\downarrow Q</span>。</li>
+  </ul>
+
+  <p>取两次对偶回到原式。</p>
+
+  <p>教材 1.7.1 的三个例子：</p>
+
+  <ul>
+    <li><span class="math-inline">(\neg P\vee(Q\wedge R))^{\ast}=\neg P\wedge(Q\vee R)</span>；</li>
+    <li><span class="math-inline">((P\wedge Q)\wedge1)^{\ast}=(P\vee Q)\vee0</span>；</li>
+    <li><span class="math-inline">(P\wedge Q)\uparrow R</span> 的对偶式是 <span class="math-inline">(P\vee Q)\downarrow R</span>。</li>
+  </ul>
+
+  <p>两个结论（教材定理 1.7.2 与 1.7.3，只记用法，不证）：</p>
+
+  <ul>
+    <li>对偶原理：若两个公式等价，则它们的对偶式也等价。用法是定律表里成对的式子只记一条，另一条取对偶即得。</li>
+    <li>若 <span class="math-inline">A\Rightarrow B</span>，则 <span class="math-inline">B^{\ast}\Rightarrow A^{\ast}</span>：蕴含式的对偶要把方向倒过来。</li>
+  </ul>
+
+  <p>对偶写错能当场查出来。把 <span class="math-inline">\uparrow</span>、<span class="math-inline">\downarrow</span> 先折成 <span class="math-inline">\neg</span>、<span class="math-inline">\wedge</span>、<span class="math-inline">\vee</span>，取对偶，再折回去，两条路必须一致。以 <span class="math-inline">(P\wedge Q)\uparrow R</span> 为例：</p>
+
+  <div class="math-block">(P\wedge Q)\uparrow R\;\Leftrightarrow\;\neg((P\wedge Q)\wedge R)\;=\;\neg(P\wedge Q\wedge R)</div>
+
+  <p>取对偶后 ∧ 全变 ∨，得 <span class="math-inline">\neg(P\vee Q\vee R)</span>，再由 <span class="math-inline">\downarrow</span> 的定义折回 <span class="math-inline">(P\vee Q)\downarrow R</span>。</p>
+
+  <div class="lesson-warn">
+    <b>只换 ∧ 与 ∨ 会漏</b>
+    <p>对偶要换的是三组符号。公式里有 <span class="math-inline">\uparrow</span> 或 <span class="math-inline">\downarrow</span> 时漏掉这一组的互换，写出来的是另一个公式，而且它照样能算到底，错得不容易被发现。</p>
+  </div>
+
+  <div class="quiz" data-quiz='[
+  {
+    "q": "作业里把 $(P\\wedge Q)\\uparrow R$ 的对偶式\n写成了 $(P\\vee Q)\\uparrow R$。\n\n① 对偶要换的三组符号是哪三组？\n他漏了哪一组？\n② 正确的对偶式写出来。\n③ 用「折成 $\\neg$、$\\wedge$、$\\vee$，取对偶，\n再折回」的路子验一遍，写两行过程。",
+    "answer": "① 三组：$\\wedge\\leftrightarrow\\vee$、\n$\\uparrow\\leftrightarrow\\downarrow$、$1\\leftrightarrow0$。\n漏的是 $\\uparrow\\leftrightarrow\\downarrow$：\n前一半换了，后一半没换。\n\n② $(P\\vee Q)\\downarrow R$。\n\n③ 先折：$(P\\wedge Q)\\uparrow R$\n$\\Leftrightarrow\\neg(P\\wedge Q\\wedge R)$。\n取对偶（$\\wedge$ 全变 $\\vee$）：$\\neg(P\\vee Q\\vee R)$。\n再按 $\\downarrow$ 的定义折回 $(P\\vee Q)\\downarrow R$，\n两条路一致。",
+    "criteria": "① 三组说全，并指出漏的是 $\\uparrow\\leftrightarrow\\downarrow$。\n只答「$\\wedge$ 换 $\\vee$」算缺一条，按部分通过。\n\n② 结果必须是 $(P\\vee Q)\\downarrow R$。\n写成 $(P\\vee Q)\\uparrow R$ 就是不通过。\n\n③ 验算三步都要有：\n折成 $\\neg(P\\wedge Q\\wedge R)$、\n取对偶得 $\\neg(P\\vee Q\\vee R)$、折回 $\\downarrow$。\n\n④ 说清这个错法为什么不容易被发现：\n$(P\\vee Q)\\uparrow R$ 照样能算到底，\n连「取两次对偶回到原式」这条自查也不设防。"
+  }
+]'></div>
+
+  <h2>文字与两种范式</h2>
+
+  <p>定义 1.7.2（教材原文）：命题变元及其否定统称文字；仅有有限个文字组成的析取式称为简单析取式，组成的合取式称为简单合取式。</p>
+
+  <p>定义 1.7.3（教材原文）：一个命题公式称为析取范式，当且仅当它具有形式 <span class="math-inline">A_1\vee A_2\vee\cdots\vee A_n</span>，其中每个 <span class="math-inline">A_i</span> 都是简单合取式；称为合取范式，当且仅当它具有形式 <span class="math-inline">A_1\wedge A_2\wedge\cdots\wedge A_n</span>，其中每个 <span class="math-inline">A_i</span> 都是简单析取式。析取范式与合取范式统称范式。</p>
+
+  <p>范式存在定理 1.7.4：任一个命题公式都存在着与之等价的析取范式与合取范式。</p>
+
+  <p>两条立刻能用的性质：</p>
+
+  <ul>
+    <li>一个析取范式是矛盾式，当且仅当它的每一个简单合取式都是矛盾式（即同时含有某个变元及其否定）；</li>
+    <li>一个合取范式是重言式，当且仅当它的每一个简单析取式都是重言式。</li>
+  </ul>
+
+  <p>范式的问题是它不唯一。对同一个公式，<span class="math-inline">P\vee(Q\wedge\neg R)</span> 与 <span class="math-inline">P\vee(P\wedge\neg R)\vee(Q\wedge\neg R)</span> 都是析取范式。判等价要求等价的公式有同一张标准形，主范式就是为这件事引入的（1.7.3 开头）。</p>
+
+  <h2>小项、大项与编号</h2>
+
+  <p>定义 1.7.4（教材原文）：在含有 <span class="math-inline">n</span> 个命题变元的简单合取式中，若每个命题变元和它的否定不同时出现，而二者之一必出现且仅出现一次，称这样的简单合取式为小项。定义 1.7.6 把同一条用于简单析取式，称大项。</p>
+
+  <p>编号规则（教材 P33 表1-7.1）：</p>
+
+  <ul>
+    <li>变元按字母顺序排位：<span class="math-inline">P</span> 记 4、<span class="math-inline">Q</span> 记 2、<span class="math-inline">R</span> 记 1，第一个变元占最高位；</li>
+    <li>小项 <span class="math-inline">m_i</span> 的 <span class="math-inline">i</span> 是这个式子取真值时 <span class="math-inline">P,Q,R</span> 的二进制值（真记 1）；</li>
+    <li>大项 <span class="math-inline">M_i</span> 的 <span class="math-inline">i</span> 是它取假值时的二进制值。</li>
+  </ul>
+
+  <p>于是同一行赋值上 <span class="math-inline">m_i</span> 为真、<span class="math-inline">M_i</span> 为假，两者编号相同。三个变元的八个小项：</p>
+
+  <table>
+    <thead>
+      <tr><th>小项</th><th>编号</th><th>成真赋值</th></tr>
+    </thead>
+    <tbody>
+      <tr><td><span class="math-inline">\neg P\wedge\neg Q\wedge\neg R</span></td><td><span class="math-inline">m_0</span></td><td>000</td></tr>
+      <tr><td><span class="math-inline">\neg P\wedge\neg Q\wedge R</span></td><td><span class="math-inline">m_1</span></td><td>001</td></tr>
+      <tr><td><span class="math-inline">\neg P\wedge Q\wedge\neg R</span></td><td><span class="math-inline">m_2</span></td><td>010</td></tr>
+      <tr><td><span class="math-inline">\neg P\wedge Q\wedge R</span></td><td><span class="math-inline">m_3</span></td><td>011</td></tr>
+      <tr><td><span class="math-inline">P\wedge\neg Q\wedge\neg R</span></td><td><span class="math-inline">m_4</span></td><td>100</td></tr>
+      <tr><td><span class="math-inline">P\wedge\neg Q\wedge R</span></td><td><span class="math-inline">m_5</span></td><td>101</td></tr>
+      <tr><td><span class="math-inline">P\wedge Q\wedge\neg R</span></td><td><span class="math-inline">m_6</span></td><td>110</td></tr>
+      <tr><td><span class="math-inline">P\wedge Q\wedge R</span></td><td><span class="math-inline">m_7</span></td><td>111</td></tr>
+    </tbody>
+  </table>
+
+  <p>大项不用另记表：小项整体取反就是同编号的大项。<span class="math-inline">m_5=P\wedge\neg Q\wedge R</span> 取反得 <span class="math-inline">M_5=\neg P\vee Q\vee\neg R</span>，它在 101 上取假，编号与对照表一致。</p>
+
+  <p>小项的三条性质（教材 1.7.3）：没有两个小项等价，每个小项有且仅有一个成真赋值；任意两个不同小项的合取为矛盾式；全体小项的析取为永真式。大项的三条性质逐条与它们对偶：每个大项有且仅有一个成假赋值；任意两个不同大项的析取为永真式；全体大项的合取为矛盾式。</p>
+
+  <p>定义 1.7.5 与 1.7.7：析取范式中每一个简单合取式都是小项，称主析取范式；合取范式中每一个简单析取式都是大项，称主合取范式。定理 1.7.5：任何命题公式都存在着与之等价的主析取范式与主合取范式，并且唯一。</p>
+
+  <div class="quiz" data-quiz='[
+  {
+    "q": "三变元里 $P$ 最高位、$R$ 最低位。$R\\wedge\\neg Q\\wedge P$ 是哪个小项？",
+    "opts": [
+      "$m_5$",
+      "$m_6$",
+      "$m_3$",
+      "$m_2$"
+    ],
+    "ans": 0,
+    "why": "编号只看取值，不看书写顺序。\n$P=1$、$Q=0$、$R=1$ 拼成 101，是 $m_5$。\n按书写顺序读成 110 的话，同一个赋值就有了两个编号。"
+  }
+]'></div>
+
+  <h2>四步求出主范式</h2>
+
+  <p>四步固定动作。前三步是教材的"求命题公式的范式的基本步骤"，第四步是教材"求主析取范式的推演步骤"的第 (4) 条，两处合成一套动作：</p>
+
+  <ol>
+    <li>化归：把 <span class="math-inline">\to</span>、<span class="math-inline">\leftrightarrow</span>、<span class="math-inline">\uparrow</span>、<span class="math-inline">\downarrow</span> 全换成只含 <span class="math-inline">\neg</span>、<span class="math-inline">\wedge</span>、<span class="math-inline">\vee</span> 的式子。</li>
+    <li>否号内移：用 <span class="math-inline">\neg\neg A\Leftrightarrow A</span> 与德摩根，把每个否定号推到单个变元前面。</li>
+    <li>拆括号定向：要析取范式，把 ∧ 分配进 ∨；要合取范式，把 ∨ 分配进 ∧。顺手删掉恒假支（析取范式里含 <span class="math-inline">X\wedge\neg X</span> 的支）或恒真项（合取范式里含 <span class="math-inline">X\vee\neg X</span> 的项），并掉重复支与重复文字。</li>
+    <li>补缺变元：某一支缺某个变元 <span class="math-inline">P_i</span>，就按 <span class="math-inline">B\Leftrightarrow B\wedge(P_i\vee\neg P_i)</span> 展开，合取路线用它的对偶 <span class="math-inline">B\Leftrightarrow B\vee(P_i\wedge\neg P_i)</span>，补到每个变元都在，再按上一节的位序查编号。</li>
+  </ol>
+
+  <p>第 4 步是两条路线唯一分开的地方，前三步完全相同。这也是对偶在演算里最实际的用处：两条路线只需练一条。</p>
+
+  <p>教材 1.7.2 例1：求 <span class="math-inline">((P\vee Q)\to R)\to P</span> 的析取范式与合取范式。</p>
+
+  <div class="math-block">\begin{aligned} ((P\vee Q)\to R)\to P &amp;\Leftrightarrow \neg(\neg(P\vee Q)\vee R)\vee P \\ &amp;\Leftrightarrow ((P\vee Q)\wedge\neg R)\vee P \\ &amp;\Leftrightarrow (P\wedge\neg R)\vee(Q\wedge\neg R)\vee P \quad(\text{析取范式}) \\ &amp;\Leftrightarrow P\vee(Q\wedge\neg R) \\ &amp;\Leftrightarrow (P\vee Q)\wedge(\neg R\vee P) \quad(\text{合取范式}) \end{aligned}</div>
+
+  <p>对 <span class="math-inline">P\vee(Q\wedge\neg R)</span> 做第 4 步（缺几个变元就连补几次）：</p>
+
+  <div class="math-block">\begin{aligned} P &amp;\Leftrightarrow P\wedge(Q\vee\neg Q)\wedge(R\vee\neg R) \Leftrightarrow m_7\vee m_6\vee m_5\vee m_4 \\ Q\wedge\neg R &amp;\Leftrightarrow (P\vee\neg P)\wedge Q\wedge\neg R \Leftrightarrow m_6\vee m_2 \end{aligned}</div>
+
+  <p>合起来并掉重复的 <span class="math-inline">m_6</span>：主析取范式为 <span class="math-inline">m_2\vee m_4\vee m_5\vee m_6\vee m_7</span>。主合取范式取补集即得 <span class="math-inline">M_0\wedge M_1\wedge M_3</span>，教材在例1 之后给出的正是这一对。</p>
+
+  <h2>真值表路线</h2>
+
+  <p>定理 1.7.6 与 1.7.7 把同一件事说成真值表上的两行话：真值为 1 的指派所对应的小项的析取，就是主析取范式；真值为 0 的指派所对应的大项的合取，就是主合取范式。</p>
+
+  <p>于是第二条路线是列 <span class="math-inline">2^n</span> 行真值表，真值为 1 的行记编号写 <span class="math-inline">m</span>，真值为 0 的行记同一个编号写 <span class="math-inline">M</span>。变元多时这条路线更稳，每行只算一次真假，不必展开。</p>
+
+  <p>教材 1.7.3 例2：<span class="math-inline">(P\to Q)\leftrightarrow R</span>。</p>
+
+  <table>
+    <thead>
+      <tr><th>P</th><th>Q</th><th>R</th><th>原式</th></tr>
+    </thead>
+    <tbody>
+      <tr><td>0</td><td>0</td><td>0</td><td>0</td></tr>
+      <tr><td>0</td><td>0</td><td>1</td><td>1</td></tr>
+      <tr><td>0</td><td>1</td><td>0</td><td>0</td></tr>
+      <tr><td>0</td><td>1</td><td>1</td><td>1</td></tr>
+      <tr><td>1</td><td>0</td><td>0</td><td>1</td></tr>
+      <tr><td>1</td><td>0</td><td>1</td><td>0</td></tr>
+      <tr><td>1</td><td>1</td><td>0</td><td>0</td></tr>
+      <tr><td>1</td><td>1</td><td>1</td><td>1</td></tr>
+    </tbody>
+  </table>
+
+  <p>真值为 1 的行是 001、011、100、111，对应 <span class="math-inline">m_1</span>、<span class="math-inline">m_3</span>、<span class="math-inline">m_4</span>、<span class="math-inline">m_7</span>，主析取范式为 <span class="math-inline">m_1\vee m_3\vee m_4\vee m_7</span>。真值为 0 的行是 000、010、101、110，对应 <span class="math-inline">M_0\wedge M_2\wedge M_5\wedge M_6</span>。两组编号正好互补，这一条对任何公式都成立。</p>
+
+  <figure class="lesson-figure lesson-figure--inline" role="img" aria-label="成真行取小项、成假行取大项的编号对照">
+<svg viewBox="0 0 640 200" role="img" aria-hidden="true">
+  <g fill="currentColor" font-size="16">
+    <text x="12" y="24">真值为 1 的行：取小项 m</text>
+    <text x="12" y="98">真值为 0 的行：取大项 M</text>
+  </g>
+  <g stroke="currentColor" fill="none" stroke-width="1">
+    <rect x="12" y="36" width="64" height="40" rx="6"/>
+    <rect x="88" y="36" width="64" height="40" rx="6"/>
+    <rect x="164" y="36" width="64" height="40" rx="6"/>
+    <rect x="240" y="36" width="64" height="40" rx="6"/>
+    <rect x="316" y="36" width="64" height="40" rx="6"/>
+    <rect x="392" y="36" width="64" height="40" rx="6"/>
+    <rect x="468" y="36" width="64" height="40" rx="6"/>
+    <rect x="544" y="36" width="64" height="40" rx="6"/>
+    <rect x="12" y="110" width="64" height="40" rx="6"/>
+    <rect x="88" y="110" width="64" height="40" rx="6"/>
+    <rect x="164" y="110" width="64" height="40" rx="6"/>
+    <rect x="240" y="110" width="64" height="40" rx="6"/>
+    <rect x="316" y="110" width="64" height="40" rx="6"/>
+    <rect x="392" y="110" width="64" height="40" rx="6"/>
+    <rect x="468" y="110" width="64" height="40" rx="6"/>
+    <rect x="544" y="110" width="64" height="40" rx="6"/>
+  </g>
+  <g stroke="currentColor" stroke-width="2.5" fill="currentColor" fill-opacity="0.12">
+    <rect x="88" y="36" width="64" height="40" rx="6"/>
+    <rect x="240" y="36" width="64" height="40" rx="6"/>
+    <rect x="316" y="36" width="64" height="40" rx="6"/>
+    <rect x="544" y="36" width="64" height="40" rx="6"/>
+    <rect x="12" y="110" width="64" height="40" rx="6"/>
+    <rect x="164" y="110" width="64" height="40" rx="6"/>
+    <rect x="392" y="110" width="64" height="40" rx="6"/>
+    <rect x="468" y="110" width="64" height="40" rx="6"/>
+  </g>
+  <g fill="currentColor" font-size="16" text-anchor="middle">
+    <text x="44" y="62">m0</text>
+    <text x="120" y="62">m1</text>
+    <text x="196" y="62">m2</text>
+    <text x="272" y="62">m3</text>
+    <text x="348" y="62">m4</text>
+    <text x="424" y="62">m5</text>
+    <text x="500" y="62">m6</text>
+    <text x="576" y="62">m7</text>
+    <text x="44" y="136">M0</text>
+    <text x="120" y="136">M1</text>
+    <text x="196" y="136">M2</text>
+    <text x="272" y="136">M3</text>
+    <text x="348" y="136">M4</text>
+    <text x="424" y="136">M5</text>
+    <text x="500" y="136">M6</text>
+    <text x="576" y="136">M7</text>
+    <text x="320" y="182">同一行上 m 与 M 编号相同，两组编号合起来正好把全部编号占满</text>
+  </g>
+</svg>
+    <figcaption>图 2 · 同一张真值表上，1 的行给 m、0 的行给 M，两组编号互补</figcaption>
+  </figure>
+
+  <p>用四步法做同一题，得到的是大项那一组：<span class="math-inline">(P\to Q)\leftrightarrow R</span> 化到合取范式 <span class="math-inline">(P\vee R)\wedge(\neg Q\vee R)\wedge(\neg P\vee\neg R\vee Q)</span>，三项分别补成 <span class="math-inline">M_0\wedge M_2</span>、<span class="math-inline">M_2\wedge M_6</span> 与 <span class="math-inline">M_5</span>，合起来 <span class="math-inline">M_0\wedge M_2\wedge M_5\wedge M_6</span>，与真值表一致。教材 1.7.3 例2 同时给出 <span class="math-inline">m_1\vee m_3\vee m_4\vee m_7</span> 与 <span class="math-inline">M_0\wedge M_2\wedge M_5\wedge M_6</span>，两条路线的答案互相盖章。</p>
+
+  <div class="lesson-practice">
+    <div class="lesson-practice__head">
+      <span class="lesson-practice__level">上手做</span>
+      <span class="lesson-practice__title">第 2 步 · 两条路线各做一题</span>
+    </div>
+
+      <p>真值表路线：求 <span class="math-inline">(P\vee Q)\to R</span> 的主析取范式与主合取范式。列八行表，真值 1 的行写 <span class="math-inline">m</span>、真值 0 的行写 <span class="math-inline">M</span>，最后写出全部成真赋值。</p>
+
+      <p>四步路线：取上面这道教材例2 的 <span class="math-inline">(P\to Q)\leftrightarrow R</span>，按四步从头写一遍（合取路线），与真值表给的两组编号对账。</p>
+
+      <p>两题做完各写一句：哪条路线在手上步数更少；哪一步最容易写错。</p>
+  </div>
+
+  <div class="quiz" data-quiz='[
+  {
+    "q": "三变元公式 $A$ 的主合取范式是\n$M_0\\wedge M_1\\wedge M_3$。\n\n① 它的主析取范式是哪些小项？\n成真赋值是哪几个？\n② $A$ 是重言式、矛盾式还是可满足式？说依据。\n③ 若另一式的主析取范式含全部八个小项，\n它的主合取范式写什么？",
+    "answer": "① 取补集：$m_2\\vee m_4\\vee m_5\\vee m_6\\vee m_7$。\n成真赋值 010、100、101、110、111，共五个。\n\n② 可满足式：五行真、三行假，\n既非全真也非全假。\n\n③ 一个项都没有，记作 $1$。\n它不是「把八个大项都写出来」——那是矛盾式。",
+    "criteria": "① 编号必须与 $M_0,M_1,M_3$ 互补且不多不少：\n$m_2,m_4,m_5,m_6,m_7$。\n赋值写成 010 这类串，五个都要有，顺序不限；\n编号与赋值必须对得上。\n\n② 依据要说清：$\\Sigma$ 含全部 $2^n$ 个小项\n是重言式，一个都没有是矛盾式，其余可满足。\n\n③ 必须答「空、记作 $1$」。\n答成 $M_0\\wedge\\cdots\\wedge M_7$ 就是不通过。"
+  }
+]'></div>
+
+  <h2>主范式读出的三件事</h2>
+
+  <p>有了主范式，教材 1.7.3 第 4 小节的三类问法都变成查编号：</p>
+
+  <ul>
+    <li>成真赋值与成假赋值：主析取范式里的编号就是成真赋值，主合取范式里的编号就是成假赋值。含 <span class="math-inline">n</span> 个变元、主析取范式有 <span class="math-inline">s</span> 个小项，就有 <span class="math-inline">s</span> 个成真赋值与 <span class="math-inline">2^n-s</span> 个成假赋值。</li>
+    <li>公式类型：主析取范式含全部 <span class="math-inline">2^n</span> 个小项，公式是重言式；一个小项都没有，记作 <span class="math-inline">0</span>，是矛盾式；至少含一个小项，是可满足式。对偶过来，主合取范式一个项都没有时公式是重言式，记作 <span class="math-inline">1</span>；含全部 <span class="math-inline">2^n</span> 个大项时是矛盾式。</li>
+    <li>判等价：两个公式按同一组 <span class="math-inline">n</span> 个变元各求主范式，相同则等价。求的时候变元取两式的并集，不能各按自己出现的变元算。</li>
+  </ul>
+
+  <p>判等价的第一个例子（教材 1.7.3）：<span class="math-inline">(P\to Q)\wedge(P\to R)</span> 与 <span class="math-inline">P\to(Q\wedge R)</span>。前式化成 <span class="math-inline">(\neg P\vee Q)\wedge(\neg P\vee R)</span>，两项补变元得 <span class="math-inline">M_4\wedge M_5\wedge M_6</span>；后式即 <span class="math-inline">\neg P\vee(Q\wedge R)</span>，再分配得同一个合取范式。主范式相同，两个公式等价。</p>
+
+  <p>第二个例子：<span class="math-inline">P\to(Q\wedge R)</span> 与 <span class="math-inline">P\vee(Q\to R)</span>。前式是 <span class="math-inline">M_4\wedge M_5\wedge M_6</span>，即 <span class="math-inline">m_0\vee m_1\vee m_2\vee m_3\vee m_7</span>；后式 <span class="math-inline">P\vee\neg Q\vee R</span> 只含一个大项 <span class="math-inline">M_2</span>，即 <span class="math-inline">m_0\vee m_1\vee m_3\vee m_4\vee m_5\vee m_6\vee m_7</span>。两组编号不同，两个公式不等价。</p>
+
+  <p>判蕴含放在 1.8：<span class="math-inline">A\Rightarrow B</span> 当且仅当 <span class="math-inline">A\to B</span> 是重言式，那时主范式与真值表都还是可用的工具。</p>
+
+  <h2>一道完整的作业题</h2>
+
+  <p>题目：求 <span class="math-inline">(P\to Q)\wedge(Q\to R)</span> 的主析取范式与主合取范式，并写出全部成真赋值。</p>
+
+  <p>两个蕴涵连成合取，第 1 步几乎不用动，第 3 步也不用拆，直接进第 4 步。按合取路线求大项最短。</p>
+
+  <p>第 1 步 化归：<span class="math-inline">(P\to Q)\wedge(Q\to R)\Leftrightarrow(\neg P\vee Q)\wedge(\neg Q\vee R)</span>。两项都是简单析取式，这已经是一个合取范式。</p>
+
+  <p>第 4 步 补缺变元：</p>
+
+  <div class="math-block">\begin{aligned} \neg P\vee Q &amp;\Leftrightarrow (\neg P\vee Q\vee R)\wedge(\neg P\vee Q\vee\neg R) = M_4\wedge M_5 \\ \neg Q\vee R &amp;\Leftrightarrow (P\vee\neg Q\vee R)\wedge(\neg P\vee\neg Q\vee R) = M_2\wedge M_6 \end{aligned}</div>
+
+  <p>合起来：主合取范式 <span class="math-inline">M_2\wedge M_4\wedge M_5\wedge M_6</span>，成假赋值 010、100、101、110。取补集得主析取范式 <span class="math-inline">m_0\vee m_1\vee m_3\vee m_7</span>，成真赋值 000、001、011、111。</p>
+
+  <p>抽查两个大项：<span class="math-inline">M_2=P\vee\neg Q\vee R</span> 在 010 上为 <span class="math-inline">0\vee0\vee0=0</span>，取假，编号对；<span class="math-inline">M_6=\neg P\vee\neg Q\vee R</span> 在 110 上为 <span class="math-inline">0\vee0\vee0=0</span>，取假，编号对。</p>
+
+  <p>再用真值表对账两列中间结果：</p>
+
+  <table>
+    <thead>
+      <tr><th>P</th><th>Q</th><th>R</th><th><span class="math-inline">\neg P\vee Q</span></th><th><span class="math-inline">\neg Q\vee R</span></th><th>原式</th></tr>
+    </thead>
+    <tbody>
+      <tr><td>0</td><td>0</td><td>0</td><td>1</td><td>1</td><td>1</td></tr>
+      <tr><td>0</td><td>0</td><td>1</td><td>1</td><td>1</td><td>1</td></tr>
+      <tr><td>0</td><td>1</td><td>0</td><td>1</td><td>0</td><td>0</td></tr>
+      <tr><td>0</td><td>1</td><td>1</td><td>1</td><td>1</td><td>1</td></tr>
+      <tr><td>1</td><td>0</td><td>0</td><td>0</td><td>1</td><td>0</td></tr>
+      <tr><td>1</td><td>0</td><td>1</td><td>0</td><td>1</td><td>0</td></tr>
+      <tr><td>1</td><td>1</td><td>0</td><td>1</td><td>0</td><td>0</td></tr>
+      <tr><td>1</td><td>1</td><td>1</td><td>1</td><td>1</td><td>1</td></tr>
+    </tbody>
+  </table>
+
+  <p>真值为 1 的行 000、001、011、111 正好是 <span class="math-inline">m_0</span>、<span class="math-inline">m_1</span>、<span class="math-inline">m_3</span>、<span class="math-inline">m_7</span>，与四步法的结果一致。两条路线互相盖章，是这类题最省事的自检。</p>
+
+  <p>代数展开也能到同一个答案，但展开时两支会重合：</p>
+
+  <div class="math-block">(\neg P\vee Q)\wedge(\neg Q\vee R)\Leftrightarrow(\neg P\wedge\neg Q)\vee(\neg P\wedge R)\vee(Q\wedge R)</div>
+
+  <p>四支交叉相乘后 <span class="math-inline">(Q\wedge\neg Q)</span> 那支恒假要删。补变元时 <span class="math-inline">(\neg P\wedge\neg Q)</span> 给 <span class="math-inline">m_0</span> 与 <span class="math-inline">m_1</span>，<span class="math-inline">(\neg P\wedge R)</span> 给 <span class="math-inline">m_1</span> 与 <span class="math-inline">m_3</span>，<span class="math-inline">(Q\wedge R)</span> 给 <span class="math-inline">m_3</span> 与 <span class="math-inline">m_7</span>：<span class="math-inline">m_1</span> 与 <span class="math-inline">m_3</span> 各出现两次。合并时若把重合的那一项当成"已经算过"，顺着就漏掉另一处来源，整组编号跟着错。四步法不经过这一步：第 4 步只按"缺哪个变元"拆，不跨支合并。</p>
+
+  <div class="quiz" data-quiz='[
+  {
+    "q": "求 $(P\\to Q)\\wedge(Q\\to R)$ 的主析取范式，\n改用代数展开：$\\neg P\\vee Q$ 与 $\\neg Q\\vee R$\n交叉相乘，删掉恒假支，剩三支：\n$\\neg P\\wedge\\neg Q$、$\\neg P\\wedge R$、$Q\\wedge R$。\n\n① 三支各补全变元后，各给出哪两个小项？\n② 哪些小项出现了两次？\n③ 若漏掉 $Q\\wedge R$ 这一支，$\\Sigma m$ 变成什么？\n哪一条自查能立刻发现少了？",
+    "answer": "① $\\neg P\\wedge\\neg Q$ 缺 $R$，补成 $m_0$、$m_1$。\n$\\neg P\\wedge R$ 缺 $Q$，补成 $m_1$、$m_3$。\n$Q\\wedge R$ 缺 $P$，补成 $m_3$、$m_7$。\n\n② $m_1$ 与 $m_3$ 各出现两次：\n$m_1$ 来自前两支，$m_3$ 来自后两支。\n\n③ 只剩 $\\Sigma m(0,1,3)$，\n与正确的 $\\Sigma m(0,1,3,7)$ 差 $m_7$。\n自查：$\\Pi M(2,4,5,6)$ 与 $\\Sigma$ 合起来\n正好 8 个编号，缺 $m_7$ 时只有 7 个。",
+    "criteria": "① 三支都补成两个编号：\n$m_0,m_1$；$m_1,m_3$；$m_3,m_7$。\n缺变元不补、一支只写一个编号，按不通过。\n\n② 答出 $m_1$、$m_3$ 各两次，\n并说清重合的两个来源分别是哪两支。\n\n③ 答出 $\\Sigma m(0,1,3)$，\n并指出编号互补这条自查能立刻发现：\n$\\Sigma$ 与 $\\Pi$ 合起来正好 $2^n$ 个。\n\n正确结果：$\\Sigma m(0,1,3,7)$、$\\Pi M(2,4,5,6)$。\n把 $m_1$、$m_3$ 当成「算过了」就跳过，\n是这类题最常见的漏项来路。"
+  }
+]'></div>
+
+  <h2>三处错法与自检</h2>
+
+  <p>作业里这一节有三处高频失分，改法各不相同。</p>
+
+  <p>错法一：编号整组对不上。根因是用代数展开硬推范式，交叉相乘后重合的支靠眼睛合并，漏一支编号就全错。改法是按四步走，第 3、4 步都是机械动作；写完用互补关系自查，主析取范式的编号与主合取范式的编号合起来必须正好是 <span class="math-inline">\{0,1,\dots,2^n-1\}</span>，不多、不少、不重。</p>
+
+  <p>错法二：否号进括号没换运算，把 <span class="math-inline">\neg P\vee\neg Q</span> 写成 <span class="math-inline">\neg(P\vee Q)</span>。正确的对应是 <span class="math-inline">\neg P\vee\neg Q\Leftrightarrow\neg(P\wedge Q)</span>。抽一行就能看出来：取 <span class="math-inline">P=1</span>、<span class="math-inline">Q=0</span>，左边 <span class="math-inline">0\vee1=1</span>，而 <span class="math-inline">\neg(P\vee Q)=\neg1=0</span>，两式不等价。否定号进出括号，<span class="math-inline">\wedge</span> 与 <span class="math-inline">\vee</span> 都要换，进去一次是换，出来一次也是换。</p>
+
+  <p>错法三：对偶只换了一半，把 <span class="math-inline">(P\wedge Q)\uparrow R</span> 的对偶式写成 <span class="math-inline">(P\vee Q)\uparrow R</span>。对偶换三组符号，<span class="math-inline">\uparrow</span> 与 <span class="math-inline">\downarrow</span> 必须一起翻，正确的是 <span class="math-inline">(P\vee Q)\downarrow R</span>。</p>
+
+  <p>交卷前三条自查：</p>
+
+  <ul>
+    <li>主析取范式的编号与主合取范式的编号互补，合起来正好 <span class="math-inline">2^n</span> 个；</li>
+    <li>每个小项里 <span class="math-inline">n</span> 个变元各出现一次，取它本身或它的否定，恰好一次；</li>
+    <li>成真赋值的个数等于主析取范式里小项的个数，也等于真值表里真值为 1 的行数。</li>
+  </ul>
+
+  <div class="lesson-practice">
+    <div class="lesson-practice__head">
+      <span class="lesson-practice__level">回头改</span>
+      <span class="lesson-practice__title">第 3 步 · 把三处错法改对</span>
+    </div>
+
+      <ol>
+        <li>用四步法把 <span class="math-inline">(P\to Q)\wedge(Q\to R)</span> 重做一遍，只写大项那一组，写完核对编号互补。</li>
+        <li>把 <span class="math-inline">\neg P\vee\neg Q</span> 化成只含 <span class="math-inline">\neg</span> 与 <span class="math-inline">\wedge</span> 的式子，再取 <span class="math-inline">P=1</span>、<span class="math-inline">Q=0</span> 验一次。</li>
+        <li>写出 <span class="math-inline">(P\wedge Q)\uparrow R</span> 的对偶式，用"折成 <span class="math-inline">\neg</span>、<span class="math-inline">\wedge</span>、<span class="math-inline">\vee</span> 再取对偶"的路子验一遍。</li>
+      </ol>
+
+      <p>三题都写完，把每题的编号或结果与上面的自查三条逐条对一遍。</p>
+  </div>
+
+  <div class="lesson-practice">
+    <div class="lesson-practice__head">
+      <span class="lesson-practice__level">上手做</span>
+      <span class="lesson-practice__title">交 lab 用断言核对</span>
+    </div>
+
+      <p>载体是本机 Python 3.13，命令行跑 <code>python -m unittest</code>，不装任何东西。入口：<a href="../lab/README.md">lab · 对偶与范式</a>。</p>
+
+      <p>这个 lab 干一件事：把你手算出来的范式结果交给断言逐行核对——成真赋值、小项编号、<span class="math-inline">\Sigma m</span> 与 <span class="math-inline">\Pi M</span> 是否互补，错在哪一行会直接报出来。</p>
+
+      <p>保底提示：先照上面的四步法自己手算一遍，再去跑断言对照；顺序反过来，错的就不只是计算，而是你看错了哪一行。</p>
+  </div>
+
+  <div class="quiz" data-quiz='[
+  {
+    "q": "作业里把 $\\neg P\\vee\\neg Q$ 抄成四种写法。哪一项与原式不等值？",
+    "opts": [
+      "$\\neg(P\\wedge Q)$",
+      "$\\neg(P\\vee Q)$",
+      "$P\\to\\neg Q$",
+      "$Q\\to\\neg P$"
+    ],
+    "ans": 1,
+    "why": "取 $P=1$、$Q=0$：原式算出 1，$\\neg(P\\vee Q)$ 算出 0。\n否号进出括号，$\\wedge$ 与 $\\vee$ 必须一起换：\n$\\neg P\\vee\\neg Q\\Leftrightarrow\\neg(P\\wedge Q)$。"
+  }
+]'></div>
+
+  <div class="lesson-note">
+    <b>后面的用法</b>
+    <p>这一套编号在后续内容里会反复出现：判等价、判推理有效（1.8）都按同一套编号走，实验一的真值表引擎也按它输出。本课不涉及程序。</p>
+  </div>
+
+  <ul class="lesson-resources">
+    <li><a href="../reference/01-左孝凌课件1.html">老师课件 1 · 1.7 对偶与范式（第 101–146 页）</a><span class="lesson-resources__meta">本地课件 · 本节按它的小节顺序与原话组织，例题编号一致</span></li>
+    <li>左孝凌《离散数学》第一章 1.7 对偶与范式<span class="lesson-resources__meta">书 · 小项真值表在 P33 表1-7.1，作业题在 P39</span></li>
+  </ul>
+
+  <!-- ── 提问提示：固定写法，别删 ── -->
+
+  <div class="lesson-ask">
+    <b>没看懂？随时问</b>
+    把看不懂的段落（或报错）原样复制回会话，说一句哪里不懂就行，我只解释这一段，不打断你的进度。
+  </div>
+
+  <!-- ── 上/下节课指针由渲染器按 curriculum.yaml 的 nodes 顺序算（第一课无 --prev、最后一课无 --next） ── -->
+
+  <nav class="lesson-nav" aria-label="上一课 / 下一课">
+    <a class="lesson-nav__link lesson-nav__link--next" href="0002-logic-inference.html">
+      <span class="lesson-nav__dir">下节课</span>
+      <span class="lesson-nav__title">推理理论：证明怎么写</span>
+    </a>
+  </nav>
+
+  <footer class="lesson-footer">
+    StudyMate · 0001 对偶与范式 · 本地学习工作区
+  </footer>
+
+</article>
+
+<script src="../../../assets/sayo/sayo.js"></script>
+<link rel="stylesheet" href="../../../assets/katex/katex.min.css">
+<script src="../../../assets/katex/katex.min.js" defer></script>
+<script src="../../../assets/lesson-math.js" defer></script>
+<script src="../assets/quiz.js" defer></script>
+<script src="../assets/lesson-toc.js" defer></script>
+<script>LearnTheme.wire(document.getElementById('lesson-theme-checkbox'));</script>
+</body>
+</html>

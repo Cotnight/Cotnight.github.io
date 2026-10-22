@@ -1,0 +1,15 @@
+updated_at: "2026-10-19T14:05:00"
+nodes:
+  ch2-kmap-fill:
+    status: 学习中
+    mastery: 0
+    notes: "2026-10-19 起：学生要求数字电路从卡诺图开讲，本节点成为第一课；原大纲前 6 个基础节点（绪论/数制/编码/逻辑函数表示/布尔代数/最小项）已按此删除，最小项编号与真值表列写改成本课开头的一屏补丁。"
+misconceptions:
+  - topic: "布尔代数：求反函数与长非号的逐层剥离"
+    question: "选择题：Y = A + \\overline{BCD} 的反函数，他选了 D（Ā·B(C̄+D̄)）"
+    misunderstanding: "把「反函数」当成「每个字母分别加横线」；长非号只剥掉一部分，还多保留了 B 与括号相乘。"
+    answer_summary: "Ȳ = Ā·BCD（选项 B 的形式：Ā·\\overline{B̄+C̄+D̄}）。反函数 = 或与互换 + 原反互换 + 长非号逐层剥。"
+    follow_up: "做 3 道求反函数题并用一组取值代入验证"
+    importance: high
+project:
+  current: "24 小时制数字钟：分频 + 计数 + 译码显示，从逻辑门一路搭到能走时、能校时的钟（实验一～实验四逐块验收）"

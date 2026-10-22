@@ -1,0 +1,573 @@
+<!DOCTYPE html>
+<html lang="zh-CN" data-theme="dark">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>推理理论：证明怎么写 · 离散数学</title>
+
+<!-- 共享层在 .learning/assets/，课件在 .learning/subjects/<slug>/lessons/ 下，所以是 ../../../assets/ -->
+<link rel="stylesheet" href="../../../assets/sayo/sayo.css">
+<link rel="stylesheet" href="../../../assets/learn-theme.css">
+<link rel="stylesheet" href="../assets/style.css">
+
+<!-- 主题要在首帧前应用，避免闪白/闪黑 -->
+<script src="../../../assets/learn-theme.js"></script>
+<script>LearnTheme.apply();</script>
+</head>
+
+<body class="lesson-body">
+
+<nav class="lesson-bar">
+  <a href="../index.html">← 返回课程</a>
+  <span>离散数学</span>
+  <span class="lesson-bar__no">0002</span>
+  <!-- 课件页自带主题开关：学生从文件管理器直接打开课件时也能切暗色 -->
+  <label class="syo-toggle syo-toggle--theme lesson-bar__toggle" title="切换深浅主题" aria-label="切换深浅主题">
+    <input type="checkbox" id="lesson-theme-checkbox" checked>
+    <span class="syo-toggle-track"></span>
+    <span class="syo-toggle-knob">
+      <svg class="syo-toggle-sun" viewBox="0 0 20 20" fill="none" aria-hidden="true"><circle cx="10" cy="10" r="3.5" stroke="#f57c00" stroke-width="1.5"/><path d="M10 2v2.5M10 15.5V18M2 10h2.5M15.5 10H18M4.34 4.34l1.77 1.77M13.89 13.89l1.77 1.77M4.34 15.66l1.77-1.77M13.89 6.11l1.77-1.77" stroke="#f57c00" stroke-width="1.2" stroke-linecap="round"/></svg>
+      <svg class="syo-toggle-moon" viewBox="0 0 20 20" fill="none" aria-hidden="true"><path d="M16.5 12.5A6 6 0 019 4.5a6 6 0 007.5 8z" stroke="#5c6bc0" stroke-width="1.5" stroke-linejoin="round"/></svg>
+    </span>
+  </label>
+</nav>
+
+<article class="lesson">
+
+  <header class="lesson-header">
+    <span class="lesson-header__eyebrow">0002 · 推理理论：证明怎么写</span>
+    <h1>推理理论：证明怎么写</h1>
+    <p class="lesson-goal"><b>本节目标：</b>用 P、T、CP 的依据栏写出三步以上的推理证明，并按结论的形状挑对直接证法、附加前提法或归谬法。</p>
+  </header>
+
+  <!-- ── 正文：渲染器按内容文件（lessons/<序号>-<节点id>.md）产出，块词汇见 docs/规范/课件内容格式.md ── -->
+
+  <h2>这一课要交什么</h2>
+
+  <p>这一节对应教材第一章 1.8 推理理论，课件在第 147–174 页。1.8 把"推理是否有效"从真值表的判定改成一串公式的推演：给一组前提与一个结论，逐行写出公式，每行标明依据。课件 1.8.1 列出四种动作——真值表法（1.8.2）、直接证法（1.8.3）、间接证法（1.8.4，含附加前提法与归谬法），第 173–174 页又补了分情况证明。</p>
+
+  <p>判定的依据是定义 1.8.1（教材原文）：设 <span class="math-inline">A</span> 和 <span class="math-inline">C</span> 是两个命题公式，当且仅当 <span class="math-inline">A\to C</span> 为一重言式，即 <span class="math-inline">A\Rightarrow C</span>，称 <span class="math-inline">C</span> 是 <span class="math-inline">A</span> 的有效结论。一般地，若有 <span class="math-inline">n</span> 个前提 <span class="math-inline">H_1,H_2,\dots,H_n</span>，且 <span class="math-inline">H_1\wedge H_2\wedge\cdots\wedge H_n\Rightarrow C</span>，则称 <span class="math-inline">C</span> 是这组前提的有效结论。</p>
+
+  <p>考试的问法固定：给前提与结论，构造证明；或给一段自然语言的论证，先符号化再写出公式序列。真值表法能判定，却随变元数成倍变长，大题要的是公式序列。</p>
+
+  <p>八道推理题你已经逐题复算过，P、T 的用法、假言推理、拒取式、析取三段论、CP 都会使。这一课按三件事组织，正对着作业里还能改进的地方：</p>
+
+  <ul>
+    <li><b>格式</b>：每一行写什么、依据栏怎么写，步骤分扣在这里；</li>
+    <li><b>选法</b>：结论长什么样，决定走直接证法还是间接证法；</li>
+    <li><b>规则</b>：八到十条蕴含式与几条等值式，看到什么形状写哪一条。</li>
+  </ul>
+
+  <h2>一张三列的证明表</h2>
+
+  <p>直接证法（1.8.3 原文）：由一组前提，利用一些公认的推理规则，根据已知的等价或蕴含公式推演得到有效结论。它靠两条规则支撑：</p>
+
+  <ul>
+    <li><b>P 规则</b>（前提引入规则）：前提在推导过程中的任何时候都可以引用。所以前提行不必都写在开头，课件 1.8.3 例3 就把四条前提穿插在推导中间。</li>
+    <li><b>T 规则</b>：在推导过程中，所证明的结论、已知的等价或蕴含公式都可以作为后续证明的前提；命题公式中的任何子公式都可以用与之等价的命题公式置换。前一句管蕴含式：整行引用，两行拼出一条新的。后一句管等值式：可以只替换公式的一部分。</li>
+  </ul>
+
+  <p>每行一个公式，左起三列：序号、公式、依据。依据栏只有下面几种写法：</p>
+
+  <table>
+    <thead>
+      <tr><th>这一行怎么来的</th><th>依据栏</th></tr>
+    </thead>
+    <tbody>
+      <tr><td>引用前提</td><td><code>P</code></td></tr>
+      <tr><td>引入附加前提</td><td><code>P（附加前提）</code></td></tr>
+      <tr><td>由前几行按蕴含式推得</td><td><code>T，2，3，拒取式</code>（教材与课件写成 <code>T，2，3，I12</code>）</td></tr>
+      <tr><td>由前几行按等值式改写</td><td><code>T，1，E（德摩根）</code>（编号形式如 <code>E18</code>）</td></tr>
+      <tr><td>CP 收尾</td><td><code>T，4，10，CP</code>（附加前提行号，末行行号）</td></tr>
+      <tr><td>归谬收尾</td><td>写出矛盾行，标 <code>T</code> 与行号；另起一句说明按归谬法</td></tr>
+    </tbody>
+  </table>
+
+  <p>蕴含式与等值式的编号在教材 P43 表1-8.3、表1-8.4。编号记不准时写规则名，"引哪几行、按哪条"写全，步骤分就落得住；只写一个 <code>T</code> 而不写引用的行，那一步等于没写依据。</p>
+
+  <p>课件 1.8.3 例1：如果考试及格，那我高兴。若我高兴，那么我饭量增加。我的饭量没增加，所以我考试没有及格。</p>
+
+  <p>设 <span class="math-inline">P</span>：我考试及格；<span class="math-inline">Q</span>：我高兴；<span class="math-inline">R</span>：我饭量增加。论证表为 <span class="math-inline">(P\to Q)\wedge(Q\to R)\wedge\neg R\Rightarrow\neg P</span>。</p>
+
+  <table>
+    <thead>
+      <tr><th>序号</th><th>公式</th><th>依据</th></tr>
+    </thead>
+    <tbody>
+      <tr><td>1</td><td><span class="math-inline">P\to Q</span></td><td>P</td></tr>
+      <tr><td>2</td><td><span class="math-inline">Q\to R</span></td><td>P</td></tr>
+      <tr><td>3</td><td><span class="math-inline">\neg R</span></td><td>P</td></tr>
+      <tr><td>4</td><td><span class="math-inline">\neg Q</span></td><td>T，2，3，拒取式</td></tr>
+      <tr><td>5</td><td><span class="math-inline">\neg P</span></td><td>T，1，4，拒取式</td></tr>
+    </tbody>
+  </table>
+
+  <p>五行、三步推导，答卷上的篇幅就这么大。第 4 行从第 2、3 行来，第 5 行从第 1、4 行来，行号一目了然，阅卷人顺着数字就能核。写证明时最容易省掉的就是这两个数字。</p>
+
+  <div class="quiz" data-quiz='[
+  {
+    "q": "下面这份证明的第 4 行，依据栏写的是\n「T，2，3，假言推理」。\n\n```text\n1  P→Q     P\n2  Q→R     P\n3  ¬R      P\n4  ¬Q      T，2，3，假言推理\n5  ¬P      T，1，4，拒取式\n```\n\n按步骤给分，第 4 行该怎么判？",
+    "opts": [
+      "行号对、规则名错，扣依据那一分",
+      "行号错、规则名对，扣行号那一分",
+      "行号与规则名都错，整行不得分",
+      "行号与规则名都对，这一行满分"
+    ],
+    "ans": 0,
+    "why": "第 2 行是 $Q\\to R$、第 3 行是 $\\neg R$，两支都指对了。\n手里有箭头，还有它后件的否定，这一步是拒取式。\n规则名写错照样扣分：依据栏按「引哪几行、按哪条」两项各看一次。"
+  }
+]'></div>
+
+  <h2>直接证法：从结论倒推</h2>
+
+  <p>前提一多，从第一条往下推会撞运气。稳的顺序是从结论倒推：先问"结论是哪种形状，它由哪条规则生成"，再补中间公式。这张表就是倒推的入口：</p>
+
+  <table>
+    <thead>
+      <tr><th>结论的形状</th><th>最后一步</th></tr>
+    </thead>
+    <tbody>
+      <tr><td>单变元 <span class="math-inline">P</span></td><td>找右端是 <span class="math-inline">P</span> 的蕴含式：假言推理、析取三段论、化简</td></tr>
+      <tr><td>否定式 <span class="math-inline">\neg P</span></td><td>拒取式（手里有 <span class="math-inline">P\to Q</span> 与 <span class="math-inline">\neg Q</span>）；或归谬法</td></tr>
+      <tr><td>合取式 <span class="math-inline">P\wedge Q</span></td><td>合成：分别证出 <span class="math-inline">P</span> 与 <span class="math-inline">Q</span></td></tr>
+      <tr><td>析取式 <span class="math-inline">P\vee Q</span></td><td>附加：证出 <span class="math-inline">P</span> 或证出 <span class="math-inline">Q</span>，再附加成 <span class="math-inline">P\vee Q</span></td></tr>
+      <tr><td>蕴含式 <span class="math-inline">A\to B</span></td><td>附加前提法：把 <span class="math-inline">A</span> 加为前提，证出 <span class="math-inline">B</span></td></tr>
+    </tbody>
+  </table>
+
+  <p>课件 1.8.3 例3：<span class="math-inline">P\vee Q</span>，<span class="math-inline">Q\to R</span>，<span class="math-inline">P\to S</span>，<span class="math-inline">\neg S\Rightarrow R\wedge(Q\vee P)</span>。</p>
+
+  <p>结论是合取，最后一步是合成，所以要分别凑出 <span class="math-inline">R</span> 与 <span class="math-inline">Q\vee P</span>。<span class="math-inline">Q\vee P</span> 只与 <span class="math-inline">P\vee Q</span> 差一次交换，<span class="math-inline">R</span> 要靠 <span class="math-inline">Q</span> 与 <span class="math-inline">Q\to R</span>，而 <span class="math-inline">Q</span> 从 <span class="math-inline">P\vee Q</span> 里析取得来，析取要消掉一支，就得先有 <span class="math-inline">\neg P</span>，<span class="math-inline">\neg P</span> 正是 <span class="math-inline">\neg S</span> 与 <span class="math-inline">P\to S</span> 的拒取式。链条从这里接上：</p>
+
+  <table>
+    <thead>
+      <tr><th>序号</th><th>公式</th><th>依据</th></tr>
+    </thead>
+    <tbody>
+      <tr><td>1</td><td><span class="math-inline">P\to S</span></td><td>P</td></tr>
+      <tr><td>2</td><td><span class="math-inline">\neg S</span></td><td>P</td></tr>
+      <tr><td>3</td><td><span class="math-inline">\neg P</span></td><td>T，1，2，拒取式</td></tr>
+      <tr><td>4</td><td><span class="math-inline">P\vee Q</span></td><td>P</td></tr>
+      <tr><td>5</td><td><span class="math-inline">Q</span></td><td>T，3，4，析取三段论</td></tr>
+      <tr><td>6</td><td><span class="math-inline">Q\to R</span></td><td>P</td></tr>
+      <tr><td>7</td><td><span class="math-inline">R</span></td><td>T，5，6，假言推理</td></tr>
+      <tr><td>8</td><td><span class="math-inline">R\wedge(Q\vee P)</span></td><td>T，4，7，交换 E 后合成</td></tr>
+    </tbody>
+  </table>
+
+  <p>前七行都在为第八行服务。倒推的好处是每一步都知道自己为什么写：第 3 行 <span class="math-inline">\neg P</span> 的用处在第 5 行，手里有 <span class="math-inline">\neg P</span> 才能从 <span class="math-inline">P\vee Q</span> 里消去一支。</p>
+
+  <div class="lesson-practice">
+    <div class="lesson-practice__head">
+      <span class="lesson-practice__level">练习</span>
+      <span class="lesson-practice__title">第 1 步 · 照模板写一份直接证法</span>
+    </div>
+
+      <p>取课件 1.8.3 例4：<span class="math-inline">(P\to(Q\vee R))\wedge(\neg S\to\neg Q)\wedge(P\wedge\neg S)\Rightarrow R</span>。按上面的三列表写完整证明，然后逐条自查：</p>
+
+      <ol>
+        <li>第一行是不是前提，依据写 <code>P</code>；</li>
+        <li>每一行的依据里有没有行号，行号指的那几行公式对不对；</li>
+        <li>最后一行是不是结论本身。</li>
+      </ol>
+
+      <p>写完与课件第 159 页对一遍。差异只剩行序与编号形式，说明格式已经过关；若某一步用的规则名不同而能推出同一个公式，也算对。</p>
+  </div>
+
+  <h2>三条路线怎么选</h2>
+
+  <p>1.8.4 的两种间接证法各有适用范围。开头先看结论的形状，再看前提的形状，路线基本就定了：</p>
+
+  <figure class="lesson-figure lesson-figure--inline" role="img" aria-label="按结论形状选择直接证法、附加前提法、归谬法与分类讨论">
+<svg viewBox="0 0 640 390" role="img" aria-hidden="true">
+  <g fill="none" stroke="currentColor" stroke-width="1.5">
+    <rect x="16" y="16" width="170" height="64" rx="8"/>
+    <rect x="16" y="100" width="170" height="64" rx="8"/>
+    <rect x="16" y="184" width="170" height="64" rx="8"/>
+    <rect x="16" y="268" width="170" height="64" rx="8"/>
+    <rect x="210" y="16" width="414" height="64" rx="8"/>
+    <rect x="210" y="100" width="414" height="64" rx="8"/>
+    <rect x="210" y="184" width="414" height="64" rx="8"/>
+    <rect x="210" y="268" width="414" height="64" rx="8"/>
+    <path d="M101 80v20"/>
+    <path d="M101 164v20"/>
+    <path d="M101 248v20"/>
+    <path d="M186 48h24"/>
+    <path d="M186 132h24"/>
+    <path d="M186 216h24"/>
+    <path d="M186 300h24"/>
+  </g>
+  <g fill="currentColor">
+    <polygon points="101,98 95,84 107,84"/>
+    <polygon points="101,182 95,168 107,168"/>
+    <polygon points="101,266 95,252 107,252"/>
+    <polygon points="210,48 196,42 196,54"/>
+    <polygon points="210,132 196,126 196,138"/>
+    <polygon points="210,216 196,210 196,222"/>
+    <polygon points="210,300 196,294 196,306"/>
+  </g>
+  <g fill="currentColor" font-size="15">
+    <text x="28" y="46">① 结论右边是蕴含</text>
+    <text x="28" y="70">A→B？</text>
+    <text x="28" y="130">② 结论是否定式？</text>
+    <text x="28" y="154">（或正面推不动）</text>
+    <text x="28" y="214">③ 前提里有析取？</text>
+    <text x="28" y="238">（要分两种情形）</text>
+    <text x="28" y="306">④ 其余情况</text>
+    <text x="222" y="46">CP：把 A 写成 P（附加前提）行，证出 B，</text>
+    <text x="222" y="70">末行写 A→B 并标 CP</text>
+    <text x="222" y="130">归谬：把结论的否定写成 P（附加前提）行，</text>
+    <text x="222" y="154">推出矛盾，末行写矛盾并声明按归谬法</text>
+    <text x="222" y="214">分类讨论：每种情况各证一遍，</text>
+    <text x="222" y="238">都得到 Q，最后说明几种情形合起来成立</text>
+    <text x="222" y="298">直接证法：从结论倒推最后一步，</text>
+    <text x="222" y="322">最后一行的公式就是结论本身</text>
+  </g>
+  <g fill="currentColor" font-size="14">
+    <text x="112" y="96">否</text>
+    <text x="112" y="180">否</text>
+    <text x="112" y="264">否</text>
+    <text x="192" y="44">是</text>
+    <text x="192" y="128">是</text>
+    <text x="192" y="212">是</text>
+    <text x="192" y="296">是</text>
+  </g>
+  <g fill="currentColor" font-size="15">
+    <text x="16" y="368">先看结论形状再动笔：直接证法走得下去，就不必换路线。</text>
+  </g>
+</svg>
+    <figcaption>图 1 · 四条路线依次判，先命中的那条就是本次要用的</figcaption>
+  </figure>
+
+  <p>四条路线的写法差别只在首行与末行，中间都是 P 规则加 T 规则：</p>
+
+  <figure class="lesson-figure lesson-figure--inline" role="img" aria-label="直接证法、附加前提法、归谬法各写什么首行与末行">
+<svg viewBox="0 0 720 300" role="img" aria-hidden="true">
+  <g fill="none" stroke="currentColor" stroke-width="1.5">
+    <path d="M8 36h704"/>
+    <path d="M8 112h704"/>
+    <path d="M8 188h704"/>
+    <path d="M8 264h704"/>
+    <path d="M126 36v228"/>
+    <path d="M420 36v228"/>
+  </g>
+  <g fill="currentColor" font-size="16">
+    <text x="16" y="26">路线</text>
+    <text x="136" y="26">第一行写什么</text>
+    <text x="430" y="26">最后一行怎么写</text>
+  </g>
+  <g fill="currentColor" font-size="15">
+    <text x="16" y="78">直接证法</text>
+    <text x="136" y="64">1　P→Q　P</text>
+    <text x="136" y="88">前提逐条编号，全写 P</text>
+    <text x="430" y="64">末行就是结论本身</text>
+    <text x="430" y="88">依据 T，行号，规则名</text>
+    <text x="16" y="154">附加前提法</text>
+    <text x="136" y="140">1　A　P（附加前提）</text>
+    <text x="136" y="164">A 是结论的前件</text>
+    <text x="430" y="140">末行写 A→B</text>
+    <text x="430" y="164">依据 T，首行号，末行号，CP</text>
+    <text x="16" y="230">归谬法</text>
+    <text x="136" y="216">1　¬B　P（附加前提）</text>
+    <text x="136" y="240">¬B 是结论的否定</text>
+    <text x="430" y="216">末行写 R∧¬R，即矛盾</text>
+    <text x="430" y="240">再写一句：按归谬法</text>
+  </g>
+</svg>
+    <figcaption>图 2 · 三条路线的第一行与最后一行，中间各行写法相同</figcaption>
+  </figure>
+
+  <h2>十条例式够用了</h2>
+
+  <p>教材 P43 表1-8.3 列的是蕴含式：整行引用，两头拼。记的时候按"手里的形状"记，比按编号顺序记牢：</p>
+
+  <table>
+    <thead>
+      <tr><th>名称</th><th>式子</th><th>看到什么写它</th></tr>
+    </thead>
+    <tbody>
+      <tr><td>假言推理</td><td><span class="math-inline">P,\;P\to Q\Rightarrow Q</span></td><td>手里有箭头和它的前件</td></tr>
+      <tr><td>拒取式</td><td><span class="math-inline">P\to Q,\;\neg Q\Rightarrow\neg P</span></td><td>手里有箭头和后件的否定</td></tr>
+      <tr><td>析取三段论</td><td><span class="math-inline">P\vee Q,\;\neg P\Rightarrow Q</span></td><td>一个析取加一个否定，消掉一支</td></tr>
+      <tr><td>假言三段论</td><td><span class="math-inline">P\to Q,\;Q\to R\Rightarrow P\to R</span></td><td>两个箭头首尾相接</td></tr>
+      <tr><td>化简</td><td><span class="math-inline">P\wedge Q\Rightarrow P</span>（也 <span class="math-inline">\Rightarrow Q</span>）</td><td>前提是合取，先拆开</td></tr>
+      <tr><td>合成</td><td><span class="math-inline">P,\;Q\Rightarrow P\wedge Q</span></td><td>结论是合取，两边各凑一个</td></tr>
+      <tr><td>附加</td><td><span class="math-inline">P\Rightarrow P\vee Q</span>（也 <span class="math-inline">\Rightarrow Q\vee P</span>）</td><td>结论是析取，凑出一支就够</td></tr>
+      <tr><td>假言易位</td><td><span class="math-inline">P\to Q\Rightarrow\neg Q\to\neg P</span></td><td>箭头要倒过来用</td></tr>
+      <tr><td>二难推理</td><td><span class="math-inline">P\to Q,\;R\to S,\;P\vee R\Rightarrow Q\vee S</span></td><td>两支各带一个箭头</td></tr>
+      <tr><td>归谬论</td><td><span class="math-inline">(P\to Q)\wedge(P\to\neg Q)\Rightarrow\neg P</span></td><td>一个前件推出两个相反的后件</td></tr>
+    </tbody>
+  </table>
+
+  <p>等值式在证明里只干一件事：把子公式改写成能接上规则的样子。四条最常用：</p>
+
+  <table>
+    <thead>
+      <tr><th>等值式</th><th>式子</th><th>用法</th></tr>
+    </thead>
+    <tbody>
+      <tr><td>蕴含消除</td><td><span class="math-inline">P\to Q\Leftrightarrow\neg P\vee Q</span></td><td>要消箭头，或把箭头改成析取以便配合德摩根</td></tr>
+      <tr><td>德摩根</td><td><span class="math-inline">\neg(P\wedge Q)\Leftrightarrow\neg P\vee\neg Q</span>（对偶式同）</td><td>否定号要推进括号、或从括号里提出来</td></tr>
+      <tr><td>假言易位</td><td><span class="math-inline">P\to Q\Leftrightarrow\neg Q\to\neg P</span></td><td>箭头的后件要变成前件</td></tr>
+      <tr><td>输出律</td><td><span class="math-inline">P\wedge Q\to R\Leftrightarrow P\to(Q\to R)</span></td><td>结论里连着两层箭头，拆成两次附加前提</td></tr>
+    </tbody>
+  </table>
+
+  <p>等值式可以只替换一处子公式。作业里 <span class="math-inline">\neg(\neg P\wedge S)</span> 整个换成 <span class="math-inline">P\vee\neg S</span> 就是合法的一步，依据栏写 <code>T，行号，E（德摩根）</code>；从 <span class="math-inline">(T\to\neg U)\to\neg S</span> 与 <span class="math-inline">T\to\neg U</span> 得到 <span class="math-inline">\neg S</span>，依据栏写 <code>T，两行行号，假言推理</code>。这两处都是"否号与德摩根配合"的位置，改写本身没问题，能扣分的只有依据栏写没写全。</p>
+
+  <div class="lesson-note">
+    <b>蕴含式与等值式的分工</b>
+    <p>T 规则的后半句只给等值式用：子公式能换。蕴含式不能换进公式内部，它是两条整行之间的一次跳跃。把 <span class="math-inline">P\to Q</span> 里的 <span class="math-inline">P</span> 换成某个更强的式子，那一步没有规则支持。</p>
+  </div>
+
+  <h2>附加前提法：先加再还原</h2>
+
+  <p>1.8.4 的附加前提证明法适用于结论本身是蕴含的题，即 <span class="math-inline">(A_1\wedge A_2\wedge\cdots\wedge A_k)\Rightarrow A\to B</span> 这一形状。做法是把 <span class="math-inline">A</span> 当成额外的前提写进来，证明 <span class="math-inline">B</span>，最后一行写回 <span class="math-inline">A\to B</span>，依据标 CP。</p>
+
+  <p>课件 1.8.4 例2：前提 <span class="math-inline">P\to(Q\to R)</span>，<span class="math-inline">S\to P</span>，<span class="math-inline">Q</span>，结论 <span class="math-inline">S\to R</span>。</p>
+
+  <table>
+    <thead>
+      <tr><th>序号</th><th>公式</th><th>依据</th></tr>
+    </thead>
+    <tbody>
+      <tr><td>1</td><td><span class="math-inline">S\to P</span></td><td>P</td></tr>
+      <tr><td>2</td><td><span class="math-inline">S</span></td><td>P（附加前提）</td></tr>
+      <tr><td>3</td><td><span class="math-inline">P</span></td><td>T，1，2，假言推理</td></tr>
+      <tr><td>4</td><td><span class="math-inline">P\to(Q\to R)</span></td><td>P</td></tr>
+      <tr><td>5</td><td><span class="math-inline">Q\to R</span></td><td>T，3，4，假言推理</td></tr>
+      <tr><td>6</td><td><span class="math-inline">Q</span></td><td>P</td></tr>
+      <tr><td>7</td><td><span class="math-inline">R</span></td><td>T，5，6，假言推理</td></tr>
+      <tr><td>8</td><td><span class="math-inline">S\to R</span></td><td>T，2，7，CP</td></tr>
+    </tbody>
+  </table>
+
+  <p>首行第 2 条是附加前提 <span class="math-inline">S</span>，末行第 8 条把 <span class="math-inline">S</span> 与 <span class="math-inline">R</span> 合成 <span class="math-inline">S\to R</span>。中间第 3 到第 7 行只是把 <span class="math-inline">R</span> 推出来，跟直接证法没有分别。所以 CP 的关键只有一处：<b>末行要还原</b>，依据写 CP 并引附加前提那一行的编号。</p>
+
+  <p>三处容易失分：</p>
+
+  <ul>
+    <li>末行忘了还原，最后一行停在 <span class="math-inline">R</span>。这一串只能说明"<span class="math-inline">S</span> 成立时 <span class="math-inline">R</span> 成立"，答卷要的结论是 <span class="math-inline">S\to R</span>，最后一行必须写成蕴含并标 CP。</li>
+    <li>把结论整行当 P 行引入。能加为前提的只有前件 <span class="math-inline">S</span>；把 <span class="math-inline">S\to R</span> 整行引入就是循环论证，全题判废。</li>
+    <li>附加前提的依据写成 <code>P</code>。写成 <code>P（附加前提）</code>，阅卷人才看得出这是 CP 的起点。</li>
+  </ul>
+
+  <p>结论是两层箭头时，如 <span class="math-inline">A\to(B\to C)</span>，先用输出律把结论改写成 <span class="math-inline">A\wedge B\to C</span>，或者连加两次附加前提：先加 <span class="math-inline">A</span>，再在中间加 <span class="math-inline">B</span>，证出 <span class="math-inline">C</span> 后写两行 CP 收尾。</p>
+
+  <div class="quiz" data-quiz='[
+  {
+    "q": "前提 $P\\to(Q\\to R)$、$S\\to P$、$Q$，\n结论 $S\\to R$。\n\n有同学从前提直接往下推，推到手里已有 $Q$、\n$P\\to(Q\\to R)$ 就停住了：凑不出 $S\\to R$。\n\n① 这道题该走哪条路线？一句理由。\n② 写出「附加前提那一行」与「末行」，都带依据栏。\n③ 说清直接证法为什么走不通。",
+    "answer": "① 附加前提法（CP）。结论本身是蕴含 $S\\to R$，\n把它的前件 $S$ 加进来当额外前提，证出 $R$ 就够。\n\n② 2　$S$　P（附加前提）\n8　$S\\to R$　T，2，7，CP\n\n（中间第 3～7 行与直接证法一样，只是把 $R$ 推出来；\n行号按自己那份的实际行号写。）\n\n③ 直接证法的末行必须是结论 $S\\to R$ 本身。\n可 $S$ 从头到尾只在前件位置出现过，手里没有含 $S$ 的整行；\n能造出蕴含的规则只有假言三段论与假言易位，\n两条都要求手里先有箭头。$S$ 不请进来，蕴含就凑不出来。",
+    "criteria": "① 答「附加前提法／CP」，理由要挂在结论形状上：\n结论是蕴含。\n\n② 两行都要对。\n附加前提行写 $S$，依据必须是「P（附加前提）」；\n只写「P」算缺标记，按部分通过。\n末行写 $S\\to R$，依据写成\n「T，附加前提行号，被合成的那一行行号，CP」，\n两个行号缺一个按部分通过。\n\n③ 要说到「没有规则能凭空造出蕴含」这一层。\n只说「结论是蕴含所以用 CP」、不解释为什么直接证走不通，\n按部分通过。\n\n把结论 $S\\to R$ 整行当 $P$ 引入的，不通过——\n那是循环论证，全题判废。"
+  }
+]'></div>
+
+  <div class="quiz" data-quiz='[
+  {
+    "q": "题目：前提 $S\\to P$、$P\\to(Q\\to R)$、$Q$，\n结论 $S\\to R$。\n有同学交上来这样一份（结论写在题头，表里没有）：\n\n```text\n1  S→P        P\n2  S          P（附加前提）\n3  P          T，1，2，假言推理\n4  P→(Q→R)    P\n5  Q→R        T，3，4，假言推理\n6  Q          P\n7  R          T，5，6，假言推理\n```\n\n① 这份证明废在哪一处？表里最后一行推出来的是什么？\n② 根因一句。\n③ 补上正确的末行与依据栏。\n④ 给一条自查，下次不看答案也能发现。",
+    "answer": "① 废在收口：表里最后一行停在 $R$。\n它只说明「$S$ 成立时 $R$ 成立」的后件那一半，\n不是答卷要的结论 $S\\to R$。\n\n② 附加前提只借不还：$S$ 是以附加前提请进来的，\n收尾那一步要把它还原成蕴含，这一步漏了。\n\n③ 8　$S\\to R$　T，2，7，CP\n\n引附加前提第 2 行与被合成的第 7 行，标 CP。\n\n④ 交卷前只看两处：\n末行公式是不是与题目结论逐字相同；\n它的依据栏里有没有「CP」、有没有引第 2 行。\n两处有一处不对，就是没还原。",
+    "criteria": "① 指到「末行停在 $R$」这个位置，\n并说清 $R$ 只是后件、不是结论。\n只会说「少了最后一步」而说不出末行现在是什么，按部分通过。\n\n② 根因要说到「附加前提没有还原成蕴含」这一层，\n不是「行数不够」。\n\n③ 末行必须是 $S\\to R$，依据含「CP」，\n且引的是附加前提行（第 2 行）与被合成的第 7 行。\n只写「T，CP」不写行号，按部分通过。\n\n④ 自查要能独立执行（看末行公式、看依据栏里的 CP 与行号）。\n答「再算一遍」不算自查。"
+  }
+]'></div>
+
+  <div class="lesson-practice">
+    <div class="lesson-practice__head">
+      <span class="lesson-practice__level">练习</span>
+      <span class="lesson-practice__title">第 2 步 · 三条路线各写一遍</span>
+    </div>
+
+      <p>同一道题用两条路各写一遍，比"三条路线各抄一道"更能看出差别。</p>
+
+      <p>取课件 1.8.4 附加前提法例1：<span class="math-inline">(A\to(B\vee C))\wedge(B\to\neg A)\wedge(D\to\neg C)\Rightarrow A\to\neg D</span>，先按附加前提法写完整证明（八到十一行均可，只要每行依据齐全）。然后把结论 <span class="math-inline">A\to\neg D</span> 的否定 <span class="math-inline">A\wedge D</span> 加为前提，改写成归谬法的版本，推出矛盾收尾。两版写完并排看：</p>
+
+      <ol>
+        <li>两版的哪些行完全相同；</li>
+        <li>两版的末行各写了什么，依据栏各标什么；</li>
+        <li>哪一版更省行数。</li>
+      </ol>
+
+      <p>再取课件 1.8.4 归谬法例1：<span class="math-inline">(P\to\neg Q)\wedge(\neg R\vee Q)\wedge(R\wedge\neg S)\Rightarrow\neg P</span>，照模板写一份归谬法证明，末行写矛盾并加一句"按归谬法"。</p>
+  </div>
+
+  <h2>归谬法：推出矛盾</h2>
+
+  <p>定义 1.8.2（教材原文）：设命题公式集合为 <span class="math-inline">\{H_1,H_2,\dots,H_n\}</span>，若 <span class="math-inline">H_1\wedge H_2\wedge\cdots\wedge H_n</span> 为永假式，则称 <span class="math-inline">\{H_1,H_2,\dots,H_n\}</span> 是不相容的，否则称为相容的。</p>
+
+  <p>做法：把结论的否定 <span class="math-inline">\neg B</span> 作为附加前提写进证明，推到出现一对矛盾（<span class="math-inline">R</span> 与 <span class="math-inline">\neg R</span>，或某式与其否定），于是这组前提不相容，原推理有效。末行不写结论，写矛盾那一行，另起一句说明按归谬法。</p>
+
+  <p>课件 1.8.4 归谬法例1：<span class="math-inline">(P\to\neg Q)\wedge(\neg R\vee Q)\wedge(R\wedge\neg S)\Rightarrow\neg P</span>。</p>
+
+  <table>
+    <thead>
+      <tr><th>序号</th><th>公式</th><th>依据</th></tr>
+    </thead>
+    <tbody>
+      <tr><td>1</td><td><span class="math-inline">P</span></td><td>P（附加前提，结论的否定）</td></tr>
+      <tr><td>2</td><td><span class="math-inline">P\to\neg Q</span></td><td>P</td></tr>
+      <tr><td>3</td><td><span class="math-inline">\neg Q</span></td><td>T，1，2，假言推理</td></tr>
+      <tr><td>4</td><td><span class="math-inline">\neg R\vee Q</span></td><td>P</td></tr>
+      <tr><td>5</td><td><span class="math-inline">\neg R</span></td><td>T，3，4，析取三段论</td></tr>
+      <tr><td>6</td><td><span class="math-inline">R\wedge\neg S</span></td><td>P</td></tr>
+      <tr><td>7</td><td><span class="math-inline">R</span></td><td>T，6，化简</td></tr>
+      <tr><td>8</td><td><span class="math-inline">R\wedge\neg R</span></td><td>T，5，7，合成</td></tr>
+    </tbody>
+  </table>
+
+  <p>由第 8 行得出矛盾，根据归谬法说明原推理正确。</p>
+
+  <p>两处容易失分：</p>
+
+  <ul>
+    <li>假设写错。结论是 <span class="math-inline">\neg P</span>，附加前提要写 <span class="math-inline">P</span>（结论的否定），写成 <span class="math-inline">\neg P</span> 等于把要证的东西当前提。</li>
+    <li>矛盾行之后没有结论句。第 8 行只写出 <span class="math-inline">R\wedge\neg R</span>，答卷最后要有一句"由第 8 行得矛盾，按归谬法，原推理有效"。</li>
+  </ul>
+
+  <p>归谬论这条蕴含式与归谬法配合得很顺：推的过程中若同时得到 <span class="math-inline">P\to Q</span> 与 <span class="math-inline">P\to\neg Q</span>，直接用归谬论整行得出 <span class="math-inline">\neg P</span>，比再拆矛盾省两行。</p>
+
+  <div class="quiz" data-quiz='[
+  {
+    "q": "要证 $\\neg P$，有同学这样开归谬：\n\n```text\n1  ¬P        P（附加前提）\n2  P→¬Q      P\n3  ¬Q        T，1，2，假言推理\n……\n8  R∧¬R      T，5，7，合成\n```\n\n这份证明废在哪一处？",
+    "opts": [
+      "第 1 行：把结论本身写成了附加前提",
+      "第 3 行：假言推理的前件没对上行号",
+      "第 8 行：矛盾式要写成 ¬(R∧¬R)",
+      "第 8 行：矛盾行后面少了一句说明"
+    ],
+    "ans": 0,
+    "why": "结论是 $\\neg P$，附加前提要写它的否定，也就是 $P$。\n写成 $\\neg P$，等于把要证的东西当前提用，\n前提里已经有了结论，推到底也不证明任何事。\n第 8 行的 $R\\wedge\\neg R$ 写法是对的；\n矛盾行后面那句「按归谬法」是另一处问题，本题问的是被写废的那一处。"
+  }
+]'></div>
+
+  <h2>前件是析取就分情况</h2>
+
+  <p>课件第 173–174 页补的分情况证明：要证 <span class="math-inline">(P_1\vee P_2\vee\cdots\vee P_n)\Rightarrow Q</span>，只需对每个 <span class="math-inline">1\le i\le n</span> 证明 <span class="math-inline">P_i\Rightarrow Q</span>。依据是一步等值演算：</p>
+
+  <div class="math-block">(P_1\vee\cdots\vee P_n)\to Q\Leftrightarrow(\neg P_1\wedge\cdots\wedge\neg P_n)\vee Q\Leftrightarrow(P_1\to Q)\wedge\cdots\wedge(P_n\to Q)</div>
+
+  <p>课件补充例：证明 <span class="math-inline">((P\to Q)\wedge P)\vee((P\vee Q)\wedge\neg P)\to Q</span> 是重言式。前件是两支的析取，逐支证：</p>
+
+  <p>情况 1，前提取 <span class="math-inline">(P\to Q)\wedge P</span>：</p>
+
+  <table>
+    <thead>
+      <tr><th>序号</th><th>公式</th><th>依据</th></tr>
+    </thead>
+    <tbody>
+      <tr><td>1</td><td><span class="math-inline">P\to Q</span></td><td>P</td></tr>
+      <tr><td>2</td><td><span class="math-inline">P</span></td><td>P</td></tr>
+      <tr><td>3</td><td><span class="math-inline">Q</span></td><td>T，1，2，假言推理</td></tr>
+    </tbody>
+  </table>
+
+  <p>情况 2，前提取 <span class="math-inline">(P\vee Q)\wedge\neg P</span>：</p>
+
+  <table>
+    <thead>
+      <tr><th>序号</th><th>公式</th><th>依据</th></tr>
+    </thead>
+    <tbody>
+      <tr><td>1</td><td><span class="math-inline">P\vee Q</span></td><td>P</td></tr>
+      <tr><td>2</td><td><span class="math-inline">\neg P</span></td><td>P</td></tr>
+      <tr><td>3</td><td><span class="math-inline">Q</span></td><td>T，1，2，析取三段论</td></tr>
+    </tbody>
+  </table>
+
+  <p>两支都推到 <span class="math-inline">Q</span>，前件的每一支都能推出结论，整个蕴含式是重言式。</p>
+
+  <p>写法上要守住两条：每种情况单独起一段并标"情况 1""情况 2"，各段的行号只在段内有效；末尾写一句"各种情况的结论相同，故原式成立"，把分情况这件事收口。情况数多于两种时同样处理，前提里往往就是几个析取支。</p>
+
+  <h2>作业里的三处失分</h2>
+
+  <p><b>失分一：依据栏只剩一个 T。</b> 作业里写 <code>T</code> 或写规则的简称，不写引用的行号，复算时看得出推导对，考试按步骤给分时就吃亏。补法很简单：写每一行时先想"我引了哪几行"，再想"按哪条规则"，两样都写进依据栏。</p>
+
+  <p><b>失分二：<span class="math-inline">P\to Q\Rightarrow P\to(P\wedge Q)</span> 那道题走错了路线。</b> 结论是蕴含，前件是 <span class="math-inline">P</span>，本题就该用 CP：</p>
+
+  <table>
+    <thead>
+      <tr><th>序号</th><th>公式</th><th>依据</th></tr>
+    </thead>
+    <tbody>
+      <tr><td>1</td><td><span class="math-inline">P\to Q</span></td><td>P</td></tr>
+      <tr><td>2</td><td><span class="math-inline">P</span></td><td>P（附加前提）</td></tr>
+      <tr><td>3</td><td><span class="math-inline">Q</span></td><td>T，1，2，假言推理</td></tr>
+      <tr><td>4</td><td><span class="math-inline">P\wedge Q</span></td><td>T，2，3，合成</td></tr>
+      <tr><td>5</td><td><span class="math-inline">P\to(P\wedge Q)</span></td><td>T，2，4，CP</td></tr>
+    </tbody>
+  </table>
+
+  <p>五行写完。作业里设"前件真"之后直接假定 <span class="math-inline">P</span> 的取值、<span class="math-inline">P=0</span> 那一支写得乱，根因是把 <span class="math-inline">P\to Q</span> 为真理解成了"<span class="math-inline">P</span> 与 <span class="math-inline">Q</span> 各有确定的值"。1.4 的真值表给出的是另一件事：<span class="math-inline">P\to Q</span> 为真只意味着"<span class="math-inline">P=0</span> 或 <span class="math-inline">Q=1</span>"这个二选一。分情况因此只有两支——<span class="math-inline">P=0</span> 时前件假，<span class="math-inline">P\to Q</span> 自动为真；<span class="math-inline">P=1</span> 时由蕴含得到 <span class="math-inline">Q=1</span>，于是 <span class="math-inline">P\wedge Q=1</span>。</p>
+
+  <p>这个二选一也说明了 CP 为什么只写一支：附加前提 <span class="math-inline">P</span> 正好就是 <span class="math-inline">P=1</span> 那一支，把 <span class="math-inline">Q</span> 推出来，蕴含就成立；<span class="math-inline">P=0</span> 那一支按蕴含的真值规定自动成立，不必再证。凡是结论是蕴含、或前提里有蕴含的题，手上出现"某变元取 0 或取 1"的念头，先回到 CP 或归谬，别开真值表分支。</p>
+
+  <p><b>失分三：把蕴含式当等值式用。</b> 等值式能替换子公式，蕴含式只能整行引用。作业里 <span class="math-inline">P\to Q</span> 与 <span class="math-inline">\neg Q</span> 得 <span class="math-inline">\neg P</span> 是拒取式，一步到位；若试图把 <span class="math-inline">P\to Q</span> 里的 <span class="math-inline">P</span> 换成更强的式子再引用，这一步没有规则支持，写出来就判错。</p>
+
+  <div class="quiz" data-quiz='[
+  {
+    "q": "只有一条前提 $P\\to Q$，要证 $P\\to(P\\wedge Q)$。\n\n① 走哪条路线？理由一句。\n② 把完整证明写出来：行号、公式、依据三列都要。\n③ $P=0$ 那一支为什么不必单独证？",
+    "answer": "① 附加前提法。结论是蕴含；\n$P\\to Q$ 里也带着箭头，把前件 $P$ 加进来，\n凑出 $P\\wedge Q$ 就够。\n\n② 1　$P\\to Q$　P\n2　$P$　P（附加前提）\n3　$Q$　T，1，2，假言推理\n4　$P\\wedge Q$　T，2，3，合成\n5　$P\\to(P\\wedge Q)$　T，2，4，CP\n\n③ 附加前提 $P$ 补的正是 $P=1$ 那一支。\n$P=0$ 时前件假，$P\\to(P\\wedge Q)$ 按蕴含的真值规定\n自动为真，不必再证。\n这也是 CP 只写一支的原因：另一支不用证。\n\n（分两支写也算对：$P=0$ 时前件假、蕴含真；\n$P=1$ 时由 $P\\to Q$ 得 $Q=1$，于是 $P\\wedge Q=1$；\n末尾要说明两支结论相同。）",
+    "criteria": "① 答附加前提法（CP），理由落在「结论是蕴含」。\n\n② 逐行对：\n1 行前提写「P」；\n2 行必须标「P（附加前提）」，只写「P」按部分通过；\n3 行「T，1，2，假言推理」；\n4 行「T，2，3，合成」；\n末行「T，2，4，CP」，引的是附加前提行与第 4 行。\n少写行号、只写一个「T」的，按部分通过。\n把结论 $P\\to(P\\wedge Q)$ 当 $P$ 行引入的，不通过。\n\n③ 要答出两点：$P=0$ 时前件假、蕴含自动真；\n附加前提补的就是 $P=1$ 那一支。\n只答「用了 CP 所以不用证」，按部分通过。\n\n分情况证也算对，但两支都要写、末尾要收口说明。"
+  }
+]'></div>
+
+  <h2>让断言核对证明</h2>
+
+  <p>手写的证明靠人对，题库里几十道靠断言对。这一课的 lab 把证明的每一行拆成"行号、公式、依据"三个字段，交给断言逐行验：行号是否连续、依据引的行是否存在、规则名与公式形状是否配得上、末行是否就是结论。</p>
+
+  <div class="lesson-practice">
+    <div class="lesson-practice__head">
+      <span class="lesson-practice__level">上手做</span>
+      <span class="lesson-practice__title">交 lab 用断言核对</span>
+    </div>
+
+      <p>入口：<a href="../lab/README.md">lab · 推理证明校对</a>。用本机 Python 3.13 跑 <code>python -m unittest</code>，不装任何东西。</p>
+
+      <p>这个 lab 干一件事：把你手写的证明录成几行数据交给断言逐条核对——依据引错行、规则与公式不匹配、CP 末行没还原，都会指到具体哪一行。</p>
+
+      <p>保底提示：先按本课的三列表自己写完整证明，再去录；倒过来做，错的就只是格式，看不出推导缺哪一步。</p>
+  </div>
+
+  <div class="lesson-note">
+    <b>与下一课的关系</b>
+    <p>实验一要把"推理是否有效"写成真值表断言：前提合取蕴含结论，穷举赋值逐个验。本课这串公式序列回答的是同一件事的另一个侧面——真值表给判定，证明给过程。</p>
+  </div>
+
+  <ul class="lesson-resources">
+    <li><a href="../reference/01-左孝凌课件1.html">老师课件 1 · 1.8 推理理论（第 147–174 页）</a><span class="lesson-resources__meta">本地课件 · 本节按它的小节顺序与例题编号组织</span></li>
+    <li>左孝凌《离散数学》第一章 1.8 推理理论<span class="lesson-resources__meta">书 · 蕴含式与等值式表在 P43（表1-8.3、表1-8.4），作业在 P46–47</span></li>
+  </ul>
+
+  <!-- ── 提问提示：固定写法，别删 ── -->
+
+  <div class="lesson-ask">
+    <b>没看懂？随时问</b>
+    把看不懂的段落（或报错）原样复制回会话，说一句哪里不懂就行，我只解释这一段，不打断你的进度。
+  </div>
+
+  <!-- ── 上/下节课指针由渲染器按 curriculum.yaml 的 nodes 顺序算（第一课无 --prev、最后一课无 --next） ── -->
+
+  <nav class="lesson-nav" aria-label="上一课 / 下一课">
+    <a class="lesson-nav__link lesson-nav__link--prev" href="0001-logic-normal-form.html">
+      <span class="lesson-nav__dir">上节课</span>
+      <span class="lesson-nav__title">对偶与范式</span>
+    </a>
+    <a class="lesson-nav__link lesson-nav__link--next" href="0003-lab-1-truth-engine.html">
+      <span class="lesson-nav__dir">下节课</span>
+      <span class="lesson-nav__title">实验一：把推理判成有效</span>
+    </a>
+  </nav>
+
+  <footer class="lesson-footer">
+    StudyMate · 0002 推理理论：证明怎么写 · 本地学习工作区
+  </footer>
+
+</article>
+
+<script src="../../../assets/sayo/sayo.js"></script>
+<link rel="stylesheet" href="../../../assets/katex/katex.min.css">
+<script src="../../../assets/katex/katex.min.js" defer></script>
+<script src="../../../assets/lesson-math.js" defer></script>
+<script src="../assets/quiz.js" defer></script>
+<script src="../assets/lesson-toc.js" defer></script>
+<script>LearnTheme.wire(document.getElementById('lesson-theme-checkbox'));</script>
+</body>
+</html>

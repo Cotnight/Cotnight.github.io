@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="zh-CN" data-theme="dark">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>术语表 · 复变函数与积分变换</title>
+<link rel="stylesheet" href="../../assets/sayo/sayo.css">
+<link rel="stylesheet" href="../../assets/learn-theme.css">
+<link rel="stylesheet" href="assets/style.css">
+<script src="../../assets/learn-theme.js"></script>
+<script>LearnTheme.apply();</script>
+<style>
+.lesson h1 {
+  margin: var(--syo-space-2, 8px) 0 var(--syo-space-4, 16px);
+  font-size: clamp(1.6rem, 3.2vw, 2.25rem);
+  font-weight: 700;
+  line-height: 1.25;
+  letter-spacing: -0.02em;
+  color: var(--syo-fg-default);
+}
+</style>
+</head>
+<body class="lesson-body">
+<nav class="lesson-bar">
+  <a href="index.html">← 返回科目</a>
+  <span>复变函数与积分变换</span>
+  <span class="lesson-bar__no">术语表</span>
+  <label class="syo-toggle syo-toggle--theme lesson-bar__toggle" title="切换深浅主题" aria-label="切换深浅主题">
+    <input type="checkbox" id="attachment-theme-checkbox" checked>
+    <span class="syo-toggle-track"></span>
+    <span class="syo-toggle-knob">
+      <svg class="syo-toggle-sun" viewBox="0 0 20 20" fill="none" aria-hidden="true"><circle cx="10" cy="10" r="3.5" stroke="#f57c00" stroke-width="1.5"/><path d="M10 2v2.5M10 15.5V18M2 10h2.5M15.5 10H18M4.34 4.34l1.77 1.77M13.89 13.89l1.77 1.77M4.34 15.66l1.77-1.77M13.89 6.11l1.77-1.77" stroke="#f57c00" stroke-width="1.2" stroke-linecap="round"/></svg>
+      <svg class="syo-toggle-moon" viewBox="0 0 20 20" fill="none" aria-hidden="true"><path d="M16.5 12.5A6 6 0 019 4.5a6 6 0 007.5 8z" stroke="#5c6bc0" stroke-width="1.5" stroke-linejoin="round"/></svg>
+    </span>
+  </label>
+</nav>
+
+<article class="lesson">
+<h1>复变函数与积分变换 Glossary</h1>
+<p>本课程按李君、于非非主编《复变函数与积分变换》讲：上半部分研究复变函数的微分、积分与级数展开，下半部分把积分变换（傅里叶变换、拉普拉斯变换）作为工具用到信号与系统问题上。</p>
+<blockquote><p>两节都算这门课的<strong>规范用词</strong>：课件正文与配图用词以本文件为准。开课时先把主题词写进「待掌握」，<br>学生真的会用之后挪进「已掌握」——挪动本身就是一条学习记录。</p></blockquote>
+<h2>待掌握</h2>
+<p><strong>复数</strong>:<br>由实部与虚部构成的数 $z=x+iy$（$x,y\in\mathbb{R}$，$i^2=-1$），是这门课里一切运算的基本对象。<br><em>Avoid</em>: 虚数（"虚数"只指 $iy$ 这一类，不指整个 $z$）</p>
+<p><strong>模与辐角</strong>:<br>模 $|z|=\sqrt{x^2+y^2}$ 是 $z$ 到原点的距离；辐角 $\arg z$ 是 $z$ 与正实轴的有向夹角，取值不唯一，限定在 $(-\pi,\pi]$ 内的那个叫<strong>主值</strong>，记 $\operatorname{Arg} z$。<br><em>Avoid</em>: 角度（"角度"是几何直觉说法，本课一律用辐角与主值）</p>
+<p><strong>三角表示与指数表示</strong>:<br>把 $z$ 写成 $z=r(\cos\theta+i\sin\theta)$ 或 $z=re^{i\theta}$（$r=|z|,\ \theta=\arg z$），这是复数乘除、乘方、开方最快的形式。<br><em>Avoid</em>: 极坐标形式（本课统一叫指数表示）</p>
+<p><strong>区域</strong>:<br>满足"连通"且"开"的平面点集；课程里说"在区域 $D$ 内解析"时，$D$ 就是这种集合，它的边界不包含在内。<br><em>Avoid</em>: 区间、范围（复数平面上的集合一律叫区域或点集）</p>
+<p><strong>复变函数</strong>:<br>把复数映到复数的函数 $w=f(z)$，可拆成两个实二元函数 $f(z)=u(x,y)+iv(x,y)$；"复变函数的极限、连续、导数"都建立在 $u,v$ 这两个实函数上。<br><em>Avoid</em>: 复函数（统一写复变函数）</p>
+<p><strong>复变函数的极限</strong>:<br>$z\to z_0$ 时 $f(z)\to A$ 要求 $z$ <strong>沿任何路径</strong>趋近 $z_0$ 都得到同一个 $A$——路径不同结果不同则极限不存在，这是复极限与实极限最关键的区别。<br><em>Avoid</em>: 单侧极限（复平面上没有"单侧"）</p>
+<p><strong>初等函数</strong>:<br>指数函数 $e^z$、对数函数 $\operatorname{Ln} z$、幂函数 $z^\alpha$、三角与双曲函数在复数范围内的推广。其中 $e^z$ 以 $2\pi i$ 为周期，$\operatorname{Ln} z$ 是多值函数。<br><em>Avoid</em>: 基本函数（统一写初等函数）</p>
+<p><strong>可导</strong>:<br>$f(z)$ 在 $z_0$ 的导数按 $\lim_{\Delta z\to 0}\frac{f(z_0+\Delta z)-f(z_0)}{\Delta z}$ 定义，$\Delta z$ 以任意方式趋于 $0$ 时该极限都必须存在且相同；比实函数可导苛刻得多。<br><em>Avoid</em>: 可微（本课导数是复导数，统一说可导）</p>
+<p><strong>解析</strong>:<br>$f(z)$ 在 $z_0$ <strong>解析</strong>指它在 $z_0$ 的某个邻域内处处可导；仅在一点可导不算解析。这是本课程的中心概念，后面"解析函数的积分""级数展开"都建立在它上面。<br><em>Avoid</em>: 全纯、正则、单演（本课一律用解析）</p>
+<p><strong>柯西-黎曼条件</strong>:<br>$f(z)=u+iv$ 可导的必要条件：$u_x=v_y$ 且 $u_y=-v_x$（四个一阶偏导连续时也是充分条件）。考试里判断可导与解析就靠它。<br><em>Avoid</em>: C-R 方程（口语可以说，写答案时写全称）</p>
+<p><strong>调和函数</strong>:<br>满足拉普拉斯方程 $u_{xx}+u_{yy}=0$ 的实二元函数；解析函数的实部与虚部都是调和函数，并且互为共轭调和函数。<br><em>Avoid</em>: 调合函数（错别字，注意是"调和"）</p>
+<h2>已掌握</h2>
+  <footer class="lesson-footer">
+    StudyMate · 术语表 · 本地学习工作区
+  </footer>
+</article>
+
+<script src="../../assets/sayo/sayo.js"></script>
+<script>LearnTheme.wire(document.getElementById('attachment-theme-checkbox'));</script>
+</body>
+</html>

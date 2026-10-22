@@ -1,0 +1,527 @@
+<!DOCTYPE html>
+<html lang="zh-CN" data-theme="dark">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>谓词、命题函数与量词 · 离散数学</title>
+
+<!-- 共享层在 .learning/assets/，课件在 .learning/subjects/<slug>/lessons/ 下，所以是 ../../../assets/ -->
+<link rel="stylesheet" href="../../../assets/sayo/sayo.css">
+<link rel="stylesheet" href="../../../assets/learn-theme.css">
+<link rel="stylesheet" href="../assets/style.css">
+
+<!-- 主题要在首帧前应用，避免闪白/闪黑 -->
+<script src="../../../assets/learn-theme.js"></script>
+<script>LearnTheme.apply();</script>
+</head>
+
+<body class="lesson-body">
+
+<nav class="lesson-bar">
+  <a href="../index.html">← 返回课程</a>
+  <span>离散数学</span>
+  <span class="lesson-bar__no">0004</span>
+  <!-- 课件页自带主题开关：学生从文件管理器直接打开课件时也能切暗色 -->
+  <label class="syo-toggle syo-toggle--theme lesson-bar__toggle" title="切换深浅主题" aria-label="切换深浅主题">
+    <input type="checkbox" id="lesson-theme-checkbox" checked>
+    <span class="syo-toggle-track"></span>
+    <span class="syo-toggle-knob">
+      <svg class="syo-toggle-sun" viewBox="0 0 20 20" fill="none" aria-hidden="true"><circle cx="10" cy="10" r="3.5" stroke="#f57c00" stroke-width="1.5"/><path d="M10 2v2.5M10 15.5V18M2 10h2.5M15.5 10H18M4.34 4.34l1.77 1.77M13.89 13.89l1.77 1.77M4.34 15.66l1.77-1.77M13.89 6.11l1.77-1.77" stroke="#f57c00" stroke-width="1.2" stroke-linecap="round"/></svg>
+      <svg class="syo-toggle-moon" viewBox="0 0 20 20" fill="none" aria-hidden="true"><path d="M16.5 12.5A6 6 0 019 4.5a6 6 0 007.5 8z" stroke="#5c6bc0" stroke-width="1.5" stroke-linejoin="round"/></svg>
+    </span>
+  </label>
+</nav>
+
+<article class="lesson">
+
+  <header class="lesson-header">
+    <span class="lesson-header__eyebrow">0004 · 谓词、命题函数与量词</span>
+    <h1>谓词、命题函数与量词</h1>
+    <p class="lesson-goal"><b>本节目标：</b>说出客体、谓词与命题函数各是什么，并写出全称与存在两个量词命题的真值条件：有限论域上全称是逐一合取，存在是至少一项为真。</p>
+  </header>
+
+  <!-- ── 正文：渲染器按内容文件（lessons/<序号>-<节点id>.md）产出，块词汇见 docs/规范/课件内容格式.md ── -->
+
+  <h2>三列表在这里失效了</h2>
+
+  <p>上一课交出的证明格式是这样的：前提逐条编号写 <span class="math-inline">P</span>，结论拆成蕴含，中间每一行标出引了哪几行、按哪条规则。实验一那台引擎更进一步，给它一组前提和一个结论，它穷举全部赋值，判出这个推理有效还是无效，判无效的还给出反例赋值。</p>
+
+  <p>拿它去判课件第 3 页开头那个推理：</p>
+
+  <ul>
+    <li>所有的人都是要死的。</li>
+    <li>苏格拉底是人。</li>
+    <li>苏格拉底是要死的。</li>
+  </ul>
+
+  <p>设 <span class="math-inline">P</span>：所有的人都是要死的；<span class="math-inline">Q</span>：苏格拉底是人；<span class="math-inline">R</span>：苏格拉底是要死的。三段话压成三个字母，推理就是 <span class="math-inline">(P\wedge Q)\to R</span>。把 <span class="math-inline">P=1</span>、<span class="math-inline">Q=1</span>、<span class="math-inline">R=0</span> 代进去，前件真、后件假，引擎判"无效"，并把这一行赋值当作反例报出来。</p>
+
+  <p>引擎没有算错，<span class="math-inline">(P\wedge Q)\to R</span> 确实不是重言式。失效的是这份符号化本身：三句话里共有的那个"苏格拉底"，在公式里没有留下任何位置，第一句的"人"与第二句的"是人"也没有。课件第 3 页的判词是：命题逻辑以命题为基本单位，不再对原子命题进行分解，因而无法研究命题的内部结构、成分及命题之间的内在联系，甚至无法处理一些简单而又常见的推理过程。</p>
+
+  <p>课件第 4 页给的办法只有一句：将命题进行分解。第二章从这一句开始。本课只做第一件事：把原子命题拆成客体与谓词，再把"所有"与"存在"写成两个符号，并写出量词命题的真值条件。这两样东西课堂上已经讲过，本课按课件 2.1、2.2 的顺序走一遍，把每一步落成可写的式子。</p>
+
+  <h2>把一句话拆成两截</h2>
+
+  <p>课件 2.1 节把原子命题划分为客体和谓词两部分。</p>
+
+  <p><b>客体</b>（课件原话）：可以独立存在的具体事物的或抽象的概念。课件举的例子是电子计算机、李明、玫瑰花、黑板、实数、中国、思想、唯物主义。客体也可称为主语。</p>
+
+  <p><b>谓词</b>（课件原话）：用来刻划客体的性质或客体之间的相互关系的词。课件第 5 页用六个命题把两类谓词分开：</p>
+
+  <table>
+    <thead>
+      <tr><th>命题</th><th>其中的谓词</th><th>刻划什么</th></tr>
+    </thead>
+    <tbody>
+      <tr><td>张明是个劳动模范</td><td>是个劳动模范</td><td>客体的性质</td></tr>
+      <tr><td>李华是个劳动模范</td><td>是个劳动模范</td><td>客体的性质</td></tr>
+      <tr><td>王红是个大学生</td><td>是个大学生</td><td>客体的性质</td></tr>
+      <tr><td>小李比小赵高 2cm</td><td>…比…高 2cm</td><td>客体之间的关系</td></tr>
+      <tr><td>点 <span class="math-inline">a</span> 在 <span class="math-inline">b</span> 与 <span class="math-inline">c</span> 之间</td><td>…在…与…之间</td><td>客体之间的关系</td></tr>
+      <tr><td>阿杜与阿寺同岁</td><td>…与…同岁</td><td>客体之间的关系</td></tr>
+    </tbody>
+  </table>
+
+  <p>刻划一个客体性质的词称为一元谓词，刻划 <span class="math-inline">n</span> 个客体之间关系的词称为 <span class="math-inline">n</span> 元谓词。一般用大写英文字母表示谓词，用小写英文字母表示客体名称。课件把这六个命题记作：</p>
+
+  <ol>
+    <li><span class="math-inline">F(a)</span>，<span class="math-inline">a</span>：张明；</li>
+    <li><span class="math-inline">F(b)</span>，<span class="math-inline">b</span>：李华；</li>
+    <li><span class="math-inline">G(c)</span>，<span class="math-inline">c</span>：王红；</li>
+    <li><span class="math-inline">H(s,t)</span>，<span class="math-inline">s</span>：小李，<span class="math-inline">t</span>：小赵；</li>
+    <li><span class="math-inline">R(a,b,c)</span>；</li>
+    <li><span class="math-inline">S(a,b)</span>，<span class="math-inline">a</span>：阿杜，<span class="math-inline">b</span>：阿寺。</li>
+  </ol>
+
+  <p>其中第 1、2、3 条是一元谓词，第 4、6 条是二元谓词，第 5 条是三元谓词。课件在同一页里让字母各管一组命题：这里的 <span class="math-inline">a</span> 在第 1 条里指张明，在第 5 条里指一个点。这种重用只在"这一页一一对应"时成立，答卷上要把每个字母指谁都写清楚。</p>
+
+  <figure class="lesson-figure lesson-figure--inline" role="img" aria-label="三个命题各自拆成谓词字母与客体槽位，分别是一元、二元、三元">
+<svg viewBox="0 0 620 320" role="img" aria-hidden="true">
+  <g fill="currentColor" font-size="15">
+    <text x="20" y="26">命题（整句话）</text>
+    <text x="300" y="26">谓词填式（空出客体位）</text>
+    <text x="520" y="26">元数</text>
+  </g>
+  <g fill="none" stroke="currentColor" stroke-width="1.5">
+    <rect x="12" y="44" width="252" height="44" rx="8"/>
+    <rect x="12" y="130" width="252" height="44" rx="8"/>
+    <rect x="12" y="216" width="252" height="44" rx="8"/>
+    <rect x="300" y="44" width="190" height="44" rx="8"/>
+    <rect x="300" y="130" width="190" height="44" rx="8"/>
+    <rect x="300" y="216" width="190" height="44" rx="8"/>
+    <path d="M272 66h22"/>
+    <path d="M272 152h22"/>
+    <path d="M272 238h22"/>
+  </g>
+  <g fill="currentColor">
+    <polygon points="298,66 284,60 284,72"/>
+    <polygon points="298,152 284,146 284,158"/>
+    <polygon points="298,238 284,232 284,244"/>
+  </g>
+  <g fill="currentColor" font-size="16" text-anchor="middle">
+    <text x="138" y="72">张明是个劳动模范</text>
+    <text x="138" y="158">小李比小赵高 2cm</text>
+    <text x="138" y="244">点 a 在 b 与 c 之间</text>
+    <text x="395" y="72">F( a )</text>
+    <text x="395" y="158">H( s , t )</text>
+    <text x="395" y="244">R( a , b , c )</text>
+    <text x="556" y="72">一元</text>
+    <text x="556" y="158">二元</text>
+    <text x="556" y="244">三元</text>
+  </g>
+  <g fill="currentColor" font-size="15">
+    <text x="12" y="298">大写字母表示谓词，小写字母表示客体；客体填满，式子才成为命题。</text>
+  </g>
+</svg>
+    <figcaption>图 1 · 整句话拆成谓词填式，空位填满才是命题</figcaption>
+  </figure>
+
+  <p>课件第 7 页给三条注，每一条后面都要用到：</p>
+
+  <ol>
+    <li>单独一个谓词并不是命题，在谓词字母后填上客体所得到的式子称为谓词填式。</li>
+    <li>在谓词填式中，若客体确定，则 <span class="math-inline">A(a_1,a_2,\dots,a_n)</span> 就变成了命题。</li>
+    <li>在多元谓词表达式中，客体字母出现的先后次序与事先约定有关，一般不可以随意交换位置（如上例中 <span class="math-inline">H(s,t)</span> 与 <span class="math-inline">H(t,s)</span> 代表两个不同的命题）。</li>
+  </ol>
+
+  <p>第 3 条容易被忽略：<span class="math-inline">H</span> 若解释为"…比…高 2cm"，<span class="math-inline">H(s,t)</span> 说的是小李比小赵高，<span class="math-inline">H(t,s)</span> 说的是小赵比小李高，一真一假。次序是谓词的一部分，写反了就换了命题。</p>
+
+  <h2>填上客体才是命题</h2>
+
+  <p>课件 2.2.1 节把上面那一步说得更细：设谓词 <span class="math-inline">H</span> 表示"是劳动模范"，<span class="math-inline">a</span> 表示客体名称张明，<span class="math-inline">b</span> 表示客体名称李华，<span class="math-inline">c</span> 表示这只老虎，那么 <span class="math-inline">H(a)</span>、<span class="math-inline">H(b)</span>、<span class="math-inline">H(c)</span> 表示三个不同的命题，但它们有一个共同的形式，即 <span class="math-inline">H(x)</span>。一般地，<span class="math-inline">H(x)</span> 表示客体 <span class="math-inline">x</span> 具有性质 <span class="math-inline">H</span>。这里 <span class="math-inline">x</span> 表示抽象的或泛指的客体，称为客体变元，常用小写英文字母 <span class="math-inline">x,y,z</span> 表示；相应地，表示具体或特定的客体的词称为客体常项，常用小写英文字母 <span class="math-inline">a,b,c</span> 表示。</p>
+
+  <p>定义 2.2.1（课件原话）：由一个谓词 <span class="math-inline">H</span> 和 <span class="math-inline">n</span> 个客体变元组成的表达式 <span class="math-inline">H(x_1,x_2,\dots,x_n)</span> 称为 <span class="math-inline">n</span> 元简单命题函数。</p>
+
+  <p>由定义可知，<span class="math-inline">n</span> 元谓词就是有 <span class="math-inline">n</span> 个客体变元的命题函数。当 <span class="math-inline">n=0</span> 时称为 0 元谓词。因此，一般情况下命题函数不是命题；特殊情况下 0 元谓词就变成一个命题。</p>
+
+  <p>课件第 13 页把这句话落成了判据：<span class="math-inline">H(x)</span>、<span class="math-inline">L(x,y)</span>、<span class="math-inline">A(x,y,z)</span> 本身并不是一个命题，只有用特定的客体取代客体变元 <span class="math-inline">x,y,z</span> 后，它们才成为命题。<span class="math-inline">H(x)</span> 与 <span class="math-inline">H(a)</span> 只差一个字母，前者没有真值，后者有。</p>
+
+  <p><b>复合命题函数</b>：由一个或几个简单命题函数以及逻辑联结词组合而成的表达式。课件 2.2.1 例1：</p>
+
+  <ul>
+    <li>若 <span class="math-inline">x</span> 的学习好，则 <span class="math-inline">x</span> 的工作好。设 <span class="math-inline">S(x)</span>：<span class="math-inline">x</span> 学习好；<span class="math-inline">W(x)</span>：<span class="math-inline">x</span> 工作好，则有 <span class="math-inline">S(x)\to W(x)</span>。</li>
+  </ul>
+
+  <p>课件 2.2.1 例2 要求把三个命题用 0 元谓词符号化：</p>
+
+  <ol>
+    <li>2 是素数且是偶数。</li>
+    <li>如果 2 大于 3，则 2 大于 4。</li>
+    <li>如果张明比李民高，李民比赵亮高，则张明比赵亮高。</li>
+  </ol>
+
+  <p>解（课件原话）：</p>
+
+  <ul>
+    <li>(1) 设 <span class="math-inline">F(x)</span>：<span class="math-inline">x</span> 是素数，<span class="math-inline">G(x)</span>：<span class="math-inline">x</span> 是偶数，则命题符号化为 <span class="math-inline">F(2)\wedge G(2)</span>。</li>
+    <li>(2) 设 <span class="math-inline">L(x,y)</span>：<span class="math-inline">x</span> 大于 <span class="math-inline">y</span>，则命题符号化为 <span class="math-inline">L(2,3)\to L(2,4)</span>。</li>
+    <li>(3) 设 <span class="math-inline">H(x,y)</span>：<span class="math-inline">x</span> 比 <span class="math-inline">y</span> 高，<span class="math-inline">a</span>：张明，<span class="math-inline">b</span>：李民，<span class="math-inline">c</span>：赵亮，则命题符号化为 <span class="math-inline">H(a,b)\wedge H(b,c)\to H(a,c)</span>。</li>
+  </ul>
+
+  <p>三小题填进去的都是客体常项，得到的都是 0 元谓词，都是有真值的命题。第 (3) 题值得和开头那个三段论对着看：<span class="math-inline">H(a,b)\wedge H(b,c)</span> 里的 <span class="math-inline">b</span> 同时出现在两个合取项中，前两句才被锁在一起，<span class="math-inline">H(a,c)</span> 才落得下来。苏格拉底那个推理缺的正是这一层联系；补上这一层之后，"所有"那个词还要另一个符号，本课后半段再解决它。</p>
+
+  <div class="quiz" data-quiz='[
+  {
+    "q": "下面四个式子，哪个已经是命题、有确定的真值？",
+    "opts": [
+      "$H(x)$，$H$ 表示「是劳动模范」",
+      "$H(x,y)$，$H$ 表示「…比…高 2cm」",
+      "$H(a)$，$a$ 表示张明",
+      "$H(x)\\wedge\\neg H(x)$"
+    ],
+    "ans": 2,
+    "why": "$H(a)$ 里客体常项填满了所有空位，成了 0 元谓词，是命题。\n其余三个都还留着客体变元 $x$，没指派客体，真值无从谈起。\n最后那个虽是矛盾式的形状，$x$ 没定就仍只是命题函数——\n把 $a$ 代进去它才是假命题。"
+  }
+]'></div>
+
+  <h2>论域换了真值就变</h2>
+
+  <p>课件 2.2.1 节末尾留了一句注意：命题函数中，客体变元在哪些范围内取特定的值，对命题的真值极有影响。课件用同一个式子 <span class="math-inline">H(x,y)\wedge H(y,z)\to H(x,z)</span> 给了三种解释：</p>
+
+  <table>
+    <thead>
+      <tr><th><span class="math-inline">H(x,y)</span> 解释为</th><th>论域</th><th>这个式子的真值</th></tr>
+    </thead>
+    <tbody>
+      <tr><td><span class="math-inline">x</span> 大于 <span class="math-inline">y</span></td><td>实数</td><td>永真式</td></tr>
+      <tr><td><span class="math-inline">x</span> 是 <span class="math-inline">y</span> 的儿子</td><td>人</td><td>永假式</td></tr>
+      <tr><td><span class="math-inline">x</span> 距 <span class="math-inline">y</span> 10 米</td><td>平面上的点</td><td>由 <span class="math-inline">x,y,z</span> 的具体位置定，可能是 1 也可能是 0</td></tr>
+    </tbody>
+  </table>
+
+  <p>式子一个字没改，三种解释下一个永真、一个永假、一个不定。第二种解释判永假，原因在"儿子"这个关系：<span class="math-inline">x</span> 是 <span class="math-inline">y</span> 的儿子、<span class="math-inline">y</span> 是 <span class="math-inline">z</span> 的儿子，<span class="math-inline">x</span> 是 <span class="math-inline">z</span> 的孙子，后件为假而前件可以同真，整个蕴含式因此恒假。</p>
+
+  <p>课件第 17 页给这个范围起了名字：在命题函数中，客体变元的取值范围称为个体域，又称之为论域。个体域可以是有限事物的集合，也可以是无限事物的集合。宇宙间一切事物组成的个体域称为全总个体域。</p>
+
+  <p>课件 2.2.2 节第 3 条注意（一）（二）接着给了两条结论：</p>
+
+  <ol>
+    <li>在不同的个体域，同一命题的符号化形式可能相同也可能不同。</li>
+    <li>在不同的个体域，同一命题的真值可能相同也可能不同。</li>
+  </ol>
+
+  <p>第 2 条附带一个例子：设 <span class="math-inline">R(x)</span>：<span class="math-inline">x</span> 为大学生。如果个体域为大学里的某个班级的学生，则 <span class="math-inline">\forall x R(x)</span> 为真；若个体域为中学里的某个班级的学生，则 <span class="math-inline">\forall x R(x)</span> 为假。同一句 <span class="math-inline">\forall x R(x)</span>，换一个班，真值就翻。</p>
+
+  <p>这是本课第一处会直接扣分的地方：写下一个原子公式之前先写清论域，论域不写，公式就没有真值可谈。考试里的做法是开头一行"设个体域为……"或"以下取全总个体域"，两句话占一行，省不掉。</p>
+
+  <div class="quiz" data-quiz='[
+  {
+    "q": "同一个式子 $H(x,y)\\wedge H(y,z)\\to H(x,z)$。\n$H$ 解释为「x 大于 y」、论域取实数，它永真；\n$H$ 解释为「x 是 y 的儿子」、论域取人，它永假。\n\n下面哪一句是从这两行里读出来的？",
+    "opts": [
+      "式子的真值由式子自己的形状决定",
+      "论域与解释都定了，才谈得上真值",
+      "式子没变，所以真值不该跟着变",
+      "换论域只改符号化的写法，不改真值"
+    ],
+    "ans": 1,
+    "why": "两行里式子逐字相同，真值却一个永真、一个永假。\n差别全在「$H$ 解释成什么」与「论域取什么」这一对条件上。\n第 3、4 项正好与这张表相反：式子不变，真值照样翻。"
+  },
+  {
+    "q": "判断 $\\forall x(x^2\\ge x)$ 的真值。\n有同学这样答：\n\n```text\n论域 D={0,1}：0²≥0、1²≥1 都成立，\n所以 ∀x(x²≥x) 为真。\n换论域为实数：式子一个字没改，\n每一项上一步都验过了，仍为真。\n```\n\n① 错在哪一步？指出具体论域与个体。\n② 根因一句：错在哪个动作上。\n③ 实数域上的正确判法与真值。",
+    "answer": "① 错在「换成实数后仍为真」这一步。\n实数域里取 $x=0.5$：$0.5^2=0.25&lt;0.5$，\n这一项为假，合取链就在这里断开。\n\n② 论域一换，要验的个体整批换掉了。\n上一步只验过 0 与 1 两个个体；\n实数里还有 0.5 这类根本没验过的个体，\n有限论域上验完的结论不能搬到新论域。\n\n③ 实数域上 $\\forall x(x^2\\ge x)$ 为假。\n判据是「每个个体都真才真」，\n举出 $x=0.5$ 一个反例个体就够推翻。\n（论域若取 $\\{0,1\\}$，它才为真。）",
+    "criteria": "① 必须指到「换论域后仍判为真」这一处，\n并给出实数域里的一个反例个体（如 $x=0.5$）。\n只说「论域变了答案也可能变」、不指反例的，按部分通过。\n\n② 根因要落在「论域变了，要验的个体换了」这一层，\n不是「算错了」或「看漏了」。\n\n③ 真值必须是假，理由落到全称的判据上\n（一项为假即假），答「不确定」不给分。\n\n答「实数域上恒真」的不通过。"
+  }
+]'></div>
+
+  <h2>全称量词与存在量词</h2>
+
+  <p>课件 2.2.2 节把量词分为全称量词和存在量词两种。</p>
+
+  <p><b>全称量词</b>：对日常语言中的"一切""所有""凡""每一个""任意"等词，用符号"<span class="math-inline">\forall</span>"表示。<span class="math-inline">\forall x</span> 表示对个体域里的所有个体，<span class="math-inline">\forall x F(x)</span> 表示个体域里的所有个体具有性质 <span class="math-inline">F</span>。符号"<span class="math-inline">\forall</span>"称为全称量词。</p>
+
+  <p>课件 2.2.2 例3：在谓词逻辑中将下列命题符号化。</p>
+
+  <ol>
+    <li>凡是人都呼吸。</li>
+    <li>每个学生都要参加考试。</li>
+    <li>任何整数或是正的或是负的。</li>
+  </ol>
+
+  <p>解（课件原话，每题两种个体域各给一种写法）：</p>
+
+  <ul>
+    <li>(1) 当个体域为人类集合时：令 <span class="math-inline">F(x)</span>：<span class="math-inline">x</span> 呼吸，则符号化为 <span class="math-inline">\forall x F(x)</span>；当个体域为全总个体域时：令 <span class="math-inline">M(x)</span>：<span class="math-inline">x</span> 是人，则符号化为 <span class="math-inline">\forall x(M(x)\to F(x))</span>。</li>
+    <li>(2) 当个体域为全体学生的集合时：令 <span class="math-inline">P(x)</span>：<span class="math-inline">x</span> 要参加考试，则符号化为 <span class="math-inline">\forall x P(x)</span>；当个体域为全总个体域时：令 <span class="math-inline">S(x)</span>：<span class="math-inline">x</span> 是学生，则符号化为 <span class="math-inline">\forall x(S(x)\to P(x))</span>。</li>
+    <li>(3) 当个体域为全体整数的集合时：令 <span class="math-inline">P(x)</span>：<span class="math-inline">x</span> 是正的，<span class="math-inline">N(x)</span>：<span class="math-inline">x</span> 是负的，则符号化为 <span class="math-inline">\forall x(P(x)\vee N(x))</span>；当个体域为全总个体域时：令 <span class="math-inline">I(x)</span>：<span class="math-inline">x</span> 是整数，则符号化为 <span class="math-inline">\forall x(I(x)\to(P(x)\vee N(x)))</span>。</li>
+  </ul>
+
+  <p><b>存在量词</b>：对日常语言中的"有一个""有的""存在着""至少有一个""存在一些"等词，用符号"<span class="math-inline">\exists</span>"表示。<span class="math-inline">\exists x</span> 表示存在个体域里的个体，<span class="math-inline">\exists x F(x)</span> 表示存在个体域里的个体具有性质 <span class="math-inline">F</span>。符号"<span class="math-inline">\exists</span>"称为存在量词。</p>
+
+  <p>课件 2.2.2 例4：在谓词逻辑中将下列命题符号化。</p>
+
+  <ol>
+    <li>一些数是有理数。</li>
+    <li>有些人活百岁以上。</li>
+  </ol>
+
+  <p>解（课件原话）：</p>
+
+  <ul>
+    <li>(1) 令 <span class="math-inline">Q(x)</span>：<span class="math-inline">x</span> 是有理数，则符号化为 <span class="math-inline">\exists x Q(x)</span>。</li>
+    <li>(2) 当个体域为人类集合时：令 <span class="math-inline">G(x)</span>：<span class="math-inline">x</span> 活百岁以上，则符号化为 <span class="math-inline">\exists x G(x)</span>；当个体域为全总个体域时：令 <span class="math-inline">M(x)</span>：<span class="math-inline">x</span> 是人，则符号化为 <span class="math-inline">\exists x(M(x)\wedge G(x))</span>。</li>
+  </ul>
+
+  <p>两个量词的中文标记只有下面这几组，看到它们就该落符号：</p>
+
+  <table>
+    <thead>
+      <tr><th>中文里的说法</th><th>符号</th><th>读法</th></tr>
+    </thead>
+    <tbody>
+      <tr><td>一切、所有、凡、每一个、任意</td><td><span class="math-inline">\forall x</span></td><td>对个体域里的所有个体 <span class="math-inline">x</span></td></tr>
+      <tr><td>有一个、有的、存在着、至少有一个、存在一些</td><td><span class="math-inline">\exists x</span></td><td>存在个体域里的个体 <span class="math-inline">x</span></td></tr>
+    </tbody>
+  </table>
+
+  <p><b>多个量词同时出现</b>。课件 2.2.2 例5：命题"对任意的 <span class="math-inline">x</span>，存在 <span class="math-inline">y</span>，使得 <span class="math-inline">x+y=5</span>"，取个体域为实数集合，则符号化为 <span class="math-inline">\forall x\exists y H(x,y)</span>，其中 <span class="math-inline">H(x,y)</span>：<span class="math-inline">x+y=5</span>。这是个真命题。</p>
+
+  <p>课件第 25 页第 (4) 条注意：一般来说，当多个量词同时出现时，它们的顺序不能随意调换。同一套实数域、同一个 <span class="math-inline">H(x,y)</span>，<span class="math-inline">\forall x\exists y H(x,y)</span> 的真值为 1；若调换量词顺序后为 <span class="math-inline">\exists y\forall x H(x,y)</span>，其真值为 0。后者说的是"存在一个 <span class="math-inline">y</span>，它与每个实数 <span class="math-inline">x</span> 之和都是 5"，这样的 <span class="math-inline">y</span> 不存在。</p>
+
+  <div class="quiz" data-quiz='[
+  {
+    "q": "论域 $D=\\{1,2,3,4\\}$，$H(x,y)$：$x+y=5$。\n同一位同学算出：\n\n```text\n∀x∃y H(x,y)   真\n∃y∀x H(x,y)   假\n```\n\n① 一句话说清：后一句比前一句强在哪。\n② 只改 $H$ 的定义、论域 $D$ 不动，\n让这两句都真。给出你的 $H$ 与验法。",
+    "answer": "① 前一句里每个 $x$ 各配各的 $y$；\n后一句要同一个 $y$ 对所有 $x$ 都成立，更强、更难真。\n\n② 只要能找到一个 $y$ 与每个 $x$ 都成对，两句就都真。\n例：$H(x,y)$：$y\\ge x$，取 $y=4$：\n$4\\ge1$、$4\\ge2$、$4\\ge3$、$4\\ge4$ 都真。\n这一行验法同时交代了两句——\n这个 $y$ 对每个 $x$ 都成立（后一句真）；\n每个 $x$ 也都配到了这个 $y$（前一句真）。\n\n另一组同样算对：$H(x,y)$：$x+y\\ge5$，取 $y=4$。\n原式后一句为假，是因为 $x=1$ 只配得 $y=4$，\n$x=4$ 又要 $y=1$，同一个 $y$ 兼不了两个 $x$。",
+    "criteria": "① 要说到「同一个 $y$ 对所有 $x$ 成立」这层差别。\n只答「顺序不能换」、不说差在哪，按部分通过。\n\n② $H$ 要与 $D=\\{1,2,3,4\\}$ 对得上，\n并给出一个具体 $y$ 的验法。\n换了别的 $H$ 但验法逐项成立，同样算对——\n答案不唯一，看的是「一个 y 通吃所有 x」有没有落地。\n\n只写「两句都真」不写验法的，按部分通过。\n改了论域才凑出的，不给分（题目要求论域不动）。"
+  }
+]'></div>
+
+  <h2>量词的真值条件</h2>
+
+  <p>量词命题在什么情况下为真，本课要交的就是这一条判据。课件第 25 页第 (5) 条注意给出的正是它：当个体域为有限集合时，如 <span class="math-inline">D=\{a_1,a_2,\dots,a_n\}</span>，对任意谓词 <span class="math-inline">A(x)</span>，有</p>
+
+  <div class="math-block">\forall x A(x)\Leftrightarrow A(a_1)\wedge A(a_2)\wedge\cdots\wedge A(a_n)</div>
+
+  <div class="math-block">\exists x A(x)\Leftrightarrow A(a_1)\vee A(a_2)\vee\cdots\vee A(a_n)</div>
+
+  <p>一句话：全称量词管的是合取，存在量词管的是析取。<span class="math-inline">\forall x A(x)</span> 为真，当且仅当论域里每个个体代进去 <span class="math-inline">A</span> 都真，只要有一个假，整句就假；<span class="math-inline">\exists x A(x)</span> 为真，当且仅当论域里至少有一个个体代进去 <span class="math-inline">A</span> 为真，全都假才假。</p>
+
+  <p>对照第一课那套东西看，这两个式子没有引入新的运算：<span class="math-inline">n</span> 个个体的合取就是 <span class="math-inline">n</span> 元合取，真值表里"全 1 才 1"那一列；存在量词取析取，"有 1 就 1"。量词做的事是把有限论域上的一次合取或一次析取写成一行，个体再多也不加长公式。</p>
+
+  <figure class="lesson-figure lesson-figure--inline" role="img" aria-label="三个个体的论域上，全称量词展开成合取链，存在量词展开成析取链">
+<svg viewBox="0 0 680 300" role="img" aria-hidden="true">
+  <g fill="currentColor" font-size="15">
+    <text x="24" y="30">∀x A(x) 展开成合取</text>
+  </g>
+  <g fill="none" stroke="currentColor" stroke-width="1.5">
+    <rect x="24" y="48" width="88" height="44" rx="8"/>
+    <rect x="148" y="48" width="88" height="44" rx="8"/>
+    <rect x="272" y="48" width="88" height="44" rx="8"/>
+  </g>
+  <g fill="currentColor" font-size="16" text-anchor="middle">
+    <text x="68" y="76">A(a₁)</text>
+    <text x="192" y="76">A(a₂)</text>
+    <text x="316" y="76">A(a₃)</text>
+    <text x="130" y="76">∧</text>
+    <text x="254" y="76">∧</text>
+  </g>
+  <g fill="currentColor" font-size="15">
+    <text x="392" y="76">全 1 才 1；一假即假</text>
+  </g>
+  <g fill="currentColor" font-size="15">
+    <text x="24" y="168">∃x A(x) 展开成析取</text>
+  </g>
+  <g fill="none" stroke="currentColor" stroke-width="1.5">
+    <rect x="24" y="186" width="88" height="44" rx="8"/>
+    <rect x="148" y="186" width="88" height="44" rx="8"/>
+    <rect x="272" y="186" width="88" height="44" rx="8"/>
+  </g>
+  <g fill="currentColor" font-size="16" text-anchor="middle">
+    <text x="68" y="214">A(a₁)</text>
+    <text x="192" y="214">A(a₂)</text>
+    <text x="316" y="214">A(a₃)</text>
+    <text x="130" y="214">∨</text>
+    <text x="254" y="214">∨</text>
+  </g>
+  <g fill="currentColor" font-size="15">
+    <text x="392" y="214">有 1 就 1；全假才假</text>
+  </g>
+  <g fill="currentColor" font-size="15">
+    <text x="24" y="278">论域 D = {a₁, a₂, a₃}；量词在有限论域上就是一次合取或一次析取。</text>
+  </g>
+</svg>
+    <figcaption>图 2 · 有限论域上两个量词各自的展开式与真假判据</figcaption>
+  </figure>
+
+  <div class="quiz" data-quiz='[
+  {
+    "q": "论域 $D=\\{a_1,a_2,a_3\\}$。\n$\\forall x A(x)$ 为假时，下面哪一句一定成立？",
+    "opts": [
+      "论域里每个个体都让 $A$ 取假",
+      "论域里至少有一个个体让 $A$ 取假",
+      "论域里至少有一个个体让 $A$ 取真",
+      "论域里没有个体让 $A$ 取真"
+    ],
+    "ans": 1,
+    "why": "$\\forall$ 展开后是合取链：全 1 才 1，一项 0 就 0。\n所以「为假」只保证有一项为 0，\n既不保证每一项都为 0，也不保证有哪一项为 1。\n第 1、4 项是「全假」才有的结论，第 3 项根本推不出来。"
+  },
+  {
+    "q": "论域 $D=\\{2,3,4,6\\}$，$P(x)$：$x$ 是素数，\n$Q(x)$：$x$ 是偶数。\n\n① 把 $\\forall x(P(x)\\vee Q(x))$ 展开成合取链，给真值。\n② 把 $\\exists x(P(x)\\wedge Q(x))$ 展开成析取链，给真值。\n③ 把 ① 里的 $\\vee$ 换成 $\\wedge$，真值怎么变？\n用一句话说清为什么差这么多。",
+    "answer": "① 四项逐一看：\n$P(2)\\vee Q(2)$ 真（2 是素数），\n$P(3)\\vee Q(3)$ 真（3 是素数），\n$P(4)\\vee Q(4)$ 真（4 是偶数），\n$P(6)\\vee Q(6)$ 真（6 是偶数）。\n取合取，四项全真，整句为真。\n\n② $P(2)\\wedge Q(2)$ 真——2 是唯一的偶素数；\n$P(3)\\wedge Q(3)$、$P(4)\\wedge Q(4)$、$P(6)\\wedge Q(6)$ 都假。\n析取链只要一项为真，整句为真。\n\n③ 换成 $\\wedge$ 后为假。\n$\\vee$ 只要求每个个体落进「素数或偶数」任一边；\n$\\wedge$ 要求每个个体两边都合格，\n$D$ 里只有 2 合格，其余三个把合取链拉断。",
+    "criteria": "① 四项的真值要逐个交代（不必逐字抄整条链），\n结论为真。只给结论、不列项的，按部分通过。\n\n② 要指出只有 2 同时是素数又是偶数，\n结论为真。\n\n③ 结论为假，理由落在「合取要求每项都真」\n与「析取只要一项真」这对差别上。\n答「因为 2 特殊」而不说合取/析取差别的，按部分通过。\n\n把 ② 也判成假（把存在量词按合取理解）的，不通过。"
+  }
+]'></div>
+
+  <p>这条判据可以当场验一遍。Python 的 <code>all</code> 与 <code>any</code> 就是上面两条真值条件：<code>all</code> 逐项取合取，<code>any</code> 逐项取析取。</p>
+
+  <div class="lesson-practice">
+    <div class="lesson-practice__head">
+      <span class="lesson-practice__level">练习</span>
+      <span class="lesson-practice__title">改一行，看量词的真值怎么变</span>
+    </div>
+
+      <p>把下面五行存成 <code>quant.py</code>，跑一次：</p>
+
+      <pre data-lang="python"><code>students = ['张明', '李华', '王红']
+hair = {'张明': True, '李华': True, '王红': False}
+F = lambda x: hair[x]          # F(x)：x 长头发
+print('forall:', all(F(x) for x in students))
+print('exists:', any(F(x) for x in students))</code></pre>
+
+      <pre data-lang="term"><code>$ python quant.py
+forall: False
+exists: True</code></pre>
+
+      <p><b>第 1 步 · 找出是哪一个个体把合取拉成假。</b> 加一行，把每一项的真值打出来：</p>
+
+      <pre data-lang="python"><code>print([(x, F(x)) for x in students])</code></pre>
+
+      <pre data-lang="term"><code>$ python quant.py
+forall: False
+exists: True
+[('张明', True), ('李华', True), ('王红', False)]</code></pre>
+
+      <p>王红那一项是 <code>False</code>，合取链在这一项断开，<span class="math-inline">\forall x F(x)</span> 因此为假；存在量词只要有一项为 <code>True</code> 就成立，所以为真。</p>
+
+      <p><b>第 2 步 · 换论域。</b> 把第一行改成 <code>students = ['张明', '李华']</code>，谓词与公式一个字不动，再跑一次。</p>
+
+      <pre data-lang="term"><code>$ python quant.py
+forall: True
+exists: True</code></pre>
+
+      <p>同一个 <span class="math-inline">F</span>、同一个 <span class="math-inline">\forall x F(x)</span>，论域一变真值就翻。课件第 23 页那个"大学生"的例子是同一件事。</p>
+
+      <p><b>第 3 步 · 换量词。</b> 把两行输出里的 <code>all</code> 与 <code>any</code> 对调，语句不动，两个结果互换。<span class="math-inline">\forall</span> 与 <span class="math-inline">\exists</span> 的差别全在"合取还是析取"这一步。</p>
+
+      <p>跑完这三步，把 <code>hair</code> 里三个值都改成 <code>False</code> 再跑一次，看两个量词各自给出什么——那一格是 <span class="math-inline">\exists</span> 的真值条件的极端情形。</p>
+  </div>
+
+  <h2>默认全总个体域时</h2>
+
+  <p>课件 2.2.2 节第 3 条注意（三）：约定以后如不指定个体域，默认为全总个体域。对每个客体变元的变化范围，用特性谓词加以限制。</p>
+
+  <p>特性谓词：限定客体变元变化范围的谓词（如例3中的 <span class="math-inline">M(x)</span>）。课件接着给的两句是符号化的第一个动作：</p>
+
+  <ul>
+    <li>对全称量词，特性谓词常作蕴含的前件，如 <span class="math-inline">(\forall x)(M(x)\to F(x))</span>；</li>
+    <li>对存在量词，特性谓词常作合取项，如 <span class="math-inline">(\exists x)(M(x)\wedge G(x))</span>。</li>
+  </ul>
+
+  <p>两边的接法不能互换。写成 <span class="math-inline">\forall x(M(x)\wedge F(x))</span>，说的是"一切事物都是人并且呼吸"，比"凡是人都呼吸"强得多；写成 <span class="math-inline">\exists x(M(x)\to G(x))</span>，全总个体域里取一块石头代进去，<span class="math-inline">M(\text{石头})</span> 假、蕴含式真，整句随之成真——原句"有些人活百岁以上"被解释成了另一句话。</p>
+
+  <p>课件 2.2.2 例6 把这四句摆在一起（令 <span class="math-inline">M(x)</span>：<span class="math-inline">x</span> 是人，作特性谓词）：</p>
+
+  <table>
+    <thead>
+      <tr><th>原句</th><th>符号化</th><th>特性谓词接在哪边</th></tr>
+    </thead>
+    <tbody>
+      <tr><td>所有的人都长头发</td><td><span class="math-inline">\forall x(M(x)\to F(x))</span></td><td>蕴含的前件</td></tr>
+      <tr><td>有的人吸烟</td><td><span class="math-inline">\exists x(M(x)\wedge S(x))</span></td><td>合取项</td></tr>
+      <tr><td>没有人登上过木星</td><td><span class="math-inline">\neg\exists x(M(x)\wedge D(x))</span></td><td>合取项，外面套否定</td></tr>
+      <tr><td>清华大学的学生未必都是高素质的</td><td><span class="math-inline">\neg\forall x(Q(x)\to H(x))</span></td><td>蕴含的前件，外面套否定</td></tr>
+    </tbody>
+  </table>
+
+  <p>其中 <span class="math-inline">F(x)</span>：<span class="math-inline">x</span> 长头发，<span class="math-inline">S(x)</span>：<span class="math-inline">x</span> 吸烟，<span class="math-inline">D(x)</span>：<span class="math-inline">x</span> 登上过木星，<span class="math-inline">Q(x)</span>：<span class="math-inline">x</span> 是清华大学的学生，<span class="math-inline">H(x)</span>：<span class="math-inline">x</span> 是高素质的。</p>
+
+  <p>后两句的否定号加在整个量词命题外面，读作"并非所有……"与"不存在……"。这两条量词否定律属于 2-5，本课只按原句读：否定的范围是整个量词命题，符号写在最外层。下一课先讲辖域，看的就是"这个否定号管到哪儿为止"。</p>
+
+  <div class="quiz" data-quiz='[
+  {
+    "q": "取全总个体域，$S(x)$：$x$ 是学生，\n$C(x)$：$x$ 吸烟。\n「没有学生吸烟」该怎么符号化？",
+    "opts": [
+      "$\\neg\\exists x(S(x)\\to C(x))$",
+      "$\\neg\\exists x(S(x)\\wedge C(x))$",
+      "$\\exists x\\neg(S(x)\\vee C(x))$",
+      "$\\forall x(\\neg S(x)\\wedge C(x))$"
+    ],
+    "ans": 1,
+    "why": "存在量词这一侧，特性谓词接合取项：\n$\\exists x(S(x)\\wedge C(x))$ 是「有学生吸烟」，\n外面套否定，整句才是「没有」。\n第 1 项里一块石头就能让蕴含式为真，整句会被带成假；\n第 4 项把否定挪进了括号里，意思全变。"
+  },
+  {
+    "q": "取全总个体域，$M(x)$：$x$ 是人，\n$F(x)$：$x$ 长头发，$G(x)$：$x$ 活百岁以上。\n有同学交上来这样两份符号化：\n\n```text\n(1) 所有的人都长头发   ∀x(M(x) ∧ F(x))\n(2) 有些人活百岁以上   ∃x(M(x) → G(x))\n```\n\n① 两句各错在哪一侧？式子实际说的是什么？\n② 根因一句，并写出两句的改正。\n③ 给一条自查：下次不看答案也能发现接反了。",
+    "answer": "① (1) 全称这一侧接了合取。\n全总个体域下它说的是「一切事物都是人、且都长头发」；\n取一块石头代进去，$M$ 假，合取即假，整句被拖成假。\n原句「凡是人都呼吸」这类说法并不要求万物皆人。\n\n(2) 存在这一侧接了蕴含。\n石头代进去 $M$ 假、蕴含式真，整句随之成真——\n原句要求真有人活过百岁，却被一块石头满足了。\n\n② 根因：两边的接法互换了。\n全称靠蕴含把非人个体挡在前件外（前件假则蕴含真）；\n存在要合取，要求「是人」与「活过百岁」同时成立。\n改正：\n(1) $\\forall x(M(x)\\to F(x))$\n(2) $\\exists x(M(x)\\wedge G(x))$\n\n③ 自查：在式子里代一个「不是人」的个体。\n(1) 里它让整句变假——全称被它影响，接错了；\n(2) 里它让整句变真——存在被它满足，也接错了。\n代完之后原句的意思被改掉没有，就是判据。",
+    "criteria": "① 两处都要指对侧：全称接了合取、存在接了蕴含。\n只说「写错了」不指侧，按部分通过。\n要把非人个体（石头）代进去的后果说出来。\n\n② 改正后必须是 $\\forall x(M(x)\\to F(x))$ 与\n$\\exists x(M(x)\\wedge G(x))$。\n根因落到「全称接前件、存在接合取项」这一层。\n\n③ 自查要能独立执行（代入一个非人个体看结果）。\n答「多做题」「记住口诀」不算自查。\n\n两处都改对、但根因写成「论域没写清」的，按部分通过。"
+  }
+]'></div>
+
+  <h2>图的性质从这里写起</h2>
+
+  <p>贯穿项目是关系与图算法工具包。第三篇写关系、第七章写图，那些性质用的就是本课的写法。设 <span class="math-inline">E(x,y)</span>：<span class="math-inline">x</span> 与 <span class="math-inline">y</span> 之间有一条边，图里"每个点都连到某个点"整句是</p>
+
+  <div class="math-block">\forall x\exists y\,E(x,y)</div>
+
+  <p>它与例5的 <span class="math-inline">\forall x\exists y H(x,y)</span> 同一个形状。量词顺序在这里同样不能换：<span class="math-inline">\exists y\forall x\,E(x,y)</span> 说的是"存在一个点，它与所有点都相连"，那是另一种性质。现在能读出这一句，第七章讲连通性时会在同一处再见到它。</p>
+
+  <p>下一课讲 2.3 谓词公式与翻译、2.4 变元的约束：<span class="math-inline">E(x,y)</span> 里的 <span class="math-inline">x</span>、<span class="math-inline">y</span> 哪个被量词管住、哪个还空着，要靠辖域判断；换名与代入的规则也建立在辖域之上。</p>
+
+  <ul class="lesson-resources">
+    <li><a href="../reference/02-左孝凌课件2.html">老师课件 2 · 2.1–2.2（第 3–30 页）</a><span class="lesson-resources__meta">本地课件 · 本课的客体与谓词例子、例3–例6 按它的原话与编号</span></li>
+    <li>左孝凌《离散数学》第二章 2-1 谓词的概念与表示、2-2 命题函数与量词<span class="lesson-resources__meta">书 · 作业在 P59（2）的单数题</span></li>
+  </ul>
+
+  <!-- ── 提问提示：固定写法，别删 ── -->
+
+  <div class="lesson-ask">
+    <b>没看懂？随时问</b>
+    把看不懂的段落（或报错）原样复制回会话，说一句哪里不懂就行，我只解释这一段，不打断你的进度。
+  </div>
+
+  <!-- ── 上/下节课指针由渲染器按 curriculum.yaml 的 nodes 顺序算（第一课无 --prev、最后一课无 --next） ── -->
+
+  <nav class="lesson-nav" aria-label="上一课 / 下一课">
+    <a class="lesson-nav__link lesson-nav__link--prev" href="0003-lab-1-truth-engine.html">
+      <span class="lesson-nav__dir">上节课</span>
+      <span class="lesson-nav__title">实验一：把推理判成有效</span>
+    </a>
+    <a class="lesson-nav__link lesson-nav__link--next" href="0005-pred-translation.html">
+      <span class="lesson-nav__dir">下节课</span>
+      <span class="lesson-nav__title">谓词公式翻译与换名</span>
+    </a>
+  </nav>
+
+  <footer class="lesson-footer">
+    StudyMate · 0004 谓词、命题函数与量词 · 本地学习工作区
+  </footer>
+
+</article>
+
+<script src="../../../assets/sayo/sayo.js"></script>
+<link rel="stylesheet" href="../../../assets/katex/katex.min.css">
+<script src="../../../assets/katex/katex.min.js" defer></script>
+<script src="../../../assets/lesson-math.js" defer></script>
+<script src="../assets/quiz.js" defer></script>
+<script src="../assets/lesson-toc.js" defer></script>
+<script>LearnTheme.wire(document.getElementById('lesson-theme-checkbox'));</script>
+</body>
+</html>

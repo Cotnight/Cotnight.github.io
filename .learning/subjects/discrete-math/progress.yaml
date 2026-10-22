@@ -1,0 +1,37 @@
+updated_at: "2026-10-19T17:05:00"
+nodes:
+  logic-normal-form:
+    status: 学习中
+    mastery: 0
+    notes: "2026-10-19 起：离散数学第一课（学生要求从范式切入，前面 9 个节点已删）。作业复算显示他范式与推理其实会写，本课重点给四步固定动作 + 互补自检 + 主干公式现推链。"
+misconceptions:
+  - topic: "德摩根律：否定号进入括号时要换运算"
+    question: "习题6 第3题化成只含 ¬、∧ 时，末尾把 ¬p∨¬q 写成 ¬(p∨q)"
+    misunderstanding: "把「非的或」与「或的否定」当成一回事；否号进括号没有交换 ∧ 与 ∨。"
+    answer_summary: "¬(p∧q)=¬p∨¬q；¬(p∨q)=¬p∧¬q。此题正确终点是 ¬(p∧q)。"
+    follow_up: "用只含 ¬ 与 ∧ 重做习题6 第3题三个小题"
+    importance: high
+  - topic: "对偶式里与非／或非也要互换"
+    question: "(p∧q)↑r 的对偶式写成 (p∨q)↑r"
+    misunderstanding: "只换 ∧/∨，忘了对偶原则还要换 ↑↔↓ 与 0↔1。"
+    answer_summary: "(p∧q)↑r 的对偶是 (p∨q)↓r。"
+    follow_up: "重做习题7 第1题里含 ↑、↓ 的两小题"
+    importance: medium
+  - topic: "「假设前件真」之后的分类讨论"
+    question: "习题7 第4题(2) 设 p→q 真以后直接假定 p 的取值，p=0 那一支写乱"
+    misunderstanding: "p→q 为真给的是「p=0 或 q=1」这个二选一，不是 p 的具体取值；分支要按这个二选一展开。"
+    answer_summary: "p=0 支：前件假整体真；p=1 支：由 p→q 得 q=1，后件真。两支都真即证。"
+    follow_up: "用同一模板重做习题7 第4题其余两小题"
+    importance: medium
+  - topic: "公式记不住 → 需要主干 + 现推链而不是背 24 条"
+    question: "「公式一直记不住」"
+    misunderstanding: "把等值式与蕴含式当独立条目背；实际记主干恒等式与几条基本蕴含式，其余由对偶、反演、代入生成。"
+    answer_summary: "记主干、练推导，比死背见效快。"
+    importance: medium
+  - topic: "范式的两条求法（把已在用的步骤固化 + 加自检）"
+    question: "问范式有没有固定步骤"
+    misunderstanding: "无（他算对了）；需要的是把步骤写成固定动作并配互补自检，防考试漏项"
+    answer_summary: "真值表定索引（真的行取 m、假的行取 M）+ 补缺变元；Σm 与 ΠM 合起来必须正好 2^n 个。"
+    importance: low
+project:
+  current: "关系与图算法工具包：传递闭包、等价类划分、最短路、最小生成树，每块都用教材例题反向验证（实验一～实验五逐块验收）"

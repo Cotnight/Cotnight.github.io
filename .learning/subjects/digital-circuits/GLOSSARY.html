@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="zh-CN" data-theme="dark">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>术语表 · 数字电路</title>
+<link rel="stylesheet" href="../../assets/sayo/sayo.css">
+<link rel="stylesheet" href="../../assets/learn-theme.css">
+<link rel="stylesheet" href="assets/style.css">
+<script src="../../assets/learn-theme.js"></script>
+<script>LearnTheme.apply();</script>
+<style>
+.lesson h1 {
+  margin: var(--syo-space-2, 8px) 0 var(--syo-space-4, 16px);
+  font-size: clamp(1.6rem, 3.2vw, 2.25rem);
+  font-weight: 700;
+  line-height: 1.25;
+  letter-spacing: -0.02em;
+  color: var(--syo-fg-default);
+}
+</style>
+</head>
+<body class="lesson-body">
+<nav class="lesson-bar">
+  <a href="index.html">← 返回科目</a>
+  <span>数字电路</span>
+  <span class="lesson-bar__no">术语表</span>
+  <label class="syo-toggle syo-toggle--theme lesson-bar__toggle" title="切换深浅主题" aria-label="切换深浅主题">
+    <input type="checkbox" id="attachment-theme-checkbox" checked>
+    <span class="syo-toggle-track"></span>
+    <span class="syo-toggle-knob">
+      <svg class="syo-toggle-sun" viewBox="0 0 20 20" fill="none" aria-hidden="true"><circle cx="10" cy="10" r="3.5" stroke="#f57c00" stroke-width="1.5"/><path d="M10 2v2.5M10 15.5V18M2 10h2.5M15.5 10H18M4.34 4.34l1.77 1.77M13.89 13.89l1.77 1.77M4.34 15.66l1.77-1.77M13.89 6.11l1.77-1.77" stroke="#f57c00" stroke-width="1.2" stroke-linecap="round"/></svg>
+      <svg class="syo-toggle-moon" viewBox="0 0 20 20" fill="none" aria-hidden="true"><path d="M16.5 12.5A6 6 0 019 4.5a6 6 0 007.5 8z" stroke="#5c6bc0" stroke-width="1.5" stroke-linejoin="round"/></svg>
+    </span>
+  </label>
+</nav>
+
+<article class="lesson">
+<h1>数字电路 Glossary</h1>
+<p>这门课讲两件事：用逻辑门把输入立刻变成输出的<strong>组合逻辑</strong>，以及用触发器把状态记住、再随时间一步步变化的<strong>时序逻辑</strong>。整门课的终点是数字钟：分频、计数、译码显示三块拼起来。</p>
+<blockquote><p>两节都算这门课的<strong>规范用词</strong>：课件正文与配图用词以本文件为准。开课时先把主题词写进「待掌握」，<br>学生真的会用之后挪进「已掌握」——挪动本身就是一条学习记录。</p></blockquote>
+<h2>待掌握</h2>
+<p><strong>逻辑门</strong>:<br>只有一个或几个输入、一个输出，输出只由当前输入按固定规则决定的基本元件，如与门、或门、非门。<br><em>Avoid</em>: 门电路、逻辑元件、gate（正文统一"逻辑门"）</p>
+<p><strong>真值表</strong>:<br>把输入变量的所有取值组合逐个列出，并写上对应输出的一张表；它是逻辑关系的完整描述。<br><em>Avoid</em>: 功能表（"功能表"留给集成芯片的引脚功能说明）</p>
+<p><strong>布尔代数</strong>:<br>以 0／1 为取值、以与或非为运算的代数系统，用来把逻辑式变形、化简。<br><em>Avoid</em>: 逻辑代数（可混用，但正文优先"布尔代数"）</p>
+<p><strong>最小项</strong>:<br>$n$ 个变量的一个乘积项，其中每个变量恰好出现一次（原变量或反变量）；它只在唯一一组输入取值上为 1。<br><em>Avoid</em>: 极小项</p>
+<p><strong>卡诺图</strong>:<br>把真值表按格雷码排成方格，让几何相邻的格子在逻辑上也只差一个变量，从而用圈组的方式读出最简与或式。<br><em>Avoid</em>: K 图、K-map（正文统一"卡诺图"）</p>
+<p><strong>格号</strong>:<br>卡诺图里一格的坐标读法——行标接列标读成二进制数，就是这一格的最小项编号（如行 1、列 10 读作 110，即 $m_6$）。<br><em>Avoid</em>: 第几格（那是格子从左到右的序号，与编号无关）</p>
+<p><strong>无关项</strong>:<br>输入组合因物理约束不会出现、或出现时输出取值无所谓时对应的那些项，记作 $d$ 或 $\times$，可圈可不圈。<br><em>Avoid</em>: 任意项、约束项（正文需要强调"不会出现"时写"约束项"并注明同指无关项）</p>
+<p><strong>组合逻辑电路</strong>:<br>任意时刻的输出只取决于该时刻的输入，与过去无关的电路。<br><em>Avoid</em>: 组合电路</p>
+<p><strong>竞争冒险</strong>:<br>输入变化时，信号经不同路径到达同一门的时间不同，使输出出现本不该有的窄脉冲。<br><em>Avoid</em>: 冒险现象（正文统一"竞争冒险"）</p>
+<p><strong>锁存器</strong>:<br>电平触发的存储元件：使能信号有效期间，输出随输入变化。<br><em>Avoid</em>: 闩锁</p>
+<p><strong>触发器</strong>:<br>边沿触发的存储元件：只在时钟边沿采样一次输入，其余时间保持状态。数字电路里说的"存储 1 位"默认指它。<br><em>Avoid</em>: 双稳态触发器（太笼统）、flip-flop</p>
+<p><strong>寄存器</strong>:<br>并排的一组触发器，用来同时保存多位二进制数。<br><em>Avoid</em>: 暂存器</p>
+<p><strong>计数器</strong>:<br>按时钟节拍循环经过预定状态序列的时序电路，常用来分频、计时、产生地址。<br><em>Avoid</em>: 计数电路</p>
+<p><strong>状态转换图</strong>:<br>用圆圈表示状态、用带箭头的边表示"在什么输入下转到哪个状态"的图；时序电路设计的出发点。<br><em>Avoid</em>: 状态图（可混用，但正文优先"状态转换图"）</p>
+<p><strong>时序逻辑电路</strong>:<br>输出不仅取决于当前输入，还取决于电路当前状态的电路；必须有时钟与存储元件。<br><em>Avoid</em>: 时序电路</p>
+<h2>已掌握</h2>
+  <footer class="lesson-footer">
+    StudyMate · 术语表 · 本地学习工作区
+  </footer>
+</article>
+
+<script src="../../assets/sayo/sayo.js"></script>
+<script>LearnTheme.wire(document.getElementById('attachment-theme-checkbox'));</script>
+</body>
+</html>

@@ -1,0 +1,859 @@
+<!DOCTYPE html>
+<html lang="zh-CN" data-theme="dark">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>左孝凌《离散数学》课件 1（本地转化稿） · 离散数学</title>
+<link rel="stylesheet" href="../../../assets/sayo/sayo.css">
+<link rel="stylesheet" href="../../../assets/learn-theme.css">
+<link rel="stylesheet" href="../assets/style.css">
+<script src="../../../assets/learn-theme.js"></script>
+<script>LearnTheme.apply();</script>
+<style>
+.lesson h1 {
+  margin: var(--syo-space-2, 8px) 0 var(--syo-space-4, 16px);
+  font-size: clamp(1.6rem, 3.2vw, 2.25rem);
+  font-weight: 700;
+  line-height: 1.25;
+  letter-spacing: -0.02em;
+  color: var(--syo-fg-default);
+}
+</style>
+</head>
+<body class="lesson-body">
+<nav class="lesson-bar">
+  <a href="../index.html">← 返回科目</a>
+  <span>离散数学</span>
+  <span class="lesson-bar__no">参考文档</span>
+  <label class="syo-toggle syo-toggle--theme lesson-bar__toggle" title="切换深浅主题" aria-label="切换深浅主题">
+    <input type="checkbox" id="attachment-theme-checkbox" checked>
+    <span class="syo-toggle-track"></span>
+    <span class="syo-toggle-knob">
+      <svg class="syo-toggle-sun" viewBox="0 0 20 20" fill="none" aria-hidden="true"><circle cx="10" cy="10" r="3.5" stroke="#f57c00" stroke-width="1.5"/><path d="M10 2v2.5M10 15.5V18M2 10h2.5M15.5 10H18M4.34 4.34l1.77 1.77M13.89 13.89l1.77 1.77M4.34 15.66l1.77-1.77M13.89 6.11l1.77-1.77" stroke="#f57c00" stroke-width="1.2" stroke-linecap="round"/></svg>
+      <svg class="syo-toggle-moon" viewBox="0 0 20 20" fill="none" aria-hidden="true"><path d="M16.5 12.5A6 6 0 019 4.5a6 6 0 007.5 8z" stroke="#5c6bc0" stroke-width="1.5" stroke-linejoin="round"/></svg>
+    </span>
+  </label>
+</nav>
+
+<article class="lesson">
+<h1>左孝凌《离散数学》课件 1（本地转化稿）</h1>
+<blockquote><p>本地课件转化稿。原文件：<code>D:\Program Files\WXWork\1688855286727418\Cache\File\2026-09\左孝凌离散数学课件1.ppt</code><br>由 LibreOffice 转成 .pptx 后用 python-pptx 逐页提取文字与表格；图形与公式图片未提取，需要看图时以原课件为准。</p></blockquote>
+<p>共 174 页。</p>
+<h2>第 1 页</h2>
+<p>离散数学(Discrete Mathematics)</p>
+<h2>第 2 页</h2>
+<p>第一部分  数理逻辑（Mathematical Logic)</p>
+<p>逻辑：是研究推理的科学。公元前四世纪由希腊的哲学家亚里斯多德首创。作为一门独立科学，十七世纪，德国的莱布尼兹(Leibniz)给逻辑学引进了符号, 又称为数理逻辑(或符号逻辑)。<br>逻辑可分为：1.   形式逻辑（通过数学方法）     数理逻辑</p>
+<ol>
+<li>辩证逻辑<br>指引进一套符号体系的方法。<br>辩证逻辑是研究反映客观世界辩证发展过程的人类思维的形态的。</li>
+</ol>
+<h2>第 3 页</h2>
+<p>第一部分  数理逻辑（Mathematical Logic)</p>
+<p>形式逻辑是研究思维的形式结构和规律的科学，它撇开具体的、个别的思维内容，从形式结构方面研究概念、判断和推理及其正确联系的规律。<br>数理逻辑是用数学方法研究推理的形式结构和推理的规律的数学学科。它的创始人Leibniz，为了实现把推理变为演算的想法，把数学引入了形式逻辑。其后，又经多人努力，逐渐使得数理逻辑成为一门专门的学科。<br>上个世纪30年代以后，数理逻辑进入一个崭新的发展阶段，逻辑学不仅与数学结合，还与计算机科学等密切关联。</p>
+<h2>第 4 页</h2>
+<p>第一部分  数理逻辑（Mathematical Logic)</p>
+<p>1931年Godel不完全性定理的提出，以及递归函数可计算性的引入，促使了1936年Turing机的产生，十年后，第一台电子计算机问世。<br>从广义上讲，数理逻辑包括四论、两演算——即集合论、模型论、递归论、证明论和命题演算、谓词演算，但现在提到数理逻辑，一般是指命题演算和谓词演算。本书也只研究这两个演算。</p>
+<h2>第 5 页</h2>
+<p>26/10/19</p>
+<p>第一部分  数理逻辑（Mathematical Logic)</p>
+<p>数理逻辑与计算机学、控制论、人工智能的相互渗透推动了其自身的发展，模糊逻辑、概率逻辑、归纳逻辑、时态逻辑等都是目前比较热门的研究领域。<br>本篇我们只从语义出发，对数理逻辑中的命题演算与谓词演算等作一简单的、直接的、非形式化的介绍，将不涉及任何公理系统。</p>
+<h2>第 6 页</h2>
+<p>26/10/19</p>
+<p>第一章  命题逻辑（Propositional Logic）1.1  命题及其表示方法</p>
+<p>1.1.1  命题（Proposition)<br>1.1.2  命题的表示方法<br>1.1.3  命题的分类</p>
+<h2>第 7 页</h2>
+<p>26/10/19</p>
+<p>第一章  命题逻辑（Propositional Logic）1.1  命题及其表示方法</p>
+<p>1.1.1  命题<br>数理逻辑研究的中心问题是推理（inference),而推理的前提和结论都是表达判断的陈述句，因而表达判断的陈述句构成了推理的基本单位。<br>基本概念<br>命题：能够判断真假的陈述句。<br>命题的真值：命题的判断结果。命题的真值只取两个<br>值:真（用T(true)或1表示）、假（用F(false)或0表示） 。<br>真命题：判断为正确的命题，即真值为真的命题。<br>假命题：判断为错误的命题，即真值为假的命题。</p>
+<h2>第 8 页</h2>
+<p>26/10/19</p>
+<p><em>[图]</em></p>
+<h2>第 9 页</h2>
+<p><em>[图]</em></p>
+<h2>第 10 页</h2>
+<p>第一章  命题逻辑（Propositional Logic）1.1  命题及其表示方法</p>
+<p>因而又可以称命题是具有唯一真值的陈述句。<br>判断命题的两个步骤：<br>1、是否为陈述句；<br>2、是否有确定的、唯一的真值。<br>例：判断下列句子是否为命题。<br>(1). 100是自然数。       T<br>(2). 太阳从西方升起。 F<br>(3). 3+3=8 .                     F</p>
+<h2>第 11 页</h2>
+<p><em>[图]</em></p>
+<h2>第 12 页</h2>
+<p><em>[图]</em></p>
+<h2>第 13 页</h2>
+<p>第一章  命题逻辑（Propositional Logic）1.1  命题及其表示方法</p>
+<p>(4). How do you do ?    疑问句，不是命题<br>(5). 明年的十月一日是晴天。是命题，其真值到明年<br>十月一日方可知道。<br>(6). x+3&gt;9    不是命题<br>(7). 我正在说谎。是悖论<br>(8). 1+101=110  二进制中为真，十进制中为假。<br>(9). 如果太阳从西方升起，那么2是奇数。T<br>(10). 国足能杀入2006世界杯当且仅当2+2=4。F</p>
+<h2>第 14 页</h2>
+<p>第一章  命题逻辑（Propositional Logic）1.1  命题及其表示方法</p>
+<p>(11). 今天天气多好啊！    感叹句，不是命题<br>(12). 请你关上门！   祁使句，不是命题，<br>(13). 别的星球上有生物。  是命题，客观上能判断真<br>假。<br>说明：<br>（1）只有具有确定真值的陈述句才是命题。一<br>切没有判断内容的句子，无所谓是非的句子，<br>如感叹句、祁使句、疑问句等都不是命题。</p>
+<h2>第 15 页</h2>
+<p>第一章  命题逻辑（Propositional Logic）1.1  命题及其表示方法</p>
+<p>（2） 因为命题只有两种真值，所以“命题逻辑”又称<br>“二值逻辑”。<br>(3) “具有确定真值”是指客观上的具有，与我们是否知道它的真值是两回事。如上例中的（5）和（13）。<br>1.1.2  命题的表示方法<br>在本书中，用大写英文字母A,B,…,P,Q或带下标的字母P1,P2,P3 , …,或数字(1),[2], …,等表示命题，称之为命题标识符。</p>
+<h2>第 16 页</h2>
+<p>第一章  命题逻辑（Propositional Logic）1.1  命题及其表示方法</p>
+<p>例如： P：罗纳尔多是球星。<br>Q：5是负数。<br>P3：明天天气晴。<br>(2)：太阳从西方升起。<br>皆为符号化的命题，其真值依次为1、0、1或0、0。<br>命题标识符又有命题常量、命题变元和原子变元<br>之分。<br>命题常量：表示确定命题的命题标识符。</p>
+<h2>第 17 页</h2>
+<p>第一章  命题逻辑（Propositional Logic）1.1  命题及其表示方法</p>
+<p>命题变元：命题标识符如仅是表示任意命题的位置标<br>志，就称为命题变元。<br>原子变元：当命题变元表示原子命题时，该变元称为<br>原子变元。<br>命题变元也用A,B,…,P,Q,P1,P2,P3 , …, 表示。<br>1.1.3  命题的分类：<br>简单/原子命题：不能分解为更简单的陈述语句的命题(如上例中的命题)。<br>复合命题：由简单命题通过联结词联结而成的命题。<br>联结词就是复合命题中的运算符。</p>
+<h2>第 18 页</h2>
+<p>第一章  命题逻辑（Propositional Logic）1.1  命题及其表示方法</p>
+<p>注意：<br>（1）一个符号(如P), 它表示的是命题常量还是命题变元，一般由上下文来确定。<br>（2）命题变元可以表示任意命题，它不能确定真值，故命题变元不是命题。这与“变数x不是数”是一样的道理。<br>小结：本节主要介绍了命题、命题的真值、原子命题、复合命题、命题标识符、命题常量、命题变元和原子变元的概念。重点理解和掌握命题、命题变元两个概念。<br>作业：P8   （1）</p>
+<h2>第 19 页</h2>
+<p>&lt;number&gt;</p>
+<p>离散数学(Discrete Mathematics)</p>
+<p><em>[图]</em></p>
+<h2>第 20 页</h2>
+<p>&lt;number&gt;</p>
+<p>第一章  命题逻辑（Propositional Logic） 1.2逻辑联结词(Logical Connectives)</p>
+<p>1.2.1 否定联结词(Negation) ┐<br>1.2.2 合取联结词(Conjunction)∧<br>1.2.3 析取联结词(Disjunction)∨<br>1.2.4 条件联结词(蕴涵联结词Conditional)→<br>1.2.5 双条件联结(等值联结词Biconditional) </p>
+<h2>第 21 页</h2>
+<p>&lt;number&gt;</p>
+<p>第一章  命题逻辑（Propositional Logic） 1.2逻辑联结词(Logical Connectives)</p>
+<p>在命题逻辑中,主要研究的是复合命题,而复合命<br>题是由原子命题与逻辑联结词组合而成,联结词组是<br>复合命题的重要组成部分.<br>1.2.1 否定联结词 ┐<br>定义1.2.1  设P为一命题， P的否定是一个新的复合命题, 称为P的否定式，记作 “┐P”读作“非P”. 符号“┐ ” 称为否定联结词。 ┐P为真当且仅当P为假.<br>说明： “┐”属于一元(unary)运算符</p>
+<h2>第 22 页</h2>
+<p>&lt;number&gt;</p>
+<p>第一章  命题逻辑（Propositional Logic） 1.2逻辑联结词(Logical Connectives)</p>
+<p>“┐”的定义也可用下表来说明.<br>联结词“┐”的定义真值表</p>
+<div class="syo-table-wrap"><table class="syo-table"><thead><tr><th>P</th><th>┐P</th></tr></thead><tbody><tr><td>0</td><td>1</td></tr><tr><td>1</td><td>0</td></tr></tbody></table></div>
+<h2>第 23 页</h2>
+<p>&lt;number&gt;</p>
+<p>第一章  命题逻辑（Propositional Logic） 1.2逻辑联结词(Logical Connectives)</p>
+<p>例1.    P: 天津是一个城市.<br>Q: 3是偶数.<br>于是: ┐P: 天津不是一个城市.<br>┐Q: 3不是偶数.<br>例2.  P:苏州处处清洁.<br>Q:这些都是男同学.<br>┐P:苏州不处处清洁   (注意,不是处处不清洁).<br>┐Q:这些不都是男同学.</p>
+<h2>第 24 页</h2>
+<p>&lt;number&gt;</p>
+<p>第一章  命题逻辑（Propositional Logic） 1.2逻辑联结词(Logical Connectives)</p>
+<p>1.2.2 合取联结词(Conjunction)∧<br>定义1.2.2 设P,Q为二命题，复合命题“P并且Q”（或“P与Q”）称为P与Q的合取式，记作P ∧ Q，符号“∧” 称为合取联结词. PQ 为真当且仅当P和Q同时为真.<br>联结词“∧”的定义真值表</p>
+<div class="syo-table-wrap"><table class="syo-table"><thead><tr><th>P</th><th>Q</th><th>P  Q</th></tr></thead><tbody><tr><td>0</td><td>0</td><td>0</td></tr><tr><td>0</td><td>1</td><td>0</td></tr><tr><td>1</td><td>0</td><td>0</td></tr><tr><td>1</td><td>1</td><td>1</td></tr></tbody></table></div>
+<h2>第 25 页</h2>
+<p>&lt;number&gt;</p>
+<p>第一章  命题逻辑（Propositional Logic） 1.2逻辑联结词(Logical Connectives)</p>
+<p>说明：“∧” 属于二元(binary)运算符.<br>合取运算特点：只有参与运算的二命题全为真时，运算<br>结果才为真，否则为假。<br>自然语言中的表示“并且”意思的联结词，如“既…<br>又…”、“不但…而且…”、“虽然…但是…”、“一面…一面…”、 “…和…”、 “…与…”等都可以符号化为∧ 。</p>
+<h2>第 26 页</h2>
+<p>&lt;number&gt;</p>
+<p>第一章  命题逻辑（Propositional Logic） 1.2逻辑联结词(Logical Connectives)</p>
+<p>例3. 将下列命题符号化.<br>(1)   李平既聪明又用功.<br>(2) 李平虽然聪明, 但不用功.<br>(3)李平不但聪明,而且用功.<br>(4)李平不是不聪明,而是不用功.<br>解: 设 P:李平聪明.  Q:李平用功.<br>则   (1)  P∧Q            (2) P∧ ┐Q<br>(3) P∧Q             (4) ┐(┐P)∧ ┐Q</p>
+<p>注意：不要见到“与”或“和”就使用联结词∧ ！<br>例如: (1)见课本P11 例题6  (2) 李敏和李华是姐妹。<br>（3）李敏和张华是朋友。</p>
+<h2>第 27 页</h2>
+<p>&lt;number&gt;</p>
+<p>第一章  命题逻辑（Propositional Logic） 1.2逻辑联结词(Logical Connectives)</p>
+<p>例4. 试生成下列命题的合取.<br>(1) P: 我们在XNA303.  Q: 今天是星期二.<br>(2) S：李平在吃饭.  R：张明在吃饭.<br>解: (1) P∧Q :我们在XNA303且今天是星期二.<br>(2) S∧R:李平与张明在吃饭.</p>
+<h2>第 28 页</h2>
+<p>&lt;number&gt;</p>
+<p>第一章  命题逻辑（Propositional Logic） 1.2逻辑联结词(Logical Connectives)</p>
+<p>1.2.3 析取联结词(Disjunction)∨<br>定义1.2.3  设P,Q为二命题，复合命题“P或Q” 称为P与Q的析取式，记作P∨Q ，符号∨称为析取联结词. P∨Q为真当且仅当 P与Q中至少有一个为真.<br>联结词“∨”的定义真值表</p>
+<div class="syo-table-wrap"><table class="syo-table"><thead><tr><th>P</th><th>Q</th><th>PQ</th></tr></thead><tbody><tr><td>0</td><td>0</td><td>0</td></tr><tr><td>0</td><td>1</td><td>1</td></tr><tr><td>1</td><td>0</td><td>1</td></tr><tr><td>1</td><td>1</td><td>1</td></tr></tbody></table></div>
+<h2>第 29 页</h2>
+<p>&lt;number&gt;</p>
+<p>第一章  命题逻辑（Propositional Logic） 1.2逻辑联结词(Logical Connectives)</p>
+<p>说明：“∨” 属于二元(binary)运算符.<br>析取运算特点：只有参与运算的二命题全为假时，运算结果才为假，否则为真。<br>由析取联结词的定义可以看出， “∨”与汉语中的联结词“或”意义相近，但又不完全相同。在现代汉语中，联结词的“或”实际上有“可兼或”和“排斥或”之分。考察下面命题：<br>（1）小王爱打球或爱跑步。（可兼或）<br>设P：小王爱打球。 Q：小王爱跑步。<br>则上述命题可符号化为：P ∨ Q</p>
+<h2>第 30 页</h2>
+<p>&lt;number&gt;</p>
+<p>第一章  命题逻辑（Propositional Logic） 1.2逻辑联结词(Logical Connectives)</p>
+<p>（2）林芳学过英语或法语。 （可兼或）<br>设P：林芳学过英语。 Q：林芳学过法语。<br>则上述命题可符号化为： P ∨ Q<br>（3）派小王或小李中的一人去开会。（排斥或）<br>设P：派小王去开会。Q：派小李去开会。<br>则上述命题可符号化为：(P∧ Q) ∨( P∧Q)<br>（4）人固有一死，或重于泰山或轻于鸿毛.(排斥或）<br>（5）ab=0, 即a=0 或 b=0. （可兼或）<br>由此可见, “P ∨ Q”表示的是“可兼或”.</p>
+<h2>第 31 页</h2>
+<p>第一章  命题逻辑（Propositional Logic） 1.2逻辑联结词(Logical Connectives)</p>
+<p>注意：当P和Q客观上不能同时发生时，“P或Q”可以符号化为“P ∨ Q”。<br>例如：小王现在在宿舍或在图书馆。<br>设 P：小王现在在宿舍。Q：小王现在在图书馆。<br>则上述命题可符号化为：P ∨ Q。</p>
+<h2>第 32 页</h2>
+<p>&lt;number&gt;</p>
+<p>第一章  命题逻辑（Propositional Logic） 1.2逻辑联结词(Logical Connectives)</p>
+<p>1.2.4. 条件联结词(蕴涵联结词Conditional)→<br>定义1.2.4  设P,Q为二命题，复合命题“如果P则Q(若P则Q)” 称为P与Q的条件命题,记作P  Q. P  Q为假当且仅当P为真且Q为假.称符号“”为条件联结词。并称P为前件，Q为后件.<br>联结词“”的定义真值表</p>
+<div class="syo-table-wrap"><table class="syo-table"><thead><tr><th>P</th><th>Q</th><th>P → Q</th></tr></thead><tbody><tr><td>0</td><td>0</td><td>1</td></tr><tr><td>0</td><td>1</td><td>1</td></tr><tr><td>1</td><td>0</td><td>0</td></tr><tr><td>1</td><td>1</td><td>1</td></tr></tbody></table></div>
+<h2>第 33 页</h2>
+<p>&lt;number&gt;</p>
+<p>第一章  命题逻辑（Propositional Logic） 1.2逻辑联结词(Logical Connectives)</p>
+<p>注：（1）P  Q表示的基本逻辑关系是,Q是P的必要条件或P是Q的充分条件. 因此复合命题“只要P就Q”、“因为P，所以Q”、“P仅当Q”、“只有Q才P”等都可以符号化为P  Q 的形式。<br>（2）  ”“ 属于二元(binary)运算符。<br>例5. 将下列命题符号化。<br>（1）天不下雨，则草木枯黄。<br>P：天下雨。<br>Q：草木枯黄。<br>则原命题可表示为： ┐P→Q。</p>
+<h2>第 34 页</h2>
+<p>&lt;number&gt;</p>
+<p>第一章  命题逻辑（Propositional Logic） 1.2逻辑联结词(Logical Connectives)</p>
+<p>（2）如果小明学日语，小华学英语，则小芳学德语。<br>P：小明学日语<br>Q：小华学英语<br>R：小芳学德语.<br>则原命题可表示为：(P∧Q)→R<br>（3）只要不下雨，我就骑自行车上班。<br>P：天下雨。Q：我骑自行车上班。<br>则原命题可表示为： ┐P→Q。<br>（4）只有不下雨，我才骑自行车上班。<br>P：天下雨。Q：我骑自行车上班。<br>则原命题可表示为： Q →┐P 。</p>
+<h2>第 35 页</h2>
+<p>第一章  命题逻辑（Propositional Logic） 1.2逻辑联结词(Logical Connectives)</p>
+<p>（5）如果 2+2=4, 则太阳从东方升起。 (P →Q, T)<br>P                          Q<br>如果 2+2=4, 则太阳从西方升起。 (P →R,  F)<br>R<br>如果 2+2     4, 则太阳从东方升起。 (┐P →Q , T)<br>如果 2+2     4, 则太阳从西方升起。 (┐P →R, T)<br>注意: (1)与自然语言的不同：前件与后件可以没有任何内在联系！<br>(2) 在数学中，“若P则Q”往往表示前件P为真，则后件Q为真的<br>推理关系. 但数理逻辑中，当前件P为假时， P →Q的真值为真。</p>
+<h2>第 36 页</h2>
+<p>&lt;number&gt;</p>
+<p>第一章  命题逻辑（Propositional Logic） 1.2逻辑联结词(Logical Connectives)</p>
+<p>1.2.5 双条件联结(等值联结词Biconditional) <br>定义1.2.5  设P,Q为二命题，复合命题“P当且仅当Q” 称为P与Q的双条件命题，记作P iff Q或 PQ，符号称为双条件（等值）联结词。 PQ为真当且仅当P，Q真值相同。<br>联结词“”的定义真值表</p>
+<div class="syo-table-wrap"><table class="syo-table"><thead><tr><th>P</th><th>Q</th><th>P  Q</th></tr></thead><tbody><tr><td>0</td><td>0</td><td>1</td></tr><tr><td>0</td><td>1</td><td>0</td></tr><tr><td>1</td><td>0</td><td>0</td></tr><tr><td>1</td><td>1</td><td>1</td></tr></tbody></table></div>
+<h2>第 37 页</h2>
+<p>&lt;number&gt;</p>
+<p>第一章  命题逻辑（Propositional Logic） 1.2逻辑联结词(Logical Connectives)</p>
+<p>注：（1）P仅当Q 可译为P→Q<br>P当Q   可译为Q→P<br>P当且仅当Q  译为PQ<br>（2）“”属于二元(binary)运算符。<br>(3) 双条件命题PQ所表达的逻辑关系是, P与Q互为充分必要条件,相当于(P  Q) ∧(Q  P). 只要P与Q的真值同为1或同为0, PQ的真值就为1, 否则PQ的真值为0. 双条件联结词连接的两个命题之间可以没有因果关系。<br>例6.分析下列命题的真值.<br>(1) 2+2=4 当且仅当3是奇数 . (PQ)<br>P：  2+2=4.  Q：3是奇数 .</p>
+<h2>第 38 页</h2>
+<p>&lt;number&gt;</p>
+<p>第一章  命题逻辑（Propositional Logic） 1.2逻辑联结词(Logical Connectives)</p>
+<p>(2)   2+2=4 当且仅当3不是奇数 . (P┐Q)<br>(3) 2+2  4 当且仅当3是奇数 . (┐PQ)<br>(4) 2+2  4 当且仅当3不是奇数 . (┐P┐Q)<br>约 定:1. 运算次序优先级：┐，，，→，.</p>
+<ol>
+<li>相同的运算符按从左至右次序计算，否则要<br>加上括号。<br>3.最外层圆括号可省去。</li>
+</ol>
+<p>小结: 本节介绍了五种联结词(┐，，，→，),重点是理解和掌握五种联结词的内涵及它们与自然语言中相应联结词的不同之处.</p>
+<h2>第 39 页</h2>
+<p>&lt;number&gt;</p>
+<p>第一章  命题逻辑（Propositional Logic） 1.2逻辑联结词(Logical Connectives)</p>
+<p>作业: 1. P8  (3), (5).</p>
+<ol>
+<li>预习§1.3, §1.4</li>
+</ol>
+<p>思考题:</p>
+<ol>
+<li>何谓合式公式?</li>
+<li>复合命题符号化的基本步骤是什么?<br>3.何谓真值表?</li>
+<li>两个命题公式等价的涵义是什么?<br>5.两个等价的命题公式其真值表有何关系?</li>
+</ol>
+<h2>第 40 页</h2>
+<p>&lt;number&gt;</p>
+<p>离散数学(Discrete Mathematics)</p>
+<h2>第 41 页</h2>
+<p>&lt;number&gt;</p>
+<p>第一章  命题逻辑（Propositional Logic）1.3命题公式与翻译</p>
+<p>1.3.1 命题公式<br>1.3.2 复合命题的符号化(翻译)<br>1.3.1 命题合式公式(Well-formed formula)(wff)<br>定义1.3.1:单个命题变元和命题常量称为原子公式。<br>命题合式公式是由命题变元、命题常量、联结词和圆括号按一定的逻辑关系联结起来的符号串。我们以如下递归的形式来定义合式公式：</p>
+<h2>第 42 页</h2>
+<p>&lt;number&gt;</p>
+<p>第一章  命题逻辑（Propositional Logic）1.3命题公式与翻译</p>
+<p>定义1.3.2：(1)原子公式是合式公式(wff)。<br>（2）若A是合式公式，则( A)也是合式公式。<br>（3）若A，B是合式公式，则(A∧B)，(A∨B)，(AB)，(AB)也是合式公式。<br>（4）当且仅当有限次地应用(1)~(3)所得到的包含原子公式、联结词和括号的符号串是合式公式。<br>注: (1)合式公式也称为命题公式，并简称为公式。<br>(2)命题公式一般不是命题,仅当公式中的命题变元用确定的命题代入时,才得到一个命题.其真值依赖于代换变元的那些命题的真值.</p>
+<h2>第 43 页</h2>
+<p>&lt;number&gt;</p>
+<p>第一章  命题逻辑（Propositional Logic）1.3命题公式与翻译</p>
+<p>例1：指出(P→(PQ))是否是命题公式(wff)，如果是，则具体说明。<br>解：  ① P是wff                 由(1)<br>② Q是wff                 由(1)<br>③ PQ是wff               由(3) ①②<br>④ (P→(PQ))             由(3) ①③<br>例2: (P  Q) , (R ∧ S) ∨  Q , P，( P)等均为合式公式，而PQ ∨S , (P  W) Q)等不是合式公式。</p>
+<h2>第 44 页</h2>
+<p>&lt;number&gt;</p>
+<p>第一章  命题逻辑（Propositional Logic）1.3命题公式与翻译</p>
+<p>1.3.2 复合命题的符号化(翻译)<br>有了命题演算的合式公式的概念,我们可以把自然语言中的有些语句(复合命题),翻译成数理逻辑中的符号形式.基本步骤如下:<br>(1) 分析出各简单命题,将它们符号化;<br>(2) 使用合适的联结词,把简单命题逐个的联结起来,组成复合命题的符号化表示.</p>
+<h2>第 45 页</h2>
+<p>&lt;number&gt;</p>
+<p>第一章  命题逻辑（Propositional Logic）1.3命题公式与翻译</p>
+<p>例3：<br>1) 我今天进城，除非下雨。[1-3.(7)]<br>2) 仅当你走我将留下。<br>3) 假如上午不下雨，我去看电影，否则就在家里<br>读书或看报。<br>4)除非你努力，否则你将失败。[P11例5]<br>5)一个人起初说：“占据空间的、有质量的而且不断变化的叫做物质”；后来他改说，“占据空间的有质量的叫做物质，而物质是不断变化的。”问他前后主张的差异在什么地方，试以命题形式进行分析。 [1-3.(6)]</p>
+<h2>第 46 页</h2>
+<p>&lt;number&gt;</p>
+<p>第一章  命题逻辑（Propositional Logic）1.3命题公式与翻译</p>
+<p>例4：P10  例题1<br>小结：本节介了命题公式的概念及复合命题的符号化.重点是理解命题公式的递归定义,掌握复合命题的符号化方法.<br>作业:  P12  (1),(5)</p>
+<h2>第 47 页</h2>
+<p>&lt;number&gt;</p>
+<p>离散数学(Discrete Mathematics)</p>
+<h2>第 48 页</h2>
+<p>&lt;number&gt;</p>
+<p>第一章  命题逻辑（Propositional Logic） 1.4真值表与等价公式</p>
+<p>1.4.1 真值表(Truth Table)<br>1.4.2 等价公式(Propositional Equivalences)<br>1.4.1 真值表<br>前面在定义联结词时,曾经使用过真值表,下面给出<br>真值表的定义.<br>定义1.4.1 (对公式的赋值或解释)设P1 , P2 ,…,Pn是出<br>现在公式A中的全部的命题变元, 给P1 , P2 ,…,Pn各指<br>定一个真值，称为对A的一个赋值或解释。若指定的<br>一组值使A的真值为真(假), 称这组值为A的成真(假)赋值.</p>
+<h2>第 49 页</h2>
+<p>&lt;number&gt;</p>
+<p>第一章  命题逻辑（Propositional Logic） 1.4真值表与等价公式</p>
+<p>比如:对公式(PQ)∧R,赋值011(即令P=0,Q=1,R=1) 为(PQ)∧R的成真赋值; 另一组赋值010为(PQ)∧R的成假赋值；还有000，001，111……<br>考虑：含有n个命题变元的公式共有多少组不同的赋值？<br>定义1.4.2(真值表)在命题公式A中, 对于命题变元的每一组赋值和由它们所确定的命题公式A的真值列成表，称做命题公式A 的真值表。</p>
+<h2>第 50 页</h2>
+<p>&lt;number&gt;</p>
+<p>第一章  命题逻辑（Propositional Logic） 1.4真值表与等价公式</p>
+<p>对公式A构造真值表的具体步骤为：<br>（1）找出公式中所有命题变元P1 , P2 ,…,Pn , 列出全部的2n组赋值。<br>（2）按从小到大的顺序列出对命题变元P1 , P2 ,…,Pn ,的全部2n组赋值。<br>（3）对应各组赋值计算出公式A的真值，并将其列在对应赋值的后面。</p>
+<h2>第 51 页</h2>
+<p>&lt;number&gt;</p>
+<p>第一章  命题逻辑（Propositional Logic） 1.4真值表与等价公式</p>
+<p>例1.   给出┐(PQ)(┐P┐Q)的真值表：</p>
+<div class="syo-table-wrap"><table class="syo-table"><thead><tr><th>P</th><th>Q</th><th>PQ</th><th>┐(PQ)</th><th>┐P┐Q</th><th>┐(PQ)  (┐P┐Q)</th></tr></thead><tbody><tr><td>0</td><td>0</td><td></td><td></td><td></td><td></td></tr><tr><td>0</td><td>1</td><td></td><td></td><td></td><td></td></tr><tr><td>1</td><td>0</td><td></td><td></td><td></td><td></td></tr><tr><td>1</td><td>1</td><td></td><td></td><td></td><td></td></tr></tbody></table></div>
+<h2>第 52 页</h2>
+<p>&lt;number&gt;</p>
+<p>第一章  命题逻辑（Propositional Logic） 1.4真值表与等价公式</p>
+<p>例1.   给出┐(PQ)(┐P┐Q)的真值表：</p>
+<div class="syo-table-wrap"><table class="syo-table"><thead><tr><th>P</th><th>Q</th><th>PQ</th><th>┐(PQ)</th><th>┐P┐Q</th><th>┐(PQ)  (┐P┐Q)</th></tr></thead><tbody><tr><td>0</td><td>0</td><td>0</td><td>1</td><td>1</td><td>1</td></tr><tr><td>0</td><td>1</td><td>0</td><td>1</td><td>1</td><td>1</td></tr><tr><td>1</td><td>0</td><td>0</td><td>1</td><td>1</td><td>1</td></tr><tr><td>1</td><td>1</td><td>1</td><td>0</td><td>0</td><td>1</td></tr></tbody></table></div>
+<h2>第 53 页</h2>
+<p>&lt;number&gt;</p>
+<p>第一章  命题逻辑（Propositional Logic） 1.4真值表与等价公式</p>
+<p>例2：构造公式 (P Q) ∧R的 真值表。</p>
+<div class="syo-table-wrap"><table class="syo-table"><thead><tr><th>P</th><th>Q</th><th>R</th><th>PQ</th><th>(P Q) ∧R</th></tr></thead><tbody><tr><td>0</td><td>0</td><td>0</td><td></td><td></td></tr><tr><td>0</td><td>0</td><td>1</td><td></td><td></td></tr><tr><td>0</td><td>1</td><td>0</td><td></td><td></td></tr><tr><td>0</td><td>1</td><td>1</td><td></td><td></td></tr><tr><td>1</td><td>0</td><td>0</td><td></td><td></td></tr><tr><td>1</td><td>0</td><td>1</td><td></td><td></td></tr><tr><td>1</td><td>1</td><td>0</td><td></td><td></td></tr><tr><td>1</td><td>1</td><td>1</td><td></td><td></td></tr></tbody></table></div>
+<h2>第 54 页</h2>
+<p>&lt;number&gt;</p>
+<p>第一章  命题逻辑（Propositional Logic） 1.4真值表与等价公式</p>
+<p>例2：构造公式 (P Q) ∧R的 真值表。</p>
+<div class="syo-table-wrap"><table class="syo-table"><thead><tr><th>P</th><th>Q</th><th>R</th><th>PQ</th><th>(P Q) ∧R</th></tr></thead><tbody><tr><td>0</td><td>0</td><td>0</td><td>1</td><td>0</td></tr><tr><td>0</td><td>0</td><td>1</td><td>1</td><td>1</td></tr><tr><td>0</td><td>1</td><td>0</td><td>1</td><td>0</td></tr><tr><td>0</td><td>1</td><td>1</td><td>1</td><td>1</td></tr><tr><td>1</td><td>0</td><td>0</td><td>0</td><td>0</td></tr><tr><td>1</td><td>0</td><td>1</td><td>0</td><td>0</td></tr><tr><td>1</td><td>1</td><td>0</td><td>1</td><td>0</td></tr><tr><td>1</td><td>1</td><td>1</td><td>1</td><td>1</td></tr></tbody></table></div>
+<h2>第 55 页</h2>
+<p>&lt;number&gt;</p>
+<p>第一章  命题逻辑（Propositional Logic） 1.4真值表与等价公式</p>
+<p>练习1：构造公式 (PQ)( Q P真值表。</p>
+<div class="syo-table-wrap"><table class="syo-table"><thead><tr><th>P</th><th>Q</th><th> P</th><th> Q</th><th>P  Q</th><th> Q P</th><th>(P  Q)( Q   P)</th></tr></thead><tbody><tr><td>0</td><td>0</td><td></td><td></td><td></td><td></td><td></td></tr><tr><td>0</td><td>1</td><td></td><td></td><td></td><td></td><td></td></tr><tr><td>1</td><td>0</td><td></td><td></td><td></td><td></td><td></td></tr><tr><td>1</td><td>1</td><td></td><td></td><td></td><td></td><td></td></tr></tbody></table></div>
+<h2>第 56 页</h2>
+<p>&lt;number&gt;</p>
+<p>第一章  命题逻辑（Propositional Logic） 1.4真值表与等价公式</p>
+<p>练习1：构造公式 (PQ)( Q P真值表。</p>
+<div class="syo-table-wrap"><table class="syo-table"><thead><tr><th>P</th><th>Q</th><th> P</th><th> Q</th><th>P  Q</th><th> Q P</th><th>(P  Q)( Q   P)</th></tr></thead><tbody><tr><td>0</td><td>0</td><td>1</td><td>1</td><td>1</td><td>1</td><td>1</td></tr><tr><td>0</td><td>1</td><td>1</td><td>0</td><td>1</td><td>1</td><td>1</td></tr><tr><td>1</td><td>0</td><td>0</td><td>1</td><td>0</td><td>0</td><td>1</td></tr><tr><td>1</td><td>1</td><td>0</td><td>0</td><td>1</td><td>1</td><td>1</td></tr></tbody></table></div>
+<h2>第 57 页</h2>
+<p>&lt;number&gt;</p>
+<p>第一章  命题逻辑（Propositional Logic） 1.4真值表与等价公式</p>
+<div class="syo-table-wrap"><table class="syo-table"><thead><tr><th>P</th><th>Q</th><th>(P  Q)</th><th> (P  Q)</th><th> (P  Q) ∧ Q</th></tr></thead><tbody><tr><td>0</td><td>0</td><td></td><td></td><td></td></tr><tr><td>0</td><td>1</td><td></td><td></td><td></td></tr><tr><td>1</td><td>0</td><td></td><td></td><td></td></tr><tr><td>1</td><td>1</td><td></td><td></td><td></td></tr></tbody></table></div>
+<p>练习2：构造公式  (P Q ∧Q 真值表。</p>
+<h2>第 58 页</h2>
+<p>&lt;number&gt;</p>
+<p>第一章  命题逻辑（Propositional Logic） 1.4真值表与等价公式</p>
+<div class="syo-table-wrap"><table class="syo-table"><thead><tr><th>P</th><th>Q</th><th>(P  Q)</th><th> (P  Q)</th><th> (P  Q) ∧ Q</th></tr></thead><tbody><tr><td>0</td><td>0</td><td>1</td><td>0</td><td>0</td></tr><tr><td>0</td><td>1</td><td>1</td><td>0</td><td>0</td></tr><tr><td>1</td><td>0</td><td>0</td><td>1</td><td>0</td></tr><tr><td>1</td><td>1</td><td>1</td><td>0</td><td>0</td></tr></tbody></table></div>
+<p>练习2：构造公式  (P Q ∧Q 真值表。</p>
+<h2>第 59 页</h2>
+<p>&lt;number&gt;</p>
+<p>第一章  命题逻辑（Propositional Logic） 1.4真值表与等价公式</p>
+<p>1.4.2 等价公式<br>给定n个          命题变元, 按合式公式的形成规则可以形成无数多个命题公式, 但这些无穷尽的命题公式中，有些具有相同的真值表。考虑：由n个命题变元能生成??? 种真值(表)不同的命题公式？</p>
+<h2>第 60 页</h2>
+<p>&lt;number&gt;</p>
+<p>第一章  命题逻辑（Propositional Logic） 1.4真值表与等价公式</p>
+<p>1.4.2 等价公式<br>定义1.4.3: 给定两个命题公式A和B,设P1 , P2 ,…,Pn为出现于A和B中的所有原子变元,若给P1 , P2 ,…,Pn任一组真值指派, A和B的真值都相同,则称A和B是等价的或逻辑相等.记作A  B<br>注: (1) “  ”不是逻辑联结词.<br>(2)命题公式之间的逻辑相等关系具有：<br>自反性：A  A ；对称性：若A  B，则B  A；<br>传递性：若A  B且B  C，则A  C。</p>
+<h2>第 61 页</h2>
+<p>&lt;number&gt;</p>
+<p>第一章  命题逻辑（Propositional Logic） 1.4真值表与等价公式</p>
+<p>证明公式等价的方法：</p>
+<ol>
+<li>真值表法    2. 等值演算法</li>
+<li>真值表法</li>
+</ol>
+<p>例1.  ┐(PQ) (┐P┐Q)   见真值表例题1.<br>例2.  证明: PQ (P→Q)(Q→P)</p>
+<div class="syo-table-wrap"><table class="syo-table"><thead><tr><th>P</th><th>Q</th><th>PQ</th><th>Q→P</th><th>P→Q</th><th>(P→Q)(Q→P)</th></tr></thead><tbody><tr><td>0</td><td>0</td><td></td><td></td><td></td><td></td></tr><tr><td>0</td><td>1</td><td></td><td></td><td></td><td></td></tr><tr><td>1</td><td>0</td><td></td><td></td><td></td><td></td></tr><tr><td>1</td><td>1</td><td></td><td></td><td></td><td></td></tr></tbody></table></div>
+<h2>第 62 页</h2>
+<p>&lt;number&gt;</p>
+<p>第一章  命题逻辑（Propositional Logic） 1.4真值表与等价公式</p>
+<p>证明公式等价的方法：</p>
+<ol>
+<li>真值表法    2. 等值演算法</li>
+<li>真值表法</li>
+</ol>
+<p>例1.  ┐(PQ) (┐P┐Q)   见真值表例题1.<br>例2.  证明: PQ (P→Q)(Q→P)</p>
+<div class="syo-table-wrap"><table class="syo-table"><thead><tr><th>P</th><th>Q</th><th>PQ</th><th>Q→P</th><th>P→Q</th><th>(P→Q)(Q→P)</th></tr></thead><tbody><tr><td>0</td><td>0</td><td>1</td><td>1</td><td>1</td><td>1</td></tr><tr><td>0</td><td>1</td><td>0</td><td>0</td><td>1</td><td>0</td></tr><tr><td>1</td><td>0</td><td>0</td><td>1</td><td>0</td><td>0</td></tr><tr><td>1</td><td>1</td><td>1</td><td>1</td><td>1</td><td>1</td></tr></tbody></table></div>
+<h2>第 63 页</h2>
+<p>&lt;number&gt;</p>
+<p>第一章  命题逻辑（Propositional Logic） 1.4真值表与等价公式</p>
+<p>例3：判断公式 P(QR)、(P∧Q)R是否等价。</p>
+<div class="syo-table-wrap"><table class="syo-table"><thead><tr><th>P</th><th>Q</th><th>R</th><th>P ∧ Q</th><th>Q  R</th><th>P (Q  R)</th><th>(P ∧ Q  R</th></tr></thead><tbody><tr><td>0</td><td>0</td><td>0</td><td>0</td><td>1</td><td>1</td><td>1</td></tr><tr><td>0</td><td>0</td><td>1</td><td>0</td><td>1</td><td>1</td><td>1</td></tr><tr><td>0</td><td>1</td><td>0</td><td>0</td><td>0</td><td>1</td><td>1</td></tr><tr><td>0</td><td>1</td><td>1</td><td>0</td><td>1</td><td>1</td><td>1</td></tr><tr><td>1</td><td>0</td><td>0</td><td>0</td><td>1</td><td>1</td><td>1</td></tr><tr><td>1</td><td>0</td><td>1</td><td>0</td><td>1</td><td>1</td><td>1</td></tr><tr><td>1</td><td>1</td><td>0</td><td>1</td><td>0</td><td>0</td><td>0</td></tr><tr><td>1</td><td>1</td><td>1</td><td>1</td><td>1</td><td>1</td><td>1</td></tr></tbody></table></div>
+<h2>第 64 页</h2>
+<p>&lt;number&gt;</p>
+<p>第一章  命题逻辑（Propositional Logic） 1.4真值表与等价公式</p>
+<p>由真值表可知，两个公式为等价式。<br>2、等值演算法(Equivalent Caculation)（利用P15表1-4.8)<br>重要的等价式(补充):</p>
+<ol>
+<li>蕴涵等值式: PQ  ┐PQ</li>
+<li>等价等值式: PQ (P→Q)(Q→P)</li>
+<li>假言易位:     PQ  ┐Q  ┐P</li>
+<li>等价否定等值式: PQ ┐P┐Q</li>
+<li>归谬论: (PQ ) ( P ┐Q) ┐P</li>
+</ol>
+<h2>第 65 页</h2>
+<p>&lt;number&gt;</p>
+<p>第一章  命题逻辑（Propositional Logic） 1.4真值表与等价公式</p>
+<p>其中P, Q, R等代表任意命题公式. 这样上面的每一个公式都是一个模式, 它可以代表无数多个同类型的命题公式. 例如, P┐PT 中, 用(PQ)置换P,则得 (PQ)┐(PQ)T ,用┐P置换P,则得 (┐P)┐(┐P)T 。<br>等值演算中使用的一条重要规则：置换规则。</p>
+<p>定义1.4.4(子公式)：如果X是wff A的一部分,且X本身也是wff，则称X是A的子公式。例如, P(PQ)为Q (P(PQ))的子公式。</p>
+<h2>第 66 页</h2>
+<p>&lt;number&gt;</p>
+<p>第一章  命题逻辑（Propositional Logic） 1.4真值表与等价公式</p>
+<p>定理1.4.1(置换定理Axiom of replacement)设X是wff A的子wff，若XY，则若将A中的X用Y来置换，所得公式B与A等价，即AB。<br>证：因为对变元的任一指派,X与Y真值相同，所以Y<br>取代X后，公式B与公式A对变元的任一指派真值也相同,所以AB。<br>注: 满足定理1.4.1的条件的置换称为等价置换(或等价代换).<br>定义1.4.5(等值演算)：根据已知的等价公式,推演出另外一些等价公式的过程称为等值演算.</p>
+<h2>第 67 页</h2>
+<p>&lt;number&gt;</p>
+<p>第一章  命题逻辑（Propositional Logic） 1.4真值表与等价公式</p>
+<p>例1： 证明 Q→（P（PQ））Q→P<br>证: Q→（P（PQ））Q→P<br>~~~~~~~~~~~<br>P(吸收律)</p>
+<p>例2： 证明 P┐QQ PQ</p>
+<p>证： (P┐Q)Q(PQ)(┐QQ)(PQ)TPQ</p>
+<p>例3：证明（P→Q）→（QP） PQR<br>证：（P→Q）→（QP）<br>（┐PQ）→（QR）<br> ┐（┐PQ）（QR）<br>（P┐Q）（QR）<br>（PQR）（┐QQR）<br> PQR</p>
+<h2>第 68 页</h2>
+<p>&lt;number&gt;</p>
+<p>第一章  命题逻辑（Propositional Logic） 1.4真值表与等价公式</p>
+<p>例4：验证P(QR) (P ∧ Q)  R<br>证: 右  (P ∧ Q) ∨ R<br>  P ∨  Q ∨ R<br>  P ∨ ( Q ∨ R)<br>  P ∨ (Q  R))<br> P  (Q  R)<br>练：1.((P  Q) ∧(P  R))  P (Q ∧ R)<br>2.(P ∧ Q) ∨( P ∧ Q)  (P ∨ Q) ∧  (P ∧ Q)</p>
+<h2>第 69 页</h2>
+<p>&lt;number&gt;</p>
+<p>第一章  命题逻辑（Propositional Logic） 1.4真值表与等价公式</p>
+<p>等值演算在计算机硬件设计中,在开关理论和电子元器件中都占有重要地位.<br>小结: 本节介绍了真值表、公式等价、等值演算和等价置换等概念，给出了常用的重要等价公式（24个）。重点掌握用真值表法验证公式的等价性和等值演算法推演两个公式等价。<br>作业：P17  1 c,e, 4 a,c, 7d,e, 8.<br>预习: 1.5, 1.6<br>思考题：9</p>
+<h2>第 70 页</h2>
+<p>&lt;number&gt;</p>
+<p>离散数学(Discrete Mathematics)</p>
+<p>张捷</p>
+<h2>第 71 页</h2>
+<p>&lt;number&gt;</p>
+<p>第一章  命题逻辑（Propositional Logic） 1.5重言式与蕴含式(Tautology and Implication)</p>
+<p>1.5.1 命题公式的分类<br>1.5.2 重言式(Tautology)与矛盾式<br>(contradictory)的性质<br>1.5.3 蕴含式( Implication)</p>
+<h2>第 72 页</h2>
+<p>&lt;number&gt;</p>
+<p>第一章  命题逻辑（Propositional Logic） 1.5重言式与蕴含式(Tautology and Implication)</p>
+<p>1.5.1 命题公式的分类<br>复合命题<br>(compound propositions)</p>
+<p>定义1.5.1  设A为任一命题公式，<br>（1）若A在其各种赋值下的取值均为真，则称A是重言式或永真式, 记为T或1。<br>（2）若A在其各种赋值下的取值均为假，则称A是矛盾式或永假式, 记为F或0。<br>（3）若A不是矛盾式则称A为可满足式(satisfiable)。注: 由定义可知,重言式一定是可满足式,反之不真.</p>
+<h2>第 73 页</h2>
+<p>&lt;number&gt;</p>
+<p>第一章  命题逻辑（Propositional Logic） 1.5重言式与蕴含式(Tautology and Implication)</p>
+<p>判别命题公式的类型有两种方法: 真值表法和等值<br>演算法.<br>等值演算法是将所给命题公式通过等值演算化为最<br>简单的形式, 然后再进行判别.<br>例1.判别下列命题公式的类型.<br>(1). Q∨┓((┓P∨Q)∧P)       (重言式)<br>(2). (P∨┓P) (Q∧┓Q)∧R    (矛盾式)<br>(3). (P  Q)∧┓P.            (可满足式)</p>
+<h2>第 74 页</h2>
+<p>&lt;number&gt;</p>
+<p>第一章  命题逻辑（Propositional Logic） 1.5重言式与蕴含式(Tautology and Implication)</p>
+<p>1.5.2 重言式(Tautology)与矛盾式(contradictory)的性质定理1.5.1:任何两个重言式的合取或析取,仍然是一重言式.（由幂等律立得）<br>证明:设A和B为两个重言式,则不论A和B的分量指派任何真值,总有A为T,B为T,故A ∧ B T,A ∨ B T<br>定理1.5.2:一个重言式(矛盾式),对同一分量都用任何合式公式置换,其结果仍为一重言式(矛盾式).<br>证明: 由于重言式(矛盾式)的真值与对变元的赋值无关，故对同一变元以任何合式公式置换后，重言式(矛盾式)的真值仍永为T（F）。</p>
+<h2>第 75 页</h2>
+<p>&lt;number&gt;</p>
+<p>第一章  命题逻辑（Propositional Logic） 1.5重言式与蕴含式(Tautology and Implication)</p>
+<p>定理1.5.3： A,B是两个命题公式，A  B的充要条件是A  B为重言式。<br>证明: 若AB为重言式，则AB永为T，即A，B的真<br>值表相同，所以AB。<br>反之，若A  B，则A，B真值表相同， 所以<br>AB永为T，所以AB为重言式。<br>1.5.3 蕴含式( Implication)<br>定义1.5.2：当且仅当P  Q是一个重言式时，我们称“P蕴含Q”，并记作P  Q.</p>
+<h2>第 76 页</h2>
+<p>&lt;number&gt;</p>
+<p>第一章  命题逻辑（Propositional Logic） 1.5重言式与蕴含式(Tautology and Implication)</p>
+<p>它们之间具有如下关系:<br>PQ   Q P     由P21 表1-5.1<br>QP   P Q     可以得出<br>因此, 要证明P  Q有三种方法:<br>1)真值表法:即列出PQ的真值表,观察其是否为永真。<br>2)直接证法:假定前件P是真，推出后件Q是真。<br>3)间接证法:假定后件是假，推出前件是假,即证<br> Q P 。</p>
+<div class="syo-table-wrap"><table class="syo-table"><thead><tr><th>原命题</th><th>逆换式</th><th>反换式</th><th>逆反式</th></tr></thead><tbody><tr><td>PQ</td><td>QP</td><td> P Q</td><td> Q P</td></tr></tbody></table></div>
+<h2>第 77 页</h2>
+<p>&lt;number&gt;</p>
+<p>第一章  命题逻辑（Propositional Logic） 1.5重言式与蕴含式(Tautology and Implication)</p>
+<p>例: 证明┐Q（P→Q）┐P<br>1) 法1：真值表<br>2) 法2：若 ┐Q(P→Q)为真，则 ┐Q，P→Q为真，<br>所以Q为假，P为假，所以┐P为真。<br>3) 法3：若┐P为假，则P为真，再分二种情况：<br>①若Q为真，则┐Q为假,从而┐Q（P→Q）<br>为假.<br>②若Q为假，则P→Q为假，则┐Q（P→Q）为假.<br>根据① ②，所以 ┐Q（P→Q）┐P<br>P21 表1-5.2给出了14个蕴含式, 它们都可以用上述方法加以推证.</p>
+<h2>第 78 页</h2>
+<p>&lt;number&gt;</p>
+<p>第一章  命题逻辑（Propositional Logic） 1.5重言式与蕴含式(Tautology and Implication)</p>
+<p>等价式与蕴含式的关系:<br>定理1.5.4: 设P,Q为任意两个命题公式,PQ的充要条件为PQ且QP.<br>证：若PQ，则PQ为永真式<br>因为 PQ （P→Q）（Q→P）<br>所以 P→Q，Q→P为永真式,从而 PQ，QP.<br>反之，若PQ，QP，则P→Q，Q→P为永真式,<br>所以（P→Q）（Q→P）为永真式，<br>从而 PQ为永真式，即PQ.</p>
+<h2>第 79 页</h2>
+<p>&lt;number&gt;</p>
+<p>第一章  命题逻辑（Propositional Logic） 1.5重言式与蕴含式(Tautology and Implication)</p>
+<p>蕴含的性质:<br>设A，B，C为任意wff,<br>1) 若AB，且A为永真式，则B必为永真式.<br>2) 若AB，BC，则AC.<br>3) 若AB，AC，则ABC.<br>4) 若AB且CB，则ACB.<br>证：1)因为A→B，A永为T,所以B必永为T.<br>2)由I11 （A→B)(B→C）A→C,所以若AB，<br>BC，则（A→B)(B→C）永为T,从而A→C永<br>为T, 故AC.</p>
+<h2>第 80 页</h2>
+<p>&lt;number&gt;</p>
+<p>第一章  命题逻辑（Propositional Logic） 1.5重言式与蕴含式(Tautology and Implication)</p>
+<p>3) （A→B）（A→C）<br>（┐AB）（┐AC）<br> ┐A（BC）<br> A→BC<br>4) （A→B）（C→B）<br> （┐AB）（┐CB）<br> （┐A┐C）B<br>  ┐（AC）B<br>  AC→B</p>
+<h2>第 81 页</h2>
+<p>&lt;number&gt;</p>
+<p>第一章  命题逻辑（Propositional Logic） 1.5重言式与蕴含式(Tautology and Implication)</p>
+<p>小结：本节介绍了命题公式的分类，重言式、矛盾式与蕴含式的概念及其性质，等价式与蕴涵式的关系。<br>重点掌握:<br>（1）用等值演算法判别命题公式的类型。<br>（2）重言式、矛盾式与蕴涵式的性质。<br>（3）等价式与蕴涵式的关系。<br>作业: P23 (1)c,d ,(2) a ,(9).<br>预习:1.6<br>思考题:1) 为什么要引入联结词          ?<br>2) 什么是最小联结词组?</p>
+<h2>第 82 页</h2>
+<p>&lt;number&gt;</p>
+<p>离散数学(Discrete Mathematics)</p>
+<p>张捷</p>
+<h2>第 83 页</h2>
+<p>&lt;number&gt;</p>
+<p>第一章  命题逻辑（Propositional Logic） 1.6其它联结词(Other Connectives)</p>
+<p>1.6.1 不可兼析取(排斥或/异或)(exclusive or)<br>1.6.2 与非联结词(Nand)<br>1.6.3 或非联结词(Nor)<br>1.6.4 条件否定联结词(Non-conditional)<br>1.6.5 最小联结词组(The minimal set of connectives)</p>
+<h2>第 84 页</h2>
+<p>&lt;number&gt;</p>
+<p>第一章  命题逻辑（Propositional Logic） 1.6其它联结词(Other Connectives)</p>
+<p>在第二节(1.2)中我们定义了五种基本的联结词┐，，<br>，→ ，,但在命题逻辑中,这些联结词还不能很广泛<br>地直接表达命题之间的联系(例如, “P异或Q”只能间接地<br>表示为(P┐Q)(┐PQ)),为此本节再给出逻辑设计中<br>常用的另外四种联结词.<br>1.6.1 不可兼析取(排斥或/异或)(exclusive or)<br>定义1.6.1:设P,Q为二命题，复合命题“P, Q之中恰有一个为真” 称为P与Q的不可兼析取，记作P   Q，符号“    ” 称为异或联结词. P  Q 为真当且仅当P和Q的真值不同.</p>
+<h2>第 85 页</h2>
+<p>&lt;number&gt;</p>
+<p>第一章  命题逻辑（Propositional Logic） 1.6其它联结词(Other Connectives)</p>
+<p>联结词“    ”的定义真值表</p>
+<div class="syo-table-wrap"><table class="syo-table"><thead><tr><th>P</th><th>Q</th><th>P   Q</th></tr></thead><tbody><tr><td>0</td><td>0</td><td>0</td></tr><tr><td>0</td><td>1</td><td>1</td></tr><tr><td>1</td><td>0</td><td>1</td></tr><tr><td>1</td><td>1</td><td>0</td></tr></tbody></table></div>
+<p>定义了联结词“    ”后, 命题逻辑中的有些命题就可以符号化为非常简捷的形式.<br>例: 派小王或小李中的一人去开会。（排斥或）<br>设P：派小王去开会。Q：派小李去开会。<br>则上述命题可符号化为：(P   Q)</p>
+<h2>第 86 页</h2>
+<p>&lt;number&gt;</p>
+<p>第一章  命题逻辑（Propositional Logic） 1.6其它联结词(Other Connectives)</p>
+<p>说明：“   ” 属于二元(binary)运算符.<br>联结词“   ”的性质: 设P, Q, R为命题公式, 则有<br>(1)  P   Q  Q    P   (交换律)<br>(2)  (P   Q)   R  P   (Q   R)   (结合律)<br>(3)   P∧(Q   R)  (P∧Q )   (P∧R)   (分配律)<br>(4)  (P   Q)  (P∧ Q) ∨( P∧Q)<br>(5)  (P   Q)   (PQ)<br>(6)   P   P  F,   F   P  P,   T   P   P</p>
+<h2>第 87 页</h2>
+<p>&lt;number&gt;</p>
+<p>第一章  命题逻辑（Propositional Logic） 1.6其它联结词(Other Connectives)</p>
+<p>定理1.6.1:设P, Q, R为命题公式, 如果 P  QR,则   P   RQ ,Q   RP, 且P  Q  R 为一矛盾式.<br>证: 由 P  QR 得<br>P  RP  (P  Q)(P  P)  QF  QQ<br>Q  RQ  (P  Q)F  PP<br>P  Q  RR  RF</p>
+<h2>第 88 页</h2>
+<p>&lt;number&gt;</p>
+<p>第一章  命题逻辑（Propositional Logic） 1.6其它联结词(Other Connectives)</p>
+<p>1.6.2 与非联结词(Nand　↑)<br>定义1.6.2 设P,Q为二命题，复合命题“P与Q的否定” 称为P与Q的与非式，记作P↑Q，符号“↑” 称为与非联结词. P↑Q 为真当且仅当P和Q不同时为真.<br>联结词“↑”的定义真值表</p>
+<div class="syo-table-wrap"><table class="syo-table"><thead><tr><th>P</th><th>Q</th><th>P↑Q</th></tr></thead><tbody><tr><td>0</td><td>0</td><td>1</td></tr><tr><td>0</td><td>1</td><td>1</td></tr><tr><td>1</td><td>0</td><td>1</td></tr><tr><td>1</td><td>1</td><td>0</td></tr></tbody></table></div>
+<h2>第 89 页</h2>
+<p>&lt;number&gt;</p>
+<p>第一章  命题逻辑（Propositional Logic） 1.6其它联结词(Other Connectives)</p>
+<p>说明: (1) 由定义可知, P↑Q  (P∧Q)<br>(2)“↑” 属于二元(binary)运算符.<br>联结词“↑”的性质:<br>(1) P↑P  ( P∧P)  P<br>(2) (P↑Q)↑(P↑Q)  ( P↑Q)(P∧Q)<br>(3)(P↑P)↑(Q↑Q) P↑ Q(P∧Q) P∨Q</p>
+<h2>第 90 页</h2>
+<p>&lt;number&gt;</p>
+<p>第一章  命题逻辑（Propositional Logic） 1.6其它联结词(Other Connectives)</p>
+<p>1.6.3 或非联结词(Nor)<br>定义1.6.3 设P,Q为二命题，复合命题“P或Q的否定” 称为P与Q的或非式，记作P↓Q ，符号“↓”称为或非联结词. P↓Q为真当且仅当 P与Q同为假.<br>联结词“↓”的定义真值表</p>
+<div class="syo-table-wrap"><table class="syo-table"><thead><tr><th>P</th><th>Q</th><th>P↓Q</th></tr></thead><tbody><tr><td>0</td><td>0</td><td>1</td></tr><tr><td>0</td><td>1</td><td>0</td></tr><tr><td>1</td><td>0</td><td>0</td></tr><tr><td>1</td><td>1</td><td>0</td></tr></tbody></table></div>
+<h2>第 91 页</h2>
+<p>&lt;number&gt;</p>
+<p>第一章  命题逻辑（Propositional Logic） 1.6其它联结词(Other Connectives)</p>
+<p>说明: (1) 由定义可知, P↓Q   (P∨Q)<br>(2)“↓” 属于二元(binary)运算符.↓<br>联结词“↓”的性质:<br>(1) P↓P  ( P∨P)  P<br>(2) (P↓Q)↓(P↓Q)  (P↓Q) (P∨Q)<br>(3)(P↓P)↓(Q↓Q)P↓Q(P∨Q)P∧Q</p>
+<h2>第 92 页</h2>
+<p>&lt;number&gt;</p>
+<p>第一章  命题逻辑（Propositional Logic） 1.6其它联结词(Other Connectives)</p>
+<p>1.6.4 条件否定联结词(Non-conditional)<br>定义1.6.4  设P,Q为二命题，复合命题“P       Q” 称为命题P与Q的条件否定式, P        Q为真当且仅当P为真且Q为假.<br>联结词“         ”的定义真值表</p>
+<div class="syo-table-wrap"><table class="syo-table"><thead><tr><th>P</th><th>Q</th><th>P → Q</th></tr></thead><tbody><tr><td>0</td><td>0</td><td>0</td></tr><tr><td>0</td><td>1</td><td>0</td></tr><tr><td>1</td><td>0</td><td>1</td></tr><tr><td>1</td><td>1</td><td>0</td></tr></tbody></table></div>
+<h2>第 93 页</h2>
+<p>&lt;number&gt;</p>
+<p>第一章  命题逻辑（Propositional Logic） 1.6其它联结词(Other Connectives)</p>
+<p>说明: (1) 由定义可知, P         Q   (P  Q)<br>(2)“         ” 属于二元(binary)运算符.<br>有了联结词                   后，合式公式的定义1.3.2可加入这<br>四个联结词.<br>1.6.5 最小联结词组(The minimal set of connectives)<br>至此,我们一共定义了9个联结词,为了直接表达命题之间<br>的联系,是否还需要定义其它联结词呢? 回答是否定的.即<br>含n个命题变元的所有  个互不等价的命题公式,均可由这<br>9个联结词直接表达.下面我们以含两个命题变元P，Q的所<br>有互等价的命题公式为例，来说明这一问题。</p>
+<h2>第 94 页</h2>
+<p>&lt;number&gt;</p>
+<p>第一章  命题逻辑（Propositional Logic） 1.6其它联结词(Other Connectives)</p>
+<p>由两个命题变元P，Q所构成的互不等价的  个命题公式<br>如下:</p>
+<div class="syo-table-wrap"><table class="syo-table"><thead><tr><th>P   Q</th><th>F</th><th>P∧Q</th><th>P       Q</th><th>P</th><th>Q     P</th><th>Q</th><th>P   Q</th><th>P∨Q</th></tr></thead><tbody><tr><td>0   0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td></tr><tr><td>0   1</td><td>0</td><td>0</td><td>0</td><td>0</td><td>1</td><td>1</td><td>1</td><td>1</td></tr><tr><td>1   0</td><td>0</td><td>0</td><td>1</td><td>1</td><td>0</td><td>0</td><td>1</td><td>1</td></tr><tr><td>1   1</td><td>0</td><td>1</td><td>0</td><td>1</td><td>0</td><td>1</td><td>0</td><td>1</td></tr></tbody></table></div>
+<h2>第 95 页</h2>
+<p>第一章  命题逻辑（Propositional Logic） 1.6其它联结词(Other Connectives)</p>
+<p>由上表可知, 9个联结词足以直接表达命题之间的各种联系.二元运算中，9个联结词并不都是必要的。</p>
+<div class="syo-table-wrap"><table class="syo-table"><thead><tr><th>P  Q</th><th>P  Q</th><th>PQ</th><th>┓Q</th><th>Q→P</th><th>┓P</th><th>P→Q</th><th>P   Q</th><th>T</th></tr></thead><tbody><tr><td>0  0</td><td>1</td><td>1</td><td>1</td><td>1</td><td>1</td><td>1</td><td>1</td><td>1</td></tr><tr><td>0  1</td><td>0</td><td>0</td><td>0</td><td>0</td><td>1</td><td>1</td><td>1</td><td>1</td></tr><tr><td>1  0</td><td>0</td><td>0</td><td>1</td><td>1</td><td>0</td><td>0</td><td>1</td><td>1</td></tr><tr><td>1  1</td><td>0</td><td>1</td><td>0</td><td>1</td><td>0</td><td>1</td><td>0</td><td>1</td></tr></tbody></table></div>
+<h2>第 96 页</h2>
+<p>第一章  命题逻辑（Propositional Logic） 1.6其它联结词(Other Connectives)</p>
+<p>定义1.6.5：在一个联结词的集合中,如果一个联结词可<br>由该集合中的其它联结词定义,则称此联结词为冗余联<br>结词,否则称为独立联结词. 不含冗余联结词的联结词组<br>称为最小联结词组.<br>说明:最小联结词组中的联结词构成的式子足以把一切命题公式等价的表达出来。<br>对于9个联结词的集合{┐,,,→,,   ,  ,  ,   }<br>由于 (1)  PQ (P→Q)(Q→P)<br>(2) PQ┐PQ<br>(3)  PQ┐(┐P┐Q)<br>(4)  PQ┐(┐P┐Q)</p>
+<h2>第 97 页</h2>
+<p>&lt;number&gt;</p>
+<p>第一章  命题逻辑（Propositional Logic） 1.6其它联结词(Other Connectives)</p>
+<p>(5) (P   Q)   (PQ)<br>(6)  P↑Q  (P∧Q)<br>(7) P↓Q   (P∨Q)<br>(8) P      Q  (P  Q)<br>故任意命题公式都可由仅包含{┐,}或{┐, }的命题<br>公式等价代换.即9个联结词的集合中至少有七个冗余联<br>结词. 又注意到联结词{┐,}和{┐, }不再有冗余联结<br>词, 故{┐,}或{┐, }为最小联结词组.但实际中为了使<br>用方便, 命题公式常常同时包含{┐,, }.</p>
+<h2>第 98 页</h2>
+<p>&lt;number&gt;</p>
+<p>第一章  命题逻辑（Propositional Logic） 1.6其它联结词(Other Connectives)</p>
+<p>例1:试证{↑}是最小联结词组.<br>证：┐P┐(PP)P↑P<br>PQ┐┐(PQ)┐(P↑Q)(P↑Q)↑(P↑Q)<br>PQ┐(┐P┐Q)┐((P↑P)(Q↑Q))<br>(P↑P)↑(Q↑Q)<br>例2.试证{┐，→}是最小联结词组<br>证：PQ┐(┐P┐Q)┐(P→┐Q)<br>PQ┐(┐P)Q┐P→Q<br>小结:本节主要介绍了四种新的联结词                    及最<br>小联结词组.<br>作业: 1. P29 (1), (2), (4)</p>
+<h2>第 99 页</h2>
+<p>&lt;number&gt;</p>
+<p>第一章  命题逻辑（Propositional Logic） 1.6其它联结词(Other Connectives)</p>
+<ol>
+<li>预习§1.7</li>
+</ol>
+<p>思考题:</p>
+<ol>
+<li>何谓命题公式的(主)析(合)取范式?<br>2.命题公式的(主)析(合)取范式唯一吗?<br>3.为何要将命题公式化为与之等价的主析(合)取范式?</li>
+<li>如何将命题公式化为与之等价的主析(合)取范式?<br>5.两个等价的命题公式其(主)析(合)取范式有何关系?</li>
+</ol>
+<h2>第 100 页</h2>
+<p>&lt;number&gt;</p>
+<p>离散数学(Discrete Mathematics)</p>
+<p>张捷</p>
+<h2>第 101 页</h2>
+<p>&lt;number&gt;</p>
+<p>第一章  命题逻辑（Propositional Logic） 1.7对偶与范式(Dual &amp; Normal Form)</p>
+<p>1.7.1 对偶式与对偶原理(Dualistic Formula &amp;<br>Duality Principle)<br>1.7.2命题公式的析(合)取范式(The Disjunctive &amp;<br>Conjunctive Normal Forms of a Propositional<br>Formula)<br>1.7.3命题公式的主析(合)取范式(The Principal<br>Disjunctive &amp;  Conjunctive Normal Form of a<br>Propositional Formula)</p>
+<h2>第 102 页</h2>
+<p>&lt;number&gt;</p>
+<p>第一章  命题逻辑（Propositional Logic） 1.7对偶与范式(Dual &amp; Normal Form)</p>
+<p>1.7.1 对偶式与对偶原理(Dualistic Formula &amp; Duality Principle)<br>在第四节(1.4)中我们给出了命题定律(P15 表1-4.8), 其中<br>多数等价公式都是成对出现的, 每一对公式的不同之处<br>是将与互换,我们把这样的公式称为是对偶的.<br>定义1.7.1:设命题公式A仅含有联结词┐,,,在A中将,，<br>F，T分别换以，，T，F得出公式A<em>，则A</em>称为A的对偶<br>公式。<br>说明:(A<em>)</em>=A</p>
+<h2>第 103 页</h2>
+<p>&lt;number&gt;</p>
+<p>第一章  命题逻辑（Propositional Logic） 1.7对偶与范式(Dual &amp; Normal Form)</p>
+<p>例1.(┐P(QR))*=┐P(QR)</p>
+<p>((PQ)1)*=((PQ)0)<br>由 P↑Q ┐(P∧Q)  和<br>P↓Q ┐(P∨Q) 可知<br>(P↑Q)*= P↓Q</p>
+<h2>第 104 页</h2>
+<p>&lt;number&gt;</p>
+<p>第一章  命题逻辑（Propositional Logic） 1.7对偶与范式(Dual &amp; Normal Form)</p>
+<p>关于对偶式我们有如下两个定理:<br>定理1.7.1:设A，A<em>是对偶式， P1 , P2 ,…,Pn是出现于A和A</em>中的所有原子变元,则<br>(1) ┐A(P1 , P2 ,…,Pn )A*（┐P1 , ┐P2 ,…, ┐Pn）<br>(2) A(┐P1 , ┐P2 ,…, ┐Pn)┐A*（P1 , P2 ,…,Pn）<br>证明:因为 ┐(PQ)┐P┐Q<br>┐(PQ)┐P┐Q<br>所以┐A(P1 , P2 ,…,Pn )A*（┐P1 , ┐P2 ,…, ┐Pn）<br>同理 ┐A*(P1 , P2 ,…,Pn )A（┐P1 , ┐P2 ,…, ┐Pn）</p>
+<h2>第 105 页</h2>
+<p>&lt;number&gt;</p>
+<p>第一章  命题逻辑（Propositional Logic） 1.7对偶与范式(Dual &amp; Normal Form)</p>
+<p>定理1.7.2(对偶原理):设A,B为两个仅含有联结词┐,,的命题公式, 若AB，则A<em>B</em>.<br>证：设P1 , P2 ,…,Pn是出现于A和B中的所有原子变元.<br>因为 A(P1 , P2 ,…,Pn)B(P1 , P2 ,…,Pn)<br>则  A(P1 , P2 ,…,Pn)B(P1 , P2 ,…,Pn)永真.<br>故  A(┐P1 , ┐P2 ,…, ┐Pn)B(┐P1 , ┐P2 ,…, ┐Pn)<br>永真.<br>由定理1.7.1得<br>┐A<em>(P1 , P2 ,…,Pn)┐B</em>(P1 , P2 ,…,Pn )<br>因此 A<em>B</em> .</p>
+<h2>第 106 页</h2>
+<p>&lt;number&gt;</p>
+<p>第一章  命题逻辑（Propositional Logic） 1.7对偶与范式(Dual &amp; Normal Form)</p>
+<p>例1：因为：   P(PQ)P<br>由对偶原理:<br>P(PQ) P<br>例2: 若A1 则 A<em>(1)</em>  即  A*0.<br>例3: 设A为 (PQ)(┐P(┐PQ)),B为┐PQ,<br>且AB,则 A<em>B</em>┐PQ.</p>
+<h2>第 107 页</h2>
+<p>&lt;number&gt;</p>
+<p>第一章  命题逻辑（Propositional Logic） 1.7对偶与范式(Dual &amp; Normal Form)</p>
+<p>定理1.7.3:设A,B为两个仅含有联结词┐,,的命题<br>公式, 若AB，则B<em>A</em>。<br>证：设P1 , P2 ,…,Pn是出现于A和B中的所有原子变元.<br>因为 A(P1 , P2 ,…,Pn)B(P1 , P2 ,…,Pn)<br>则  A(P1 , P2 ,…,Pn)→B(P1 , P2 ,…,Pn)永真.<br>故 ┐B(P1 , P2 ,…,Pn)→┐A(P1 , P2 ,…,Pn)永真.<br>即 B<em>(┐P1 , ┐P2 ,…, ┐Pn)→A</em>(┐P1 , ┐P2 ,…, ┐Pn)<br>永真.<br>以  Pi代┐Pi， i=1，2………n 得<br>B<em>(P1 , P2 ,…, Pn)→A</em>(P1 , P2 ,…, Pn)永真.<br>所以  B<em>  A</em> .</p>
+<h2>第 108 页</h2>
+<p>&lt;number&gt;</p>
+<p>第一章  命题逻辑（Propositional Logic） 1.7对偶与范式(Dual &amp; Normal Form)</p>
+<p>1.7.2命题公式的析(合)取范式(The Disjunctive &amp;<br>Conjunctive Normal Forms of a Propositional<br>Formula)<br>从前面的讨论可知,存在大量互不相同的命题公式，实际上互为等价,因此,有必要引入命题公式的标准形式,使得相互等价的命题公式具有相同的标准形式。这无疑对判别两个命题公式是否等价以及判定命题公式的类型是一种好方法,同时对命题公式的简化和推证也是十分有益的.</p>
+<h2>第 109 页</h2>
+<p>&lt;number&gt;</p>
+<p>第一章  命题逻辑（Propositional Logic） 1.7对偶与范式(Dual &amp; Normal Form)</p>
+<p>定义1.7.2:<br>(1)文字：命题变元及其否定统称为文字(如P , ┐P).<br>(2)简单析取式：仅有有限个文字组成的析取式。<br>如:P，┐PQ,P┐P，QP┐P , P┐QR┐S.<br>(3)简单合取式：仅有有限个文字组成的合取式。<br>如:P, ┐Q , Q┐P，P┐P，QP┐P, p∧┐Q∧R.<br>从定义不难看出:<br>（1）一个简单析取式是重言式当且仅当它同时含有某个命题变元及其否定式。<br>（2）一个简单合取式是矛盾式当且仅当它同时含有某个命题变元及其否定式。</p>
+<h2>第 110 页</h2>
+<p>&lt;number&gt;</p>
+<p>第一章  命题逻辑（Propositional Logic） 1.7对偶与范式(Dual &amp; Normal Form)</p>
+<p>定义1.7.3:<br>(1)析取范式：一个命题公式称为析取范式,当且仅当<br>它具有形式: A1∨A2∨……∨An  (n大于等于1)<br>其中Ai(i=1,2,3,…n)为简单合取式.<br>如：P∨┐Q ，(P ∧ Q) ∨(P ∧┐Q∧R), Q∧┐P.<br>(2)合取范式：一个命题公式称为合取范式,当且仅当<br>它具有形式: A1∧A2∧……∧An  (n大于等于1)<br>其中Ai(i=1,2,3,…n)为简单析取式.<br>如：P ∧ ┐Q ，(P ∨ Q) ∧(P ∨┐Q ∨R), Q∧┐P.<br>(3)范式：析取范式与合取范式统称为范式。<br>显然, 任何合(析)取范式的对偶式是析(合)取范式.</p>
+<h2>第 111 页</h2>
+<p>&lt;number&gt;</p>
+<p>第一章  命题逻辑（Propositional Logic） 1.7对偶与范式(Dual &amp; Normal Form)</p>
+<p>析取范式与合取范式的性质:<br>(1) 一个析取范式是矛盾式,当且仅当它的每一个简单合取式都是矛盾式;<br>(2)一个合取范式是重言式,当且仅当它的每一个简单析取式都是重言式.<br>定理1.7.4  (范式存在定理)<br>任一个命题公式都存在着与之等价的析取范式与合取范式。</p>
+<h2>第 112 页</h2>
+<p>&lt;number&gt;</p>
+<p>第一章  命题逻辑（Propositional Logic） 1.7对偶与范式(Dual &amp; Normal Form)</p>
+<p>求命题公式的范式的基本步骤：<br>（1）将公式中的联结词化归成┐,及.<br>（2）将否定联结词消去或内移到各命题变元之前。<br>利用下列等价式：<br>┐┐A  A<br>┐( A∨B)  ┐A∧┐B<br>┐( A∧B)  ┐A∨┐B<br>（3）利用分配律、结合律将公式转化为合取范式或析取范式.<br>C ∧(  A ∨ B) （C∧ A）∨（C ∧  B）<br>C ∨(  A ∧ B) （C ∨ A）∧（C ∨  B）</p>
+<h2>第 113 页</h2>
+<p>&lt;number&gt;</p>
+<p>第一章  命题逻辑（Propositional Logic） 1.7对偶与范式(Dual &amp; Normal Form)</p>
+<p>例1: 求((PQ)R)P 的析取范式与合取范式.<br>例2: 求(P  Q)  R的析取范式与合取范式.<br>例3: 求 ┐(PQ)(PQ)的析取范式与合取范式.<br>注意：<br>（1）单个命题变元既是简单合取式，又是简单析取式；公式P∧Q∧R既可以看成是合取范式，也可以看成是析取范式。<br>（2）一个命题公式的析(合)取范式不是唯一的。</p>
+<h2>第 114 页</h2>
+<p>第一章  命题逻辑（Propositional Logic） 1.7对偶与范式(Dual &amp; Normal Form)</p>
+<p>例1：求((PQ)R)P的析取范式与合取范式。<br>解: 原式┐(┐(P∨Q)∨R)∨P<br>((P∨Q )∧┐R)∨P<br>(P∧┐R )∨(Q∧┐R)∨P (析取范式)<br>P∨(P∧┐R )∨(Q∧┐R)<br>P∨(Q∧┐R) (析取范式)<br>(P∨Q ∨P )∧(┐R∨P ) (合取范式)<br>(P∨Q)∧(┐R∨P ) (合取范式)</p>
+<h2>第 115 页</h2>
+<p>第一章  命题逻辑（Propositional Logic） 1.7对偶与范式(Dual &amp; Normal Form)</p>
+<p>例2：求(P  Q)  R的析取范式与合取范式。<br>解: 原式((PQ) R)∧(R(PQ) )<br>(┐(PQ)∨R)∧(┐R ∨(PQ) )<br>(┐(┐P∨Q)∨R)∧(┐R∨┐P∨Q )<br>((P∧ ┐Q)∨R)∧(┐R∨┐P∨Q )<br>((P∨R)∧(┐Q∨R)∧(┐R∨┐P∨Q )  (合取范式)<br>((P∧┐Q)∧(┐R∨┐P∨Q ) )∨(R ∧(┐R∨┐P∨Q )<br>(P∧┐Q∧┐R)∨(R∧┐P)∨(R∧Q) (析取范式)</p>
+<h2>第 116 页</h2>
+<p>第一章  命题逻辑（Propositional Logic） 1.7对偶与范式(Dual &amp; Normal Form)</p>
+<p>例3：求┐(PQ)(PQ)的析取范式与合取范式。<br>解: ┐(PQ)(PQ)<br>(┐(PQ)(PQ))((PQ)┐(PQ))<br>((PQ)┐P┐Q))((PQ)(┐P┐Q))<br>（P┐Q）（Q┐P） (析取范式)<br>(P∨Q)∧(┐P∨┐Q)     (合取范式)</p>
+<h2>第 117 页</h2>
+<p>&lt;number&gt;</p>
+<p>第一章  命题逻辑（Propositional Logic） 1.7对偶与范式(Dual &amp; Normal Form)</p>
+<p>1.7.3命题公式的主析(合)取范式(The Principal<br>Disjunctive &amp;  Conjunctive Normal Form of a<br>Propositional Formula)<br>由于一个命题公式的析(合)取范式不是唯一, 因而它们不<br>能作为命题公式的规范形式(标准形式), 为了使任意命题<br>公式化为唯一的标准形式, 下面引入主范式的概念.<br>1.命题公式的主析取范式<br>定义1.7.4：在含有n个命题变元的简单合取式中,若每个<br>命题变元和它的否定不同时出现，而二者之一必出现且<br>仅出现一次，称这样的简单合取式为小项.</p>
+<h2>第 118 页</h2>
+<p>&lt;number&gt;</p>
+<p>第一章  命题逻辑（Propositional Logic） 1.7对偶与范式(Dual &amp; Normal Form)</p>
+<p>例如,三个命题变元P,Q,R,其小项共有8个:<br>小项         编码   真值指派    小项的真值<br>┐P┐Q┐R      m000/m0        000 	     1<br>┐P┐QR     m001/m1     001 	     1<br>┐PQ┐R	m010/m2     010 	     1<br>┐PQR 	      m011/m3       011 		1<br>P┐Q┐R    m100/m4     100 	     1<br>P┐QR	 m101/m5     101 	     1<br>PQ┐R	 m110/m6     110 	     1<br>PQR	      m111/m7 	 111 	     1</p>
+<h2>第 119 页</h2>
+<p>&lt;number&gt;</p>
+<p>第一章  命题逻辑（Propositional Logic） 1.7对偶与范式(Dual &amp; Normal Form)</p>
+<p>考虑：n个命题变元可产生多少个小（大）项？(2n)<br>n个变元的小项:<br>m0  ┐P1┐P2………….┐Pn<br>m1  ┐P1┐P2………….Pn<br>…………………………………<br>m2n-1P1P2………….Pn</p>
+<p>小项的真值表：P33 表1-7.1,表1-7.2</p>
+<h2>第 120 页</h2>
+<p>&lt;number&gt;</p>
+<p>第一章  命题逻辑（Propositional Logic） 1.7对偶与范式(Dual &amp; Normal Form)</p>
+<p>小项的性质:<br>没有两个小项是等价的, 且每个小项有且仅有一个<br>成真赋值，若成真赋值所对应的二进制数转化为十进<br>制数为i，就将所对应的小项记作mi。<br>(2) 任意两个不同的小项的合取为矛盾式.<br>(3) 全体小项的析取为永真式.<br>定义1.7.5：设命题公式A中含有n个命题变元, 如果A的<br>析取范式中，所有的简单合取式都是小项，则称该析<br>取范式为A的主析取范式。<br>定理1.7.5:任何命题公式都存在着与之等价的主析取范<br>式，并且是唯一的。</p>
+<h2>第 121 页</h2>
+<p>&lt;number&gt;</p>
+<p>第一章  命题逻辑（Propositional Logic） 1.7对偶与范式(Dual &amp; Normal Form)</p>
+<p>主析取范式的求法</p>
+<p>定理1.7.6:在命题公式A的真值表中,真值为1的指派对应的小项的析取, 即为A的主析取范式。<br>例1: P34 例题6<br>例2: P35 例题7<br>一个命题公式A的主析取范式, 还可以通过等值演算的<br>方法求出, 其推演步骤:<br>(1) 将A化为析取范式     ;<br>(2) 除去    中所有永假的析取项;</p>
+<h2>第 122 页</h2>
+<p>&lt;number&gt;</p>
+<p>第一章  命题逻辑（Propositional Logic） 1.7对偶与范式(Dual &amp; Normal Form)</p>
+<p>(3) 将    中重复出现的简单合取式和相同变元都消去;<br>(4)若     中某简单合取式B中不含命题变元Pi, 添加<br>(Pi┐Pi), 然后应用分配律展开. 即<br>B B1B(Pi┐Pi) (BPi)(B┐Pi).<br>例1：求((PQ)R)P的主析取范式。<br>例2: 求(P  Q)  R的主析取范式.<br>例3: 求 ┐(PQ)(PQ)的主析取范式.</p>
+<h2>第 123 页</h2>
+<p>&lt;number&gt;</p>
+<p>第一章  命题逻辑（Propositional Logic） 1.7对偶与范式(Dual &amp; Normal Form)</p>
+<p>例1：求((PQ)R)P的主析取范式。<br>解: 原式┐(┐(P∨Q)∨R)∨P<br>P∨(Q∧┐R) (析取范式)<br>(P∧(Q∨┐Q)∧(R∨┐R))∨((P∨┐P)∧ (Q∧┐R))<br>(P∧Q∧R)∨(P∧Q∧┐R)∨(P∧┐Q∧R)∨<br>(P∧┐Q∧┐R)∨(P∧Q∧┐R)∨(┐P∧Q∧┐R)<br>(P∧Q∧R)∨(P∧Q∧┐R)∨(P∧┐Q∧R)∨<br>(P∧┐Q∧┐R)∨(┐P∧Q∧┐R) (主析取范式)<br>m7∨m6∨m5∨m4∨m2m2∨m4∨m5∨m6∨m7</p>
+<h2>第 124 页</h2>
+<p>&lt;number&gt;</p>
+<p>第一章  命题逻辑（Propositional Logic） 1.7对偶与范式(Dual &amp; Normal Form)</p>
+<p>例2：求(P  Q)  R的主析取范式。<br>解:原式(P∧┐Q∧┐R)∨(R∧┐P)∨(R∧Q) (析取范式)<br>(P∧┐Q∧┐R)∨((R ∧┐P)∧(Q∨┐Q))∨<br>((P∨┐P) ∧(R∧Q ))<br>(P∧┐Q∧┐R)∨(┐P∧Q∧R)∨(┐P∧┐Q∧R)∨<br>(P ∧Q∧R)∨(┐P∧Q∧R )<br>(P∧┐Q∧┐R)∨(┐P∧Q∧R)∨<br>(┐P∧┐Q∧R) ∨(P ∧Q∧R)   (主析取范式)<br> m1∨m3∨m4∨m7 </p>
+<h2>第 125 页</h2>
+<p>&lt;number&gt;</p>
+<p>第一章  命题逻辑（Propositional Logic） 1.7对偶与范式(Dual &amp; Normal Form)</p>
+<p>例3：求┐(PQ)(PQ)的主析取范式。<br>解: ┐(PQ)(PQ)<br>（P┐Q）（Q┐P） (主析取范式)<br>m1∨m2</p>
+<h2>第 126 页</h2>
+<p>&lt;number&gt;</p>
+<p>第一章  命题逻辑（Propositional Logic） 1.7对偶与范式(Dual &amp; Normal Form)</p>
+<p>2.命题公式的主合取范式<br>定义1.7.6：在含有n个命题变元的简单析取式中,若每个命题变元和它的否定不同时出现，而二者之一必出现且仅出现一次，称这样的简单析取式为大项.</p>
+<h2>第 127 页</h2>
+<p>&lt;number&gt;</p>
+<p>第一章  命题逻辑（Propositional Logic） 1.7对偶与范式(Dual &amp; Normal Form)</p>
+<p>例如,三个命题变元P,Q,R,其大项共有8个:<br>大项         编码    真值指派    大项的真值<br>PQR        M000/M0       000 	     0<br>PQ┐R      M001/M1     001 		0<br>P┐QR      M010/M2     010 		0<br>P┐Q┐R    M011/M3       011 		0<br>┐PQR        M100/M4     100 		0<br>┐PQ┐R 	 M101/M5     101 		0<br>┐P┐QR 	 M110/M6     110 		0<br>┐P┐Q┐R        M111/M7 	 111       0</p>
+<h2>第 128 页</h2>
+<p>&lt;number&gt;</p>
+<p>第一章  命题逻辑（Propositional Logic） 1.7对偶与范式(Dual &amp; Normal Form)</p>
+<p>n个变元的大项:<br>M0	 P1P2…………Pn<br>M1	 P1P2…………┐Pn<br>…………………………………<br>M2n-1  ┐P1┐P2…………┐Pn</p>
+<h2>第 129 页</h2>
+<p>&lt;number&gt;</p>
+<p>第一章  命题逻辑（Propositional Logic） 1.7对偶与范式(Dual &amp; Normal Form)</p>
+<p>大项的性质:<br>没有两个大项是等价的, 且每个大项有且仅有一个<br>成假赋值，若成假赋值所对应的二进制数转化为十进<br>制数为i，就将所对应的大项记作Mi。<br>(2) 任意两个不同的大项的析取为永真式.<br>(3) 全体大项的合取为矛盾式.<br>定义1.7.7：设命题公式A中含有n个命题变元, 如果A的<br>合取范式中，所有的简单析取式都是大项，则称该合<br>取范式为A的主合取范式。<br>定理1.7.6:任何命题公式都存在着与之等价的主合取范式，并且是唯一的。</p>
+<h2>第 130 页</h2>
+<p>&lt;number&gt;</p>
+<p>第一章  命题逻辑（Propositional Logic） 1.7对偶与范式(Dual &amp; Normal Form)</p>
+<p>主合取范式的求法</p>
+<p>定理1.7.7:在命题公式A的真值表中,真值为0的指派对应的大项的合取, 即为A的主合取范式。<br>例1: P34 例题6<br>例2: P35 例题7<br>一个命题公式A的主合取范式, 还可以通过等值演算的<br>方法求出, 其推演步骤:<br>(1) 将A化为合取范式     ;<br>(2) 除去    中所有永真的合取项;</p>
+<h2>第 131 页</h2>
+<p>&lt;number&gt;</p>
+<p>第一章  命题逻辑（Propositional Logic） 1.7对偶与范式(Dual &amp; Normal Form)</p>
+<p>(3) 将    中重复出现的简单析取式和相同变元都消去;<br>(4)若     中某简单析取式B中不含命题变元Pi, 添加<br>(Pi┐Pi), 然后应用分配律展开. 即<br>B B0B(Pi┐Pi) (BPi)(B┐Pi).<br>例1：求((PQ)R)P的主合取范式。<br>例2: 求(P  Q)  R的主合取范式.<br>例3: 求 ┐(PQ)(PQ)的主合取范式.<br>注：1.命题公式的主析(合)取范式唯一。<br>2.两命题公式若有相同的主析(合)取范式，则二命题公式等价.</p>
+<h2>第 132 页</h2>
+<p>&lt;number&gt;</p>
+<p>第一章  命题逻辑（Propositional Logic） 1.7对偶与范式(Dual &amp; Normal Form)</p>
+<p>例1：求((PQ)R)P的主合取范式。<br>解: 原式┐(┐(P∨Q)∨R)∨P<br> (P∨Q)∧(┐R∨P ) (合取范式)<br>((P∨Q)∨(R ∧┐R ))∧((┐R∨P )∨(Q∧┐Q))<br>(P∨Q∨R)∧(P∨Q∨┐R)∧(P∨Q∨┐R)∧<br>(P∨┐Q∨┐R)<br>(P∨Q∨R)∧(P∨Q∨┐R)∧(P∨┐Q∨┐R)<br>(主合取范式)<br>M0∧M1∧M3</p>
+<h2>第 133 页</h2>
+<p>&lt;number&gt;</p>
+<p>第一章  命题逻辑（Propositional Logic） 1.7对偶与范式(Dual &amp; Normal Form)</p>
+<p>例2：求(P  Q)  R的析取范式与合取范式。<br>解: 原式((P∨R)∧(┐Q∨R)∧(┐R∨┐P∨Q )  (合取范式)<br>((P∨R)∨(Q∧┐Q)) ∧((P∧┐P) ∨(┐Q∨R))<br>∧(┐P∨Q∨┐R )<br>(P∨Q∨R)∧(P∨┐Q∨R)∧(P∨┐Q∨R)∧<br>(┐P∨┐Q∨R)∧(┐P∨Q∨┐R )<br>(P∨Q∨R)∧(P∨┐Q∨R)∧<br>(┐P∨┐Q∨R)∧(┐P∨Q∨┐R ) (主合取范式)<br>M0∧M2∧M5 ∧M6 </p>
+<h2>第 134 页</h2>
+<p>&lt;number&gt;</p>
+<p>第一章  命题逻辑（Propositional Logic） 1.7对偶与范式(Dual &amp; Normal Form)</p>
+<p>例3：求┐(PQ)(PQ)的主合取范式。<br>解: ┐(PQ)(PQ)<br>(P∨Q)∧(┐P∨┐Q)     (主合取范式)<br>M0∧M3</p>
+<h2>第 135 页</h2>
+<p>&lt;number&gt;</p>
+<p>第一章  命题逻辑（Propositional Logic） 1.7对偶与范式(Dual &amp; Normal Form)</p>
+<p>3.主析取范式和主合取范式关系<br>设Z为命题公式A的主析取范式中所有小项的足标集合，R<br>为命题公式A的主合取范式中所有大项的足标集合,则<br>R={0,1，2…….2n-1}-Z 或 Z={0,1，2…….2n-1}-R。<br>故已知命题公式A的主析取范式，可求得其主合取范式；<br>反之亦然。<br>注意到小项与大项之间具有关系：<br>┐miMi，┐Mimi（例：m5：P┐QR M5：┐PQ┐R）<br>设命题公式A中含n个命题变元，且设A的主析取范式中含<br>k个小项mj1，mj2，… ，mik ，则┐A的主析取范式中必含<br>2n-k个小项mi1,mi2,… ,mi2n-k ,且{0,1，2…….2n-1}-<br>{j1，j2，… ，jk}={i1,i2,…,i2n-k}.所以</p>
+<h2>第 136 页</h2>
+<p>&lt;number&gt;</p>
+<p>第一章  命题逻辑（Propositional Logic） 1.7对偶与范式(Dual &amp; Normal Form)</p>
+<p>┐Ami1mi2…mi2n-k<br>A┐(mi1mi2…mi2n-k）<br>┐mi1┐mi2…┐mi2n-k<br>Mi1Mi2…Mi2n-k<br>例如,设命题公式Am0m1m5m7 ，则<br>AM2M3M4M6</p>
+<h2>第 137 页</h2>
+<p>&lt;number&gt;</p>
+<p>第一章  命题逻辑（Propositional Logic） 1.7对偶与范式(Dual &amp; Normal Form)</p>
+<p>4.主析(合)取范式的应用<br>(1)求公式的成真/成假赋值：<br>若公式A中含有n个命题变元，且A的主析取范式含s 个小项，则A有s个成真赋值，有2n-s个成假赋值。（即主析取范式中的小项对应的编码是公式A的成真赋值；反之主合取范式中的大项对应的编码是公式A的成假赋值）</p>
+<h2>第 138 页</h2>
+<p>&lt;number&gt;</p>
+<p>第一章  命题逻辑（Propositional Logic） 1.7对偶与范式(Dual &amp; Normal Form)</p>
+<p>(2)判断公式的类型：<br>设公式A中含有n个命题变元，则：<br>（1）A为重言式 A的主析取范式含全部2n个小项。<br>（2）A为矛盾式A的主析取范式不含任何小项，记A的主析取范式为0。<br>（3）A为可满足式A的主析取范式至少含一个小项。<br>（4）A为矛盾式A的主合取范式含全部2n个大项。<br>（5）A为重言式A的主合取范式不含任何大项，记A的主合取范式为1 。<br>（6）A为可满足式A的主合取范式中大项的个数一定小于2n 。</p>
+<h2>第 139 页</h2>
+<p>&lt;number&gt;</p>
+<p>第一章  命题逻辑（Propositional Logic） 1.7对偶与范式(Dual &amp; Normal Form)</p>
+<p>例:判断下列命题公式的类型.<br>(1) (PQ)R<br>(2) ┐(PQ)Q<br>(3) (PQ)QQ<br>解:(1) (PQ)R m1∨m3∨m4∨m7为可满足式.</p>
+<h2>第 140 页</h2>
+<p>&lt;number&gt;</p>
+<p>第一章  命题逻辑（Propositional Logic） 1.7对偶与范式(Dual &amp; Normal Form)</p>
+<p>(3)判断两个命题是否等价：<br>设公式A、B中共含有n个命题变元，按n个命题变元求出A、B的主析(合)取范式   、  。若     =     ，则A  B，否则A、B不等价.<br>例:试判断下列各组命题是否等价.<br>(1) (PQ)∧(PR) 与 P(Q∧R)<br>(2) P(Q∧R)  与 P∨(QR)</p>
+<h2>第 141 页</h2>
+<p>&lt;number&gt;</p>
+<p>第一章  命题逻辑（Propositional Logic） 1.7对偶与范式(Dual &amp; Normal Form)</p>
+<p>解:(1) (PQ)∧(PR)<br> (┐P∨Q)∧(┐P∨R)<br> (┐P∨Q∨(R∧┐R)∧(┐P∨R∨(Q∧┐Q)<br>(┐P∨Q∨R)∧(┐P∨Q∨┐R)∧<br>(┐P∨R∨Q)∧ (┐P∨R∨┐Q)<br> M4∧M5∧M6<br>P(Q∧R)┐P∨(Q∧R)<br>(┐P∨Q)∧(┐P∨R)<br> M4∧M5∧M6<br>所以 (PQ)∧(PR) P(Q∧R)</p>
+<h2>第 142 页</h2>
+<p>&lt;number&gt;</p>
+<p>第一章  命题逻辑（Propositional Logic） 1.7对偶与范式(Dual &amp; Normal Form)</p>
+<p>解(2) P(Q∧R)┐P∨(Q∧R)<br>(┐P∨Q)∧(┐P∨R)<br> M4∧M5∧M6  m0 ∨ m1 ∨ m2 ∨ m3∨m7<br>P∨(QR)  P∨┐Q∨R  M2<br>m0∨m1∨m3∨m4∨m5∨m6∨m7<br>所以 P(Q∧R)与P∨(QR) 不等价.</p>
+<h2>第 143 页</h2>
+<p>&lt;number&gt;</p>
+<p>第一章  命题逻辑（Propositional Logic） 1.7对偶与范式(Dual &amp; Normal Form)</p>
+<p>5.解决实际问题：<br>某科研所有三名青年高级工程师A，B，C。所里要选派<br>他们中的1到2人出国进修，由于所里工作的需要，选派<br>时必须满足以下条件：<br>①若A去，则C也可以去<br>②若B去，则C不能去<br>③若C不去，则A或B可以去<br>问所里应如何选派他们？</p>
+<h2>第 144 页</h2>
+<p>&lt;number&gt;</p>
+<p>第一章  命题逻辑（Propositional Logic） 1.7对偶与范式(Dual &amp; Normal Form)</p>
+<p>解:   设 P:派A去。Q :派B去。R :派C去。<br>根据所要满足的条件，得命题公式为：<br>(PR)∧(Q ┐R)∧(┐R( P∨Q) )<br>求此公式的主析取范式:<br>原式(┐P∧┐Q∧R)∨(┐P∧Q∧┐R)∨(P∧┐Q∧R)<br>因此有三种选派方案：Ｃ去，而Ａ、Ｂ都不去；Ｂ去，而Ａ、Ｃ都不去；Ａ、Ｃ都去，而Ｂ不去.</p>
+<h2>第 145 页</h2>
+<p>&lt;number&gt;</p>
+<p>第一章  命题逻辑（Propositional Logic） 1.7对偶与范式(Dual &amp; Normal Form)</p>
+<p>小结:本节主要介绍了对偶式、对偶原理、 析(合)取范式、(主)析(合)取范式。重点掌握(主)析(合)取范式的求法。<br>作业: 1. P39 (1), (4) a,c,f (5) b,d</p>
+<ol>
+<li>预习§1.8</li>
+</ol>
+<h2>第 146 页</h2>
+<p>&lt;number&gt;</p>
+<p>离散数学(Discrete Mathematics)</p>
+<h2>第 147 页</h2>
+<p>&lt;number&gt;</p>
+<p>第一章  命题逻辑（Propositional Logic） 1.8推理理论(Inference Theory)</p>
+<p>1.8.1常用的证明方法<br>1.8.2真值表法 (Truth Table)<br>1.8.3直接证法 (Direct Proof)<br>1.8.4 间接证法 (Indirect Proof)</p>
+<h2>第 148 页</h2>
+<p>&lt;number&gt;</p>
+<p>第一章  命题逻辑（Propositional Logic） 1.8推理理论(Inference Theory)</p>
+<p>1.8.1常用的证明方法<br>定义1.8.1 ：设Ａ和Ｃ是两个命题公式,当且仅当ＡＣ为一重言式，即ＡＣ,称Ｃ是Ａ的有效结论;或称Ｃ可由Ａ逻辑推出.一般地,如果有n个前提H1,H2,H3,.…,Hn , 若H1H2H3....HnC,则称C是一组前提H1,H2,…,Hn的有效结论。<br>注意:在形式逻辑中,我们并不关心结论是否真实,而主要关心结论是否可以由给定的前提推出来,我们只注意推理的形式是否正确.因此,有效结论并不一定是正确的,只有正确的前提经过正确的推理得到的逻辑结论才是正确的.</p>
+<h2>第 149 页</h2>
+<p>&lt;number&gt;</p>
+<p>第一章  命题逻辑（Propositional Logic） 1.8推理理论(Inference Theory)</p>
+<p>证明C是A的有效结论的方法就是判别重言蕴含的方法.前面我们介绍的论证方法有真值表法、等值演算法、主析（合）取范式法。论证方法千变万化，但最基本、最常用的方法有三种：</p>
+<p>推理证明的方法</p>
+<h2>第 150 页</h2>
+<p>&lt;number&gt;</p>
+<p>第一章  命题逻辑（Propositional Logic） 1.8推理理论(Inference Theory)</p>
+<p>1.8.2真值表法 (Truth Table)<br>构造命题公式H1 ∧ H2 ∧ …… ∧ Hn → C的真值表，若为永<br>真，H1 ∧ H2 ∧ …… ∧ Hn  C 推理正确。<br>例：证明((P∨Q)∧┐Q)  P</p>
+<div class="syo-table-wrap"><table class="syo-table"><thead><tr><th>P</th><th>Q</th><th>P∨Q</th><th>┐Q</th><th>(P∨Q)∧┐Q</th><th>((P∨Q)∧┐Q)P</th></tr></thead><tbody><tr><td>0</td><td>0</td><td>0</td><td>1</td><td>0</td><td>1</td></tr><tr><td>0</td><td>1</td><td>1</td><td>0</td><td>0</td><td>1</td></tr><tr><td>1</td><td>0</td><td>1</td><td>1</td><td>1</td><td>1</td></tr><tr><td>1</td><td>1</td><td>1</td><td>0</td><td>0</td><td>1</td></tr></tbody></table></div>
+<h2>第 151 页</h2>
+<p>&lt;number&gt;</p>
+<p>第一章  命题逻辑（Propositional Logic） 1.8推理理论(Inference Theory)</p>
+<p>由上面真值表可知((P∨Q)∧┐Q)  P。<br>1.8.3直接证法 (Direct Proof)<br>直接证法：由一组前提，利用一些公认的推理规则，根据已知的等价或蕴含公式推演得到有效结论。<br>常用的推理规则<br>P规则:（也称前提引入规则）前提在推导过程中的任何<br>时候都可以引用。<br>T规则:在推导过程中，所证明的结论、已知的等价或蕴<br>含公式都可以作为后续证明的前提，命题公式中<br>的任何子公式都可以用与之等价的命题公式置换。</p>
+<h2>第 152 页</h2>
+<p>&lt;number&gt;</p>
+<p>第一章  命题逻辑（Propositional Logic） 1.8推理理论(Inference Theory)</p>
+<p>常用的蕴含式和等价式见课本P43 表1-8.3、1-8.4<br>例1.如果考试及格，那我高兴。若我高兴，那么我饭<br>量增加。我的饭量没增加，所以我考试没有及格。<br>试对上述论证构造证明。<br>解：设P：我考试及格. Q：我高兴。R：我饭量增加。<br>则此论证可表为<br>(P→Q)(Q→R)┐R┐P<br>证:</p>
+<h2>第 153 页</h2>
+<p>&lt;number&gt;</p>
+<p>第一章  命题逻辑（Propositional Logic） 1.8推理理论(Inference Theory)</p>
+<p>常用的蕴含式和等价式见课本P43 表1-8.3、1-8.4<br>例1.如果考试及格，那我高兴。若我高兴，那么我饭<br>量增加。我的饭量没增加，所以我考试没有及格。<br>试对上述论证构造证明。<br>解：设P：我考试及格. Q：我高兴。R：我饭量增加。<br>则此论证可表为<br>(P→Q)(Q→R)┐R┐P<br>证:  1　P→Q 		P<br>2　Q→R		P<br>3　 ┐R		P<br>4　 ┐Q		T，2，3 I12<br>5　 ┐P		T，1，4 I12</p>
+<h2>第 154 页</h2>
+<p>&lt;number&gt;</p>
+<p>第一章  命题逻辑（Propositional Logic） 1.8推理理论(Inference Theory)</p>
+<p>例2.证明 RS是前提CD，C→R,D→S的有效结论。</p>
+<p>证：</p>
+<h2>第 155 页</h2>
+<p>&lt;number&gt;</p>
+<p>第一章  命题逻辑（Propositional Logic） 1.8推理理论(Inference Theory)</p>
+<p>例2.证明 RS是前提CD，C→R,D→S的有效结论。</p>
+<p>证：1.CD                     P<br>2.C→R                    P<br>3.D→S                    P<br>4.┐C→D                  T，1  E<br>5.┐R→┐C                T，2  E<br>6.┐R→S                  T，5，4，3 I13<br>7.RS                     T，6  E</p>
+<h2>第 156 页</h2>
+<p>&lt;number&gt;</p>
+<p>第一章  命题逻辑（Propositional Logic） 1.8推理理论(Inference Theory)</p>
+<p>例3：证明: P∨Q , QR, PS , ┐S  R∧(Q∨P)</p>
+<p>证：</p>
+<h2>第 157 页</h2>
+<p>&lt;number&gt;</p>
+<p>第一章  命题逻辑（Propositional Logic） 1.8推理理论(Inference Theory)</p>
+<p>例3：P∨Q , QR, PS , ┐S  R∧(Q∨P)</p>
+<p>证明： 1.  P S             P (前提引入)</p>
+<ol>
+<li>┐S                 P (前提引入)</li>
+<li>┐P                T1, 2  I11</li>
+<li>P∨Q              P (前提引入)</li>
+<li>Q                   T3,4    I11</li>
+<li>QR             P (前提引入)</li>
+<li>R                    T5,6   I11</li>
+<li>R∧(Q∨P)     T4,7  I9</li>
+</ol>
+<h2>第 158 页</h2>
+<p>&lt;number&gt;</p>
+<p>第一章  命题逻辑（Propositional Logic） 1.8推理理论(Inference Theory)</p>
+<p>例4：证明 (P（Q∨R))∧(┐S ┐Q)∧(P∧┐S)R.<br>证：</p>
+<h2>第 159 页</h2>
+<p>&lt;number&gt;</p>
+<p>第一章  命题逻辑（Propositional Logic） 1.8推理理论(Inference Theory)</p>
+<p>例4：证明 (P（Q∨R))∧(┐S ┐Q)∧(P∧┐S)R.<br>证：（1） P∧┐S                P<br>（2） P                        T（1） I1<br>（3） ┐S                     T（1） I1<br>（4） P（Q∨R)        P<br>（5） Q∨R                     T  (2)，(4) I11<br>（6） ┐S ┐Q            P<br>（7） ┐Q                     T(3)，(6)  I11<br>（8）   R                      T(5)，(7)  I11</p>
+<h2>第 160 页</h2>
+<p>&lt;number&gt;</p>
+<p>第一章  命题逻辑（Propositional Logic） 1.8推理理论(Inference Theory)</p>
+<p>1.8.4 间接证法 (Indirect Proof)<br>附加前提证明法<br>适用于如下类型蕴含式的证明:<br>(A1∧A2∧…∧Ak) (AB)                  (*)<br>欲证明(*)式，只需证明<br>(A1∧A2∧…∧Ak∧A)  B  即可，因为</p>
+<h2>第 161 页</h2>
+<p>&lt;number&gt;</p>
+<p>第一章  命题逻辑（Propositional Logic） 1.8推理理论(Inference Theory)</p>
+<p>(A1∧A2∧…∧Ak)(AB)<br>┐(A1∧A2∧…∧Ak) ∨ (A  B )<br>┐(A1∧A2∧… Ak) ∨ (┐ A ∨ B )<br> (┐A1∨┐A2∨…∨ ┐Ak) ∨ (┐A∨B)<br> ┐A1∨┐A2∨…∨┐Ak∨┐A∨B<br> (┐A1∨┐A2∨…∨┐Ak∨┐A)∨B<br> ┐(A1∧A2∧…∧Ak∧A)∨B<br>(A1∧A2∧…∧Ak∧A) B<br>这样一来,原来结论中的前件A就变成了前提,称A为附加<br>前提.</p>
+<h2>第 162 页</h2>
+<p>&lt;number&gt;</p>
+<p>第一章  命题逻辑（Propositional Logic） 1.8推理理论(Inference Theory)</p>
+<p>由证(A1∧A2∧…∧Ak∧A)B永真而证得<br>(A1∧A2∧…∧Ak)(AB)永真的证明方法, 称为<br>附加前提证明法或CP规则.</p>
+<h2>第 163 页</h2>
+<p>&lt;number&gt;</p>
+<p>第一章  命题逻辑（Propositional Logic） 1.8推理理论(Inference Theory)</p>
+<p>例1:证明:(A→BC)(B→┐A)(D→┐C)  (A→┐D)<br>证：</p>
+<h2>第 164 页</h2>
+<p>&lt;number&gt;</p>
+<p>第一章  命题逻辑（Propositional Logic） 1.8推理理论(Inference Theory)</p>
+<p>例1:证明:(A→BC)(B→┐A)(D→┐C)  (A→┐D)<br>证：1.  A→B C                         P</p>
+<ol>
+<li>B→┐A                           P</li>
+<li>D→┐C                           P</li>
+<li>A                                     P(附加前提)</li>
+<li>B C                               T1，4 I11</li>
+<li>A→┐B                           T2,   E</li>
+<li>C→┐D                           T3 ，E</li>
+<li>┐B                                  T4，6 I11</li>
+<li>C                                      T5，8 I11</li>
+<li>┐D                                  T7，9 I11</li>
+<li>A→┐D                           Ｔ４，10  CP</li>
+</ol>
+<h2>第 165 页</h2>
+<p>&lt;number&gt;</p>
+<p>第一章  命题逻辑（Propositional Logic） 1.8推理理论(Inference Theory)</p>
+<p>例2：前提：P(QR) , SP , Q<br>结论：SR.<br>证明：</p>
+<h2>第 166 页</h2>
+<p>&lt;number&gt;</p>
+<p>第一章  命题逻辑（Propositional Logic） 1.8推理理论(Inference Theory)</p>
+<p>例2：前提：P(QR) , SP , Q<br>结论：SR.<br>证明： 1. SP                   P</p>
+<ol>
+<li>S                         P（附加前提引入）</li>
+<li>P                        T（1, 2） I11</li>
+<li>P(QR)         P</li>
+<li>QR                 T（3,4） I11</li>
+<li>Q                        P</li>
+<li>R                        T（5,6） I11</li>
+<li>SR                  T（2,7） CP</li>
+</ol>
+<h2>第 167 页</h2>
+<p>&lt;number&gt;</p>
+<p>第一章  命题逻辑（Propositional Logic） 1.8推理理论(Inference Theory)</p>
+<ol>
+<li>归谬法</li>
+</ol>
+<p>定义1.8.2：设命题公式集合为{H1,H2,H3,.…,Hn }，若<br>H1H2H3....Hn为永假式，则称{H1,H2,H3,.…,Hn }是不<br>相容的，否则称为相容的。<br>由于  (A1∧A2∧…∧Ak)B<br>┐(A1∧A2∧…∧Ak)∨B<br>┐(A1∧A2∧… Ak∧┐B)<br>故要证(A1∧A2∧…∧Ak)B永真,只需证<br>A1∧A2∧… Ak∧┐B永假.这种将┐B作为附加前提<br>推出矛盾的证明方法称为归谬法.</p>
+<h2>第 168 页</h2>
+<p>&lt;number&gt;</p>
+<p>第一章  命题逻辑（Propositional Logic） 1.8推理理论(Inference Theory)</p>
+<p>例1:证明 (P┐Q)∧(┐R∨Q)∧(R∧┐S) ┐P<br>证：</p>
+<h2>第 169 页</h2>
+<p>&lt;number&gt;</p>
+<p>第一章  命题逻辑（Propositional Logic） 1.8推理理论(Inference Theory)</p>
+<p>例1:证明 (P┐Q)∧(┐R∨Q)∧(R∧┐S) ┐P<br>证：1.   P                        P(附加前提)</p>
+<ol>
+<li>P┐Q              P</li>
+<li>┐Q                    T(1, 2)   I11</li>
+<li>┐R∨Q             P</li>
+<li>┐R                   T(3,4) I11</li>
+<li>R∧┐S             P</li>
+<li>R                       T(6) I1</li>
+<li>R∧┐R(矛盾）T(5,7)<br>由8得出了矛盾,根据归谬法说明原推理正确.</li>
+</ol>
+<h2>第 170 页</h2>
+<p>&lt;number&gt;</p>
+<p>第一章  命题逻辑（Propositional Logic） 1.8推理理论(Inference Theory)</p>
+<p>例2:从PQ→RS,(T→Q)(S→U),┐R,(W→P)(T→U) 推出 W→┐T<br>证：</p>
+<h2>第 171 页</h2>
+<p>&lt;number&gt;</p>
+<p>第一章  命题逻辑（Propositional Logic） 1.8推理理论(Inference Theory)</p>
+<p>例2:从PQ→RS,(T→Q)(S→U),┐R,(W→P)(T→U) 推出 W→┐T<br>证： 1. PQ→RS        P<br>2.(T→Q)(S→U)    P<br>3.(W→P)(T→U)    P</p>
+<ol>
+<li>┐R             P</li>
+<li>W               P(附加前提)</li>
+<li>┐R∨┐S 	    T 4  I</li>
+<li>┐(RS)         T 6  E</li>
+<li>┐(PQ)         T 1，7 I11<br>9 .(W→P)           T3,I</li>
+<li>P               T5，9 I</li>
+<li>┐P∨┐Q         T8,E</li>
+<li>┐Q             T 10，11 I11</li>
+<li>T→Q            T 2 I11</li>
+<li>┐T             T 12，13 I11</li>
+<li>W→┐T          Ｔ５,15 CP</li>
+</ol>
+<h2>第 172 页</h2>
+<p>&lt;number&gt;</p>
+<p>第一章  命题逻辑（Propositional Logic） 1.8推理理论(Inference Theory)</p>
+<p>小结:本节将推理证明命题公式序列化.主要介绍了推理证明重言蕴含式的直接证法和间接证法。<br>作业: 1. P46-47 (1)a, (2) e (3) a,b</p>
+<ol>
+<li>预习第二章§2.1,§2.2</li>
+</ol>
+<h2>第 173 页</h2>
+<p>&lt;number&gt;</p>
+<p>第一章  命题逻辑（Propositional Logic） 1.8推理理论(Inference Theory)</p>
+<p>补充:分 情 况 证 明<br>欲证：   (P1P2………Pn)Q<br>只需证明   ｉ  1&lt;=i&lt;=n    有    PiQ<br>因为： (P1P2………Pn)→Q<br> ┐(P1P2………Pn)Q<br>（┐P1┐P2……┐Pn)Q<br> (┐P1Q)(┐P2Q)………(┐PnQ)<br> (P1→Q)(P2→Q)…….(Pn→Q)</p>
+<h2>第 174 页</h2>
+<p>&lt;number&gt;</p>
+<p>第一章  命题逻辑（Propositional Logic） 1.8推理理论(Inference Theory)</p>
+<p>例：证明（((P→Q)P)(PQ)┐P）→Q) 永真<br>证：情况1<br>1.P→Q                  P<br>2.P                     P<br>3.Q                     T1，2 I11</p>
+<p>情况2<br>1.P  Q                  P<br>2.┐P                    P<br>3.Q                      T1，2 I11</p>
+  <footer class="lesson-footer">
+    StudyMate · 左孝凌《离散数学》课件 1（本地转化稿） · 本地学习工作区
+  </footer>
+</article>
+
+<script src="../../../assets/sayo/sayo.js"></script>
+<script>LearnTheme.wire(document.getElementById('attachment-theme-checkbox'));</script>
+</body>
+</html>

@@ -1,0 +1,2052 @@
+
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+<link rel="shortcut icon" href="/favicon.ico" type="image/x-icon">
+<title>复变函数与积分变换--机械工业出版社</title>
+<script>
+	var QueryString = '';
+</script>
+
+
+<link href="/assets/css/bootstrap.min.css?r=126914" rel="stylesheet">
+<link href="/assets/css/beyond.min.css?r=126914" rel="stylesheet">
+<link rel="stylesheet" href="/css/swiper.min.css?r=126914">
+<link rel="stylesheet" href="/css/login_dialog.css?r=126914">
+<meta name="keywords" content="机械工业出版社,机械工业出版社教育服务网站">
+<meta name="description"  content="机械工业出版社官方教育服务网站，为用户提供教材查询、课件下载、样书申请 、教师培训、选题出版等服务。客服微信：1156857683，客服电话：010-88379833 。">
+<link href="/css/mechself.my.css?r=113" rel="stylesheet">
+<link href="/assets/css/font-awesome.min.css?r=126914" rel="stylesheet" />
+<link href="/assets/css/weather-icons.min.css?r=126914" rel="stylesheet" />
+
+<link href="/assets/css/fonts.css?r=126914" rel="stylesheet" type="text/css">
+<!-- 前台分页单独用的样式 -->
+<link href="/css/qiantai_fenye.css?r=126914" rel="stylesheet">
+<!-- 前台分页单独用的样式 -->
+<!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
+<script src="/js/jquery/1.12.4/jquery-1.12.4.min.js?r=126914"></script>
+<script src="/js/jquery.cookie.js?r=126914"></script>
+<script src="/js/jquery.json-2.2.js?r=126914"></script>
+<!-- Include all compiled plugins (below), or include individual files as needed -->
+<script src="/assets/js/bootstrap.min.js?r=126914"></script>
+<script src="/js/superslide/jquery.SuperSlide.2.1.1.js?r=126914"></script>
+
+<script src="/assets/layer/layer.js?r=126914"></script>
+
+<!-- 页面表单验证相关开始 -->
+<link href="/assets/css/bootstrapValidator.css" rel="stylesheet" media="screen">
+<script src="/assets/js/validation/bootstrapValidator.js"></script>
+<!-- 页面表单验证相关结束 -->
+	
+<script src="/js/nav/jquery.nav.js?r=126914"></script>
+<script src="/js/dialog/easydialog.js"></script>
+<script type="text/javascript" src="/js/jquery.form.js"></script>
+<script src="/js/ajaxfileupload.js"></script>
+<link href="/assets/js/datetime/bootstrap-datetimepicker.css?r=11126914" rel="stylesheet" media="screen">
+<script src="/assets/js/tagsinput/bootstrap-tagsinput.js?r=22126914"></script>
+<script src="/assets/js/datetime/bootstrap-datetimepicker.js??r=3126914"></script>
+<script src="/assets/js/datetime/locales/bootstrap-datetimepicker.zh-CN.js?r=4126914"></script>
+<script src="/assets/js/datetime/bootstrap-datepicker.js?r=44126914"></script>
+<script src="/assets/js/datetime/bootstrap-timepicker.js?r=44126914"></script>
+
+<!-- Bootstrap -->
+<script src="/js/swiper/swiper.min.js?r=126914"></script>
+<script src="/js/utils/string.js?r=126914"></script>
+<script src="/js/kazu_common.js?r=126914"></script>
+
+<script>
+var _hmt = _hmt || [];
+(function() {
+  var hm = document.createElement("script");
+  hm.src = "https://hm.baidu.com/hm.js?f5f40166de163b95a743f8afdac508c3";
+  var s = document.getElementsByTagName("script")[0]; 
+  s.parentNode.insertBefore(hm, s);
+})();
+</script>
+<script>
+	Function.prototype.method = function(name, fn) {
+		this.prototype[name] = fn;
+		return this;
+	}
+	//关闭弹层
+	//获取浏览器的高度
+	function getSizeH() {
+		var winHeight = $(window).height();
+		return winHeight;
+	}
+	//获取浏览器的宽度
+	function getSizeW() {
+		var winWidth = $(window).width();
+		return winWidth;
+	}
+	//打开弹层
+	function showDialogForBack(divId, backurl) {
+
+		$("#backurl").val(backurl);
+		easyDialog.open({
+			container : divId, //打开弹层的id
+			fixed : true, //跟随
+			overlay : true
+		//是否遮罩
+		//autoClose : 5000    //5秒后自动关闭
+		});
+	}
+	function showDialog(divId) {
+
+		easyDialog.open({
+			container : divId, //打开弹层的id
+			fixed : true, //跟随
+			overlay : true
+		//是否遮罩
+		//autoClose : 5000    //5秒后自动关闭
+		});
+	}
+	//关闭弹层
+	function closeDialog() {
+		easyDialog.close() //关闭弹层
+	}
+	function get_json(url, succ, err) {
+		return _get_json(url, succ, err);
+	}
+	function _get_json(url, succ, err) {
+
+		// 从url中截取参数，并封装成data
+		var data = {};
+		var index = url.indexOf('?');
+		if (index > -1) {
+			var ur = url.substring(index + 1);
+			var arr = ur.split('&');
+			for (var i = 0; i < arr.length; i++) {
+				var a = arr[i];
+				if (a != null) {
+					var keys = a.split('=');
+					if (keys != null && keys.length == 2) {
+						data[keys[0]] = keys[1];
+					}
+				}
+			}
+		}
+		if (index > -1) {
+			url = url.substr(0, index);
+		}
+		$.ajax({
+			type : "POST",
+			url : url,
+			data : data,
+			global : false,
+			dataType : "json",
+			success : function(data, textStatus) {
+				succ(data);
+			},
+			error : function(xhr, textStatus, errorThrown) {
+				if ((typeof eval(err)) == 'function') {
+					err();
+				}
+			}
+		});
+	};
+</script>
+<script>
+	$(function() {
+        $("#lx_us").hover(function(){
+        	/* var _dt=$(this).attr('_dt')
+        	if(_dt!='djt'){ */
+        		$(this).addClass('active')
+        	//	$('.lx_xl').css('display','block')
+        	$('.lx_xl').fadeIn()
+        	//}
+
+        },function(){
+//        	var _dt=$(this).attr('_dt')
+  //      	if(_dt!='djt'){
+        		$(this).removeClass('active')
+        		$('.lx_xl').css('display','none')
+    //    	}
+
+        })
+		$(document).off("click", ".open_frame", function() {
+		});
+		$(document).on("click", ".open_frame", function() {
+
+			var self = this;
+			var w = $(self).attr("data-width");
+			if (w == 'undefined' || w == '') {
+				w = "100%";
+			}
+			var h = $(self).attr("data-height");
+			if (h == 'undefined' || h == '') {
+				h = "100%";
+			}
+
+			//固定高度  为了适应小屏幕的电脑
+			var fh = $(self).attr("fixed-height");//新定义的参数
+			//浏览器高度
+			var screamH = getSizeH();
+
+			if (fh != undefined && fh != '') {
+				//去掉高度值 的 单位
+				if (fh.split("px").length > 1) {
+					fh = fh.split("px")[0];
+				}
+				if (fh.split("PX").length > 1) {
+					fh = fh.split("PX")[0];
+				}
+
+				//固定高度值 和 浏览器高度值 进行比较
+				if (fh > screamH) {
+
+					h = screamH - 20;
+
+				} else {
+					h = fh;
+				}
+				h = h + "px;";//给高度值 加上单位
+			}
+
+			var url = $(self).attr("data-url");
+			var title = $(self).attr("data-title");
+			if (title == 'undefined' || title == '') {
+				title = false;
+			}
+			//parent.open_tab(url,title);
+			var index = layer.open({
+				type : 2,//打开弹层类型为iframe
+				title : title,//弹层标题
+				content : url,//iframe开发的地址
+				area : [ w, h ],//打开窗口的大小
+				// closeBtn:false,
+				shadeClose : true, //点击遮罩关闭层
+			//btn:["确定","取消"],//用于显示窗口中自定义按钮，一般不需要，直接把按钮定义在层内部较好
+			/* yes:function(){//此处就是 如果定义了按钮后的按钮方法} */
+			/* cancel:function(){//此处就是 如果定义了按钮后的按钮方法} */
+			});
+
+		});
+		/////////打开弹层和tab的公共事件绑定
+
+    var load_ex = function(msg){
+    	if(msg){
+    		layer.msg(msg,{icon:1});
+    		setTimeout(function(){
+    			layer.closeAll();
+    			reload_list();
+    		},1500);
+    	}else{
+    		reload_list();
+    		layer.closeAll();
+    	}
+    };
+    var reload_list = function(){
+    	var load_url = $(".cw_fenyeR ul li.active").attr('data-url');
+    	var url = '';
+    	if(load_url != '' && typeof(load_url) != 'undefined'){
+    		url = load_url;
+    	}else{
+    		load_url = $("#tabledata").attr('data-url');
+    		if(load_url != '' && typeof(load_url) != 'undefined'){
+    			url = load_url;
+    		}
+    	}
+    	var data = {};
+    	var index = url.indexOf('?');
+    	if(index>-1){
+    		var ur = url.substring(index+1);
+    		var arr = ur.split('&');
+    		for(var i=0;i<arr.length;i++){
+    			var a = arr[i];
+    			if(a!=null){
+    				var keys = a.split('=');
+    				if(keys!=null && keys.length==2){
+    					data[keys[0]]=keys[1];
+    				}
+    			}
+    		}
+    		url = url.substr(0,index);
+    	}
+    	
+    	if(url != '' && typeof(url) != 'undefined'){
+    		$('#tabledata').load(url, data,function() {});
+    	}else{
+    		location.reload();
+    		$('#tabledata').load(url , data,function() {});
+    	}
+    }
+	});
+</script>
+<meta name="decorator" content="ziyuan" />
+<meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport"
+	content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+<meta name="description"
+	content="PPT课件 复变函数与积分变换" />
+<meta name="keywords" content="复变函数与积分变换" />
+
+<script src="/js/libs/b_zan.js?2018"></script>
+<script src="/js/libs/b_cang.js?2018"></script>
+<script src="/js/libs/b_read.js?2018"></script>
+<script src="/js/libs/b_guanzhu_ziyuan.js?2018"></script>
+<!-- cookie记录 -->
+<script src="/js/libs/cookieview.js"></script>
+
+
+<script>
+var downCert=''	
+	if(!downCert||downCert==0||downCert==''){
+		downCert=10
+	}else{
+		downCert='10'
+	}
+function AllDownloadZiYuan(){
+	var is_teacher = $("#IS_TEACHER").val();
+	var IS_SHENQING = $("#IS_SHENQING").val();
+	var downsize = ;
+	if(is_teacher==0 && IS_SHENQING ==0){
+		alert("请先申请为教师，目前课件只支持教师下载");
+		window.location.href='/user/teacher_renzheng.htm';
+		return false;
+	}
+	if(is_teacher==0 && IS_SHENQING ==1 && downsize > 1){
+		alert("非教师用户只可以下载一个资源，请您申请教师，等待审核！");
+		window.location.href='/user/teacher_renzheng.htm';
+		return false;
+	}else if (confirm("下载资源要扣除积分,点击“确定”继续下载")) {
+		var jifen = parseFloat('0.0');
+		//用积分购买
+		var m = parseFloat('10');
+		if(jifen < m){
+			layer.msg("<a class='jfbz' style= 'color:#fff;cursor:pointer;' href = 'http://www.cmpedu.com/news/gonggao/6800716524023.html'>您当前的积分不够支付当前订单,点击我前往查看积分规则</a>");
+			return false;
+		}
+		var ID = $("#ID").val();	
+		_get_json('/ziyuans/buy_ziyuan_use_jifen.htm?ID=' + ID,
+				function(data) {
+					if (isEmpty(data)
+							|| typeof (data) == "undefined"
+							|| data.code != 0) {
+						layer.msg(data.msg);//显示提示信息，默认3s自动关闭
+						return;
+					}
+					location.reload()
+				}, function() {
+			});
+	}
+	
+}
+</script>
+<script>
+	$(function() {
+		//资源下载
+		var sss= getQueryString('atDown')
+		if(sss!=''&&sss){
+			var atDurl=$('#'+sss).attr('href')
+			var godCl=$('#'+sss).click();
+			var a = document.createElement('a');
+		      a.href = atDurl; //图片地址
+		      document.body.appendChild(a);
+		      a.click();
+		}
+		
+		$(".ziyuanxiazai").click(function() {
+			var downCert=''	
+				if(!downCert||downCert==0||downCert==''){
+					downCert=10
+				}else{
+					downCert='10'
+				}
+		
+			var is_teacher = $("#IS_TEACHER").val();
+			   var IS_SHENQING = $("#IS_SHENQING").val();
+			var downsize = ;
+			var st=$(this).attr('_data')
+			if(is_teacher==0 && IS_SHENQING ==0){
+				alert("请先申请为教师，目前课件只支持教师下载");
+			/* 	window.location.href='/user/teacher_renzheng.htm'; */
+				return false;
+			}
+			//提交申请未通过的可以下载一个
+			if(is_teacher==0 && IS_SHENQING ==1 && downsize > 1){
+				alert("非教师用户只可以下载一个资源，请您申请教师，等待审核！");
+				window.location.href='/user/teacher_renzheng.htm';
+				return false;
+			}
+			/* //不是老师不能下载 提示请先申请成为教师
+			if(is_teacher==0){
+				alert("请先申请成为教师");
+				window.location.href='/user/teacher_renzheng.htm';
+				return false;
+			} */
+			else if (
+					
+					confirm("下载资源要扣除10积分,点击“确定”继续下载")) {
+				var jifen = parseFloat('0.0');
+				//用积分购买
+				var m = parseFloat('10');
+				if(jifen < m){
+					layer.msg("<a class='jfbz' style= 'color:#fff;cursor:pointer;' href = 'http://www.cmpedu.com/news/gonggao/6800716524023.html'>您当前的积分不够支付当前订单,点击我前往查看积分规则</a>");
+					return false;
+				}
+				var ID = $("#ID").val();
+				_get_json('/ziyuans/buy_ziyuan_use_jifen.htm?ID=' + ID,
+						function(data) {
+							if (isEmpty(data)
+									|| typeof (data) == "undefined"
+									|| data.code != 0) {
+								layer.msg(data.msg);//显示提示信息，默认3s自动关闭
+								return;
+							}
+					
+							window.location.href='/ziyuans/ziyuan/'+ID+'.htm?atDown='+st;
+						}, function() {
+						});
+			}
+		});
+		
+		$(".jgzyrz span").click(function() {
+			if ($(this).hasClass("on")) {
+				$(this).removeClass("on")
+			} else {
+				$(this).addClass("on");
+			}
+		})
+
+		$(".picScroll-top").slide({
+			titCell : ".hd ul",
+			mainCell : ".bd ul",
+			autoPage : true,
+			effect : "topLoop",
+			autoPlay : true,
+			vis : 6
+		});
+
+		$("#div_pingluns").load(
+				'/pingluns/d_list2.df?REF_ID=34144&REF_TYPE=CMP_BOOKS_SOURCE&HD_URL=/ziyuans/ziyuan/34144.htm');
+
+		(function() {
+			var self = this;
+			var REF_ID = '34144';
+			var REF_TYPE = 'CMP_BOOKS_SOURCE';
+			if (REF_ID !== undefined && REF_TYPE !== undefined) {
+				get_json('/rest/read.htm?REF_ID=' + REF_ID + '&REF_TYPE='
+						+ REF_TYPE, function(data) {
+				}, function() {
+					// console.log();
+				});
+			}
+		})();
+		function getQueryString(name) { 
+		     // var result = window.location.search.match(new RegExp("[\?\&]" + name + "=([^\&]+)", "i")); 
+		     var result = window.location.href.match(new RegExp("[\?\&]" + name + "=([^\&]+)", "i")); 
+		     if (result == null || result.length < 1) {
+		         return ""; 
+		     } 
+		     return result[1];
+		 }
+	});
+</script>
+
+<style type="text/css">
+.cls-viodetRight {
+	margin-top: 50px;
+}
+.jfbz:hover{color:#ccc!important}
+.cls-mulu-title {
+	height: 40px;
+	line-height: 40px;
+	overflow: hidden;
+	border-bottom: 1px solid #ccc;
+	font-size: 18px;
+	color: #555;
+	margin-top: 22px;
+}
+a{
+    cursor: pointer !important;
+}
+.cls-mulu-title ul li {
+	float: left;
+	_display: inline;
+	margin-right: 50px;
+	padding: 0 5px;
+	cursor: pointer;
+}
+
+.cls-mulu-title ul li.on {
+	color: #3366cc;
+	border-bottom: 2px solid #3366cc;
+	line-height: 38px;
+}
+
+.cls-muluCont {
+	height: auto;
+	overflow: hidden;
+	clear: both;
+	background: url(../images/bg_mululine.png) repeat-y;
+	margin-top: 20px;
+}
+
+.cls-mulu-big {
+	height: 40px;
+	line-height: 40px;
+	padding-left: 180px;
+	font-size: 16px;
+	color: #666;
+}
+
+.cls-mulumain {
+	height: auto;
+	overflow: hidden;
+	clear: both;
+	margin-bottom: 20px;
+}
+
+.cls-mulumain ul li {
+	height: 40px;
+	line-height: 40px;
+	margin-top: 10px;
+	position: relative;
+	background: url(../images/bg_mulu_stitle.png) 72px center no-repeat;
+	font-size: 14px;
+	color: #333;
+}
+
+.cls-mulumain ul li a:link,.cls-mulumain ul li a:visited {
+	color: #333;
+	padding-left: 180px;
+}
+
+.cls-mulumain ul li a:hover {
+	color: #3366cc;
+	background: url(../images/bg_mulu_stitleon.png) 72px center no-repeat;
+}
+
+.cls-mulumain ul li.on {
+	height: 40px;
+	line-height: 40px;
+	background: url(../images/bg_mulu_stitleon.png) 72px center no-repeat;
+}
+
+.cls-mulumain ul li.on a:link,.cls-mulumain ul li.on a:visited {
+	color: #3366cc
+}
+
+.cls-mulumain ul li.cls-mulumain-st {
+	height: 40px;
+	line-height: 40px;
+	background: url(../images/bg_mulu_sshiting.png) 72px center no-repeat;
+}
+
+.cls-mulumain ul li span {
+	position: absolute;
+	left: 25px;
+	font-size: 12px;
+	color: #3366cc;
+}
+
+.cls-mulu-big01 {
+	background: #fdf1f1 url(../images/bg_mulu_btitle.png) 72px center
+		no-repeat;
+}
+
+.cls-mulu-big02 {
+	background: #f1f4fd url(../images/bg_mulu_btitle.png) 72px center
+		no-repeat;
+}
+
+.cls-mulu-big03 {
+	background: #f1fdfc url(../images/bg_mulu_btitle.png) 72px center
+		no-repeat;
+}
+
+.cls-mulu-big04 {
+	background: #fdf7f1 url(../images/bg_mulu_btitle.png) 72px center
+		no-repeat;
+}
+
+.cls_videoCRtype2 {
+	margin: 30px 20px 0 20px;
+	height: auto;
+	overflow: hidden;
+}
+
+.cls_video_select {
+	height: auto;
+	overflow: hidden;
+	clear: both;
+}
+
+.dia-mulucont {
+	height: 200px;
+	overflow: hidden;
+	clear: both;
+	background: #999;
+	border-radius: 3px;
+	margin: 20px 20px 0 20px;
+}
+
+.dia-mulucont .dia-mulucont-title {
+	height: 35px;
+	line-height: 35px;
+	color: #fff;
+	font-size: 16px;
+	padding: 0 20px;
+}
+
+.dia-mulucont .dia-mulucont-cont {
+	height: 120px;
+	background: #fff;
+	overflow: scroll;
+	overflow-x: hidden;
+	clear: both;
+}
+</style>
+<script>
+	jQuery(function() {
+		$("#so_form").attr("action","/so.htm");
+		jQuery(document).on(
+				"click",
+				"#__so2",
+				function() {
+					var k = jQuery("#__KEY2").val();
+					if(k === undefined ){
+						k = '';
+					}
+					//window.location.pathname + 
+					//	window.location.href = '/ziyuans/index.htm?'
+					window.location.href = '/books/list.htm?HAS_SOURCE=1&'
+							+ QueryString + '&KEY='
+							+ encodeURIComponent(k);
+					
+						return false;
+				});
+	});
+</script>
+</head>
+<body>
+	
+
+    <link rel="stylesheet" href="/css/drag.css?205">	
+	<!-- <script src="/js/libs/jquery.min.js"></script>	 -->
+		<script type="text/javascript" src="/js/libs/redrag.js?229"></script> 
+<style>
+	.cls_login_title{    -webkit-text-size-adjust: none;
+		font-family: -apple-system,BlinkMacSystemFont,PingFang SC,Microsoft YaHei,sans-serif;
+		color: #959da6;
+		cursor: pointer;
+		display: inline-block;
+		font-size: 16px;
+		line-height: 50px;
+		text-align: center;
+		width: 47%;}
+	.cls_login_title_active{
+		color:#000;
+		}
+		.cls_login_yzm{display:none}
+		#redrag{margin-top:10px;width:270px;height:32px;line-height:32px;font-size:18px}
+		#redrag .redrag_text{width:270px;height:32px}
+		#redrag .rehandler {width:46px;height:32spx}
+		#redrag .redrag_bg {height:32px}
+		/*  .jd_jsyanzcode{display:block}*/
+		
+		#revcode{width:138px;height:32px}
+		.rejd_regformbtnyzm{width:v;height:32px;margin-left:10px}
+	</style>
+<script>
+	$(function() {
+	var redrag = new reDrag({select_div:'#redrag',redragOk:function(){
+		//console.log('drag OK了');
+		var rephone = $("#rephone").val();
+		console.log(rephone)
+		if(rephone.length != 11){
+			redrag.error();
+			layer.msg('请输入正确的手机号码');
+			return false;
+		}
+		//需要从这里发起一个post请求。
+		_get_json("/user/validation_sendsms.htm?phone="+rephone,function(json){
+			//成功返回，不代表code=0，只是请求成功了
+			if(json.code==0){
+				settime();
+				$(".rejd_jsyanz").hide();
+				$(".rejd_jsyanzcode").show();
+				$("#resave").attr("disabled",false);
+			}else{
+				layer.msg(json.msg);//显示提示信息，默认3s自动关闭
+				redrag.error();
+				//手机号码肯定有问题。把json.msg 显示给用户
+			}
+			
+		},function(){});
+	}});
+	$(".vl_rephone_cg").hide();
+	$(".vl_rephone_er").hide();
+	
+});
+	$(function() {
+		$('.cls_login_title').click(function(){
+			$('.cls_login_title').removeClass('cls_login_title_active')
+			$('#backurl').val(window.location.href)
+			if($(this).attr('attr')==2){
+				$('#login_form').attr('action','/account/login_phone')
+				$('.cls_login_yzm').show()
+				$('.cls_login_paws').hide()
+			}else{
+				$('#login_form').attr('action','/account/logincheck')
+				$('.cls_login_paws').show()
+				$('.cls_login_yzm').hide()
+			}
+			$(this).addClass('cls_login_title_active')
+		})
+		$("#login_save").click(function() {
+			var load = layer.load();//显示等待层
+			var options = {
+				success : function(json) {
+					console.log(json)
+					if(typeof json !='object'){
+						json =eval("("+ json.replace(/<[^>]+>/g, "")+ ")");
+					}
+					layer.close(load);//关闭等待层
+					if (isEmpty(json) || typeof (json) == "undefined"
+							|| json.code != 0) {
+						layer.msg(json.msg);//显示提示信息，默认3s自动关闭
+						return;
+					}
+					//closeDialog();
+					var _url =  $("#backurl").val();
+					window.location.href=_url;
+         //           window.location.reload();
+				}
+			};
+			
+		$("#login_form").ajaxForm(options);
+			$("#login_form").submit();
+			return false;
+		});
+		$("#login_psave").click(function() {
+			var load = layer.load();//显示等待层
+			var options = {
+				success : function(json) {
+					console.log(json)
+					if(typeof json !='object'){
+						json =eval("("+ json.replace(/<[^>]+>/g, "")+ ")");
+					}
+					layer.close(load);//关闭等待层
+					if (isEmpty(json) || typeof (json) == "undefined"
+							|| json.code != 0) {
+						layer.msg(json.msg);//显示提示信息，默认3s自动关闭
+						return;
+					}
+					//closeDialog();
+					var _url =  $("#backurl").val();
+					window.location.href=_url;
+     //               window.location.reload();
+				}
+			};
+			
+		$("#login_form").ajaxForm(options);
+			$("#login_form").submit();
+			return false;
+		});
+    	
+	});
+</script>
+<!--登录 开始-->
+<div class="cls_login" id="dialog_log">
+
+	<form id="login_form" action="/account/logincheck" method="post">
+		<input type="hidden" name="backurl" id="backurl" value="" />
+		<div class="cls_loginB">
+			<div class="cls_loginB_close">
+				<img src="/video/images/icon_cls_close.png" onclick="javascript:closeDialog();" />
+			</div>
+			<div class="cls_loginBmian">
+				<div class="cls_loginBmian_title">
+					<span></span>
+					登录机工教育服务网
+					<span></span>
+				</div>
+		<div class="cls_login_title cls_login_title_active" attr="1">密码登录</div>
+        <div class="cls_login_title "  attr="2">验证码登录</div>		
+		<div class = "cls_login_paws">
+				<div class="cls_loginM">
+					<input type="text" name="j_username" id="j_username" placeholder="手机号/用户名" class="cls_loginM_put" />
+				</div>
+				<div class="cls_loginM">
+					<input type="password" name="j_password" id="j_password" placeholder="密码" class="cls_loginM_put" />
+				</div>
+		 	<div class="cls_loginM">
+					<input type="button" value="登录" class="cls_loginM_btn" id="login_save" />
+				</div> 
+			</div> 
+
+			<div class = "cls_login_yzm">
+	        	<div class="cls_loginM">
+					<input path="j_username"  name="phone" id="rephone" type="text" placeholder="已验证手机号" class="cls_loginM_put" />
+					<span class="vl_rephone_cg"><img src="/images/icon_logsuc.png"></span>
+						<span class="vl_rephone_er"><img src="/images/icon_logfalse.png"></span>
+				</div> 
+				<div id="redrag">					
+							<div class="redrag_text" onselectstart="return false;" unselectable="on">拖动滑块验证</div>
+							<div class="handler handler_bg" style="left: 0px;"></div>
+						</div>
+				<div class="rejd_jsyanzcode">
+					<dt>验证码</dt>
+					<dd>
+						<input type="text"  class="rejd_regformtextyzm" name="vcode" id="revcode" />
+						<input type="button" value="重发验证码(45s)" class="rejd_regformbtnyzm" onclick="resendCMS()"/>
+						<div class="rejd_regform_grayyzm">验证码已发送至您的手机，请查收</div>
+					</dd>	
+				</div>
+		   	<div class="cls_loginM">
+					<input type="button" value="登录" class="cls_loginM_btn" id="login_psave" />
+				</div>
+			</div>
+				<div class="cls_loginM cls_loginMzd">
+					<label><input type="checkbox"  id="rememberme" path="_spring_security_remember_me" checked="true" />自动登录</label>
+					<span>
+						<a href="/register/reg.htm">点击注册</a>
+					</span>
+				</div>
+				<div class="cls_loginBmian_title">
+					<span></span>
+					使用第三方账号登录
+					<span></span>
+				</div>
+				<div class="cls_loginBmian_other">
+					<ul>
+						<li>
+							<a href="/login/qq.htm" ><img src="/images/icon_qq.jpg" /></a>
+						</li>
+						<li>
+							<a href="/login/weibo.htm"><img src="/images/icon_wb.jpg" /></a>
+						</li>
+						<li>
+							<a href="/login/weixin.htm"><img src="/images/icon_wx.jpg" /></a>
+						</li>
+					</ul>
+				</div>
+			</div>
+			<div class="cls_loginB_yj">
+				<!-- <a href="/register/reg.htm">注册</a> |  --><a href="/user/change_check2.htm">忘记密码</a>
+			</div>
+		</div>
+	</form>
+	<iframe src="" frameborder="0" name="frameName"></iframe>
+</div>
+<!--登录 结束-->
+
+<script type="text/javascript">
+	$(function() {
+		//异步验证手机号码的合法性，这里需要写代码
+		$("#rephone").change(function(){
+			var rephone = $(this).val();
+	
+			if(rephone.length!=11){
+				$(this).css("background-color","#FFFFCC");
+			}else{
+				$(this).css("background-color","");
+			}
+		});
+	  
+		$("#resave").click(function() {
+			var rephone = $("#rephone").val();
+			
+			if(!rejisoyan_phone()){
+				layer.msg("请输入正确的手机号码");
+				return false;
+			}
+			if($("#revcode").val() == ''){
+				layer.msg("请输入验证码");
+				return false;
+			}
+			
+			var load = layer.load();//显示等待层
+			var options = {
+				success : function(json) {
+					if(typeof json !='object'){
+						json =eval("("+ json.replace(/<[^>]+>/g, "")+ ")");
+					}
+					layer.close(load);//关闭等待层
+					if (json == "" || typeof (json) == "undefined" || json.code != 0) {
+						layer.msg(json.msg);//显示提示信息，默认3s自动关闭
+						return;
+					}
+					
+					location.href="/user/change_forget.htm";
+				}
+			};
+			$("#form_post").ajaxForm(options);
+			$("#form_post").submit();
+			return false;
+		});
+		
+		load_val_phone();
+	});
+	
+	
+	function reval_phone(){
+		var rephone = $("#rephone").val();
+		if(rephone == ""){
+			$(".vl_rephone_cg").hide();
+			$(".vl_rephone_er").show();
+		}else{
+			$(".vl_rephone_cg").show();
+			$(".vl_rephone_er").hide();
+		}
+		if(!rejisoyan_phone()){		
+			$(".vl_rephone_cg").hide();
+			$(".vl_rephone_er").show();
+		}else{		
+			$(".vl_rephone_cg").show();
+			$(".vl_rephone_er").hide();
+		}
+	}
+	
+	function load_val_phone(){
+		$(".vl_rephone_cg").hide();
+		$(".vl_rephone_er").hide();
+	}
+	
+	//校验手机格式是否正确
+	function rejisoyan_phone(){
+	//	var myreg =/^(((13[0-9]{1})|(15[0-9]{1})|(18[0-9]{1})|(17[0-9]{1})|(19[0-9]{1})|(16[0-9]{1}))+\d{8})$/; 
+		var myreg =  /^(((1[0-9]{2}))+\d{8})$/;
+		var p_num = $("re#phone").val();
+		if(!myreg.test(p_num)){
+			return false;
+		}else{
+			return true;
+		}
+	}
+	
+	var countdown = 45;
+	function settime(){
+		if(countdown == 0){
+			countdown = 45;
+			$(".rejd_regformbtnyzm").attr("disabled",false);
+			$(".rejd_regformbtnyzm").val("免费获取验证码");	
+			return false;
+		}else{
+			$(".rejd_regformbtnyzm").attr("disabled",true);
+			$(".rejd_regformbtnyzm").val("重发验证码(" + countdown + "s)");
+			countdown--; 
+		}
+		setTimeout(function() {
+			settime() 
+		},1000)
+	}
+	
+	var resendCMS = function(){
+		var rephone = $("#rephone").val();
+		if(rephone.length != 11){
+			layer.msg('请输入正确的手机号码');
+			return false;
+		}
+		
+		if(!rejisoyan_phone()){
+			layer.msg("手机格式错误");
+			return false;
+		}
+		
+		_get_json("/user/validation_sendsms.htm?phone="+rephone,function(json){	
+			if(json.code==0){
+				settime();
+				$("#resave").attr("disabled",false);
+			}else{
+				layer.msg(json.msg);			
+			}
+			
+		},function(){});	
+	}
+	
+	</script>
+<div class="navbar navbar-inverse js_nav_fixed">
+	<div class="container navbar-header">
+		<button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+			<span class="icon-bar"></span>
+			<span class="icon-bar"></span>
+			<span class="icon-bar"></span>
+		</button>
+		<div style="float: left;"><a class="navbar-brand" href="/index.htm"><img src="/images/logo.jpg" /></a></div>
+   <div class = "clearn" style='clean:both'>
+	</div>
+	<div id="navbar" class="navbar-collapse collapse has-feedback">
+		<div class="jg_nav">
+			<div class="container">
+				<ul class="nav navbar-nav" id="nav_active_m">
+<li class=''>
+						<a href="/index.htm">首 页</a>
+					</li>
+<li class=''>
+						<a href="/books/index.htm">图 书</a>
+					</li>
+<li class=''>
+						<a href="/books/num_index.htm">数字教材</a>
+					</li>
+<li class=''>
+						<a href="/books/apply.htm" class="mustlogin">样书申请</a>
+					</li>
+<li class='active'>
+						<a href="/ziyuans/index.htm">资源下载</a>
+					</li>
+<li _dt='djt' class=''>
+						<a href="https://appwcl2rvat9464.h5.xiaoeknow.com/p/decorate/homepage" target="_blank">机工教育大讲堂</a>
+					</li>
+
+
+					</li>
+<li class=''>
+						<a href="/chuban/index.htm">教材出版</a>
+					</li>
+<li class=''>
+						<a href="/news/index.html">资讯公告</a>
+					</li>
+<li class=''>
+						<a href="/shumus/index.htm">书目下载</a>
+					</li>
+
+
+<li id='lx_us' class=''>
+						<a href="/lianxi/fangshi.htm">联系我们</a>
+						<ul class='lx_xl'>
+					<a target='_blank' href='http://wpa.b.qq.com/cgi/wpa.php?ln=1&key=XzgwMDA4MzQ5MF80ODc5NTJfODAwMDgzNDkwXzJf'><li style='color:#fff'>在线QQ客服</li></a>
+					<!-- WPA Button Begin -->
+<script charset="utf-8" type="text/javascript" src="http://wpa.b.qq.com/cgi/wpa.php?key=XzgwMDA4MzQ5MF80ODc5NTJfODAwMDgzNDkwXzJf"></script>
+<!-- WPA Button END -->
+						<a href='javascript:showDialogForBack("dialog_log","/lianxi/tougao.htm");'><li style='color:#fff'>我要投稿</li></a>
+					<a href='/lianxi/yingxiao.htm'><li style='color:#fff'>联系营销人员</li></a>
+						<ul>
+					</li>
+				</ul>
+			</div>
+		</div>
+		<ul class="navbar-right container">
+			
+<script>
+	$(function() {
+		if(navigator.appName == "Microsoft Internet Explorer"&&parseInt(navigator.appVersion.split(";")[1].replace(/[ ]/g, "").replace("MSIE",""))<9){
+		 
+		    alert("您的浏览器版本过低，为了获得更好的体验,请更换浏览器或升级到IE9及以上版本")
+		        }
+		//进行用户登录的异步判断，需要发起一个异步请
+		//右侧菜单
+		/*
+		$(".index_cebian ul li").hover(function(){
+			$(this).addClass("on");
+		},function(){
+			$(this).removeClass("on");
+		})
+	
+		$(".slideBox").slide({mainCell:".bd ul",effect:"leftLoop",autoPlay:true});
+		
+		$(".tabBar").slide({trigger:"click"});
+		$(".shoptype1").slide({trigger:"click"});
+		
+		$(".index_jplist").mouseover(function(){
+			$(this).addClass("index_jpliston")	
+		})
+		$(".index_jplist").mouseleave(function(){
+			$(this).removeClass("index_jpliston")	
+		})
+		*/
+	});
+</script>
+<ul class="navbar-right container" >
+<div class="jg_top">
+	<div class="jg_topL" >
+		<li class="jg_topL_name" id="div_user_name" style="z-index:9999;"></li>
+		<li class="jg_topL_newsmsg my_message" style="z-index:9999;">
+   			
+    	</li> 
+	</div> 
+	<div class="jg_topR" id="div_user_info">
+		<li><a href="/quanzi/index.htm" target="_blank">教师圈</a></li>
+		<li class="jg_topRline">|</li>
+
+	</div>
+</div>
+<div class="jg_botso">
+	<div class="navbar_so">
+		<form action="/so.htm" id="so_form" method="GET">
+			<input type="text" placeholder="请输入书名、ISBN、作者等关键字" class="navbar_sotext" id="__KEY2" name="KEY" value=""/>
+			<input type="submit" value="搜索" class="navbar_sobtn" id="__so2" />
+		</form>
+	</div>
+	<div class="jg_topcode">
+		<div class="jg_topcodeL">
+			<p>扫码微信公众号</p>
+			<p>关注有惊喜</p>
+		</div>
+		<img src="/images/img_code.jpg" class="jg_topcodeR" />
+	</div>
+</div>
+</ul>
+		</ul>
+	</div>
+</div>
+<div class=""></div>
+
+
+	<div class="cls_video cls_video_select" id="dialog_video">
+		<script>
+	$(function() {	
+		$(".download").click(function(){
+			var url = $(this).attr("data-url");
+			window.location.href = url;
+		});
+		/* $("#buy_save").click(function() {
+			
+			var tongyi = $("#buy_form #goumaixieyi").is(":checked");
+			if(!tongyi){
+				alert("需要阅读并同意《机械工业出版社服务协议》后，才可以购买！");
+				return false;
+			}
+			var money = parseFloat('0.0');
+			var jifen = parseFloat('0.0');
+			var ORDER_PAY_TYPE = $("#buy_form #ORDER_PAY_TYPE").val();
+			
+			if(ORDER_PAY_TYPE==2){
+				//用积分购买
+				var m = parseFloat('10');
+				if(jifen < m){
+					alert("您当前的积分不够支付当前订单");
+					return false;
+				}
+				location.href="/ziyuans/buy_ziyuan_use_jifen.htm?ID=34144&BOOK_ID=5601294";
+			}else{
+				alert("支付方式错误，无法购买");
+				return false;
+			}
+			
+		}); */
+		
+		$("#buy_save").click(function() {
+			var tongyi = $("#buy_form #goumaixieyi").is(":checked");
+			if(!tongyi){
+				alert("需要阅读并同意《机工教育大讲堂服务协议》后，才可以下载！");
+				return false;
+			}
+			var money = parseFloat('0.0');
+			var jifen = parseFloat('0.0');
+			var ORDER_PAY_TYPE = $("#buy_form #ORDER_PAY_TYPE").val();
+			
+			if(ORDER_PAY_TYPE==2){
+				//用积分购买
+				var m = parseFloat('10');
+				if(jifen < m){
+					alert("您当前的积分不够支付当前订单");
+					return false;
+				}
+				//location.href="/ziyuans/buy_ziyuan_use_jifen.htm?ID=34144&BOOK_ID=5601294";
+			
+			
+				var load = layer.load();//显示等待层
+				var options = {
+					success : function(json) {					
+
+						layer.close(load);//关闭等待层
+						if (isEmpty(json) || typeof (json) == "undefined"
+								|| json.code != 0) {
+							layer.msg(json.msg);//显示提示信息，默认3s自动关闭
+							return;
+						}
+						location.href= json.msg;					
+					}
+				};			
+				
+				$("#buy_form").ajaxForm(options);
+				$("#buy_form").submit();
+				return false;
+			
+			}else{
+				alert("支付方式错误，无法下载");
+				return false;
+			}
+		});
+	});
+	</script>
+		<form id="buy_form" action="/ziyuans/buy_ziyuan_use_jifen.htm"
+			method="post">
+			<input type="hidden" name="ID" id="ID" value="34144" /> <input
+				type="hidden" name="BOOK_ID" id="BOOK_ID" value="5601294" />
+			<div class="cls_videoTitle">资源下载</div>
+			<div class="cls_videoC">
+				<div class="cls_videoCL">
+					<img src="http://s.cmpedu.com/images/upload/2020/0/8/1578504349589(LT800).jpg">
+				</div>
+				<div class="cls_videoCR">
+					<div class="cls_videoCRTit">复变函数与积分变换</div>
+					<div class="cls_videoCRAut">作者：丛书主编  叶润萍 陆海霞主编 徐宜会 王玉春 仓义玲</div>
+					<div class="cls_videoCRtype">
+						<ul>
+							
+								<input type="hidden" name="ORDER_PAY_TYPE" id="ORDER_PAY_TYPE"
+									value="2" />
+								<li class="on" data-id="2"><a href="#">积分</a></li>
+							
+						</ul>
+					</div>
+				</div>
+
+			</div>
+			
+				<div class="dia-mulucont">
+					<div class="dia-mulucont-title">包含的资源</div>
+					<div class="dia-mulucont-cont">
+						
+							<p>1、JD_61653《复变函数与积分变换》_叶润萍（习题解答）汤嘉</p>
+						
+							<p>2、KJ_61653《复变函数与积分变换》_叶润萍（中文电子课件）</p>
+						
+					</div>
+				</div>
+			
+			<div class="cls_video_price">积分:10</div>
+			<div class="cls_video_Bot">
+				<label><input type="checkbox" checked="checked"
+					name="goumaixieyi" id="goumaixieyi"> 同意<a href="#">机械工业出版社服务协议</a></label>
+				<span> <input type="button" value="确定"
+					class="cls_video_Bottn " id="buy_save" /> <input type="button"
+					value="取消" class="cls_video_Bottnkong"
+					onclick="javascript:closeDialog();" />
+				</span>
+			</div>
+		</form>
+	</div>
+	<!-- 购买成功后的下载弹层开始 -->
+	<div class="cls_video cls_video_select"
+		id="dialog_video_download_11601">
+		<script>
+	$(function() {
+		
+	});
+	</script>
+
+		<div class="cls_videoTitle">资源下载</div>
+		<div class="cls_videoC">
+			<div class="cls_videoCL">
+				<img src="/images/tmp/tmp12.jpg">
+			</div>
+			<div class="cls_videoCR">
+				<div class="cls_videoCRTit">复变函数与积分变换</div>
+				<div class="cls_videoCRAut">作者：丛书主编  叶润萍 陆海霞主编 徐宜会 王玉春 仓义玲</div>
+			</div>
+		</div>
+		
+			<div class="dia-mulucont">
+				<div class="dia-mulucont-title">包含的资源</div>
+				<div class="dia-mulucont-cont">
+					
+						
+					
+						
+					
+				</div>
+			</div>
+		
+
+		<div class="cls_video_Bot">
+			<span> <input type="button" value="关闭"
+				class="cls_video_Bottnkong" onclick="javascript:closeDialog();" />
+			</span>
+		</div>
+
+	</div>
+	<div class="cls_video cls_video_select"
+		id="dialog_video_download_11602">
+		<script>
+	$(function() {
+		
+	});
+	</script>
+
+		<div class="cls_videoTitle">资源下载</div>
+		<div class="cls_videoC">
+			<div class="cls_videoCL">
+				<img src="/images/tmp/tmp12.jpg">
+			</div>
+			<div class="cls_videoCR">
+				<div class="cls_videoCRTit">复变函数与积分变换</div>
+				<div class="cls_videoCRAut">作者：丛书主编  叶润萍 陆海霞主编 徐宜会 王玉春 仓义玲</div>
+
+			</div>
+
+		</div>
+		
+			<div class="dia-mulucont">
+				<div class="dia-mulucont-title">包含的资源</div>
+				<div class="dia-mulucont-cont">
+					
+						
+							<p>
+								
+									
+									
+										<a href="javascript:void(0);" class="ziyuanxiazai" _data="z34145">JD_61653《复变函数与积分变换》_叶润萍（习题解答）汤嘉</a>
+									
+								
+							</p>
+						
+					
+						
+					
+				</div>
+			</div>
+		
+		<div class="cls_video_Bot">
+			<span> <input type="button" value="关闭"
+				class="cls_video_Bottnkong" onclick="javascript:closeDialog();" />
+			</span>
+		</div>
+	</div>
+	<div class="cls_video cls_video_select"
+		id="dialog_video_download_11603">
+		<script>
+	$(function() {
+		
+	});
+	</script>
+
+		<div class="cls_videoTitle">资源下载</div>
+		<div class="cls_videoC">
+			<div class="cls_videoCL">
+				<img src="/images/tmp/tmp12.jpg">
+			</div>
+			<div class="cls_videoCR">
+				<div class="cls_videoCRTit">复变函数与积分变换</div>
+				<div class="cls_videoCRAut">作者：丛书主编  叶润萍 陆海霞主编 徐宜会 王玉春 仓义玲</div>
+
+			</div>
+
+		</div>
+		
+			<div class="dia-mulucont">
+				<div class="dia-mulucont-title">包含的资源</div>
+				<div class="dia-mulucont-cont">
+					
+						
+					
+						
+							<p>
+								
+									
+									
+										<a href="javascript:showDialogForBack('dialog_log','');" class="ziyuanxiazai" _data="z34144">KJ_61653《复变函数与积分变换》_叶润萍（中文电子课件）</a>
+									
+								
+							</p>
+						
+					
+				</div>
+			</div>
+		
+		<div class="cls_video_Bot">
+			<span> <input type="button" value="关闭"
+				class="cls_video_Bottnkong" onclick="javascript:closeDialog();" />
+			</span>
+		</div>
+	</div>
+	<div class="cls_video cls_video_select"
+		id="dialog_video_download_11604">
+		<script>
+	$(function() {
+		
+	});
+	</script>
+
+		<div class="cls_videoTitle">资源下载</div>
+		<div class="cls_videoC">
+			<div class="cls_videoCL">
+				<img src="/images/tmp/tmp12.jpg">
+			</div>
+			<div class="cls_videoCR">
+				<div class="cls_videoCRTit">复变函数与积分变换</div>
+				<div class="cls_videoCRAut">作者：丛书主编  叶润萍 陆海霞主编 徐宜会 王玉春 仓义玲</div>
+
+			</div>
+
+		</div>
+		
+			<div class="dia-mulucont">
+				<div class="dia-mulucont-title">包含的资源</div>
+				<div class="dia-mulucont-cont">
+					
+						
+					
+						
+					
+				</div>
+			</div>
+		
+		<div class="cls_video_Bot">
+			<span> <input type="button" value="关闭"
+				class="cls_video_Bottnkong" onclick="javascript:closeDialog();" />
+			</span>
+		</div>
+	</div>
+	<!-- 购买成功后的下载弹层结束 -->
+	<!-- 发邮件下载开始 -->
+
+	<script>
+
+	$(function() {
+		layer.ready(function(){
+			
+		});
+		$(".send_email").click(function(){
+			//var url = $(this).attr("data-url");
+			
+			layer.prompt({
+				  formType: 0,//输入框类型，支持0（文本）默认1（密码）2（多行文本）
+				  value: '',
+				  title: '资源将发送到以下邮箱'
+				}, function(value, index, elem){
+				  //alert(value); //得到value
+				  //这里进行邮件的真实发送工作
+				  layer.msg('邮件发送中...', {
+					  icon: 16
+					  ,shade: 0.01
+					});
+				  get_json('/ziyuans/download_by_email.htm?ID=34144&EMAIL='+value, function(json){
+					  layer.closeAll('loading');
+					  if(typeof json !='object'){
+							json =eval("("+ json.replace(/<[^>]+>/g, "")+ ")");
+						}
+						if (isEmpty(json) || typeof (json) == "undefined"
+								|| json.code != 0) {
+							layer.msg(json.msg);//显示提示信息，默认3s自动关闭
+							return;
+						}
+						layer.close(index);
+				  }, function(){
+					  layer.closeAll('loading');
+					    if(typeof json !='object'){
+							json =eval("("+ json.replace(/<[^>]+>/g, "")+ ")");
+						}
+						layer.close(index);//关闭等待层
+						if (isEmpty(json) || typeof (json) == "undefined"
+								|| json.code != 0) {
+							layer.msg(json.msg);//显示提示信息，默认3s自动关闭
+							return;
+						}
+						layer.close(index);
+				  });
+				 // layer.close(index);
+				});
+			
+			
+		});
+		
+		if (window.location.protocol === 'https:') {
+        // 延迟执行确保DOM完全加载
+
+            var links = document.getElementsByTagName('a');
+            for (var i = 0; i < links.length; i++) {
+                var href = links[i].href;
+                if (href && href.startsWith('http://')) {
+                    links[i].href = href.replace('http://', 'https://');
+                }
+            }
+            
+            // 修复所有资源（图片、脚本等）
+            var resources = document.querySelectorAll('img, script, iframe, link');
+            for (var i = 0; i < resources.length; i++) {
+                var src = resources[i].src || resources[i].href;
+                if (src && src.startsWith('http://')) {
+                    if (resources[i].src) resources[i].src = src.replace('http://', 'https://');
+                    if (resources[i].href) resources[i].href = src.replace('http://', 'https://');
+                }
+            }
+            
+            console.log('安全链接修复完成！');
+        }
+
+	});
+	
+	
+	 
+	</script>
+
+	<!-- 发邮件下载结束 -->
+	<div class="container">
+		<div class="row">
+			<div class="col-xs-12">
+				<div class="jg_line">
+					<span class="jg_linehome"> <a href="/index.htm">首页</a>
+					</span> > <a href="/ziyuans/index.htm">资源下载</a> > <a
+						href="/ziyuans/ziyuan/34144.htm">复变函数与积分变换</a>
+				</div>
+			</div>
+		</div>
+		<div class="row">
+			<div class="col-xs-12 col-sm-12 col-md-9">
+				<div class="jgzy_detTop">
+					<script>
+				</script>
+					<input type="hidden" name="RESOURCEDOWNCENT" id="RESOURCEDOWNCENT"
+						value="10" /> <input type="hidden"
+						name="IS_TEACHER" id="IS_TEACHER" value="" /> <input
+						type="hidden" name="IS_SHENQING" id="IS_SHENQING"
+						value="" /> <img src="/images/img_rar.png"
+						class="jgzy_detTopImg" />
+					<div class="jgzy_detDiv">
+						<div class="jgzy_detDivT">
+							<span class="jgzy_detDivTL">复变函数与积分变换 PPT课件
+								
+							</span>
+
+							<div class="jgzyrz">
+								<span class="down" REF_ID="34144"
+									REF_TYPE="CMP_BOOKS_SOURCE"> <span
+									class="fa fa-arrow-circle-down">(<span class="count">
+											
+												224
+												
+											
+									</span>)
+								</span>
+								</span> <span class="cang" REF_ID="34144"
+									REF_TYPE="CMP_BOOKS_SOURCE"> <a
+									href="javascript:void(0);"><span class="fa fa-star">
+											(<span class="count"></span>)
+									</span></a>
+								</span> <span class="read" REF_ID="34144"
+									REF_TYPE="CMP_BOOKS_SOURCE"> <span class="fa fa-eye">(<span
+										class="count"></span>)
+								</span>
+								</span> <span class="zan" REF_ID="34144"
+									REF_TYPE="CMP_BOOKS_SOURCE"> <a
+									href="javascript:void(0);"><span class="fa fa-thumbs-up">(<span
+											class="count"></span>)
+									</span></a>
+								</span>
+							</div>
+						</div>
+						
+						
+						<div class="jgzy_detDivB">
+							
+								
+								
+								
+									<input type="button" value="资源下载" class="jgkj_detTotbut"
+										onclick="javascript:showDialogForBack('dialog_log','/ziyuans/ziyuan/34144.htm');" />
+								
+							
+
+
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+
+	</div>
+	<div class="container">
+		<div class="row">
+			<div class="col-xs-12 col-sm-12 col-md-9">
+						<div class="jgzy_xiazai" style="padding-top: 0px">
+							<div class="jg_pltitle">资源列表</div>
+							<div>
+								<ul>
+    
+  
+ <li>
+<p style='color:red;margin-left:12px;margin-top:12px'>资源详情列表，点击可下载：</p>
+</li>
+       <li> 
+        <div class="dia-mulucont-cont">
+            
+                    <p>
+                        
+                            
+                              
+                            
+                            
+                                                            
+                            
+                                <a href="javascript:showDialogForBack('dialog_log','');">→
+                                    JD_61653《复变函数与积分变换》_叶润萍（习题解答）汤嘉(习题答案)</a>
+                                  
+                            
+
+                                  
+                            
+                        
+                    </p>
+            
+                    <p>
+                        
+                            
+                              
+                            
+                            
+                                <a href="javascript:showDialogForBack('dialog_log','');">→
+                                    KJ_61653《复变函数与积分变换》_叶润萍（中文电子课件）(PPT课件)</a>
+                                  
+                                                            
+                            
+                            
+
+                                  
+                            
+                        
+                    </p>
+            
+        </div>
+    </li>
+
+
+
+								</ul>
+							</div>
+						</div>
+				
+			
+				<div class="jgzy_detxq">
+					<div class="jg_pltitle">资源详情</div>
+					<div class="jgzy_detxq_cont">
+						<div class="col-xs-12">资源名称：KJ_61653《复变函数与积分变换》_叶润萍（中文电子课件）</div>
+						<div class="col-xs-12 col-sm-4">下载积分：10</div>
+						<div class="col-xs-12 col-sm-4">资源类型：习题答案,PPT课件</div>
+						
+							<div class="col-xs-12 col-sm-4">书号：61653Y</div>
+							<div class="col-xs-12 col-sm-4">ISBN：978-7-111-61653-5</div>
+							
+							<div class="col-xs-12 col-sm-4">作者：丛书主编  叶润萍 陆海霞主编 徐宜会 王玉春 仓义玲</div>
+							
+							<div class="col-xs-12 col-sm-4">责编：汤嘉</div>
+							<div class="col-xs-12 col-sm-4">开本：16(B5)</div>
+						
+					</div>
+				</div>
+
+				<div class="jg_plmian jg_plmianmt20">
+					<div class="jg_pltitle" id="ziyuanpinglun">资源评论</div>
+					<div id="div_pingluns"></div>
+
+				</div>
+
+			</div>
+			<div class="col-xs-12 col-sm-12 col-md-3">
+				<div class="cls-taokejian-right">
+					<div class="cls-jineng-rightTit">
+						<span class="cls-jineng-rightTitL">| 关联图书</span>
+					</div>
+					<div class="jgkjright">
+						<ul>
+							
+								<li><a href="/books/book/5601294.htm"> <img
+										src="http://s.cmpedu.com/images/upload/2020/0/8/1578504349589(LT800).jpg" class="jgkjright_img" />
+										<p class="jgkjright_word">复变函数与积分变换</p>
+								</a></li>
+							
+
+						</ul>
+					</div>
+				</div>
+				<div class="cls-taokejian-right">
+					<div class="cls-jineng-rightTit">
+						<span class="cls-jineng-rightTitL">| 热门推荐</span>
+					</div>
+					<div class="jgtkj_dt picScroll-top">
+						<div class="hd dn">
+							<a class="next"></a>
+							<ul></ul>
+							<a class="prev"></a> <span class="pageState"></span>
+						</div>
+						<div class="bd">
+							<ul>
+								
+									<li><a href="/ziyuans/ziyuan/27631.htm"><img
+											src="/images/ftype/zip.png" class="jgtkj_dtImg" /></a>
+										<div class="jgtkj_dtD">
+											<div class="jgtkj_dtT">PDF课件</div>
+											<div class="jgtkj_dtB">
+												<span>李建新 孙雨春 等编著</span>
+											</div>
+										</div>
+										<div class="jgzyrz">
+											<span class="down"><span
+												class="fa fa-arrow-circle-down"></span><i>166</i></span>
+											<span class="pinglun"><span class="fa fa-comments-o"></span><i>8</i></span>
+											
+											<span class="read"><span class="fa fa-eye"></span><i>
+													
+														507
+														
+													
+											</i></span>
+										</div></li>
+								
+									<li><a href="/ziyuans/ziyuan/111424.htm"><img
+											src="/images/ftype/zip.png" class="jgtkj_dtImg" /></a>
+										<div class="jgtkj_dtD">
+											<div class="jgtkj_dtT">69534 智能小区安全防范系统 第3版-习题解答</div>
+											<div class="jgtkj_dtB">
+												<span>程智宾 林励 林火养 等</span>
+											</div>
+										</div>
+										<div class="jgzyrz">
+											<span class="down"><span
+												class="fa fa-arrow-circle-down"></span><i>1</i></span>
+											<span class="pinglun"><span class="fa fa-comments-o"></span><i>1</i></span>
+											
+											<span class="read"><span class="fa fa-eye"></span><i>
+													
+														7
+														
+													
+											</i></span>
+										</div></li>
+								
+									<li><a href="/ziyuans/ziyuan/111585.htm"><img
+											src="/images/ftype/zip.png" class="jgtkj_dtImg" /></a>
+										<div class="jgtkj_dtD">
+											<div class="jgtkj_dtT">69237 课件、大纲、教案、案例、习题答案、虚拟仿真资源</div>
+											<div class="jgtkj_dtB">
+												<span>李杰  方仲民</span>
+											</div>
+										</div>
+										<div class="jgzyrz">
+											<span class="down"><span
+												class="fa fa-arrow-circle-down"></span><i>12</i></span>
+											<span class="pinglun"><span class="fa fa-comments-o"></span><i>1</i></span>
+											
+											<span class="read"><span class="fa fa-eye"></span><i>
+													
+														12
+														
+													
+											</i></span>
+										</div></li>
+								
+									<li><a href="/ziyuans/ziyuan/108945.htm"><img
+											src="/images/ftype/zip.png" class="jgtkj_dtImg" /></a>
+										<div class="jgtkj_dtD">
+											<div class="jgtkj_dtT">69592 数字孪生技术与工程实践 PPT课件</div>
+											<div class="jgtkj_dtB">
+												<span>陆剑峰  张浩  赵荣泳</span>
+											</div>
+										</div>
+										<div class="jgzyrz">
+											<span class="down"><span
+												class="fa fa-arrow-circle-down"></span><i>429</i></span>
+											<span class="pinglun"><span class="fa fa-comments-o"></span><i>9</i></span>
+											
+											<span class="read"><span class="fa fa-eye"></span><i>
+													
+														1155
+														
+													
+											</i></span>
+										</div></li>
+								
+									<li><a href="/ziyuans/ziyuan/32846.htm"><img
+											src="/images/ftype/zip.png" class="jgtkj_dtImg" /></a>
+										<div class="jgtkj_dtD">
+											<div class="jgtkj_dtT">62713-课件、试卷、习题答案、参考视频、课程标准</div>
+											<div class="jgtkj_dtB">
+												<span>赵轶  主编</span>
+											</div>
+										</div>
+										<div class="jgzyrz">
+											<span class="down"><span
+												class="fa fa-arrow-circle-down"></span><i>135</i></span>
+											<span class="pinglun"><span class="fa fa-comments-o"></span><i>1</i></span>
+											
+											<span class="read"><span class="fa fa-eye"></span><i>
+													
+														352
+														
+													
+											</i></span>
+										</div></li>
+								
+							</ul>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+
+	</div>
+	
+<script type="text/javascript">
+$(function() {
+	//进行用户登录的异步判断，需要发起一个异步请
+	//右侧菜单
+	$(".index_cebian ul li").hover(function(){
+		$(this).addClass("on");
+	},function(){
+		$(this).removeClass("on");
+	})
+
+});
+</script>
+<style>
+ .jyxkz{  
+ position: absolute;
+      width: 246px;
+    margin-right: 0;
+    margin-top: 0;
+    }
+    
+    
+    /* 绘制三角形（白色主体） */
+    
+#down-messages::before {
+  content: ''!important;
+  position: absolute;
+  top: -8px;           /* 向上突出菜单边框 */
+  right: 36px;         /* 距离右侧的距离，按需调整 */
+  width: 0;
+  height: 0;
+  border-left: 8px solid transparent!important;
+  border-right: 8px solid transparent!important;
+  border-bottom: 8px solid #ffffff!important; /* 与菜单背景色一致 */
+  z-index: 1000;
+}
+</style>
+
+<div class="navbar navbar-inverse navbar-fixed-top index_nav">
+    <div class="container">
+		<div id="navbar" class="navbar-collapse collapse has-feedback"> 
+			<div class="jgnavmenu_logo"><img src="/images/logo_pwd.png" /></div>
+            <ul class="nav navbar-nav">
+                <li class="active"><a href="/index.htm">首 页</a></li>
+                <li><a href="/books/index.htm">图 书</a></li>
+                <li><a href="/books/num_index.htm">数字教材</a></li>
+                <li><a href="/books/apply.htm" class="mustlogin">样书申请</a></li>
+                <li><a href="/ziyuans/index.htm">资源下载</a></li>
+                <li><a href="/videos/index.htm" target="_blank">机工大讲堂</a></li>
+                <li><a href="/lianxi/content.htm">联系我们</a></li>
+            </ul>
+            <div class="index_navR">
+            	<div class="index_navRL">
+            		<input type="text" class="index_navRLtext" id="__KEY" value="" />
+            		<input type="button" value="搜索" class="index_navRLbtn" id="__so"/>
+            	</div>
+            	<div class="index_navRR gensuimokuai">
+            		<!-- <a href="#">注册</a> |
+            		<a href="#">登录</a> -->
+            	</div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="cls-foot hidden-xs">
+	<div class="container" style='position:relative'>
+		<div class="row">
+			<div class="cls-foot-main">
+				<div class="col-xs-12 col-sm-6 col-md-2 cls-foot-logo">
+					<div class="cls-f14">精彩服务</div>
+					<p><a href="/books/apply.htm" class="mustlogin">样书申请</a></p>
+					<p><a href="/ziyuans/index.htm">资源下载</a></p>
+					<!-- <p><a href="/kejians/index.htm">淘课件</a></p> -->
+					<p><a href="/videos/index.htm" target="_blank">机工大讲堂</a></p>
+				</div>
+				<div class="col-xs-12 col-sm-6 col-md-2 cls-foot-friend">
+					<div class="cls-f14">友情链接</div>
+											  <a href="/friendlink/goto.htm?ID=9"  target="_blank">机械工业出版社官方网站</a> 
+												  |<a href="/friendlink/goto.htm?ID=8" target="_blank" >中国科技金书网</a> 
+												  |<a href="/friendlink/goto.htm?ID=7" target="_blank" >中国高校教材图书网</a> 
+												  |<a href="/friendlink/goto.htm?ID=3" target="_blank" >电气时代网</a> 
+												  |<a href="/friendlink/goto.htm?ID=6" target="_blank" > 北京华章图文信息有限公司</a> 
+												  |<a href="/friendlink/goto.htm?ID=2" target="_blank" > 机械工程学报</a> 
+												  |<a href="/friendlink/goto.htm?ID=1" target="_blank" >金属加工在线</a> 
+												  |<a href="/friendlink/goto.htm?ID=12" target="_blank" >机电工程百科</a> 
+						
+				</div>
+				<div class="col-xs-12 col-sm-6 col-md-2 cls-foot-help">
+					<div class="cls-f14">帮助中心</div>
+											<p><a href="/help/yssq.html" target="_blank">样书申请流程</a></p>
+											<p><a href="/help/jfsq.html" target="_blank">积分申请流程</a></p>
+					
+				</div>
+
+	
+				
+				<div class="col-xs-12 col-sm-6 col-md-3 cls-foot-addr">
+					<div class="cls-f14">联系我们</div>
+					<p>北京西城区百万庄大街22号</p>
+					<p>邮编:100037</p>
+					<p>电子邮箱：<a href="mailto:cmpedu@cmpedu.com">cmpedu@cmpedu.com</a></p>
+					<p>教材网咨询：010-88379833   </p> 
+				</div>
+				 <div class="col-xs-12 col-sm-6 col-md-2 cls-foot-code">
+					<div class="cls-f14">官方二维码</div>
+					<img src="/images/img_code.jpg" />
+					<p>随手扫一扫～了解多多</p>
+				</div> 
+				<!-- <img class ='jyxkz' src = 'http://s.cmpedu.com/2022/jyxkz.jpg'> -->
+			</div>
+		</div>
+	</div>
+</div>
+<div class="jgindex_copy hidden-xs">版权所有：机械工业出版社有限公司<a href='http://beian.miit.gov.cn'>京ICP备14043556号-4</a> Copyright (C) 2017 CmpEdu. All Rights Reserved</div>
+<div class="index_cebian">
+    <ul>
+        <li>
+    		<div class="index_cebianD"><a href="/lianxi/yingxiao.htm"><img src="/images/icon_cedh.png" /></a></div>
+    		<div class="index_cebianB">
+    			<span><a href="/lianxi/yingxiao.htm">营销人员</a></span>	
+    		</div>
+        </li>
+        <li>
+    		<div class="index_cebianD"><a target='_blank' href="http://wpa.b.qq.com/cgi/wpa.php?ln=1&key=XzgwMDA4MzQ5MF80ODc5NTJfODAwMDgzNDkwXzJf"><img src="/images/icon_ceqq.png" /></a></div>
+    		<!-- WPA Button Begin -->
+<script charset="utf-8" type="text/javascript" src="http://wpa.b.qq.com/cgi/wpa.php?key=XzgwMDA4MzQ5MF80ODc5NTJfODAwMDgzNDkwXzJf"></script>
+<!-- WPA Button END -->
+    		<div class="index_cebianB">
+    			<span><a target='_blank' href="http://wpa.b.qq.com/cgi/wpa.php?ln=1&key=XzgwMDA4MzQ5MF80ODc5NTJfODAwMDgzNDkwXzJf">咨询客服</a></span>		
+    		</div>
+        </li>
+        <li>
+    		<div class="index_cebianD"><a href="/lianxi/liuyan.htm"><img src="/images/icon_cefk.png" /></a></div>
+    		<div class="index_cebianB">
+    			<span><a href="/lianxi/liuyan.htm">意见反馈</a></span>		
+    		</div>
+        </li>
+        <li>
+    		<div class="index_cebianD"><a href="https://weibo.com/cmp1952" target="_blank"><img src="/images/icon_cewb.png" /></a></div>
+    		<div class="index_cebianB">
+    			<!-- <div class="index_cebianB_wb">
+        			<p>新浪微博</p>
+        			<img src="/images/img_wbcode.jpg" />
+        			<p>~扫一扫~</p>
+    			</div> -->
+    			<span><a href="https://weibo.com/cmpedu?ssl_rnd=1509529849.6862&is_hot=1" target="_blank">机工教育</a></span>	
+    		</div>
+        </li>
+        <li>
+    		<div class="index_cebianD"><img src="/images/icon_ceer.png" /></div>
+    		<div class="index_cebianB">
+    			<div class="index_cebianB_wx">
+        			<p>公众号</p>
+        			<img src="/images/img_codereg.jpg" />
+        			<p>~扫一扫~</p>
+        		</div>
+    		</div>
+        </li>
+        
+        <li class="index_cebianKong" style="height: 50px;"></li>
+        <li>
+        	<a href="#">
+        		<div class="index_cebianD"><img src="/images/icon_ceup.png" /></div>
+        	</a>
+        </li>
+        <li>
+        	<a href="#">
+        		<div class="index_cebianD"><img src="/images/icon_cedown.png" /></div>
+        	</a>
+       	</li>
+    </ul>
+</div>
+
+
+<script>	
+ 
+	
+$(function() {
+	
+	var get_message = function() {
+
+		get_json(
+				'/user/getmessage.htm',
+				function(data) {
+					if (typeof (data) != "undefined" && data.code == 0) {
+						var ref = '<a href="javascript:void(0);" class="dropdown-toggle wave in"  data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"  style="z-index:9999;">消息';
+						var items = data.data.list;
+						if (items != 'undefined'
+								&& typeof items == 'object') {
+							var len = data.data.list.length;
+							
+							if (len > 0) {
+								ref += '<span class="badge"  style="z-index:9999;">';
+								if (data.data.count > 0) {
+									ref += data.data.count;
+								}
+								if(data.data.count>0){
+									$('.my_message ').addClass('open')
+									}
+								ref += '</span></a>';
+								ref += '<ul class="pull-right dropdown-menu dropdown-arrow dropdown-messages " id = "down-messages" style="width:300px;"  style="z-index:9999;">';
+								for (var i = 0; i < data.data.count; i++) {
+									var item = items[i];
+									if ((typeof item.icon === 'undefined')
+											|| item.icon == '') {
+										item.icon = '/images/user_pic.jpg';
+									}
+									ref += '<li><a target="_blank" href="/message/read_message.htm?id='
+											+ item.id
+											+ '">';
+									ref += '<div class="message"  style="z-index:9999;">';
+									ref += '<span class="message-sender"  style="z-index:9999;">';
+									if (item.status == 0) {
+										ref += '<i></i>';
+									}
+									ref += '' + item.sendername + '</span>';
+									ref += '<span class="message-time"  style="z-index:9999;">'
+											+ item.ztime + '</span>';
+									var vvv = item.title;
+									/* vvv = $("#x").text(vvv).html(); */
+									ref += '<span class="message-subject"  style="z-index:9999;">'
+											+ vvv + '</span>';
+									ref += '</div></a>';
+									ref += '</li>';
+								}
+								ref += '</ul>';
+								
+							} else {
+								ref += '<span class="badge"  style="z-index:9999;"></span></a>';
+							}
+						}
+
+						$(".my_message").append(ref);
+					} else {
+						//用户没有登录
+						//$("#login_div").html("<a href=\"/account/login.htm\">会员登录</a>");
+					}
+				});
+
+	}
+
+	get_json(
+			'/account/getuserlogin.htm',
+			function(data) {
+				if (typeof (data) != "undefined" && data.code == 0) {
+					//登录成功
+					//console.log(data.data);
+					var ret = '';
+					ret += '<li><a href="/blog/'+data.data.id+'/taokejian.htm">个人主页</a></li><li class="jg_topRline">|</li>';
+					ret += '<li><a href="/user/change_check1.htm">修改密码</a></li><li class="jg_topRline">|</li>';
+					ret += '<li><a href="/logout.htm">退出</a></li>';
+
+					$("#div_user_name").html('<a href="/user/index.htm">您好，'+ data.data.realname + '(<span style="color:red">个人中心</span>)</a>');
+					$("#div_user_info").append(ret);
+					get_message();
+					$(".gensuimokuai").html('<a href="/user/index.htm">'+ data.data.realname + '</a> | <a href="/logout.htm">退出</a>');
+					/* $("#message").show(); */
+					
+				} else {
+					//用户没有登录
+					var ret = '';
+					var newHref="javascript:showDialogForBack('dialog_log','');"
+					ret += '<li><a href="'+newHref+'"> 登录 </li><li class="jg_topRline">|</a></li><li><a href="/register/reg.htm"> 注册  </li><li class="jg_topRline"></a></li>';
+					$("#div_user_info").append(ret);
+					$('a.mustlogin').each(function(){
+					//$('#navbar li a.mustlogin').each(function(){
+						var href = $(this).attr("href");
+						$(this).attr("href","javascript:showDialogForBack('dialog_log','"+href+"');");
+					});
+					$(".gensuimokuai").html('<a href="'+newHref+'"> 登录 </a> | <a href="/register/reg.htm"> 注册  </a>');
+				}
+			});
+});
+</script>
+
+</body>
+</html>

@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="zh-CN" data-theme="dark">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>资源清单 · 数字电路</title>
+<link rel="stylesheet" href="../../assets/sayo/sayo.css">
+<link rel="stylesheet" href="../../assets/learn-theme.css">
+<link rel="stylesheet" href="assets/style.css">
+<script src="../../assets/learn-theme.js"></script>
+<script>LearnTheme.apply();</script>
+<style>
+.lesson h1 {
+  margin: var(--syo-space-2, 8px) 0 var(--syo-space-4, 16px);
+  font-size: clamp(1.6rem, 3.2vw, 2.25rem);
+  font-weight: 700;
+  line-height: 1.25;
+  letter-spacing: -0.02em;
+  color: var(--syo-fg-default);
+}
+</style>
+</head>
+<body class="lesson-body">
+<nav class="lesson-bar">
+  <a href="index.html">← 返回科目</a>
+  <span>数字电路</span>
+  <span class="lesson-bar__no">资源清单</span>
+  <label class="syo-toggle syo-toggle--theme lesson-bar__toggle" title="切换深浅主题" aria-label="切换深浅主题">
+    <input type="checkbox" id="attachment-theme-checkbox" checked>
+    <span class="syo-toggle-track"></span>
+    <span class="syo-toggle-knob">
+      <svg class="syo-toggle-sun" viewBox="0 0 20 20" fill="none" aria-hidden="true"><circle cx="10" cy="10" r="3.5" stroke="#f57c00" stroke-width="1.5"/><path d="M10 2v2.5M10 15.5V18M2 10h2.5M15.5 10H18M4.34 4.34l1.77 1.77M13.89 13.89l1.77 1.77M4.34 15.66l1.77-1.77M13.89 6.11l1.77-1.77" stroke="#f57c00" stroke-width="1.2" stroke-linecap="round"/></svg>
+      <svg class="syo-toggle-moon" viewBox="0 0 20 20" fill="none" aria-hidden="true"><path d="M16.5 12.5A6 6 0 019 4.5a6 6 0 007.5 8z" stroke="#5c6bc0" stroke-width="1.5" stroke-linejoin="round"/></svg>
+    </span>
+  </label>
+</nav>
+
+<article class="lesson">
+<h1>数字电路 Resources</h1>
+<blockquote><p>定位：<strong>延伸阅读 + 易变内容的核对来源</strong>，不是"知识来源清单"（模型已掌握稳定基础知识）。<br>稳定知识节点可以不在这里留条目；易变/版本相关内容必须在这里有核对过的官方来源。</p><p>本科目盘问结论（决定本清单的取舍）：<strong>本学期在修 + 期末考好 + 为考研打底</strong>，程度到「看见功能要求能自己判断用组合还是时序、能搭出来并说清为什么」，<strong>不要 HDL／FPGA、不要模电本体（放大电路／运放）、不要 CMOS 版图与半导体工艺、不要 TTL／CMOS 门内部逐管电路</strong>。<br>两个真实卡点：<strong>① 真值表 → 卡诺图 → 最简式</strong>（组合逻辑）；<strong>② 触发器/计数器没底</strong>（时序逻辑）。清单因此把权重压在「康华光对应章节的官方目录 + 组合/时序/状态机三段讲法 + 数字钟要用到的器件功能表」上。<br>载体是<strong>本机 Python 3.13 仿真</strong>（断言校验波形与真值表），<strong>不装新工具链</strong>——所以没有任何 Logisim／Verilog／EDA 条目。<br>学生手上有<strong>康华光《电子技术基础·数字部分》纸书</strong>（无电子版），<strong>没有本地资料</strong>——因此<strong>本清单没有 <code>reference/</code> 指针条目</strong>，教材正文一律以纸书为准。</p></blockquote>
+<h2>Knowledge</h2>
+<h3>延伸阅读 1｜主教材（学生自己那本）的官方书目页——章节号的第一依据</h3>
+<ul>
+<li><a href="https://xuanshu.hep.com.cn/front/book/findBookDetails?bookId=601f1197966feeeca733405e" target="_blank" rel="noopener">Book: 电子技术基础 数字部分（第7版）by 康华光、张林（高等教育出版社）· 官方书目页</a><br>一行说明：<strong>学生手上那本主教材的出版社官方页</strong>（ISBN 978-7-04-055664-3，2021-08，536 页）。价值在于出版社自己展开的<strong>逐节目录</strong>：卡诺图化简在 <strong>2.4</strong>、组合电路分析与设计在 <strong>4.1～4.2</strong>、常用组合模块（编码器/译码器/数据选择器/比较器/加法器）在 <strong>4.4</strong>、锁存器与触发器 <strong>5</strong>、同步时序分析与设计 <strong>6.1～6.3</strong>、计数器 <strong>6.5.2</strong>、555 定时器 <strong>9.4</strong>。大纲与讲解报“第几章第几节”时应以此页为准。</li>
+</ul>
+<ul>
+<li><a href="https://xuanshu.hep.com.cn/front/book/findBookDetails?bookId=59cf6887ba9eb884cf822bb8" target="_blank" rel="noopener">Book: 电子技术基础 数字部分（第六版）by 康华光（高等教育出版社）· 官方书目页</a><br>一行说明：<strong>同一本书的上一版</strong>（ISBN 978-7-04-038004-0，2014-01，580 页，印次仍在更新到 2025-11）。用途是<strong>核对版次差异</strong>：第 6 版有「3.5.4 TTL 系列门电路特性参数比较」与 *ECL 一节、6.6 是 GAL、章名是「CPLD 和 FPGA」、附录引 <strong>GB/T 4728.12—1996</strong> 且<strong>带“部分习题答案”</strong>；第 7 版删了 TTL 参数比较与 ECL、6.6 换成「时序逻辑的可编程电路实现」、章名改为「FPGA 和 CPLD」、附录引 <strong>—2008</strong> 版并不含习题答案。</li>
+</ul>
+<ul>
+<li><a href="https://xuanshu.hep.com.cn/front/book/findBookDetails?bookId=601f1197966feeeca733405e" target="_blank" rel="noopener">Source: 康华光第 7 版 / 第 6 版 逐节目录与两版差异对照（抓取稿）</a> · 已落盘 <code>sources/hep-kanghuaguang-toc-6e-7e.md</code><br>一行说明：把上面两个官方页的目录抄成一份可检索的 md，并整理出 <strong>12 行两版差异表</strong>（节名、附录构成、国标版次、页数）。用途：<strong>大纲对齐章节号</strong>，以及学生说“书上没有这一节”时先排查是不是版次差异（9.x 三节名字两版都改过）。</li>
+</ul>
+<h3>延伸阅读 2｜官方配套习题解答（学生没有习题册、期末要刷题）</h3>
+<ul>
+<li><a href="https://xuanshu.hep.com.cn/front/book/findBookDetails?bookId=59ce3d17ba9eb884cf81d13e" target="_blank" rel="noopener">Book: 电子技术基础 数字部分 第六版 学习辅导与习题解答 by 秦臻、罗杰（高等教育出版社）</a><br>一行说明：<strong>与主教材第六版逐章配套的官方解答本</strong>（32.80 元）。用途：讲解要布置计算题（化简、状态方程、计数器分析）时可从这里取题并对照标准解题过程；注意它是<strong>第六版</strong>配套，与第 7 版节号有上述差异。学生“没题做”这一块主要靠它。</li>
+</ul>
+<ul>
+<li><a href="https://xuanshu.hep.com.cn/front/book/findBookDetails?bookId=59cfb25cba9eb884cf82485e" target="_blank" rel="noopener">Book: 数字电子技术基础（第六版）学习辅导与习题解答 by 阎石、王红（高等教育出版社）</a><br>一行说明：<strong>另一本公认教材的官方题解</strong>（42.00 元）。用途：当主教材配套题的题型不够时换一套；阎石本的例题偏“考试标准写法”，适合给学生看<strong>解题格式</strong>长什么样（真值表怎么列、卡诺图怎么圈、状态图画到哪一步算完）。</li>
+</ul>
+<h3>延伸阅读 3｜同课异版的公认教材 + 考研方向的现成入口</h3>
+<ul>
+<li><a href="https://xuanshu.hep.com.cn/front/book/findBookDetails?bookId=59cf5a91ba9eb884cf822664" target="_blank" rel="noopener">Book: 数字电子技术基础（第六版）by 阎石、王红（高等教育出版社）</a><br>一行说明：国内<strong>另一本最常被选用的数电教材</strong>（54.40 元）。用途不是通读，是<strong>同一知识点换一种讲法</strong>——康华光卡诺图那节偏“圈最小项”，换这本书的表述（无关项怎么用、最大项与或非式怎么写）往往就能通；也是核对“卡诺图化简、状态方程、竞争-冒险”这些点的通用表述的对照本。</li>
+</ul>
+<ul>
+<li><a href="https://xuanshu.hep.com.cn/front/book/findBookDetails?bookId=59cd90ecba9eb884cf81b286" target="_blank" rel="noopener">Book: 《数字电子技术基础》学习指导与考研指南 by 王淑娟、蔡惟铮（高等教育出版社）</a><br>一行说明：书名与出版社分类都指向<strong>按考研考点/题型组织</strong>（39.70 元），不是按教材章节平铺。用途：核对<strong>某个考点在考研里怎么考、考到多深</strong>（例如“自启动判断”“异步计数器分析”在期末与考研里的要求差别）。注：具体章节构成未逐条核实，下判断前先翻目录页。</li>
+</ul>
+<h3>延伸阅读 4｜免费权威课程（按节补讲法，卡在哪补哪）</h3>
+<ul>
+<li><a href="https://ocw.mit.edu/courses/6-004-computation-structures-spring-2017/" target="_blank" rel="noopener">Doc: MIT OCW 6.004 Computation Structures（Spring 2017，Chris Terman）</a><br>一行说明：<strong>只取第 1 章（信息与编码）、第 2 章（数字抽象）、第 4 章组合逻辑、第 5 章时序逻辑、第 6 章状态机</strong>——正好覆盖两个卡点；每章固定三件套（Annotated Slides / Topic Videos / Worksheet）。<strong>明确跳过第 3 章 CMOS 与第 7 章以后</strong>（体系结构），符合学生“不要门内部电路、不要 HDL”的边界。注意其实验用 MIT 自己的仿真写法，只能借讲法，不能照搬。</li>
+</ul>
+<ul>
+<li><a href="https://ocw.mit.edu/courses/6-004-computation-structures-spring-2017/pages/syllabus/" target="_blank" rel="noopener">Source: OCW 6.004 课程结构逐章对照（抓取稿）</a> · 已落盘 <code>sources/ocw-6-004-course-structure.md</code><br>一行说明：21 章的标题清单 + 每章与康华光章节的对应表 + 哪些章不取。用途：讲解要引 6.004 时先查这张表定位到 <code>cN</code>，避免凭章名推断内容（正文页抓不到，见 Gaps）。</li>
+</ul>
+<ul>
+<li><a href="https://higher.smartedu.cn/course/62354cfe9906eace048e71ba" target="_blank" rel="noopener">Doc: 国家高等教育智慧教育平台 · 数字电子技术（教育部官方平台，免费）</a><br>一行说明：中文视频课的入口，用途是<strong>“上课没听懂、按小节补一遍”</strong>，讲法与国内教材（含康华光体系）更容易对上。⚠️ 页面章节列表由前端渲染，抓不到正文（见 Gaps），需登录后在站内看；当入口用，不要期待能检索。</li>
+</ul>
+<ul>
+<li><a href="https://www.icourse163.org/course/detail.htm?cid=1003766011" target="_blank" rel="noopener">Doc: 中国大学 MOOC（icourse163）· 数字电子技术</a><br>一行说明：同类中文课的另一讲法。用途同上：<strong>同一节换个人讲</strong>。同样只能当入口，课程页抓不到章节明细。</li>
+</ul>
+<h3>延伸阅读 5｜数字钟要用到的器件：官方数据手册（功能表与引脚）</h3>
+<ul>
+<li><a href="https://www.ti.com.cn/document-viewer/cn/SN74HC161/datasheet" target="_blank" rel="noopener">Doc: TI SN74HC161 四位同步二进制计数器 · 数据表（德州仪器官方，中文版）</a><br>一行说明：数字钟“秒／分／时”计数级的参照器件（<strong>四位同步二进制计数器</strong>）。用途：讲“同步计数器为什么要区分使能与时钟”“级联计数为什么看进位输出”时，以官方数据表的引脚功能与功能表为据，不要抄二手参数表。⚠️ 本会话只拿到该器件的入口页（其 PDF 版取不了，见 Gaps），具体引脚名与功能表需点开页面自行核对，讲解不要凭型号补细节。</li>
+</ul>
+<ul>
+<li><a href="https://www.ti.com.cn/document-viewer/cn/SN74HC138/datasheet" target="_blank" rel="noopener">Doc: TI SN74HC138 3 线-8 线译码器 · 数据表 ZHCSP53（德州仪器官方，中文版）</a><br>一行说明：译码/数据分配模块的官方数据表——标题页写明是 <strong>3 线-8 线译码器/解复用器（SNx4HC138）</strong>，<strong>功能表在第 8.4 节 Device Functional Modes、引脚在第 5 节</strong>。用途：数字钟“译码显示”一级的标准件对照——讲“译码器就是最小项发生器”时拿它的功能表当依据；也用于核对 HC 系列在 3.3 V/5 V 下的参数。</li>
+</ul>
+<ul>
+<li><a href="https://www.ti.com.cn/document-viewer/cn/NE555/datasheet" target="_blank" rel="noopener">Doc: TI NE555 定时器 · 数据表 ZHCSMS9（德州仪器官方，中文版）</a><br>一行说明：<strong>含专门的「6.3.1 单稳态工作模式 / 6.3.2 非稳态工作模式 / 6.3.3 分频器」三节</strong>，正对数字钟的“分频”需求（多谐振荡产生基准脉冲、再分频得到 1 Hz）。用途：讲 555 时以官方章节结构为准；参数与接法以数据表原文核对。</li>
+</ul>
+<h3>延伸阅读 6｜实验课（Python 仿真）的官方 API 依据</h3>
+<ul>
+<li><a href="https://docs.python.org/3.13/library/unittest.html" target="_blank" rel="noopener">Doc: Python 3.13 官方文档 · <code>unittest</code> — 单元测试框架</a><br>一行说明：lab 用 <code>assert*</code> 校验真值表与波形时的<strong>唯一依据</strong>。对本课最有用的两点：<code>assertEqual/assertTrue/assertFalse/assertRaises</code>，以及 <strong><code>subTest</code></strong>——逐行比对真值表时不会在第一条失败就停，且把出错的输入组合打进报告。官方明确说<strong>用这些方法而不是裸 <code>assert</code></strong>，这样运行器能累积全部结果。属“易变内容”，版本核对点见下节。</li>
+</ul>
+<ul>
+<li><a href="https://docs.python.org/3.13/library/unittest.html" target="_blank" rel="noopener">Source: <code>unittest</code> 官方文档抓取节选（含版本变迁）</a> · 已落盘 <code>sources/python-313-unittest.md</code><br>一行说明：把上面那页里 lab 真用得上的部分抄成 md：基础示例、<code>subTest</code> 用法、命令行选项表（含每个选项的引入版本）、<code>Changed in version</code> 汇总。用途：设计 lab 的断言与运行方式时直接对照，不必每次回原址翻长页。</li>
+</ul>
+<h3>易变内容的官方核对来源</h3>
+<ul>
+<li><a href="https://docs.python.org/3.13/library/unittest.html" target="_blank" rel="noopener">Doc: Python 3.13 官方文档 · <code>unittest</code>（版本行为核对）</a><br>一行说明：<strong>核对 lab 的 API 会不会随版本变</strong>——<code>--durations</code> 是 <strong>3.12</strong> 才加的；<strong>3.11 起测试方法的返回值（非 <code>None</code>）行为被弃用</strong>（所以 <code>test_*</code> 里别 <code>return</code> 结果，用断言表达）；<strong>3.11 起 <code>unittest</code> 移除了 namespace package 支持</strong>（用 <code>discover</code> 时起始目录必须是带 <code>__init__.py</code> 的常规包）。学生是本机 Python 3.13，这三条都踩不到，但换机器或升级时要重核。</li>
+</ul>
+<ul>
+<li><a href="https://xuanshu.hep.com.cn/front/book/findBookDetails?bookId=601f1197966feeeca733405e" target="_blank" rel="noopener">Book: 康华光《电子技术基础 数字部分》第 7 版 官方书目页（版次核对）</a><br>一行说明：<strong>核对“学生手上到底是哪一版”</strong>。第 7 版 = ISBN 978-7-04-055664-3 / 536 页 / 附录引 GB/T 4728.12—<strong>2008</strong>。若学生书上 3.5 后面还有“TTL 系列门电路特性参数比较”、或附录里有“部分习题答案”，那他就是第 6 版——此时所有节号都要按上一版算。</li>
+</ul>
+<ul>
+<li><a href="https://xuanshu.hep.com.cn/front/book/findBookDetails?bookId=59cf6887ba9eb884cf822bb8" target="_blank" rel="noopener">Book: 康华光《电子技术基础 数字部分》第六版 官方书目页（版次核对）</a><br>一行说明：第 6 版 = ISBN 978-7-04-038004-0 / 580 页 / 附录引 GB/T 4728.12—<strong>1996</strong> / 有 GAL 与 ECL 两节。用途同上，是“版次差异”另一半的官方出处（差异逐条见 <code>sources/hep-kanghuaguang-toc-6e-7e.md</code> 的对照表）。</li>
+</ul>
+<ul>
+<li><a href="https://www.ti.com.cn/document-viewer/cn/SN74HC138/datasheet" target="_blank" rel="noopener">Doc: TI SN74HC138 数据表 ZHCSP53（器件参数与功能表核对）</a><br>一行说明：<strong>核对器件参数与功能表的版本</strong>：这份数据表首版 1982-12、现版修订到 2021-10（ZHCSP53<strong>G</strong>）。讲“HC 系列输入高电平门限、输出驱动、传播延时”这类具体数值时必须看它，不要抄教材上的旧 TTL 数值或二手参数表——数电教材里的 74LS 参数与现行 HC 器件差得远。</li>
+</ul>
+<ul>
+<li><a href="https://ndls.cnis.ac.cn/standard/detail/abab88f7b933861aa54560f6c188a610" target="_blank" rel="noopener">Doc: GB/T 4728.12—2008《电气简图用图形符号 第 12 部分：二进制逻辑元件》标准记录</a><br>一行说明：<strong>核对逻辑门图形符号的国标版次</strong>（第 7 版教材附录 A 引 2008 版、第 6 版引 1996 版；两版符号有增补）。⚠️ 这是标准<strong>记录页</strong>，全文未免费公开（见 Gaps）——实际查符号请用学生纸书的附录 A/B，本条目只用于确认“该用哪一版国标”。</li>
+</ul>
+<h2>Wisdom (Communities)</h2>
+<ul>
+<li><a href="https://electronics.stackexchange.com/" target="_blank" rel="noopener">Electrical Engineering Stack Exchange（标签 digital-logic / counter）</a><br>一行说明：问<strong>具体电路与波形</strong>的实践问题（“这个异步计数器为什么多计一个脉冲”“这个卡诺图圈法对不对”），回复质量高、能贴上真值表/波形图讨论。英文，但对“排错”类问题比中文论坛有效。学生若不愿进社区，就按本条记录、不推送。</li>
+</ul>
+<h2>Gaps</h2>
+<ul>
+<li><strong>教材版次未确认，且学生没有电子版</strong>。盘问只记到“康华光《电子技术基础·数字部分》”，<strong>没记第几版、哪一年印</strong>；而第 6 版与第 7 版的节号、附录、章节构成都有差异（对照表已落 <code>sources/hep-kanghuaguang-toc-6e-7e.md</code>）。<strong>影响</strong>：大纲与课件里报“第 X 章第 Y 节”存在错位风险。<strong>建议</strong>：第一次讲课时请学生翻纸书目录报一次版次/印次，之后固定用那一版的节号。<strong>没有电子版</strong>＝本科目 <code>reference/</code> 为空（第 0 步无可转换的本地资料，故未派转换子 agent），教材正文只能由模型按知识讲、用官方目录对章节号。</li>
+<li><strong>考研方向没有权威的“统一大纲”可引</strong>。数字电路在多数院校是<strong>招生单位自命题</strong>（不像 408 有统考大纲），同一科目各校参考书与考纲差别很大。本清单只能给到“考研题型组织”的公开辅导书（王淑娟、蔡惟铮那本）。<strong>缺什么</strong>：目标院校当年的自命题科目考试大纲与参考书目。<strong>怎么补</strong>：需学生给出目标院校/专业，从该院校研究生院官网取当年公告（每校每年更新、URL 不稳定，因此不入清单）。</li>
+<li><strong>GB/T 4728.12—2008 全文不可免费获取</strong>。国家数字标准馆只有记录页，推荐性国标全文公开系统未收该部分；网上流传的 PDF 来源不可信。<strong>结论</strong>：逻辑符号一律以学生纸书附录 A/B 为准，不要在这一项上找公开全文。</li>
+<li><strong>TI 数据表正文抓不动</strong>。<code>ti.com/document-viewer</code> 的<strong>分节正文是前端渲染</strong>，抓取只返回整份目录（本次确认：SN74HC138、NE555 均只得 TOC）；<code>ti.com/lit/...pdf</code> 直接返回 <code>application/pdf</code>，本会话取不了。<strong>影响</strong>：<code>sources/</code> 里没有器件功能表原文，只有链接；讲功能表时凭模型知识 + 学生可自行点开的小节锚点。<strong>下游提醒</strong>：<code>image-scout</code> 不要指望从 ti.com 抓图（需 JS），要引脚图请另找可静态抓取的官方页。</li>
+<li><strong>OCW 6.004 的章节正文页抓不到</strong>。<code>c4</code>/<code>c5</code>/<code>c6</code> 页与 <code>syllabus</code> 页都只回导航树 + 课程信息，讲义是 PDF、视频在站内。本次只确认了<strong>章标题与章节结构</strong>，没核实过任何一页的具体讲法。</li>
+<li><strong>两个中文 MOOC 平台（国家高等教育智慧教育平台、icourse163）课程页的章节列表抓不到</strong>（前端渲染，返回空壳）。条目只能当“入口”用，无法做“第几讲对应第几节”的精确映射；需要精确对应时必须人工点开看。</li>
+<li><strong>没有找到可推荐的活跃中文学生社区</strong>。中文讨论集中在文库类与问答站（聚合站、AI 生成内容按本角色规则一律不入清单），知乎类站点抓取受限。<strong>结论</strong>：Wisdom 只给了一条英文 Stack Exchange；“求批改作业”这个需求目前只能由 system 内部的练习评估承担。</li>
+<li><strong>没有公开的“期末往年卷”来源</strong>。本次检索未找到与康华光教材配套、可长期访问的期末真题/模拟卷（校内流传卷与商业题库不在高可信范围内，未收）。<strong>影响</strong>：<code>MISSION.md</code> 里“期末卷上组合逻辑、时序逻辑两类题不丢分”这一条，无法靠外部卷子校准难度。<strong>建议</strong>：由 <code>practice-evaluator</code> 按教材题型自建练习，覆盖度靠课本习题 + 两本官方题解反推（已在上面 Knowledge 里给了入口）。</li>
+</ul>
+  <footer class="lesson-footer">
+    StudyMate · 资源清单 · 本地学习工作区
+  </footer>
+</article>
+
+<script src="../../assets/sayo/sayo.js"></script>
+<script>LearnTheme.wire(document.getElementById('attachment-theme-checkbox'));</script>
+</body>
+</html>

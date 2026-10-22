@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="zh-CN" data-theme="dark">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>资源清单 · 离散数学</title>
+<link rel="stylesheet" href="../../assets/sayo/sayo.css">
+<link rel="stylesheet" href="../../assets/learn-theme.css">
+<link rel="stylesheet" href="assets/style.css">
+<script src="../../assets/learn-theme.js"></script>
+<script>LearnTheme.apply();</script>
+<style>
+.lesson h1 {
+  margin: var(--syo-space-2, 8px) 0 var(--syo-space-4, 16px);
+  font-size: clamp(1.6rem, 3.2vw, 2.25rem);
+  font-weight: 700;
+  line-height: 1.25;
+  letter-spacing: -0.02em;
+  color: var(--syo-fg-default);
+}
+</style>
+</head>
+<body class="lesson-body">
+<nav class="lesson-bar">
+  <a href="index.html">← 返回科目</a>
+  <span>离散数学</span>
+  <span class="lesson-bar__no">资源清单</span>
+  <label class="syo-toggle syo-toggle--theme lesson-bar__toggle" title="切换深浅主题" aria-label="切换深浅主题">
+    <input type="checkbox" id="attachment-theme-checkbox" checked>
+    <span class="syo-toggle-track"></span>
+    <span class="syo-toggle-knob">
+      <svg class="syo-toggle-sun" viewBox="0 0 20 20" fill="none" aria-hidden="true"><circle cx="10" cy="10" r="3.5" stroke="#f57c00" stroke-width="1.5"/><path d="M10 2v2.5M10 15.5V18M2 10h2.5M15.5 10H18M4.34 4.34l1.77 1.77M13.89 13.89l1.77 1.77M4.34 15.66l1.77-1.77M13.89 6.11l1.77-1.77" stroke="#f57c00" stroke-width="1.2" stroke-linecap="round"/></svg>
+      <svg class="syo-toggle-moon" viewBox="0 0 20 20" fill="none" aria-hidden="true"><path d="M16.5 12.5A6 6 0 019 4.5a6 6 0 007.5 8z" stroke="#5c6bc0" stroke-width="1.5" stroke-linejoin="round"/></svg>
+    </span>
+  </label>
+</nav>
+
+<article class="lesson">
+<h1>离散数学 Resources</h1>
+<blockquote><p>定位：<strong>延伸阅读 + 易变内容的核对来源</strong>，不是"知识来源清单"（模型已掌握稳定基础知识）。<br>稳定知识节点可以不在这里留条目；易变/版本相关内容必须在这里有核对过的官方来源。</p><p>本科目盘问结论（决定本清单的取舍）：学生<strong>本学期正在修</strong>，教材是<strong>左孝凌《离散数学》（纸书，无电子版）</strong>；目标是<strong>期末考好 + 当逻辑与图论的长期底座</strong>（后续考研专业课可能用到）；要<strong>能独立使用</strong>（自然语言推理符号化并判有效性、真实场景抽象成图并算出来）；起点是<strong>跟课学过但不成体系、证明题无从下手</strong>；前置四项（集合与映射 / 命题逻辑与真值表 / 排列组合与数学归纳法 / 图的基本概念）自评"基本都忘了"，按"需要先唤醒"处理。<br>明确<strong>不学</strong>：数理逻辑元理论（完备性、紧致性、哥德尔）、高级组合计数（如波利亚计数）、超出考试要求的抽象代数专题。<br>配套项目（会变成实验课）：<strong>关系与图算法工具包</strong>（传递闭包 / 等价类划分 / 最短路 / 最小生成树），用教材例题反向验证，载体 <strong>Python 3.13</strong>；时间弹性、与数字电路共用同一份时间（数字电路优先）。<br>因此本清单的权重是：① 与学生纸书<strong>章号对得上</strong>的入口 ② 能真正把"证明怎么写"教会的方法论 ③ 关系/图与 Python 实验的<strong>官方</strong>文档 ④ 能当"往年卷子"用的题。本次<strong>没有提供本地资料路径、也没有可用的转换工具</strong>，且盘上还没有 <code>reference/*.md</code>，所以本清单<strong>不含 <code>reference/</code> 指针</strong>——主教练若把课件/讲义转换落盘了，请在这里补一条 <code>[Local: …](reference/…)</code>。</p></blockquote>
+<h2>Knowledge</h2>
+<h3>一、与学生纸书（左孝凌）对得上的依据与主入口</h3>
+<ul>
+<li><a href="https://caixuan.aijiaocai.com/textbook/details?textbook_id=395690" target="_blank" rel="noopener">Source: 离散数学 by 左孝凌、李为鑑、刘永才（上海科学技术文献出版社，1982，ISBN 978-7-80513-069-9）· 官方教材条目页（含逐节目录）</a> · 已落盘 <code>sources/zuoxiaoling-discrete-math-toc.md</code><br>一行说明：<strong>学生手上那本书的逐节目录</strong>——五篇九章：第一篇数理逻辑（第一章命题逻辑 1-1～1-9、第二章谓词逻辑 2-1～2-7）、第二篇集合论（第三章集合与关系 3-1～3-12、第四章函数 4-1～4-6）、第三篇代数系统（第五章代数结构 5-1～5-9、第六章格和布尔代数 6-1～6-5）、第四篇图论（第七章图论 7-1～7-8）、第五篇计算机科学中的应用（第八章形式语言与自动机、第九章纠错码初步）。<strong>用途是钉章号</strong>：本科目所有"第三章 3-8 关系的闭包运算""第七章 7-7 树与生成树"这类引用只有这份目录能对上，大纲与讲解必须按它编号。另请注意两处对本科考试很关键：<strong>关系的闭包（3-8）、等价关系与等价类（3-10）、图的矩阵表示（7-3）、树与生成树（7-7）正是配套项目的四个落点</strong>；而<strong>第五篇（第八章形式语言与自动机、第九章纠错码初步）在本科离散数学课上常被略过</strong>（南邮那份按第 1～7 章组织的大纲里就没有这两章），第五章 5-6（置换群与伯恩赛德定理）属于学生明确"超出要求"的部分——但<strong>这两处是否在考纲内，必须以学生本校教学大纲为准，目前没有拿到</strong>（见 Gaps）。</li>
+</ul>
+<ul>
+<li><a href="https://www.icourse163.org/course/detail.htm?cid=1001934005" target="_blank" rel="noopener">Source: 中国大学 MOOC ·《离散数学》整门课（授课大纲 + 参考资料原文）</a> · 已落盘 <code>sources/icourse163-discrete-math-course-outline.md</code><br>一行说明：<strong>本科目最该先用的一条</strong>。这门课的参考资料第一条就写着"《离散数学》，左孝凌、李为鑑、刘永才，上海科学技术文献出版社，1982"——<strong>它讲的就是学生手上那本书</strong>。授课大纲按"数理逻辑／集合论／组合数学／代数系统／图论"五篇九章切开（第三章集合论初步、第四章二元关系、第五章函数、第六章组合数学、第七章代数结构、第八章格和布尔代数、第九章图论），与左版是同一套骨架、只做了合并。免费视频 + 每两周两类课后练习（在线选择/是非/填空 <strong>+ 计算、证明题</strong>）+ 期末一周一次 <strong>120 分钟在线期末测验</strong>。用途：上课没跟上就按同一章号补一遍；也是<strong>唯一免费给到"证明题练习"的入口</strong>（学生最缺的正是这个）。注意该页是前端渲染，视频列表与章节树抓不到，只能拿到大纲与参考资料（见下方"抓不动"）。</li>
+</ul>
+<ul>
+<li><a href="https://xuanshu.hep.com.cn/front/book/findBookDetails?bookId=658daaba74ce561611bd9a4f" target="_blank" rel="noopener">Book: 离散数学（第3版）by 屈婉玲、曹永知、耿素云、张立昂（高等教育出版社，2024，ISBN 978-7-04-061620-0）· 出版社官方图书页（含逐节目录）</a> · 已落盘 <code>sources/quwanling-discrete-math-3e-toc.md</code><br>一行说明：国内计算机专业<strong>用得最多的同课教材</strong>（“十一五”国家规划教材，508 页），用途是<strong>换讲法</strong>：左版把整个图论压进一章（第七章 7-1～7-8），这本拆成第 5 章图的基本概念／第 6 章欧拉图与哈密顿图／第 7 章树／第 8 章平面图／第 9 章支配集覆盖集独立集匹配与着色，原本挤在一章里的概念在这里能一块一块讲清。对应关系可直接查：左版 3-8 关系的闭包 ≈ 这本 2.5；左版 3-10 等价关系与等价类 ≈ 2.6；左版 3-12 序关系 ≈ 2.7 偏序关系；左版 7-4 欧拉图与汉密尔顿图 ≈ 6.1/6.2；左版 7-7 树与生成树 ≈ 7.1/7.2 生成树；<strong>"最短路"在左版第七章的八节标题里没有独立小节，这本给了独立一节 6.3 最短路问题</strong>。<strong>这三处正是配套项目（传递闭包／等价类划分／最短路／最小生成树）要算的东西</strong>。另注：第 3 版<strong>章节顺序与第 2 版不同</strong>（出版社原文："调整了章节顺序"），跨书引用小节号时要认版次。</li>
+</ul>
+<ul>
+<li><a href="https://www.aijiaocai.com/textbook/details?textbook_id=715745" target="_blank" rel="noopener">Book: 离散数学及其应用（原书第8版·本科教学版）by Kenneth H. Rosen，徐六通、杨娟等译（机械工业出版社，2019，ISBN 978-7-111-64217-6）· 官方教材条目页（含逐节目录）</a> · 已落盘 <code>sources/rosen-discrete-math-8e-cn-toc.md</code><br>一行说明：全球数百所大学采用的经典教材（本科教学版保留了逻辑和证明／集合、函数、序列、求和与矩阵／计数／关系／图／树／布尔代数八章）。<strong>两个不可替代的用途</strong>：其一，第 1.6 推理规则、<strong>1.7 证明导论</strong>（直接证明法／反证法／归谬证明法）、<strong>1.8 证明的方法和策略</strong>（穷举与分情形、存在性、唯一性、找反例）是几本候选教材里把"证明怎么写"讲得最系统的两节，直接对症学生"证明题无从下手"；其二，<strong>第 5.4 关系的闭包</strong>（传递闭包、<strong>沃舍尔算法</strong>）、<strong>第 6.6 最短通路问题</strong>、<strong>第 7.5 最小生成树</strong>、<strong>第 8 章布尔代数（8.1.3 布尔代数恒等式、8.4.2 卡诺图）</strong>——最后一条与学生的数字电路同一套恒等式与卡诺图，两门课可以互相借力。注意：本书<strong>奇数编号练习答案在"华章网站 www.hzbook.com"在线下载</strong>，出版社页没有公开直链。</li>
+</ul>
+<ul>
+<li><a href="reference/01-左孝凌课件1.md">Local: 左孝凌《离散数学》课件 1（老师课件，本地转化稿）</a><br>一行说明：学生提供的老师课件（原 <code>.ppt</code> 由 LibreOffice 转 pptx 后逐页提取文字与表格，<strong>图形与公式图片未提取</strong>，看图仍要回原课件）。用途：确认老师实际讲到哪一节、课堂用词与板书顺序；<code>reference/*.md</code> 会由科目主页自动编译成 HTML 挂出来，学生可点开。</li>
+</ul>
+<ul>
+<li><a href="reference/02-左孝凌课件2.md">Local: 左孝凌《离散数学》课件 2（老师课件，本地转化稿）</a><br>一行说明：同一套课件的第二份（共 174 + 84 = 258 页）。用途同上；<strong>以最后一份课件的最后一页判断老师当前进度</strong>，比按教材章节猜更准。</li>
+</ul>
+<h3>二、专项补齐"证明题无从下手"</h3>
+<ul>
+<li><a href="https://richardhammack.github.io/BookOfProof/" target="_blank" rel="noopener">Source: Book of Proof（第 3 版，Richard Hammack，作者官方免费 PDF）· 含逐节目录</a> · PDF 直链 &lt;https://richardhammack.github.io/BookOfProof/Main.pdf&gt; · 已落盘 <code>sources/book-of-proof-3e-toc.md</code><br>一行说明：<strong>专门教"证明的写法"的整本书</strong>，被美国数学研究所（AIM）Open Textbook Initiative 收录，作者免费发 PDF（CC BY-NC-ND）。结构正对学生这条路径：第 2 章 Logic（<strong>2.9 把英文翻成符号逻辑</strong>、2.11 逻辑推理）→ 第 4 章直接证明、5 章逆否、6 章反证、7 章充要条件与存在唯一性、8 章<strong>集合相关的证明</strong>（证 a∈A、A⊆B、A=B）、9 章<strong>反驳</strong>（举反例）、10 章归纳法、11 章关系（11.3 等价关系 / 11.4 等价类与划分——对左版 3-10）、14 章基数（对左版 4-4～4-6）。用途：当"要写证明但不知道第一句该写什么"时，按它的章序练；<strong>它是英文的</strong>，只在学生愿意读英文时整章用，否则只挑 8.1～8.3（证集合相等）这类短节对照。</li>
+</ul>
+<ul>
+<li><a href="https://people.csail.mit.edu/meyer/mcs.pdf" target="_blank" rel="noopener">Book: Mathematics for Computer Science（Eric Lehman / F. Thomson Leighton / Albert R. Meyer，MIT 6.042 课程的免费公开教材，PDF）</a><br>一行说明：MIT 计算机专业数学基础课的整本官方教材，<strong>免费公开</strong>，风格与罗森、屈婉玲都不同（更像"从证明与反例出发"）。用途：给"逻辑与图论当长期底座"这条要求提供第二个权威视角，也是考研专业课参考书的常见风格；证明写得磕磕绊绊时换它读同一主题。<strong>注意：本机抓取工具不支持 <code>application/pdf</code>，这本书的正文没有落盘</strong>，只能在线看或学生自己下载（已核实该 URL 返回的是 PDF）。</li>
+</ul>
+<h3>三、能当"往年卷子 / 题册"用的入口（学生没有习题册）</h3>
+<ul>
+<li><a href="https://github.com/linyuqi9/NJUPT_CS_Free_Exams" target="_blank" rel="noopener">Source: 南京邮电大学计算机科学与技术专业历年考试资料（GitHub 仓库 linyuqi9/NJUPT_CS_Free_Exams，<code>大二上/离散数学</code> 目录）</a><br>一行说明：公开的整包课程资料，离散数学目录下有：<strong>《离散数学》教学大纲（B0302021S-2016 版）</strong>、<strong>离散数学实验教学大纲</strong>、<strong>2015-2016-1 B 卷</strong>、<strong>2016-2017-1 A 卷</strong>、<strong>"离散2017-考试复习指南"</strong>、<strong>习题课 PPT</strong>（第 1 章作业、第 2 章作业、第 3 章作业(1)(2)、第 5-6 章作业、第 7 章作业、1617 总复习-习题课、习题课(图论与代数系统)-补充、第 1-2 次作业答案）。<strong>用途：这是本科目目前能找到的最接近"往年卷子"的东西</strong>——有整卷、有按章的作业与答案、有考前复习指南。<strong>两点限制必须记住</strong>：① 它是<strong>南邮</strong>的卷子，不是学生本校的；② 它按"第 1～7 章"编号且<strong>没有第 8、9 章</strong>的材料，与左版"1 命题逻辑／2 谓词逻辑／3 集合与关系／4 函数／5 代数结构／6 格和布尔代数／7 图论"的章号吻合，说明这份大纲讲的是左孝凌这一系的教材——但<strong>大纲文件是 <code>.doc</code>，本机没有转换工具，未能逐字核对教材名</strong>，所以只能当"题型与难度参照"，不能当"你们学校的卷子"。</li>
+</ul>
+<h3>四、易变内容的官方核对来源（Python 3.13 / NetworkX）</h3>
+<blockquote><p>这一节对应配套项目"关系与图算法工具包"。数学结论不会变，<strong>会变的是 Python 与库的 API</strong>，所以下面每条都指明核对哪一处版本差异。</p></blockquote>
+<ul>
+<li><a href="https://docs.python.org/3.13/library/graphlib.html" target="_blank" rel="noopener">Source: Python 3.13 标准库 <code>graphlib</code> — TopologicalSorter（官方文档）</a> · 已落盘 <code>sources/python-313-graphlib.md</code><br>一行说明：<strong>实验课的第一块砖可以不装任何东西</strong>——标准库自带拓扑排序/环检测（<code>TopologicalSorter</code>、<code>CycleError</code>，自 3.9 起提供）。用途：把"偏序关系 → 哈塞图 → 拓扑排序"和"关系的闭包 → DAG"这两条线落到可运行代码上；文档原文那句 "a complete topological ordering is possible <strong>if and only if</strong> the graph has no directed cycles" 正好是可以让学生反向验证的教材级结论。<strong>核对点</strong>：学生本机是 Python 3.13（本页为 3.13.16 文档），请按 <code>docs.python.org/3.13/</code> 而不是 <code>/3/</code> 取文档。</li>
+</ul>
+<ul>
+<li><a href="https://docs.python.org/3.13/whatsnew/3.13.html" target="_blank" rel="noopener">Doc: Python 3.13 "What's New"（官方版本变更说明）</a><br>一行说明：<strong>核对版本差异专用</strong>。用途：实验课代码要长期用，凡是从网上抄的片段，先在这一页确认它在 3.13 上还能跑（3.12 起 <code>distutils</code> 已移除、若干"最后警告"的模块在 3.13 被移除，旧教程里的写法会直接 ImportError）。也是"标准库现在推荐怎么写"的唯一权威出口。</li>
+</ul>
+<ul>
+<li><a href="https://networkx.org/documentation/stable/reference/algorithms/index.html" target="_blank" rel="noopener">Doc: NetworkX 3.7 官方文档 · Algorithms 索引</a><br>一行说明：配套项目和"用教材例题反向验证"这件事的<strong>对照答案来源</strong>。可直接查到的当前 API：<code>networkx.algorithms.dag.transitive_closure</code>（传递闭包，对左版 3-8）、<code>networkx.algorithms.minors.equivalence_classes</code>（等价类，对 3-10）、<code>algorithms.shortest_paths</code>（最短路，对屈婉玲 6.3／罗森 6.6；左版无独立小节）、<code>algorithms.tree.mst</code>（最小生成树，对左版 7-7／罗森 7.5）、<code>algorithms.dag.topological_sort</code>（对偏序）。<strong>核对点</strong>：文档站默认跟 <code>stable</code>（当前 3.7），与 2.x 相比函数位置与参数有变动（例如 <code>transitive_closure</code> 在 <code>dag</code> 下、<code>equivalence_classes</code> 挂在 <code>minors</code> 下），照 2.x 博客抄会报错。</li>
+</ul>
+<ul>
+<li><a href="https://networkx.org/documentation/stable/install.html" target="_blank" rel="noopener">Doc: NetworkX 官方安装页</a><br>一行说明：<strong>先核对再决定用不用</strong>。本角色不装任何东西、也不改环境，而本机是否能 import networkx 无法核实（本会话 shell 不可用，见 Gaps）；因此实验课<strong>默认走标准库</strong>（<code>graphlib</code> + 邻接表 <code>dict</code> + <code>heapq</code> 手写 Dijkstra + 三行 Warshall + 并查集），networkx 只当"对照答案"的可选依赖。要装的话按这一页的官方命令，由学生/主教练决定。</li>
+</ul>
+<h2>Wisdom (Communities)</h2>
+<ul>
+<li>本科目<strong>未收录任何社区</strong>。中文离散数学的讨论主要散在文库类、问答站与聚合站，按本角色规则（低质量博客、聚合站、AI 生成内容不进清单）一律不收；学生目前也不需要"求批改"的渠道——批改由 practice-evaluator 做。原因另记在下方 Gaps。</li>
+</ul>
+<h2>Gaps</h2>
+<ul>
+<li><strong>左孝凌版没有官方配套习题解答</strong>。出版社（上海科学技术文献出版社）侧查不到任何配套资源页，市面上流传的"左孝凌《离散数学》课后习题答案"基本是文库站/聚合站转贴（含大量疑似 AI 生成或公式错位的稿子），按规则不进清单。<strong>替代方案</strong>：中国大学 MOOC 那门课的课后"计算、证明题"+ 南邮那套按章作业与答案 + 罗森第 1.7/1.8 章末练习（奇数编号答案在华章网站）。若后面确有需要，请主教练决定是否允许学生<strong>拍照纸书习题</strong>交给讲解角色处理——那是唯一不依赖外部来源的路。</li>
+<li><strong>学生本校的教学大纲/考试范围没拿到</strong>，而这直接决定"学哪些、不学哪些"：左版第五篇（第八章形式语言与自动机、第九章纠错码初步）与第五章 5-6（置换群与伯恩赛德定理）<strong>是否在考纲内无法判断</strong>。南邮那份大纲按第 1～7 章组织（无第八、九章），只能当旁证。<strong>建议主教练第一节课就让学生拍自己的教学大纲或课程表</strong>。</li>
+<li><strong>前置四项（集合与映射 / 命题逻辑与真值表 / 排列组合与数学归纳法 / 图的基本概念）没有"针对这门课的一次性唤醒"材料</strong>。各平台上的都是整门课（高等数学、线性代数）或整本教材，不是"离散数学用得到的那几条结论"的速查。本清单不为它凑条目——这一块属于<strong>稳定知识</strong>，建议由讲解角色内部产出"四张速查卡"（映射的满/单、真值表与常见等值式、两个计数原理与归纳法模板、图的基本术语）；英文对照可挑 Book of Proof 第 1～3 章。</li>
+<li><strong>左孝凌那本书没有电子版，教材正文仍以纸书为准</strong>（本角色按规格只在"总控给了本地资料路径 + 转换工具"时才产 <code>reference/</code>，这次两者都没给到）。我在盘上看到 <code>.stage/ppt-convert/</code> 下有两份 PPTX（<code>k1.pptx</code>、<code>k2.pptx</code>）和一个抽取脚本 <code>extract_pptx.py</code>，该转换已由主教练完成并入库（见上面两条 <code>[Local: …]</code>）；后续如需再补课件，请在这里补 <code>[Local: …](reference/…)</code> 条目并把用途写上（是讲义就写"确认老师讲到哪一节"，是答案就别当教材引用）。否则本科目所有章节引用只能以<strong>学生纸书的页码/节号</strong>为准，讲解要用原文时得由学生拍照。</li>
+<li><strong>本会话没有 shell 可用</strong>（<code>pwsh</code> 在默认沙箱下以 <code>0xC0000142</code> 直接退出，提权重试被拒），所以：<code>check_handoff.py</code> 没跑、文件的 sha256 没算、<code>networkx</code> 是否已装无法核实、任何 <code>.doc/.pdf</code> 都无法转换。这些不是内容缺口，但会影响下游（详见交付报告）。</li>
+<li><strong>抓不动的站点</strong>（下游 <code>image-scout</code> 请据此省时间）：<code>国家高等教育智慧教育平台</code>（higher.smartedu.cn）的课程页是前端渲染，抓下来只有"课程 - 国家高等教育智慧教育平台"一行；<code>北京大学精品课程站</code>（jpk.pku.edu.cn/course/lssx/，屈婉玲那门国家级精品课）是 GBK 编码，抓下来整页乱码，只能确认栏目结构（课程简介／师资队伍／教学大纲／授课教案／指定教材／参考书目／教学录像）；<code>icourse163</code> 课程页的<strong>视频列表与章节树抓不到</strong>（大纲与参考资料能抓到，已落盘）；<strong>所有 PDF 都抓不动</strong>（本机 web 抓取不支持 <code>application/pdf</code>），所以罗森/Book of Proof/MCS 的正文都没落盘，只有目录页或入口。</li>
+<li><strong>南邮那套真题是否用的左孝凌教材未能核实</strong>（其教学大纲是 <code>.doc</code>，本机无转换工具），且它按章号只覆盖到第 7 章。作为"题型参照"可用，作为"学生本校往年卷"不可用。</li>
+</ul>
+  <footer class="lesson-footer">
+    StudyMate · 资源清单 · 本地学习工作区
+  </footer>
+</article>
+
+<script src="../../assets/sayo/sayo.js"></script>
+<script>LearnTheme.wire(document.getElementById('attachment-theme-checkbox'));</script>
+</body>
+</html>

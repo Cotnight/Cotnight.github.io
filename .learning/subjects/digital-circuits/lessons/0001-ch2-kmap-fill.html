@@ -1,0 +1,477 @@
+<!DOCTYPE html>
+<html lang="zh-CN" data-theme="dark">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>卡诺图：真值表排成的方格 · 数字电路</title>
+
+<!-- 共享层在 .learning/assets/，课件在 .learning/subjects/<slug>/lessons/ 下，所以是 ../../../assets/ -->
+<link rel="stylesheet" href="../../../assets/sayo/sayo.css">
+<link rel="stylesheet" href="../../../assets/learn-theme.css">
+<link rel="stylesheet" href="../assets/style.css">
+
+<!-- 主题要在首帧前应用，避免闪白/闪黑 -->
+<script src="../../../assets/learn-theme.js"></script>
+<script>LearnTheme.apply();</script>
+</head>
+
+<body class="lesson-body">
+
+<nav class="lesson-bar">
+  <a href="../index.html">← 返回课程</a>
+  <span>数字电路</span>
+  <span class="lesson-bar__no">0001</span>
+  <!-- 课件页自带主题开关：学生从文件管理器直接打开课件时也能切暗色 -->
+  <label class="syo-toggle syo-toggle--theme lesson-bar__toggle" title="切换深浅主题" aria-label="切换深浅主题">
+    <input type="checkbox" id="lesson-theme-checkbox" checked>
+    <span class="syo-toggle-track"></span>
+    <span class="syo-toggle-knob">
+      <svg class="syo-toggle-sun" viewBox="0 0 20 20" fill="none" aria-hidden="true"><circle cx="10" cy="10" r="3.5" stroke="#f57c00" stroke-width="1.5"/><path d="M10 2v2.5M10 15.5V18M2 10h2.5M15.5 10H18M4.34 4.34l1.77 1.77M13.89 13.89l1.77 1.77M4.34 15.66l1.77-1.77M13.89 6.11l1.77-1.77" stroke="#f57c00" stroke-width="1.2" stroke-linecap="round"/></svg>
+      <svg class="syo-toggle-moon" viewBox="0 0 20 20" fill="none" aria-hidden="true"><path d="M16.5 12.5A6 6 0 019 4.5a6 6 0 007.5 8z" stroke="#5c6bc0" stroke-width="1.5" stroke-linejoin="round"/></svg>
+    </span>
+  </label>
+</nav>
+
+<article class="lesson">
+
+  <header class="lesson-header">
+    <span class="lesson-header__eyebrow">0001 · 卡诺图：真值表排成的方格</span>
+    <h1>卡诺图：真值表排成的方格</h1>
+    <p class="lesson-goal"><b>本节目标：</b>能把真值表或表达式按正确的格位填进卡诺图，三变量、四变量都做到逐格无误。</p>
+  </header>
+
+  <!-- ── 正文：渲染器按内容文件（lessons/<序号>-<节点id>.md）产出，块词汇见 docs/规范/课件内容格式.md ── -->
+
+  <h2>先补齐两块底子</h2>
+
+  <p>本课直接进入卡诺图。填图要用到的两件工具——真值表的列法与最小项编号——在这里一次性补到够用为止；布尔代数的定律与化简规则不在这里展开，用到时随讲随给。</p>
+
+  <h3>真值表按二进制数递增列行</h3>
+
+  <p><span class="math-inline">n</span> 个变量的取值组合共有 <span class="math-inline">2^n</span> 种。列真值表时先把变量的次序排定（例如 <span class="math-inline">A</span>、<span class="math-inline">B</span>、<span class="math-inline">C</span>），行按这几个变量接成的二进制数由小到大排：二变量是 00、01、10、11，三变量是 000、001、010、011、100、101、110、111。行序一旦固定，行号与取值就一一对应，最小项编号与卡诺图格位才不会错位。</p>
+
+  <h3>最小项编号：原变量记 1，反变量记 0</h3>
+
+  <p><span class="math-inline">n</span> 个变量的一个乘积项中，每个变量恰好出现一次（取原变量或反变量），这样的乘积项称为<b>最小项</b>。把乘积项里的原变量记 1、反变量记 0，按变量次序读成一个二进制数，它的十进制值就是最小项的编号，记作 <span class="math-inline">m_i</span>。</p>
+
+  <ul>
+    <li><span class="math-inline">A\bar B C</span> 的取值组合是 101，编号为 <span class="math-inline">m_5</span>。</li>
+    <li><span class="math-inline">\bar A\bar B\bar C</span> 是 000，编号为 <span class="math-inline">m_0</span>。</li>
+    <li><span class="math-inline">\bar A B\bar C</span> 是 010，编号为 <span class="math-inline">m_2</span>。</li>
+  </ul>
+
+  <p>反过来读同样常用：<span class="math-inline">m_5</span> 指的就是 <span class="math-inline">A=1</span>、<span class="math-inline">B=0</span>、<span class="math-inline">C=1</span> 这一组取值，该最小项在这组取值上为 1，在其余组合上全为 0。函数写成 <span class="math-inline">\sum m(3,5,6,7)</span>，表示这几个最小项相或。</p>
+
+  <h2>为什么排成方格</h2>
+
+  <p>真值表把 <span class="math-inline">2^n</span> 种组合排成一列。三变量的真值表里，000 与 100 只差第一个变量，两行分别落在第 1 行与第 5 行；000 与 001 只差第三个变量，两行挨着。哪些行可以合并，只看它们是否只差一个变量，与两行在表里隔多远无关，所以单看真值表只能逐对去比。</p>
+
+  <p>只差一个变量的两项可以合并，依据是 <span class="math-inline">A+\bar A=1</span>。设这两项的其余变量取值为 <span class="math-inline">X</span>，则</p>
+
+  <div class="math-block">X\cdot A+X\cdot\bar A=X(A+\bar A)=X</div>
+
+  <p>合并后 <span class="math-inline">X</span> 比原来少一个变量；三变量的两项若只差 <span class="math-inline">A</span>，合并一次就降到两个变量。</p>
+
+  <p>卡诺图的做法是把 <span class="math-inline">2^n</span> 个最小项按"相邻两格只差一个变量"铺成方格：每格代表一个最小项，格内填该最小项的值，可以合并的格子因此在图上相邻，扫一遍图就能找全。这种方格图 1953 年由贝尔实验室的卡诺（Maurice Karnaugh）提出，称为<b>卡诺图</b>。</p>
+
+  <h2>行列为什么是格雷码</h2>
+
+  <p>卡诺图的行、列各标一组变量的取值组合，那组有几个变量，标号就是几位。三变量图常把 <span class="math-inline">A</span> 放在行、<span class="math-inline">BC</span> 放在列；四变量图把 <span class="math-inline">AB</span> 放行、<span class="math-inline">CD</span> 放列。</p>
+
+  <p>标号序列要满足一条：轴上相邻的两个标号只差一位。图上的两格相邻，当且仅当它们对应的取值只差一个变量，而这件事完全由标号序列决定。一个变量的轴只有 0 与 1，天然满足。两个变量的轴要按 00、01、11、10 排：00 与 01 只差最低位，01 与 11 只差最高位，11 与 10 又只差最低位，末位的 10 绕回开头的 00 也只差最高位。这种相邻两个码只差一位的编码顺序以贝尔实验室的格雷（Frank Gray）命名，称为格雷码。</p>
+
+  <p>若按二进制顺序排成 00、01、10、11，01 与 10 相邻却差两位，两格之间找不到可以消去的公共变量；00 与 11 落在轴的两端，按格雷码本该相邻，却隔了整行。</p>
+
+  <div class="lesson-note">
+    <b>两端也是相邻的</b>
+    <p>按格雷码排，左右两端、上下两端同样只差一位：列标 10 与 00 在图上分处两端，取值只差最高位。这一条在下一课圈组时要用，填图这一步还不依赖它。</p>
+  </div>
+
+  <h2>方格与最小项对应</h2>
+
+  <p>每一格的位置由行标号与列标号共同确定：把两个标号接成一个二进制数，它的十进制值就是这一格的最小项编号。三变量图里行为 <span class="math-inline">A</span>、列为 <span class="math-inline">BC</span>，<span class="math-inline">A=0</span> 且 <span class="math-inline">BC=01</span> 的那一格是 001，即 <span class="math-inline">m_1</span>。</p>
+
+  <p>三变量图是 2 行 4 列，四变量图是 4 行 4 列。下面两张图把格内编号直接写了出来，填图时对着编号找位置。</p>
+
+  <figure class="lesson-figure lesson-figure--inline" role="img" aria-label="三变量卡诺图，行标 A 取 0 与 1，列标 BC 按 00、01、11、10 排列，八格内依次标出 m0 至 m7 的编号">
+<svg viewBox="0 0 250 120" role="img" aria-hidden="true">
+  <rect x="4" y="6" width="230" height="82" fill="none" stroke="currentColor" stroke-width="1"/>
+  <path d="M34 6V88" stroke="currentColor" stroke-width="1" fill="none"/>
+  <path d="M84 6V88" stroke="currentColor" stroke-width="1" fill="none"/>
+  <path d="M134 6V88" stroke="currentColor" stroke-width="1" fill="none"/>
+  <path d="M184 6V88" stroke="currentColor" stroke-width="1" fill="none"/>
+  <path d="M4 28H234" stroke="currentColor" stroke-width="1" fill="none"/>
+  <path d="M4 58H234" stroke="currentColor" stroke-width="1" fill="none"/>
+  <path d="M4 28L34 6" stroke="currentColor" stroke-width="1" fill="none"/>
+  <text x="9" y="17" font-size="8" fill="currentColor">A</text>
+  <text x="19" y="26" font-size="8" fill="currentColor">BC</text>
+  <text x="59" y="21" font-size="9" text-anchor="middle" fill="currentColor">00</text>
+  <text x="109" y="21" font-size="9" text-anchor="middle" fill="currentColor">01</text>
+  <text x="159" y="21" font-size="9" text-anchor="middle" fill="currentColor">11</text>
+  <text x="209" y="21" font-size="9" text-anchor="middle" fill="currentColor">10</text>
+  <text x="19" y="47" font-size="9" text-anchor="middle" fill="currentColor">0</text>
+  <text x="19" y="77" font-size="9" text-anchor="middle" fill="currentColor">1</text>
+  <text x="59" y="47" font-size="9" text-anchor="middle" fill="currentColor">m0</text>
+  <text x="109" y="47" font-size="9" text-anchor="middle" fill="currentColor">m1</text>
+  <text x="159" y="47" font-size="9" text-anchor="middle" fill="currentColor">m3</text>
+  <text x="209" y="47" font-size="9" text-anchor="middle" fill="currentColor">m2</text>
+  <text x="59" y="77" font-size="9" text-anchor="middle" fill="currentColor">m4</text>
+  <text x="109" y="77" font-size="9" text-anchor="middle" fill="currentColor">m5</text>
+  <text x="159" y="77" font-size="9" text-anchor="middle" fill="currentColor">m7</text>
+  <text x="209" y="77" font-size="9" text-anchor="middle" fill="currentColor">m6</text>
+</svg>
+    <figcaption>图 1 · 三变量卡诺图：2 行 4 列，格内是最小项编号</figcaption>
+  </figure>
+
+  <p>三变量图的四列依次是 <span class="math-inline">BC=00</span>、01、11、10，两行依次是 <span class="math-inline">A=0</span>、1。</p>
+
+  <figure class="lesson-figure lesson-figure--inline" role="img" aria-label="四变量卡诺图，行标 AB 与列标 CD 都按 00、01、11、10 排列，十六格内依次标出 m0 至 m15 的编号">
+<svg viewBox="0 0 250 190" role="img" aria-hidden="true">
+  <rect x="4" y="6" width="230" height="160" fill="none" stroke="currentColor" stroke-width="1"/>
+  <path d="M34 6V166" stroke="currentColor" stroke-width="1" fill="none"/>
+  <path d="M84 6V166" stroke="currentColor" stroke-width="1" fill="none"/>
+  <path d="M134 6V166" stroke="currentColor" stroke-width="1" fill="none"/>
+  <path d="M184 6V166" stroke="currentColor" stroke-width="1" fill="none"/>
+  <path d="M4 30H234" stroke="currentColor" stroke-width="1" fill="none"/>
+  <path d="M4 64H234" stroke="currentColor" stroke-width="1" fill="none"/>
+  <path d="M4 98H234" stroke="currentColor" stroke-width="1" fill="none"/>
+  <path d="M4 132H234" stroke="currentColor" stroke-width="1" fill="none"/>
+  <path d="M4 30L34 6" stroke="currentColor" stroke-width="1" fill="none"/>
+  <text x="6" y="16" font-size="8" fill="currentColor">AB</text>
+  <text x="18" y="28" font-size="8" fill="currentColor">CD</text>
+  <text x="59" y="23" font-size="9" text-anchor="middle" fill="currentColor">00</text>
+  <text x="109" y="23" font-size="9" text-anchor="middle" fill="currentColor">01</text>
+  <text x="159" y="23" font-size="9" text-anchor="middle" fill="currentColor">11</text>
+  <text x="209" y="23" font-size="9" text-anchor="middle" fill="currentColor">10</text>
+  <text x="19" y="51" font-size="9" text-anchor="middle" fill="currentColor">00</text>
+  <text x="19" y="85" font-size="9" text-anchor="middle" fill="currentColor">01</text>
+  <text x="19" y="119" font-size="9" text-anchor="middle" fill="currentColor">11</text>
+  <text x="19" y="153" font-size="9" text-anchor="middle" fill="currentColor">10</text>
+  <text x="59" y="51" font-size="9" text-anchor="middle" fill="currentColor">m0</text>
+  <text x="109" y="51" font-size="9" text-anchor="middle" fill="currentColor">m1</text>
+  <text x="159" y="51" font-size="9" text-anchor="middle" fill="currentColor">m3</text>
+  <text x="209" y="51" font-size="9" text-anchor="middle" fill="currentColor">m2</text>
+  <text x="59" y="85" font-size="9" text-anchor="middle" fill="currentColor">m4</text>
+  <text x="109" y="85" font-size="9" text-anchor="middle" fill="currentColor">m5</text>
+  <text x="159" y="85" font-size="9" text-anchor="middle" fill="currentColor">m7</text>
+  <text x="209" y="85" font-size="9" text-anchor="middle" fill="currentColor">m6</text>
+  <text x="59" y="119" font-size="9" text-anchor="middle" fill="currentColor">m12</text>
+  <text x="109" y="119" font-size="9" text-anchor="middle" fill="currentColor">m13</text>
+  <text x="159" y="119" font-size="9" text-anchor="middle" fill="currentColor">m15</text>
+  <text x="209" y="119" font-size="9" text-anchor="middle" fill="currentColor">m14</text>
+  <text x="59" y="153" font-size="9" text-anchor="middle" fill="currentColor">m8</text>
+  <text x="109" y="153" font-size="9" text-anchor="middle" fill="currentColor">m9</text>
+  <text x="159" y="153" font-size="9" text-anchor="middle" fill="currentColor">m11</text>
+  <text x="209" y="153" font-size="9" text-anchor="middle" fill="currentColor">m10</text>
+</svg>
+    <figcaption>图 2 · 四变量卡诺图：4 行 4 列，行标 AB、列标 CD</figcaption>
+  </figure>
+
+  <p>四变量图的四行依次是 <span class="math-inline">AB=00</span>、01、11、10，四列依次是 <span class="math-inline">CD=00</span>、01、11、10。两个轴都用格雷码，所以每一格与它上下左右的邻居都只差一个变量。</p>
+
+  <div class="quiz" data-quiz='[
+  {
+    "q": "数字钟的分频级是三位二进制计数器，\n输出 $Q_2Q_1Q_0$，计数值到 6、7 时 $T=1$。\n下图是 $T$ 的卡诺图（行标在前、列标在后）：\n\n```text\nQ2\\Q1Q0  00 01 11 10\n   0      0  0  0  0\n   1      0  0  1  1\n```\n\n某同学把填 1 的两格读成 $\\sum m(5,7)$。\n正确的是哪一个？",
+    "opts": [
+      "$\\sum m(6,7)$：行标接列标，110 与 111",
+      "$\\sum m(2,3)$：按格子从左往右数第 3、4 格",
+      "$\\sum m(5,7)$：列标接行标，101 与 111",
+      "$\\sum m(14,15)$：把三位编号补成四位再读"
+    ],
+    "ans": 0,
+    "why": "一格的编号 = 行标接列标。\n行标 1 接列标 11 得 111（$m_7$），\n接 10 得 110（$m_6$）。\n把列标挪到行标前面，才会读成 101、111。"
+  }
+]'></div>
+
+  <h2>从真值表填图</h2>
+
+  <p>真值表与卡诺图记录的是同一份信息，填图就是把每一行的取值抄到对应的格子里：读一行的变量取值，写成最小项编号，找到编号相同的那一格，把这行的输出值填进去。输出为 0 的格填 0，也有人留空，图上的空位按 0 读。</p>
+
+  <p>以三变量的多数表决为例：三台设备各有启动开关 <span class="math-inline">A</span>、<span class="math-inline">B</span>、<span class="math-inline">C</span>，任意两台及以上启动时报警输出 <span class="math-inline">Y=1</span>。真值表与填好的卡诺图如下。</p>
+
+  <figure class="lesson-figure lesson-figure--inline" role="img" aria-label="左边是三变量真值表，八行列出 A、B、C 的取值、输出 Y 与最小项编号；右边是同一函数填好的卡诺图，四格填 1、四格填 0">
+<svg viewBox="0 0 380 180" role="img" aria-hidden="true">
+  <rect x="6" y="8" width="112" height="152" fill="none" stroke="currentColor" stroke-width="1"/>
+  <path d="M62 8V160" stroke="currentColor" stroke-width="1" fill="none"/>
+  <path d="M86 8V160" stroke="currentColor" stroke-width="1" fill="none"/>
+  <path d="M6 24H118" stroke="currentColor" stroke-width="1" fill="none"/>
+  <path d="M6 41H118" stroke="currentColor" stroke-width="1" fill="none"/>
+  <path d="M6 58H118" stroke="currentColor" stroke-width="1" fill="none"/>
+  <path d="M6 75H118" stroke="currentColor" stroke-width="1" fill="none"/>
+  <path d="M6 92H118" stroke="currentColor" stroke-width="1" fill="none"/>
+  <path d="M6 109H118" stroke="currentColor" stroke-width="1" fill="none"/>
+  <path d="M6 126H118" stroke="currentColor" stroke-width="1" fill="none"/>
+  <path d="M6 143H118" stroke="currentColor" stroke-width="1" fill="none"/>
+  <text x="34" y="20" font-size="9" text-anchor="middle" fill="currentColor">ABC</text>
+  <text x="74" y="20" font-size="9" text-anchor="middle" fill="currentColor">Y</text>
+  <text x="102" y="20" font-size="9" text-anchor="middle" fill="currentColor">编号</text>
+  <text x="34" y="36" font-size="9" text-anchor="middle" fill="currentColor">000</text>
+  <text x="74" y="36" font-size="9" text-anchor="middle" fill="currentColor">0</text>
+  <text x="102" y="36" font-size="9" text-anchor="middle" fill="currentColor">m0</text>
+  <text x="34" y="53" font-size="9" text-anchor="middle" fill="currentColor">001</text>
+  <text x="74" y="53" font-size="9" text-anchor="middle" fill="currentColor">0</text>
+  <text x="102" y="53" font-size="9" text-anchor="middle" fill="currentColor">m1</text>
+  <text x="34" y="70" font-size="9" text-anchor="middle" fill="currentColor">010</text>
+  <text x="74" y="70" font-size="9" text-anchor="middle" fill="currentColor">0</text>
+  <text x="102" y="70" font-size="9" text-anchor="middle" fill="currentColor">m2</text>
+  <text x="34" y="87" font-size="9" text-anchor="middle" fill="currentColor">011</text>
+  <text x="74" y="87" font-size="9" text-anchor="middle" fill="currentColor">1</text>
+  <text x="102" y="87" font-size="9" text-anchor="middle" fill="currentColor">m3</text>
+  <text x="34" y="104" font-size="9" text-anchor="middle" fill="currentColor">100</text>
+  <text x="74" y="104" font-size="9" text-anchor="middle" fill="currentColor">0</text>
+  <text x="102" y="104" font-size="9" text-anchor="middle" fill="currentColor">m4</text>
+  <text x="34" y="121" font-size="9" text-anchor="middle" fill="currentColor">101</text>
+  <text x="74" y="121" font-size="9" text-anchor="middle" fill="currentColor">1</text>
+  <text x="102" y="121" font-size="9" text-anchor="middle" fill="currentColor">m5</text>
+  <text x="34" y="138" font-size="9" text-anchor="middle" fill="currentColor">110</text>
+  <text x="74" y="138" font-size="9" text-anchor="middle" fill="currentColor">1</text>
+  <text x="102" y="138" font-size="9" text-anchor="middle" fill="currentColor">m6</text>
+  <text x="34" y="155" font-size="9" text-anchor="middle" fill="currentColor">111</text>
+  <text x="74" y="155" font-size="9" text-anchor="middle" fill="currentColor">1</text>
+  <text x="102" y="155" font-size="9" text-anchor="middle" fill="currentColor">m7</text>
+  <rect x="132" y="8" width="230" height="90" fill="none" stroke="currentColor" stroke-width="1"/>
+  <path d="M162 8V98" stroke="currentColor" stroke-width="1" fill="none"/>
+  <path d="M212 8V98" stroke="currentColor" stroke-width="1" fill="none"/>
+  <path d="M262 8V98" stroke="currentColor" stroke-width="1" fill="none"/>
+  <path d="M312 8V98" stroke="currentColor" stroke-width="1" fill="none"/>
+  <path d="M132 30H362" stroke="currentColor" stroke-width="1" fill="none"/>
+  <path d="M132 64H362" stroke="currentColor" stroke-width="1" fill="none"/>
+  <path d="M132 30L162 8" stroke="currentColor" stroke-width="1" fill="none"/>
+  <text x="137" y="17" font-size="8" fill="currentColor">A</text>
+  <text x="147" y="28" font-size="8" fill="currentColor">BC</text>
+  <text x="187" y="23" font-size="9" text-anchor="middle" fill="currentColor">00</text>
+  <text x="237" y="23" font-size="9" text-anchor="middle" fill="currentColor">01</text>
+  <text x="287" y="23" font-size="9" text-anchor="middle" fill="currentColor">11</text>
+  <text x="337" y="23" font-size="9" text-anchor="middle" fill="currentColor">10</text>
+  <text x="147" y="51" font-size="9" text-anchor="middle" fill="currentColor">0</text>
+  <text x="147" y="85" font-size="9" text-anchor="middle" fill="currentColor">1</text>
+  <rect x="262" y="30" width="50" height="34" fill="currentColor" opacity="0.14"/>
+  <rect x="212" y="64" width="50" height="34" fill="currentColor" opacity="0.14"/>
+  <rect x="262" y="64" width="50" height="34" fill="currentColor" opacity="0.14"/>
+  <rect x="312" y="64" width="50" height="34" fill="currentColor" opacity="0.14"/>
+  <text x="166" y="42" font-size="8" fill="currentColor" opacity="0.65">m0</text>
+  <text x="216" y="42" font-size="8" fill="currentColor" opacity="0.65">m1</text>
+  <text x="266" y="42" font-size="8" fill="currentColor" opacity="0.65">m3</text>
+  <text x="316" y="42" font-size="8" fill="currentColor" opacity="0.65">m2</text>
+  <text x="166" y="76" font-size="8" fill="currentColor" opacity="0.65">m4</text>
+  <text x="216" y="76" font-size="8" fill="currentColor" opacity="0.65">m5</text>
+  <text x="266" y="76" font-size="8" fill="currentColor" opacity="0.65">m7</text>
+  <text x="316" y="76" font-size="8" fill="currentColor" opacity="0.65">m6</text>
+  <text x="187" y="58" font-size="12" text-anchor="middle" fill="currentColor">0</text>
+  <text x="237" y="58" font-size="12" text-anchor="middle" fill="currentColor">0</text>
+  <text x="287" y="58" font-size="12" text-anchor="middle" fill="currentColor">1</text>
+  <text x="337" y="58" font-size="12" text-anchor="middle" fill="currentColor">0</text>
+  <text x="187" y="92" font-size="12" text-anchor="middle" fill="currentColor">0</text>
+  <text x="237" y="92" font-size="12" text-anchor="middle" fill="currentColor">1</text>
+  <text x="287" y="92" font-size="12" text-anchor="middle" fill="currentColor">1</text>
+  <text x="337" y="92" font-size="12" text-anchor="middle" fill="currentColor">1</text>
+</svg>
+    <figcaption>图 3 · 同一张真值表落进方格：输出为 1 的四行各占一格</figcaption>
+  </figure>
+
+  <p>逐行走一遍：<span class="math-inline">m_3</span> 在第 4 行（011），落 <span class="math-inline">A=0</span>、<span class="math-inline">BC=11</span> 那一格；<span class="math-inline">m_5</span>（101）落 <span class="math-inline">A=1</span>、<span class="math-inline">BC=01</span>；<span class="math-inline">m_6</span>（110）落 <span class="math-inline">A=1</span>、<span class="math-inline">BC=10</span>；<span class="math-inline">m_7</span>（111）落 <span class="math-inline">A=1</span>、<span class="math-inline">BC=11</span>。其余四格填 0。图上的编号顺序与编号大小并不一致——这正是要用格雷码排标号的结果。</p>
+
+  <p>编号本身可以交给一小段程序验一遍，这也是后面 lab 的做法：</p>
+
+  <pre data-lang="python"><code>for abc in ('000', '001', '010', '011'):
+    print(abc, 'm' + str(int(abc, 2)))</code></pre>
+
+  <pre data-lang="term"><code>000 m0
+001 m1
+010 m2
+011 m3</code></pre>
+
+  <p>另四行同理：100 是 <span class="math-inline">m_4</span>、101 是 <span class="math-inline">m_5</span>、110 是 <span class="math-inline">m_6</span>、111 是 <span class="math-inline">m_7</span>。</p>
+
+  <div class="quiz" data-quiz='[
+  {
+    "q": "教材的四变量图把 $AB$ 放行、$CD$ 放列。\n数字钟分位十位的段码图上，\n1 落在 $m_5$、$m_7$、$m_{13}$、$m_{15}$ 四格。\n现在有人把这张图改成行放 $AD$、列放 $BC$，\n格内只把这四个 1 重填一遍。\n① 这四格在新图上各落在哪一行、哪一列？\n（写成两段标号，如 $AD=01$、$BC=10$）\n② 它们在新图上还聚成一块 2×2 吗？\n相邻关系变没变，为什么？",
+    "answer": "① 两条轴都按 00、01、11、10 排，四格的新坐标是：\n\n```text\nm5  0101   AD=01  BC=10\nm7  0111   AD=01  BC=11\nm13 1101   AD=11  BC=10\nm15 1111   AD=11  BC=11\n```\n\n② 还是 2×2：行标取 01、11 两行（彼此相邻），\n列标取 10、11 两列（彼此相邻），\n整块挪到了第 2、3 行与第 3、4 列的交界处。\n相邻关系没变，因为相邻只由「两格的取值差几位」决定：\n每个变量只落在一条轴上，\n差一个变量就等于在那条轴上差一步格雷码；\n换轴只改了变量的归属，谁与谁相邻不受影响。",
+    "criteria": "① 先把编号写成 0101 这样的取值串，\n再按 $AD$、$BC$ 切两段，四格坐标全对。\n错一格算部分通过。\n② 明确答「还相邻、仍是 2×2」，\n并给出理由：相邻只由差几位决定，换轴不改变这一点。\n只答「图上看着散开了」是部分通过；\n只给结论、说不出理由也按部分通过。"
+  }
+]'></div>
+
+  <h2>从表达式填图</h2>
+
+  <p>表达式落到图上按乘积项逐项填 1。一项占一格还是占几格，取决于这项里有几个变量。</p>
+
+  <p>每一项都是最小项、各项之间相或的形式称为标准与或式；标准与或式的每一项占一格：</p>
+
+  <div class="math-block">Y=\bar ABC+A\bar BC+AB\bar C+ABC</div>
+
+  <p>四项的编号依次是 011、101、110、111，把 <span class="math-inline">m_3</span>、<span class="math-inline">m_5</span>、<span class="math-inline">m_6</span>、<span class="math-inline">m_7</span> 四格填 1，其余填 0。</p>
+
+  <p>项里缺变量时，缺掉的那个变量取 0 取 1 都不改变这项的取值，所以这项要落 <span class="math-inline">2^k</span> 格，<span class="math-inline">k</span> 是缺掉的变量个数。定位仍靠剩下的变量：剩下的变量把落点限定在若干格上，缺的变量沿几个方向铺开。三变量图里的几种情形如下。</p>
+
+  <table>
+    <thead>
+      <tr><th>乘积项</th><th>缺的变量</th><th>落几格</th><th>落在哪几格</th></tr>
+    </thead>
+    <tbody>
+      <tr><td><span class="math-inline">A\bar B</span></td><td><span class="math-inline">C</span></td><td>2</td><td><span class="math-inline">m_4</span>、<span class="math-inline">m_5</span></td></tr>
+      <tr><td><span class="math-inline">A\bar C</span></td><td><span class="math-inline">B</span></td><td>2</td><td><span class="math-inline">m_4</span>、<span class="math-inline">m_6</span></td></tr>
+      <tr><td><span class="math-inline">A</span></td><td><span class="math-inline">B</span>、<span class="math-inline">C</span></td><td>4</td><td><span class="math-inline">m_4</span>、<span class="math-inline">m_5</span>、<span class="math-inline">m_6</span>、<span class="math-inline">m_7</span></td></tr>
+      <tr><td><span class="math-inline">C</span></td><td><span class="math-inline">A</span>、<span class="math-inline">B</span></td><td>4</td><td><span class="math-inline">m_1</span>、<span class="math-inline">m_3</span>、<span class="math-inline">m_5</span>、<span class="math-inline">m_7</span></td></tr>
+      <tr><td><span class="math-inline">1</span></td><td>三个都缺</td><td>8</td><td>全图八格</td></tr>
+    </tbody>
+  </table>
+
+  <p>缺变量的项也可以先按 <span class="math-inline">A+\bar A=1</span> 展开，再按最小项逐格填：<span class="math-inline">A\bar B=A\bar B(C+\bar C)=A\bar BC+A\bar B\bar C</span>，即 <span class="math-inline">m_5</span> 与 <span class="math-inline">m_4</span> 两格。展开只是说明为什么落这两格，填图时照上表直接落更快。</p>
+
+  <figure class="lesson-figure lesson-figure--inline" role="img" aria-label="两幅三变量卡诺图，上幅高亮 m4、m5 两格，下幅高亮 m4 到 m7 四格">
+<svg viewBox="0 0 250 215" role="img" aria-hidden="true">
+  <text x="4" y="14" font-size="9" fill="currentColor">（a）AB' 缺 C，落两格</text>
+  <rect x="4" y="18" width="230" height="82" fill="none" stroke="currentColor" stroke-width="1"/>
+  <path d="M34 18V100" stroke="currentColor" stroke-width="1" fill="none"/>
+  <path d="M84 18V100" stroke="currentColor" stroke-width="1" fill="none"/>
+  <path d="M134 18V100" stroke="currentColor" stroke-width="1" fill="none"/>
+  <path d="M184 18V100" stroke="currentColor" stroke-width="1" fill="none"/>
+  <path d="M4 40H234" stroke="currentColor" stroke-width="1" fill="none"/>
+  <path d="M4 70H234" stroke="currentColor" stroke-width="1" fill="none"/>
+  <path d="M4 40L34 18" stroke="currentColor" stroke-width="1" fill="none"/>
+  <text x="9" y="29" font-size="8" fill="currentColor">A</text>
+  <text x="19" y="38" font-size="8" fill="currentColor">BC</text>
+  <text x="59" y="34" font-size="9" text-anchor="middle" fill="currentColor">00</text>
+  <text x="109" y="34" font-size="9" text-anchor="middle" fill="currentColor">01</text>
+  <text x="159" y="34" font-size="9" text-anchor="middle" fill="currentColor">11</text>
+  <text x="209" y="34" font-size="9" text-anchor="middle" fill="currentColor">10</text>
+  <text x="19" y="59" font-size="9" text-anchor="middle" fill="currentColor">0</text>
+  <text x="19" y="89" font-size="9" text-anchor="middle" fill="currentColor">1</text>
+  <rect x="34" y="70" width="50" height="30" fill="currentColor" opacity="0.16"/>
+  <rect x="84" y="70" width="50" height="30" fill="currentColor" opacity="0.16"/>
+  <text x="59" y="59" font-size="9" text-anchor="middle" fill="currentColor">m0</text>
+  <text x="109" y="59" font-size="9" text-anchor="middle" fill="currentColor">m1</text>
+  <text x="159" y="59" font-size="9" text-anchor="middle" fill="currentColor">m3</text>
+  <text x="209" y="59" font-size="9" text-anchor="middle" fill="currentColor">m2</text>
+  <text x="59" y="89" font-size="9" text-anchor="middle" fill="currentColor">m4</text>
+  <text x="109" y="89" font-size="9" text-anchor="middle" fill="currentColor">m5</text>
+  <text x="159" y="89" font-size="9" text-anchor="middle" fill="currentColor">m7</text>
+  <text x="209" y="89" font-size="9" text-anchor="middle" fill="currentColor">m6</text>
+  <text x="4" y="122" font-size="9" fill="currentColor">（b）A 缺 B、C，落四格</text>
+  <rect x="4" y="126" width="230" height="82" fill="none" stroke="currentColor" stroke-width="1"/>
+  <path d="M34 126V208" stroke="currentColor" stroke-width="1" fill="none"/>
+  <path d="M84 126V208" stroke="currentColor" stroke-width="1" fill="none"/>
+  <path d="M134 126V208" stroke="currentColor" stroke-width="1" fill="none"/>
+  <path d="M184 126V208" stroke="currentColor" stroke-width="1" fill="none"/>
+  <path d="M4 148H234" stroke="currentColor" stroke-width="1" fill="none"/>
+  <path d="M4 178H234" stroke="currentColor" stroke-width="1" fill="none"/>
+  <path d="M4 148L34 126" stroke="currentColor" stroke-width="1" fill="none"/>
+  <text x="9" y="137" font-size="8" fill="currentColor">A</text>
+  <text x="19" y="146" font-size="8" fill="currentColor">BC</text>
+  <text x="59" y="142" font-size="9" text-anchor="middle" fill="currentColor">00</text>
+  <text x="109" y="142" font-size="9" text-anchor="middle" fill="currentColor">01</text>
+  <text x="159" y="142" font-size="9" text-anchor="middle" fill="currentColor">11</text>
+  <text x="209" y="142" font-size="9" text-anchor="middle" fill="currentColor">10</text>
+  <text x="19" y="167" font-size="9" text-anchor="middle" fill="currentColor">0</text>
+  <text x="19" y="197" font-size="9" text-anchor="middle" fill="currentColor">1</text>
+  <rect x="34" y="178" width="200" height="30" fill="currentColor" opacity="0.16"/>
+  <text x="59" y="167" font-size="9" text-anchor="middle" fill="currentColor">m0</text>
+  <text x="109" y="167" font-size="9" text-anchor="middle" fill="currentColor">m1</text>
+  <text x="159" y="167" font-size="9" text-anchor="middle" fill="currentColor">m3</text>
+  <text x="209" y="167" font-size="9" text-anchor="middle" fill="currentColor">m2</text>
+  <text x="59" y="197" font-size="9" text-anchor="middle" fill="currentColor">m4</text>
+  <text x="109" y="197" font-size="9" text-anchor="middle" fill="currentColor">m5</text>
+  <text x="159" y="197" font-size="9" text-anchor="middle" fill="currentColor">m7</text>
+  <text x="209" y="197" font-size="9" text-anchor="middle" fill="currentColor">m6</text>
+</svg>
+    <figcaption>图 4 · 缺变量的乘积项一次落多格：<span class="math-inline">A\bar B</span> 落 m4、m5，<span class="math-inline">A</span> 落 m4 至 m7</figcaption>
+  </figure>
+
+  <p>几项落在同一格时，这一格仍然是 1：<span class="math-inline">Y=A\bar B+A\bar BC</span> 中后一项落 <span class="math-inline">m_5</span>，前一项已经包含 <span class="math-inline">m_5</span>，图上只填一个 1。</p>
+
+  <div class="quiz" data-quiz='[
+  {
+    "q": "数字钟分位一位的译码器里，草稿式是\n$Y=\\bar AB+CD$，变量次序 $ABCD$，$A$ 最高位。\n这一项要落到四变量卡诺图上。\n① 两项各落几格、各是哪几个编号？\n② 图上 1 一共几格？哪一格被两项同时占住？\n③ 用 Python 断言，你怎么一次验完这张图？\n（写出验法即可，不用抄全代码）",
+    "answer": "① $\\bar AB$ 缺 $C$、$D$ 两个变量，落 4 格：$m_4$ 到 $m_7$。\n$CD$ 缺 $A$、$B$，也落 4 格：\n$m_3$、$m_7$、$m_{11}$、$m_{15}$。\n② 一共 7 格：3、4、5、6、7、11、15。\n$m_7$（0111）被两项同时占住，图上仍只填一个 1。\n③ 枚举 16 组取值，逐组用 subTest 记下 $ABCD$：\n一条路按草稿式算 $\\bar AB+CD$，\n另一条路查这一格在图上是不是 1，两者必须相等；\n再断言图上 1 的格数等于 7。\n\n```python\nfor bits in range(16):\n    a, b = (bits &gt;&gt; 3) &amp; 1, (bits &gt;&gt; 2) &amp; 1\n    c, d = (bits &gt;&gt; 1) &amp; 1, bits &amp; 1\n    with self.subTest(ABCD=bits):\n        self.assertEqual(cell(bits), int((not a and b) or (c and d)))\n```",
+    "criteria": "① 两项都要答「4 格」并给出编号集合：\n$\\bar AB$ → 4、5、6、7；$CD$ → 3、7、11、15。\n答成 1 格、2 格或只列一部分是不通过。\n② 答「7 格」并指认 $m_7$ 重叠；\n把 4+4=8 直接当答案是不通过。\n③ 验法要能逐格定位：枚举 16 组、逐组比较\n「表达式算出的值」与「图上读出的值」，\n并另外数一遍 1 的格数。\n只说「跑一下看看对不对」算部分通过。"
+  }
+]'></div>
+
+  <h2>填完先自查</h2>
+
+  <p>填好的图要与真值表逐行对上，三步就能核完。</p>
+
+  <ol>
+    <li>数 1 的格数，应当等于真值表里输出为 1 的行数。</li>
+    <li>抽两三格反查：指着一格报出它的编号，翻到真值表的同一行看输出，与图上填的值比一遍。</li>
+    <li>念一遍轴的标号：三变量以上的轴应当是 00、01、11、10，中间两格是 11 与 10。</li>
+  </ol>
+
+  <p>填图常错的地方：</p>
+
+  <ul>
+    <li>轴的标号按二进制顺序写成 00、01、10、11。图看起来与教材相仿，相邻关系却变了，后面圈出来的项不成立。</li>
+    <li>缺变量的乘积项只填一格，漏掉 <span class="math-inline">2^k-1</span> 格。</li>
+    <li>四变量图的行列顺序记成 00、01、10、11。</li>
+    <li>列的标号 <span class="math-inline">BC</span> 写成 <span class="math-inline">CB</span>，<span class="math-inline">m_1</span>（001）与 <span class="math-inline">m_2</span>（010）落错列。</li>
+  </ul>
+
+  <div class="quiz" data-quiz='[
+  {
+    "q": "数字钟分位十位的段码图上，交上来的是下面这张。\n这个函数本该只有一个最简式 $BD$。\n\n```text\nAB\\CD  00 01 10 11\n00      0  0  0  0\n01      0  1  0  1\n10      0  0  0  0\n11      0  1  0  1\n```\n\n同学照这张图圈出四格，交上来\n$Y=\\bar AB\\bar CD+\\bar ABCD+AB\\bar CD+ABCD$。\n① 正确的结果应该是什么？\n② 他每一格的位置填错了吗？根因在哪？\n③ 下次怎么一眼就发现这张图有问题？",
+    "answer": "① 四个 1 是 $m_5$、$m_7$、$m_{13}$、$m_{15}$，\n两两可以并，最简式就是 $BD$。\n他圈出四项，是因为这四格在图上互不相邻。\n② 按编号找格这一步他没填错：\n$m_5$ 确实在行 $AB=01$、列 $CD=01$，\n$m_7$ 在行 01、列 11。\n根因是列标的顺序写成了 00、01、10、11（二进制序）：\n格雷码里 $CD=01$ 与 $CD=11$ 该挨着，\n这里被隔成第 2 列与第 4 列；\n行标同理，$AB=01$ 与 $AB=11$ 也被隔开。\n改法：两条轴都改回 00、01、11、10 重填，\n四格就会聚成一块 2×2，一圈得 $BD$。\n③ 填完先念一遍轴的标号：\n三变量以上的轴必须是 00、01、11、10，\n末尾两格是 11、10；\n本图列标末尾是 10、11，一眼就是二进制序。\n再数 1 的格数：4 格与真值表 4 行对得上，\n说明问题不在漏填，而在标号。",
+    "criteria": "① 答出最简式 $BD$（或等价地指出四格可并成一项），\n并写出四格编号 $m_5$、$m_7$、$m_{13}$、$m_{15}$。\n② 关键在判断「填法没错、错在轴的标号是二进制序」。\n把根因说成「他把格填错了」是不通过；\n给出改法（改回 00、01、11、10 重填）才算完整。\n③ 自查动作要具体：念轴标号 + 数 1 的格数两条。\n只答「仔细检查」算部分通过。"
+  }
+]'></div>
+
+  <div class="lesson-note">
+    <b>卡诺图在数字钟里的两处用处</b>
+    <p>译码器要把 BCD 码换成七段段码，每一段都是一张小真值表；计数器的每一位触发器都要一张次态真值表。这两处都要经过卡诺图化简，分别在第 4 章和第 6 章回到它们。本课只负责把 1 放进正确的格子。</p>
+  </div>
+
+  <h2>上手：把图交给断言</h2>
+
+  <p>格位对不对，可以交给程序核对：把卡诺图按格读成一串取值，再用编号对应到真值表的每一行，逐格比对。这样填错一格，立刻能定位到是哪一行的取值出错。</p>
+
+  <p>这一课的练手在 lab 里做，正文只给入口。</p>
+
+  <div class="lesson-practice">
+    <div class="lesson-practice__head">
+      <span class="lesson-practice__level">上手做</span>
+      <span class="lesson-practice__title">三步填图，交 lab 逐格核对</span>
+    </div>
+
+      <ul>
+        <li>载体：本机 Python 3.13，用 <code>python -m unittest</code> 跑断言，不装新的工具。</li>
+        <li>入口：<a href="../lab/README.md">lab/0001 · 卡诺图填图</a>，任务、断言与卡壳顺序都在里面。</li>
+        <li>三步：给真值表填三变量图；给含缺变量项的表达式填四变量图；把一张填错的图改回来。</li>
+        <li>每步都有逐格断言，填错会指出是哪一行取值、错在哪个格号上。</li>
+      </ul>
+  </div>
+
+  <ul class="lesson-resources">
+    <li>康华光、张林《电子技术基础 数字部分》第 7 版 §2.4.1 用卡诺图表示逻辑函数<span class="lesson-resources__meta">本课主来源：格位、行列标号与由表达式填图</span></li>
+    <li><a href="https://ocw.mit.edu/courses/6-004-computation-structures-spring-2017/">MIT OCW 6.004 Computation Structures</a><span class="lesson-resources__meta">对照讲法：第 4 章 Combinational Logic 的最简化讲法（只借讲法，实验写法不同）</span></li>
+  </ul>
+
+  <!-- ── 提问提示：固定写法，别删 ── -->
+
+  <div class="lesson-ask">
+    <b>没看懂？随时问</b>
+    把看不懂的段落（或报错）原样复制回会话，说一句哪里不懂就行，我只解释这一段，不打断你的进度。
+  </div>
+
+  <!-- ── 上/下节课指针由渲染器按 curriculum.yaml 的 nodes 顺序算（第一课无 --prev、最后一课无 --next） ── -->
+
+  <nav class="lesson-nav" aria-label="上一课 / 下一课">
+    <a class="lesson-nav__link lesson-nav__link--next" href="0002-ch2-kmap-circle.html">
+      <span class="lesson-nav__dir">下节课</span>
+      <span class="lesson-nav__title">圈组：从卡诺图读出最简式</span>
+    </a>
+  </nav>
+
+  <footer class="lesson-footer">
+    StudyMate · 0001 卡诺图：真值表排成的方格 · 本地学习工作区
+  </footer>
+
+</article>
+
+<script src="../../../assets/sayo/sayo.js"></script>
+<link rel="stylesheet" href="../../../assets/katex/katex.min.css">
+<script src="../../../assets/katex/katex.min.js" defer></script>
+<script src="../../../assets/lesson-math.js" defer></script>
+<script src="../assets/quiz.js" defer></script>
+<script src="../assets/lesson-toc.js" defer></script>
+<script>LearnTheme.wire(document.getElementById('lesson-theme-checkbox'));</script>
+</body>
+</html>

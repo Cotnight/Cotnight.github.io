@@ -1,0 +1,895 @@
+# 离散数学（左孝凌）· 课程大纲 · 修订 rev1（学生要求直接从「对偶与范式」开讲）
+# 依据：左孝凌《离散数学》1982（学生纸书，逐节目录见 sources/zuoxiaoling-discrete-math-toc.md）；
+#       老师课件 reference/01-左孝凌课件1.md（174 页，第一章 1.1–1.8）、reference/02-左孝凌课件2.md（84 页，第二章 2.1–2.7）。
+# 主干：第 1～7 章；第五篇（第八、九章）与 5-6（置换群与伯恩赛德）标为「选学：待考纲确认」。
+# 贯穿项目：关系与图算法工具包（Python 3.13，标准库优先），拆成实验一～实验五。
+# rev1 变更：课堂已讲完 1.1–1.8 与 2.1–2.7，学生自评"学过但不成体系"，明确要求从 1-7 切入，
+#   故删去绪论、四张前置唤醒卡与命题逻辑前四节共 9 个节点及指向它们的边；其余节点与顺序不变，
+#   logic-normal-form（对偶与范式）成为第 1 课并承担开场。
+
+nodes:
+  - id: logic-normal-form
+    title: '对偶与范式'
+    kind: 实操
+    objective: '把公式化成主析取范式，并读出它的成真赋值'
+    problem: '期末卷上，逻辑一章的大题几乎年年落在“求主析取范式”“把这个式子化成最简形式”这类动作上，分值比选择填空加起来还重——这是整门课的第一课，就从这一格分数讲起。给定一个公式，怎么一眼看出它在哪些赋值下为真？主析取范式就是这张清单，也是判等值、判蕴含、做归结的通用手段。而 24 条常用等值式不必背：对偶式与范式都能从真值表现推，公式忘了就在纸上长出来。'
+    practice: '讲练并重。真值表法与小项法各做一题，对比哪种更快，并写出原式的对偶式。'
+    prerequisites: []
+    concepts: ['对偶式', '合取范式与析取范式', '主析取范式']
+    resources:
+      - title: '左孝凌《离散数学》1-6 其他联结词、1-7 对偶与范式'
+        type: book
+      - title: '老师课件 1 · 1.6–1.7（第 83–146 页）'
+        type: article
+        url: 'reference/01-左孝凌课件1.md'
+    pitfalls: ['小项编号与变元顺序写反', '漏掉不含某变元的项', '把极大项当极小项用']
+    status: 未开始
+    mastery: 0
+
+  - id: logic-inference
+    title: '推理理论：证明怎么写'
+    kind: 实操
+    objective: '用 P、T 规则写出三步以上的推理证明，格式不空转'
+    problem: '证明题无从下手，多半是不知道第一句写什么。本课给可照抄的骨架：前提逐条编号写 P、结论拆成蕴含、目标放最后一行；直接证法、附加前提法、归谬法三条路线各一个模板。'
+    practice: '讲练并重。三条路线各照模板抄一份完整证明，再独立写老师课件上的一题，重点看第一行与最后一行怎么衔接。'
+    prerequisites: ['logic-normal-form']
+    concepts: ['P 规则与 T 规则', '直接证法', '附加前提法', '归谬法']
+    resources:
+      - title: '左孝凌《离散数学》1-8 推理理论'
+        type: book
+      - title: '老师课件 1 · 1.8（第 147–174 页）'
+        type: article
+        url: 'reference/01-左孝凌课件1.md'
+      - title: 'Book of Proof 第 4–6 章（直接证明、逆否证明、反证）'
+        type: book
+        url: 'https://richardhammack.github.io/BookOfProof/'
+    pitfalls: ['把结论当前提用', '附加前提证完没有还原成蕴含', '写 T 规则不标依据', '归谬的假设写错']
+    realworld: '判断一段论证站不站得住、程序断言的条件推导'
+    status: 未开始
+    mastery: 0
+
+  - id: lab-1-truth-engine
+    title: '实验一：把推理判成有效'
+    kind: 实验
+    objective: '写真值表引擎，对教材例题判定推理是否有效并打印依据'
+    problem: '手算只判过一题，老师课件上却有几十道。本课用标准库写一个小引擎，把整批推理一次验完，同时反查自己手算错在哪一题。'
+    practice: '以练为主（验收为主）。先跑通再对账：引擎给出的有效性与手算结果逐题对照，对不上的那题就是理解漏洞。'
+    prerequisites: ['logic-normal-form', 'logic-inference']
+    concepts: ['穷举赋值', '前提合取蕴含结论', '标准库 itertools']
+    resources:
+      - title: '左孝凌《离散数学》1-8 例题（当标准答案）'
+        type: book
+      - title: 'Python 3.13 标准库 itertools 官方文档'
+        type: official-doc
+        url: 'https://docs.python.org/3.13/library/itertools.html'
+    pitfalls: ['只判结论不管前提是否同真', '把“无效”误读成“结论为假”']
+    status: 未开始
+    mastery: 0
+
+  - id: pred-predicate
+    title: '谓词、命题函数与量词'
+    kind: 概念
+    objective: '区分个体、谓词与量词，写出量词命题的真值条件'
+    problem: '命题逻辑拆不开“张三及格”与“李四及格”的共同结构。谓词逻辑把主语与谓语分开，才有“所有”与“存在”；本课讲清量词如何改变真值条件。'
+    practice: '以讲为主。老师课件里的 n 元谓词例子照原话讲，量词只讲全称与存在两个。'
+    prerequisites: ['logic-inference']
+    concepts: ['个体与谓词', '命题函数', '全称量词与存在量词']
+    resources:
+      - title: '左孝凌《离散数学》2-1 谓词的概念与表示、2-2 命题函数与量词'
+        type: book
+      - title: '老师课件 2 · 2.1–2.2（第 3–30 页）'
+        type: article
+        url: 'reference/02-左孝凌课件2.md'
+    pitfalls: ['把命题函数当命题', '忽略论域']
+    status: 未开始
+    mastery: 0
+
+  - id: pred-translation
+    title: '谓词公式翻译与换名'
+    kind: 实操
+    objective: '把含“所有”“有的”的中文译成公式，并正确换名与代入'
+    problem: '“所有学生都用功，有的学生不用功”两句里的“学生”不是一回事：一个在辖域内，一个在辖域外。换名与代入规则决定符号化结果是否唯一。'
+    practice: '讲练并重。教材 P63(5) 一类的翻译题逐句过，换名与代入各纠一个典型错。'
+    prerequisites: ['pred-predicate']
+    concepts: ['辖域', '约束变元与自由变元', '换名规则']
+    resources:
+      - title: '左孝凌《离散数学》2-3 谓词公式与翻译、2-4 变元的约束'
+        type: book
+      - title: '老师课件 2 · 2.3–2.4（第 31–48 页）'
+        type: article
+        url: 'reference/02-左孝凌课件2.md'
+    pitfalls: ['量词辖域画错', '换名时改动了自由变元', '存在量词后面接合取']
+    status: 未开始
+    mastery: 0
+
+  - id: pred-equivalence
+    title: '谓词等价式与前束范式'
+    kind: 实操
+    objective: '用量词否定律改写公式，并三步求出前束范式'
+    problem: '“不是所有人都及格”等于“有人不及格”。这两条量词否定律是考试必考，也是 2-7 四条推理规则的前提。'
+    practice: '讲练并重。先把两条否定律写死，再按“去箭头—移否定—提量词”三步求前束范式。'
+    prerequisites: ['pred-translation']
+    concepts: ['量词否定律', '量词辖域扩张', '前束范式']
+    resources:
+      - title: '左孝凌《离散数学》2-5 谓词演算的等价式与蕴含式、2-6 前束范式'
+        type: book
+      - title: '老师课件 2 · 2.5–2.6（第 49–70 页）'
+        type: article
+        url: 'reference/02-左孝凌课件2.md'
+    pitfalls: ['提辖域时换了变元名', '否定号没有推到底']
+    status: 未开始
+    mastery: 0
+
+  - id: pred-inference
+    title: '谓词推理：四条规则'
+    kind: 实操
+    objective: '用 US、UG、ES、EG 写推理证明，每步标注依据'
+    problem: '苏格拉底三段论在谓词逻辑里落成五行证明：四条规则各管一次量词进出，进出的顺序错了整个证明就废。本课按老师课件 2.7 的例题结构讲。'
+    practice: '讲练并重。照例题结构抄一遍，再独立写教材 P79 一题，重点看量词进出的顺序。'
+    prerequisites: ['pred-equivalence', 'pred-translation']
+    concepts: ['全称示例', '全称推广', '存在示例', '存在推广']
+    resources:
+      - title: '左孝凌《离散数学》2-7 谓词演算的推理理论'
+        type: book
+      - title: '老师课件 2 · 2.7（第 71–84 页）'
+        type: article
+        url: 'reference/02-左孝凌课件2.md'
+    pitfalls: ['存在示例对同一个体用了两次', '全称推广用在附加前提引入的变元上', '存在量词消去后没有换新名']
+    status: 未开始
+    mastery: 0
+
+  - id: set-operations
+    title: '集合的运算与恒等式'
+    kind: 概念
+    objective: '用元素法或恒等式证明两个集合相等'
+    problem: '证明 $A-(B\cup C)=(A-B)\cap(A-C)$ 第一句写什么？集合题的证明格式与逻辑题惊人一致：任取元素，推到另一侧。价值在讲清这套模板。'
+    practice: '以讲为主。德摩根律与分配律各举一例，元素法模板当场写一遍。'
+    prerequisites: ['pred-inference']
+    concepts: ['集合运算', '德摩根律', '元素法证相等']
+    resources:
+      - title: '左孝凌《离散数学》3-1 集合的概念和表示法、3-2 集合的运算'
+        type: book
+      - title: 'Book of Proof 8.1–8.3（证集合相等、子集）'
+        type: book
+        url: 'https://richardhammack.github.io/BookOfProof/'
+    pitfalls: ['证相等只证了一个方向', '把包含写成相等']
+    status: 未开始
+    mastery: 0
+
+  - id: set-inclusion-exclusion
+    title: '包含排斥原理'
+    kind: 实操
+    objective: '用容斥公式算三个集合的并集基数，并解释每一项'
+    problem: '一个班 40 人，会 C 的 25 人、会 Python 的 20 人、都会的 10 人，两样都不会的有几个？容斥公式画成文氏图，就是加减重叠部分。'
+    practice: '讲练并重。从两集合递进到三集合，每步要求先画文氏图再代公式。'
+    prerequisites: ['set-operations']
+    concepts: ['容斥公式', '文氏图', '鸽巢原理']
+    resources:
+      - title: '左孝凌《离散数学》3-3 包含排斥原理'
+        type: book
+      - title: 'Rosen《离散数学及其应用》第 8 版 计数章（容斥与鸽巢）'
+        type: book
+        url: 'https://www.aijiaocai.com/textbook/details?textbook_id=715745'
+    pitfalls: ['三集合公式漏加三项交', '把“至少会一样”当成“都会”']
+    status: 未开始
+    mastery: 0
+
+  - id: rel-cartesian
+    title: '序偶、笛卡尔积与关系'
+    kind: 概念
+    objective: '把二元关系写成集合式、关系矩阵与关系图三种形式'
+    problem: '“同班”“大于”“认识”都用什么表示？集合式便于证明，矩阵便于计算，图便于看结构——本课把同一个关系换三种写法，为 3-8 的闭包打底。'
+    practice: '以讲为主。同一题换三种表示各写一遍，并说明哪种表示最适合判哪个性质。'
+    prerequisites: ['set-operations']
+    concepts: ['有序对', '笛卡尔积', '关系矩阵与关系图']
+    resources:
+      - title: '左孝凌《离散数学》3-4 序偶与笛卡尔积、3-5 关系及其表示'
+        type: book
+    pitfalls: ['把 $A\times B$ 与 $B\times A$ 混为一谈', '关系矩阵的行列对应写反']
+    status: 未开始
+    mastery: 0
+
+  - id: rel-properties
+    title: '关系的五个性质'
+    kind: 实操
+    objective: '逐条判定自反、反自反、对称、反对称、传递'
+    problem: '给一个关系矩阵，怎么一眼看出它传不传递？五个性质都有矩阵判据，考试就考这个判定过程——价值在练熟动作。'
+    practice: '讲练并重。五个性质先在集合式上判一遍，再用矩阵判一遍，两法互相对答案。'
+    prerequisites: ['rel-cartesian']
+    concepts: ['自反与反自反', '对称与反对称', '传递性', '矩阵判据']
+    resources:
+      - title: '左孝凌《离散数学》3-6 关系的性质'
+        type: book
+      - title: '屈婉玲《离散数学（第3版）》第 2 章 二元关系'
+        type: book
+        url: 'https://xuanshu.hep.com.cn/front/book/findBookDetails?bookId=658daaba74ce561611bd9a4f'
+    pitfalls: ['把反对称当不对称', '传递性只验了相邻元素', '自反与反自反都可为假却当成互补']
+    status: 未开始
+    mastery: 0
+
+  - id: rel-composition
+    title: '复合关系与逆关系'
+    kind: 概念
+    objective: '算 $R\circ S$ 与 $R^{-1}$，并说出与矩阵乘法的对应'
+    problem: '关系复合就是布尔矩阵乘法——这不是巧合，而是第七章可达性计算的伏笔。同一件事用两种语言写一遍，后面省一半力气。'
+    practice: '以讲为主。一题用集合式算、一题用矩阵乘法算，结果对上。'
+    prerequisites: ['rel-properties']
+    concepts: ['复合关系', '逆关系', '布尔矩阵乘法']
+    resources:
+      - title: '左孝凌《离散数学》3-7 复合关系和逆关系'
+        type: book
+    pitfalls: ['复合顺序写反']
+    status: 未开始
+    mastery: 0
+
+  - id: rel-closure
+    title: '关系的闭包运算'
+    kind: 实操
+    objective: '手算自反、对称、传递闭包，并用 Warshall 复核'
+    problem: '从一个关系出发，最少补几条边它就传递了？这就是传递闭包，也是贯穿项目第一个算法的落点，教材 3-8 的例题正好当标准答案。'
+    practice: '讲练并重。$R^+$ 与 $R^*$ 各手算一题，矩阵幂与 Warshall 两种算法比一遍。'
+    prerequisites: ['rel-composition', 'rel-properties']
+    concepts: ['自反闭包', '对称闭包', '传递闭包', 'Warshall 算法']
+    resources:
+      - title: '左孝凌《离散数学》3-8 关系的闭包运算'
+        type: book
+      - title: 'Rosen《离散数学及其应用》第 8 版 5.4 关系的闭包（沃舍尔算法）'
+        type: book
+        url: 'https://www.aijiaocai.com/textbook/details?textbook_id=715745'
+      - title: 'NetworkX 算法索引（transitive_closure，作可选对照答案）'
+        type: official-doc
+        url: 'https://networkx.org/documentation/stable/reference/algorithms/index.html'
+    pitfalls: ['$R^+$ 与 $R^*$ 记混', '求闭包后忘记补对角线', '对称闭包补的新边又引发传递']
+    realworld: '依赖关系能否传递到达、组织里的间接汇报链'
+    status: 未开始
+    mastery: 0
+
+  - id: lab-2-closure
+    title: '实验二：关系性质与闭包'
+    kind: 实验
+    objective: '用邻接矩阵算五个性质与传递闭包，与教材习题逐格对上'
+    problem: '教材 3-8 的例题你手算过一次；这一课让程序把同一题算一遍，对不上的那一格就是你对闭包的理解偏差。'
+    practice: '以练为主（验收为主）。三行 Warshall 自己写，不许调库；结果与教材答案逐格对照。'
+    prerequisites: ['rel-properties', 'rel-composition', 'rel-closure']
+    concepts: ['邻接矩阵输入格式', '布尔矩阵运算', '对账表']
+    resources:
+      - title: '左孝凌《离散数学》3-6、3-8 例题与习题（当标准答案）'
+        type: book
+      - title: 'Python 3.13 标准库 graphlib 官方文档'
+        type: official-doc
+        url: 'https://docs.python.org/3.13/library/graphlib.html'
+    pitfalls: ['拿库函数顶替手写 Warshall', '对账只比最终结论不看中间矩阵']
+    status: 未开始
+    mastery: 0
+
+  - id: rel-partition
+    title: '划分、覆盖与相容关系'
+    kind: 概念
+    objective: '判断集族是不是划分，并写出它诱导的等价关系'
+    problem: '一个班按宿舍分、按学号尾数分、按性别分，哪些是合法划分？划分与等价关系是一体两面：3-9 讲判定，3-10 讲算法。'
+    practice: '以讲为主。只讲划分的三条件与到等价关系的对应，相容关系点到为止。'
+    prerequisites: ['rel-properties', 'set-operations']
+    concepts: ['覆盖与划分', '划分的判定', '相容关系']
+    resources:
+      - title: '左孝凌《离散数学》3-9 集合的划分和覆盖、3-11 相容关系'
+        type: book
+    pitfalls: ['允许块与块相交', '漏掉空集不能成块这一条']
+    status: 未开始
+    mastery: 0
+
+  - id: rel-equivalence
+    title: '等价关系与等价类'
+    kind: 实操
+    objective: '求一个等价关系的全部等价类，并验证商集是划分'
+    problem: '模 5 同余把整数切成五类——怎么把类列全且不重不漏？这是项目第二个算法的落点，教材 3-10 的例题给标准答案。'
+    practice: '讲练并重。模 5 同余与教材例题各做一遍，用划分三条件自检。'
+    prerequisites: ['rel-partition', 'rel-closure']
+    concepts: ['等价关系', '等价类', '商集', '并查集']
+    resources:
+      - title: '左孝凌《离散数学》3-10 等价关系与等价类'
+        type: book
+      - title: 'NetworkX 算法索引（equivalence_classes，作可选对照答案）'
+        type: official-doc
+        url: 'https://networkx.org/documentation/stable/reference/algorithms/index.html'
+    pitfalls: ['等价类漏写外层集合括号', '少列一个类', '把等价类当成代表元']
+    status: 未开始
+    mastery: 0
+
+  - id: rel-order
+    title: '序关系与哈斯图'
+    kind: 实操
+    objective: '画偏序的哈斯图，并求极大元、最大元与上下界'
+    problem: '课程先修关系怎么排成一张图，让“先学哪门”一目了然？哈斯图去掉自环与传递边，剩下的层次就是拓扑序。'
+    practice: '讲练并重。整除关系与集合包含关系各画一张哈斯图，再用 graphlib 验拓扑序。'
+    prerequisites: ['rel-equivalence', 'rel-partition']
+    concepts: ['偏序关系', '哈斯图', '极大元与最大元', '拓扑排序']
+    resources:
+      - title: '左孝凌《离散数学》3-12 序关系'
+        type: book
+      - title: 'Python 3.13 标准库 graphlib（TopologicalSorter）官方文档'
+        type: official-doc
+        url: 'https://docs.python.org/3.13/library/graphlib.html'
+    pitfalls: ['把全部关系画成覆盖关系', '最大元与极大元混为一谈', '上界写成上确界']
+    realworld: '课程先修表、任务依赖排期'
+    status: 未开始
+    mastery: 0
+
+  - id: lab-3-equivalence
+    title: '实验三：等价类与拓扑排序'
+    kind: 实验
+    objective: '写出并查集求等价类，用 graphlib 给出课程先修拓扑序'
+    problem: '把教材 3-10 的等价类与 3-12 的偏序做成同一套工具：一个切类，一个排先后，输入都是同一张关系矩阵。'
+    practice: '以练为主（验收为主）。并查集三个函数手写；拓扑序与环检测用标准库，输入复用实验二的关系矩阵。'
+    prerequisites: ['rel-equivalence', 'rel-order']
+    concepts: ['并查集', '商集输出', '依赖图与环检测']
+    resources:
+      - title: '左孝凌《离散数学》3-10、3-12 例题（当标准答案）'
+        type: book
+      - title: 'Python 3.13 标准库 graphlib 官方文档'
+        type: official-doc
+        url: 'https://docs.python.org/3.13/library/graphlib.html'
+    pitfalls: ['并查集忘路径压缩导致退化', '有环时没有捕获 CycleError', '把边方向当成“后学前驱”写反']
+    status: 未开始
+    mastery: 0
+
+  - id: func-concept
+    title: '函数、复合与逆函数'
+    kind: 概念
+    objective: '判断是否单射、满射、双射，并求出逆函数'
+    problem: '为什么“函数有逆”等价于“是双射”？这个结论在讲基数时会被反复使用。本课把四条判定讲透，用有限集合的映射图数着看。'
+    practice: '以讲为主。四条判定一次讲完，4-3 的特征函数只留一句提示。'
+    prerequisites: ['rel-cartesian', 'rel-properties']
+    concepts: ['单射与满射', '复合函数', '逆函数']
+    resources:
+      - title: '左孝凌《离散数学》4-1 函数的概念、4-2 逆函数和复合函数'
+        type: book
+    pitfalls: ['逆函数存在条件写成单射即可', '复合顺序写反']
+    status: 未开始
+    mastery: 0
+
+  - id: func-cardinality
+    title: '基数：可数与不可数'
+    kind: 概念
+    objective: '用双射说明两个无限集等势，并判断是否可数'
+    problem: '自然数和偶数哪个多？直觉说自然数多，双射说一样多。基数是这门课唯一需要放下直觉的地方，考试只考判定与构造双射。'
+    practice: '以讲为主。$\mathbb{N}$ 与 $2\mathbb{N}$、$\mathbb{N}\times\mathbb{N}$ 与 $\mathbb{N}$ 各给一条双射，实数不可数只讲对角线法的结论。'
+    prerequisites: ['func-concept']
+    concepts: ['等势', '可数集', '不可数集', '康托对角线法']
+    resources:
+      - title: '左孝凌《离散数学》4-4 基数的概念、4-5 可数集与不可数集、4-6 基数的比较'
+        type: book
+      - title: 'Book of Proof 第 14 章 基数'
+        type: book
+        url: 'https://richardhammack.github.io/BookOfProof/'
+    pitfalls: ['用“包含即更多”判基数', '把可数与有限混为一谈']
+    status: 未开始
+    mastery: 0
+
+  - id: alg-system
+    title: '代数系统与运算性质'
+    kind: 概念
+    objective: '判断运算是否封闭、可结合，是否有单位元与逆元'
+    problem: '为什么矩阵乘法成群而减法不成？封闭、结合、单位元、逆元四条逐条筛，答案自然出来——价值在讲清群的定义为什么这样定。'
+    practice: '以讲为主。用有限运算表逐条验，封闭当第一个筛子。'
+    prerequisites: ['func-concept', 'set-operations']
+    concepts: ['封闭性', '结合律', '单位元', '逆元']
+    resources:
+      - title: '左孝凌《离散数学》5-1 代数系统的引入、5-2 运算及其性质'
+        type: book
+    pitfalls: ['逆元与单位元混为一谈', '只验左逆就下结论']
+    status: 未开始
+    mastery: 0
+
+  - id: alg-semigroup-group
+    title: '半群与群'
+    kind: 概念
+    objective: '验证一个集合与运算构成群，并说出群阶与元素阶'
+    problem: '模 n 加法、置换复合、数电里的异或——它们凭什么都叫群？本课把群的四个条件落到一个 4 元例子上验一遍，半群与独异点只做区分。'
+    practice: '以讲为主。4 元例子当场验完四条，元素的阶单独算一遍。'
+    prerequisites: ['alg-system']
+    concepts: ['半群', '独异点', '群', '元素的阶']
+    resources:
+      - title: '左孝凌《离散数学》5-3 半群、5-4 群与子群'
+        type: book
+    pitfalls: ['把独异点当群', '元素阶与群阶混']
+    status: 未开始
+    mastery: 0
+
+  - id: alg-cyclic
+    title: '阿贝尔群与循环群'
+    kind: 实操
+    objective: '判断群是否循环，并求出全部生成元与子群'
+    problem: '模 6 加法有几个生成元？为什么 1 和 5 行、2 和 4 不行？生成元就是那个能“转出所有人”的元素，考试常考列举。'
+    practice: '讲练并重。列出 $Z_6$ 与 $Z_8$ 的生成元，手画一张部分子群格。'
+    prerequisites: ['alg-semigroup-group']
+    concepts: ['交换群', '循环群', '生成元', '子群的阶']
+    resources:
+      - title: '左孝凌《离散数学》5-5 阿贝尔群和循环群'
+        type: book
+    pitfalls: ['漏掉单位元自己构成的循环子群', '生成元个数按群阶算成 n 个']
+    status: 未开始
+    mastery: 0
+
+  - id: alg-coset
+    title: '陪集与拉格朗日定理'
+    kind: 概念
+    objective: '写出子群的全部左陪集，并用拉格朗日定理推整除关系'
+    problem: '6 阶群可能有 4 阶子群吗？拉格朗日定理一句话否掉，这是群论里最省事的判定工具。'
+    practice: '以讲为主。先把陪集列完，再讲定理，定理当验算用。'
+    prerequisites: ['alg-cyclic']
+    concepts: ['左陪集', '陪集分解', '拉格朗日定理']
+    resources:
+      - title: '左孝凌《离散数学》5-7 陪集与拉格朗日定理'
+        type: book
+    pitfalls: ['左陪集与右陪集混', '陪集大小不等同子群阶']
+    status: 未开始
+    mastery: 0
+
+  - id: alg-homomorphism
+    title: '同态、同构与环域'
+    kind: 概念
+    objective: '判断映射是否为同态，说出核与象的含义'
+    problem: '两组不同元素却能结构一样——同构是数学里说“这两种东西其实是一回事”的方式。环与域按教材 5-9 只点定义，不展开。'
+    practice: '以讲为主。同态、同构、非同构各一例；环与域只讲定义与考试范围。'
+    prerequisites: ['alg-coset']
+    concepts: ['同态', '同构', '核与象', '环与域']
+    resources:
+      - title: '左孝凌《离散数学》5-8 同态与同构、5-9 环与域（只点定义）'
+        type: book
+    pitfalls: ['同态只验一个运算', '把核算成定义域而不是原象集合']
+    status: 未开始
+    mastery: 0
+
+  - id: alg-optional-permutation
+    title: '选学：置换群与伯恩赛德'
+    kind: 概念
+    objective: '待考纲确认：若 5-6 在范围内，能算置换复合与不动点个数'
+    problem: '第五章 5-6 是否在考纲内尚未确认（本校教学大纲没拿到）。本课先备：置换的两种写法、复合顺序，以及伯恩赛德定理的计数公式。确认不考就停在定义。'
+    practice: '以讲为主。置换写法与复合先落实，伯恩赛德按考纲决定是否展开。'
+    prerequisites: ['alg-cyclic']
+    concepts: ['置换', '轮换表示', '不动点', '伯恩赛德定理']
+    resources:
+      - title: '左孝凌《离散数学》5-6 置换群与伯恩赛德定理'
+        type: book
+    pitfalls: ['置换复合从右往左读错', '把不动点个数当成轨道数']
+    status: 未开始
+    mastery: 0
+
+  - id: lattice-concept
+    title: '格、分配格与有补格'
+    kind: 概念
+    objective: '判断偏序集是不是格，并说出它属于哪一类'
+    problem: '整除关系里任意两个数都有最大公约数与最小公倍数——抽象出来就是格。哈斯图上逐对找上确界与下确界，格的定义当验算用。'
+    practice: '以讲为主。先找上下确界再讲定义，分配格与有补格用反例区分。'
+    prerequisites: ['rel-order', 'alg-homomorphism']
+    concepts: ['格', '分配格', '有补格', '上确界与下确界']
+    resources:
+      - title: '左孝凌《离散数学》6-1 格的概念、6-2 分配格、6-3 有补格'
+        type: book
+    pitfalls: ['把有补格当布尔代数', '分配律的对偶式写错']
+    status: 未开始
+    mastery: 0
+
+  - id: bool-algebra
+    title: '布尔代数及其恒等式'
+    kind: 概念
+    objective: '用布尔恒等式化简表达式，并与数字电路对上'
+    problem: '数电课上的卡诺图与这里的布尔代数化简直是同一件事——两门课可以互相验算，这是本科目最省力的借力点。'
+    practice: '以讲为主。恒等式按教材 6-4 的原话给，配一组数电里的化简题当例子。'
+    prerequisites: ['lattice-concept']
+    concepts: ['布尔代数', '布尔恒等式', '德摩根律的对偶']
+    resources:
+      - title: '左孝凌《离散数学》6-4 布尔代数'
+        type: book
+      - title: 'Rosen《离散数学及其应用》第 8 版 布尔代数章（恒等式与卡诺图）'
+        type: book
+        url: 'https://www.aijiaocai.com/textbook/details?textbook_id=715745'
+    pitfalls: ['吸收律与分配律记混', '把德摩根律用到量词上']
+    realworld: '数字电路的逻辑化简（同一套恒等式）'
+    status: 未开始
+    mastery: 0
+
+  - id: bool-expression
+    title: '布尔表达式与化简'
+    kind: 实操
+    objective: '把布尔表达式化成最简与或式，并用真值表验证'
+    problem: '给定表达式，怎么让电路少几个门？每一步化简都要说得出依据哪条律——考试考过程，不只考结果。'
+    practice: '讲练并重。代数化简与卡诺图各做一题，两法结果互验。'
+    prerequisites: ['bool-algebra']
+    concepts: ['布尔表达式', '最简与或式', '卡诺图']
+    resources:
+      - title: '左孝凌《离散数学》6-5 布尔表达式'
+        type: book
+      - title: '数字电路教材的同章（同一套恒等式，交叉验算）'
+        type: book
+    pitfalls: ['卡诺图圈组没覆盖所有 1', '化简后没有处理无关项']
+    status: 未开始
+    mastery: 0
+
+  - id: graph-basic
+    title: '图的基本概念与握手定理'
+    kind: 概念
+    objective: '判断度数列能否成图，并用握手定理核对'
+    problem: '7 个人每人恰好握 3 次手，可能吗？握手定理一句话判掉“奇数度顶点有奇数个”的情形——本课讲清图论的第一个硬约束。'
+    practice: '以讲为主。度数序列可图化先试一遍，再讲定理当工具。'
+    prerequisites: ['rel-cartesian', 'set-operations']
+    concepts: ['无向图与有向图', '度数', '握手定理', '子图与补图']
+    resources:
+      - title: '左孝凌《离散数学》7-1 图的基本概念'
+        type: book
+      - title: '屈婉玲《离散数学（第3版）》第 5 章 图的基本概念'
+        type: book
+        url: 'https://xuanshu.hep.com.cn/front/book/findBookDetails?bookId=658daaba74ce561611bd9a4f'
+    pitfalls: ['自环与平行边的处理不合定义', '度数和为奇数仍判可图']
+    realworld: '社交网络里“每人认识 k 个人”是否可能'
+    status: 未开始
+    mastery: 0
+
+  - id: graph-path
+    title: '路、回路与连通性'
+    kind: 概念
+    objective: '判断图是否连通，并求割点与点连通度'
+    problem: '网络里总有几个关键节点，一断全瘫——割点与连通度就是这件事的量化。'
+    practice: '以讲为主。按定义找路一遍，再讲判定，并留下距离矩阵的伏笔。'
+    prerequisites: ['graph-basic']
+    concepts: ['路与回路', '连通图', '割点', '点连通度与边连通度']
+    resources:
+      - title: '左孝凌《离散数学》7-2 路与回路'
+        type: book
+    pitfalls: ['把回路当简单回路', '连通度与最小度混为一谈']
+    status: 未开始
+    mastery: 0
+
+  - id: graph-matrix
+    title: '图的矩阵表示'
+    kind: 实操
+    objective: '写邻接矩阵与可达矩阵，用矩阵幂数出长度为 k 的路'
+    problem: '长度为 4 的路有几条？邻接矩阵自乘四次就数出来了——这是项目第三个落点，也把 3-8 的闭包与第七章接上。'
+    practice: '讲练并重。邻接矩阵自乘验一遍，可达矩阵与传递闭包对上。'
+    prerequisites: ['graph-path', 'rel-closure']
+    concepts: ['邻接矩阵', '可达矩阵', '矩阵幂与路径计数']
+    resources:
+      - title: '左孝凌《离散数学》7-3 图的矩阵表示'
+        type: book
+    pitfalls: ['有向图的矩阵当对称', '可达矩阵漏掉单位阵', '带权矩阵当邻接矩阵用']
+    status: 未开始
+    mastery: 0
+
+  - id: graph-shortest-path
+    title: '最短路：Dijkstra 手算'
+    kind: 实操
+    objective: '用表格法求单源最短路，写出每步选点与松弛过程'
+    problem: '从 A 到 G 最短怎么走？左版第七章八节里没有这一节，但期末与后续课都要用——借屈婉玲 6.3、罗森 6.6 补上，手算表先过关。'
+    practice: '讲练并重。表格法手算一遍，再与代码结果逐格对账。'
+    prerequisites: ['graph-matrix', 'rel-closure']
+    concepts: ['单源最短路', 'Dijkstra 表格法', '松弛']
+    resources:
+      - title: '屈婉玲《离散数学（第3版）》第 6 章 6.3 最短路问题'
+        type: book
+        url: 'https://xuanshu.hep.com.cn/front/book/findBookDetails?bookId=658daaba74ce561611bd9a4f'
+      - title: 'Rosen《离散数学及其应用》第 8 版 6.6 最短通路问题'
+        type: book
+        url: 'https://www.aijiaocai.com/textbook/details?textbook_id=715745'
+      - title: 'Python 3.13 标准库 heapq 官方文档'
+        type: official-doc
+        url: 'https://docs.python.org/3.13/library/heapq.html'
+    pitfalls: ['有负权边仍用 Dijkstra', '访问过的点不再更新', '松弛时忘了取更小的值']
+    realworld: '导航最短路径、网络路由选路'
+    status: 未开始
+    mastery: 0
+
+  - id: lab-4-shortest-path
+    title: '实验四：最短路与手算对账'
+    kind: 实验
+    objective: '用 heapq 写 Dijkstra，与教材例题的手算表逐格对上'
+    problem: '教材例题的手算表你写过一遍；程序跑出的距离必须一模一样，差一格就是松弛写错了。'
+    practice: '以练为主（验收为主）。只许标准库；打印对账表逐行勾，再跑一个有向图与一个带负权图看它错在哪。'
+    prerequisites: ['graph-matrix', 'graph-shortest-path', 'graph-path']
+    concepts: ['优先队列', '邻接表', '对账表']
+    resources:
+      - title: 'Python 3.13 标准库 heapq 官方文档'
+        type: official-doc
+        url: 'https://docs.python.org/3.13/library/heapq.html'
+      - title: 'NetworkX 算法索引（shortest_paths，作可选对照答案）'
+        type: official-doc
+        url: 'https://networkx.org/documentation/stable/reference/algorithms/index.html'
+    pitfalls: ['用 networkx 出答案再抄回来', '图输入格式与手算表不一致']
+    status: 未开始
+    mastery: 0
+
+  - id: graph-euler-hamilton
+    title: '欧拉图与汉密尔顿图'
+    kind: 实操
+    objective: '用度数判据判断欧拉路，并指出汉密尔顿判据的局限'
+    problem: '一笔画能不能画完？七桥问题给的是判据；而汉密尔顿问题至今没有好判据——这两件事必须分清，考试也这么考。'
+    practice: '讲练并重。欧拉判据练三题，汉密尔顿只讲必要条件与反例。'
+    prerequisites: ['graph-path']
+    concepts: ['欧拉路与欧拉回路', '汉密尔顿路', '必要条件的用法']
+    resources:
+      - title: '左孝凌《离散数学》7-4 欧拉图与汉密尔顿图'
+        type: book
+      - title: '屈婉玲《离散数学（第3版）》第 6 章 欧拉图与哈密顿图'
+        type: book
+        url: 'https://xuanshu.hep.com.cn/front/book/findBookDetails?bookId=658daaba74ce561611bd9a4f'
+    pitfalls: ['欧拉路与欧拉回路的条件混', '把必要条件当充要条件']
+    realworld: '一笔画、扫雪车路线、快递巡线'
+    status: 未开始
+    mastery: 0
+
+  - id: graph-planar
+    title: '平面图与欧拉公式'
+    kind: 概念
+    objective: '用欧拉公式与边数上界判断图是否可平面'
+    problem: '三间房子和三口井能不能不交叉地连起来？欧拉公式给出否定答案，它也是平面图题的唯一入口。'
+    practice: '以讲为主。公式推导只讲思路，重心放在两个“不可平面”的不等式。'
+    prerequisites: ['graph-euler-hamilton', 'graph-basic']
+    concepts: ['平面图', '面与欧拉公式', '边数上界']
+    resources:
+      - title: '左孝凌《离散数学》7-5 平面图'
+        type: book
+      - title: '屈婉玲《离散数学（第3版）》第 8 章 平面图'
+        type: book
+        url: 'https://xuanshu.hep.com.cn/front/book/findBookDetails?bookId=658daaba74ce561611bd9a4f'
+    pitfalls: ['面数算漏外部面', '对非连通图直接套欧拉公式']
+    status: 未开始
+    mastery: 0
+
+  - id: graph-coloring
+    title: '对偶图与着色'
+    kind: 实操
+    objective: '求平面图的对偶图，并给出点着色的色数上界'
+    problem: '期末考试怎么排才没有学生两门撞车？这就是图着色，也是贯穿项目里最贴近生活的一次应用。'
+    practice: '讲练并重。对偶图练一题，着色先贪心再讨论最优，最后与自己学院的课表实例对照。'
+    prerequisites: ['graph-planar']
+    concepts: ['对偶图', '点着色', '色数', '四色问题']
+    resources:
+      - title: '左孝凌《离散数学》7-6 对偶图与着色'
+        type: book
+      - title: 'Rosen《离散数学及其应用》第 8 版 图着色'
+        type: book
+        url: 'https://www.aijiaocai.com/textbook/details?textbook_id=715745'
+    pitfalls: ['对偶图的顶点数取错', '把贪心结果当最优色数']
+    realworld: '考试安排、频段分配'
+    status: 未开始
+    mastery: 0
+
+  - id: graph-tree
+    title: '树的性质与判定'
+    kind: 概念
+    objective: '用连通、无回路、边数三条中任两条判定一棵树'
+    problem: '六个顶点五条边且连通，一定是树吗？三条性质任取两条都够用——这是第七章最常考的判定。'
+    practice: '以讲为主。三条等价条件互推一遍，再给边判树。'
+    prerequisites: ['graph-path']
+    concepts: ['树', '叶与分枝点', '等价判定条件']
+    resources:
+      - title: '左孝凌《离散数学》7-7 树与生成树（树的部分）'
+        type: book
+    pitfalls: ['只凭 n-1 条边单独判树', '忽略连通性']
+    status: 未开始
+    mastery: 0
+
+  - id: graph-spanning-tree
+    title: '最小生成树'
+    kind: 实操
+    objective: '用 Kruskal 与 Prim 手算同一图的最小生成树与权值和'
+    problem: '宿舍楼之间铺网线怎么铺最省？同一条边两端的点各挑一次、不构成环，这就是 Kruskal——项目第四个落点，教材 7-7 的例题当答案。'
+    practice: '讲练并重。两法各算一遍同一图，权值必须相同；再用并查集验环判定。'
+    prerequisites: ['graph-tree', 'graph-matrix']
+    concepts: ['生成树', '最小生成树', 'Kruskal 算法', 'Prim 算法']
+    resources:
+      - title: '左孝凌《离散数学》7-7 树与生成树（生成树部分）'
+        type: book
+      - title: 'Rosen《离散数学及其应用》第 8 版 7.5 最小生成树'
+        type: book
+        url: 'https://www.aijiaocai.com/textbook/details?textbook_id=715745'
+    pitfalls: ['选边时不查环', 'Prim 换个起点得出不同的树就判错', '把权值和算成平均权']
+    realworld: '校园网布线、电网规划'
+    status: 未开始
+    mastery: 0
+
+  - id: lab-5-mst
+    title: '实验五：布线方案与生成树'
+    kind: 实验
+    objective: '用并查集写 Kruskal，输出最小生成树的边集与总权值'
+    problem: '把教材 7-7 的图和自己编的一张校园网布线图都跑一遍，交边集、总价与选边顺序。'
+    practice: '以练为主（验收为主）。并查集三个函数手写；两个算法交叉验证权值，实验三的并查集直接复用。'
+    prerequisites: ['graph-tree', 'graph-spanning-tree']
+    concepts: ['并查集判环', '边集输出', '交叉验证']
+    resources:
+      - title: '左孝凌《离散数学》7-7 例题（当标准答案）'
+        type: book
+      - title: 'NetworkX 算法索引（tree.mst，作可选对照答案）'
+        type: official-doc
+        url: 'https://networkx.org/documentation/stable/reference/algorithms/index.html'
+    pitfalls: ['并查集在加边后忘了合并集合', '把总权值算成平均', '自己编的权值表与输出对不上却不回头查输入']
+    status: 未开始
+    mastery: 0
+
+  - id: graph-rooted-tree
+    title: '根树与哈夫曼算法'
+    kind: 实操
+    objective: '用哈夫曼算法构造最优二叉树，并写出前缀码'
+    problem: '一份报文里各字母出现频率不同，怎么编码让总长度最短？哈夫曼算法给的是可动手的最优解，也是第七章最后的计算题。'
+    practice: '讲练并重。给定频率表用堆走一遍合并，最后核对前缀码无歧义。'
+    prerequisites: ['graph-tree', 'graph-spanning-tree']
+    concepts: ['根树', '二叉树', '哈夫曼算法', '前缀码']
+    resources:
+      - title: '左孝凌《离散数学》7-8 根树及其应用'
+        type: book
+      - title: 'Python 3.13 标准库 heapq 官方文档（取两个最小）'
+        type: official-doc
+        url: 'https://docs.python.org/3.13/library/heapq.html'
+    pitfalls: ['合并顺序写错', '把带权路径长度算成平均码长']
+    realworld: '文件压缩、变长编码'
+    status: 未开始
+    mastery: 0
+
+  - id: opt-automata
+    title: '选学：有限状态自动机'
+    kind: 概念
+    objective: '待考纲确认：若含第八章，能画状态图并判断串是否被接受'
+    problem: '第五篇（第八章形式语言与自动机）是否在考纲内尚未确认（本校教学大纲没拿到）。本课备基础：状态转移图、串的接受与拒绝。'
+    practice: '以讲为主。只做状态图与串判定；NFA 转 DFA、化简按考纲决定是否加。'
+    prerequisites: ['graph-path', 'set-operations']
+    concepts: ['文法与语言', '有限状态自动机', '串的接受']
+    resources:
+      - title: '左孝凌《离散数学》8-1 串和语言、8-3 有限状态自动机'
+        type: book
+    pitfalls: ['初态与终态混', '接受路径与转移函数混为一谈']
+    status: 未开始
+    mastery: 0
+
+  - id: opt-error-code
+    title: '选学：纠错码与海明码'
+    kind: 概念
+    objective: '待考纲确认：若含第九章，能算海明码校验位并纠一位错'
+    problem: '第九章纠错码初步是否在考纲内尚未确认。本课最可能考的是海明码：校验位放在 2 的幂位，按综合征定位出错的那一位。'
+    practice: '以讲为主。海明码编码与一位纠错各一题；线性分组码只讲生成矩阵的定义。'
+    prerequisites: ['opt-automata']
+    concepts: ['纠错的基本概念', '海明码', '综合征']
+    resources:
+      - title: '左孝凌《离散数学》9-1 通讯模型与纠错基本概念、9-3 海明码'
+        type: book
+    pitfalls: ['校验位位置取错', '综合征值与出错位号的对应反过来']
+    status: 未开始
+    mastery: 0
+
+edges:
+  - from: logic-normal-form
+    to: logic-inference
+    reason: '推理证明要靠等值式与蕴含式改写，先有范式这一课'
+  - from: logic-inference
+    to: lab-1-truth-engine
+    reason: '实验一验收整个第一章：把推理判成有效的引擎'
+  - from: lab-1-truth-engine
+    to: pred-predicate
+    reason: '命题演算走完，接着打开量词，进入谓词逻辑'
+  - from: pred-predicate
+    to: pred-translation
+    reason: '认得量词才谈得上翻译与辖域'
+  - from: pred-translation
+    to: pred-equivalence
+    reason: '换名与代入是求前束范式的前置动作'
+  - from: pred-equivalence
+    to: pred-inference
+    reason: '四条推理规则用到等价式与量词否定律'
+  - from: pred-inference
+    to: set-operations
+    reason: '符号化与证明的写法迁到集合，第二篇从这里开始'
+  - from: set-operations
+    to: set-inclusion-exclusion
+    reason: '容斥公式建立在集合运算之上，并由计数工具支撑'
+  - from: set-operations
+    to: rel-cartesian
+    reason: '笛卡尔积用集合表示，关系是它的子集'
+  - from: rel-cartesian
+    to: rel-properties
+    reason: '有矩阵与集合两种表示，才好逐条判五个性质'
+  - from: rel-properties
+    to: rel-composition
+    reason: '复合与逆关系要用性质来判结果'
+  - from: rel-composition
+    to: rel-closure
+    reason: '闭包是复合（矩阵幂）的极限形式'
+  - from: rel-closure
+    to: lab-2-closure
+    reason: '实验二把关系性质与闭包做成工具包第一块'
+  - from: lab-2-closure
+    to: rel-partition
+    reason: '闭包这块落定，接着讲划分与等价关系'
+  - from: rel-partition
+    to: rel-equivalence
+    reason: '划分与等价关系一一对应，先判划分再求等价类'
+  - from: rel-equivalence
+    to: rel-order
+    reason: '等价关系之后转到另一种特殊关系：偏序'
+  - from: rel-order
+    to: lab-3-equivalence
+    reason: '实验三验收等价类与哈斯图：切类 + 排先后'
+  - from: lab-3-equivalence
+    to: func-concept
+    reason: '关系工具包第二块完成，转入函数这一特殊关系'
+  - from: func-concept
+    to: func-cardinality
+    reason: '基数用双射定义，必须先会判单射与满射'
+  - from: func-cardinality
+    to: alg-system
+    reason: '第二篇结束，转入代数结构：从运算与封闭性起步'
+  - from: alg-system
+    to: alg-semigroup-group
+    reason: '四个运算性质逐条筛过，才轮到群的定义'
+  - from: alg-semigroup-group
+    to: alg-cyclic
+    reason: '先有群，才谈交换群与循环群'
+  - from: alg-cyclic
+    to: alg-coset
+    reason: '陪集与拉格朗日定理用到子群与元素的阶'
+  - from: alg-coset
+    to: alg-homomorphism
+    reason: '同态与同构建立群之间的对应，接在陪集之后'
+  - from: alg-homomorphism
+    to: alg-optional-permutation
+    reason: '5-6 选学课放在第五章末，考纲确认后再决定是否展开'
+  - from: alg-homomorphism
+    to: lattice-concept
+    reason: '格既用偏序定义又用代数运算定义，把两篇接起来'
+  - from: lattice-concept
+    to: bool-algebra
+    reason: '布尔代数是有补分配格，先把三类格分清'
+  - from: bool-algebra
+    to: bool-expression
+    reason: '恒等式练熟才谈化简与卡诺图'
+  - from: bool-expression
+    to: graph-basic
+    reason: '第三篇收尾，第七章从顶点、边、度数的定义开始'
+  - from: graph-basic
+    to: graph-path
+    reason: '有顶点与边才谈路与连通'
+  - from: graph-path
+    to: graph-matrix
+    reason: '矩阵表示刻画路的存在与条数'
+  - from: graph-matrix
+    to: graph-shortest-path
+    reason: '带权邻接矩阵是求最短路的输入；左版缺这一节，借屈婉玲 6.3 补'
+  - from: graph-shortest-path
+    to: lab-4-shortest-path
+    reason: '实验四验收矩阵与最短路：手算表与程序对账'
+  - from: lab-4-shortest-path
+    to: graph-euler-hamilton
+    reason: '最短路这块落定，接着讲欧拉与汉密尔顿的判定'
+  - from: graph-euler-hamilton
+    to: graph-planar
+    reason: '平面图的图示与欧拉公式接在回路之后'
+  - from: graph-planar
+    to: graph-coloring
+    reason: '对偶图来自平面图，着色用它来表述地图着色'
+  - from: graph-coloring
+    to: graph-tree
+    reason: '按教材 7-6 到 7-7 的顺序，着色之后进入树'
+  - from: graph-tree
+    to: graph-spanning-tree
+    reason: '生成树是树的子类问题，先会判树再求最优生成树'
+  - from: graph-spanning-tree
+    to: lab-5-mst
+    reason: '实验五验收树与最小生成树：给出可交付的布线方案'
+  - from: lab-5-mst
+    to: graph-rooted-tree
+    reason: '项目收尾后讲根树与哈夫曼，第七章最后一节'
+  - from: graph-rooted-tree
+    to: opt-automata
+    reason: '主干第 1–7 章走完，第五篇按考纲决定是否进入'
+  - from: opt-automata
+    to: opt-error-code
+    reason: '按教材顺序，第九章接在第八章之后'
+  - from: lab-1-truth-engine
+    to: lab-2-closure
+    reason: '项目线索：同一套输入校验与对账流程从实验一沿用'
+  - from: lab-2-closure
+    to: lab-3-equivalence
+    reason: '项目线索：关系矩阵这份输入在实验三继续使用'
+  - from: lab-3-equivalence
+    to: lab-4-shortest-path
+    reason: '项目线索：并查集与邻接表在实验四推进到带权图'
+  - from: lab-4-shortest-path
+    to: lab-5-mst
+    reason: '项目线索：实验五复用并查集与堆，换成最小生成树'

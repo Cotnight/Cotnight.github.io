@@ -1,0 +1,49 @@
+{
+  "小项编号与变元位序": [
+    {
+      "q": "三变元里 $P$ 最高位、$R$ 最低位。$R\\wedge\\neg Q\\wedge P$ 是哪个小项？",
+      "opts": [
+        "$m_5$",
+        "$m_6$",
+        "$m_3$",
+        "$m_2$"
+      ],
+      "ans": 0,
+      "why": "编号只看取值，不看书写顺序。\n$P=1$、$Q=0$、$R=1$ 拼成 101，是 $m_5$。\n按书写顺序读成 110 的话，同一个赋值就有了两个编号。"
+    }
+  ],
+  "否号进括号要换运算": [
+    {
+      "q": "作业里把 $\\neg P\\vee\\neg Q$ 抄成四种写法。哪一项与原式不等值？",
+      "opts": [
+        "$\\neg(P\\wedge Q)$",
+        "$\\neg(P\\vee Q)$",
+        "$P\\to\\neg Q$",
+        "$Q\\to\\neg P$"
+      ],
+      "ans": 1,
+      "why": "取 $P=1$、$Q=0$：原式算出 1，$\\neg(P\\vee Q)$ 算出 0。\n否号进出括号，$\\wedge$ 与 $\\vee$ 必须一起换：\n$\\neg P\\vee\\neg Q\\Leftrightarrow\\neg(P\\wedge Q)$。"
+    }
+  ],
+  "(P∧Q)↑R 的对偶式": [
+    {
+      "q": "作业里把 $(P\\wedge Q)\\uparrow R$ 的对偶式\n写成了 $(P\\vee Q)\\uparrow R$。\n\n① 对偶要换的三组符号是哪三组？\n他漏了哪一组？\n② 正确的对偶式写出来。\n③ 用「折成 $\\neg$、$\\wedge$、$\\vee$，取对偶，\n再折回」的路子验一遍，写两行过程。",
+      "answer": "① 三组：$\\wedge\\leftrightarrow\\vee$、\n$\\uparrow\\leftrightarrow\\downarrow$、$1\\leftrightarrow0$。\n漏的是 $\\uparrow\\leftrightarrow\\downarrow$：\n前一半换了，后一半没换。\n\n② $(P\\vee Q)\\downarrow R$。\n\n③ 先折：$(P\\wedge Q)\\uparrow R$\n$\\Leftrightarrow\\neg(P\\wedge Q\\wedge R)$。\n取对偶（$\\wedge$ 全变 $\\vee$）：$\\neg(P\\vee Q\\vee R)$。\n再按 $\\downarrow$ 的定义折回 $(P\\vee Q)\\downarrow R$，\n两条路一致。",
+      "criteria": "① 三组说全，并指出漏的是 $\\uparrow\\leftrightarrow\\downarrow$。\n只答「$\\wedge$ 换 $\\vee$」算缺一条，按部分通过。\n\n② 结果必须是 $(P\\vee Q)\\downarrow R$。\n写成 $(P\\vee Q)\\uparrow R$ 就是不通过。\n\n③ 验算三步都要有：\n折成 $\\neg(P\\wedge Q\\wedge R)$、\n取对偶得 $\\neg(P\\vee Q\\vee R)$、折回 $\\downarrow$。\n\n④ 说清这个错法为什么不容易被发现：\n$(P\\vee Q)\\uparrow R$ 照样能算到底，\n连「取两次对偶回到原式」这条自查也不设防。"
+    }
+  ],
+  "展开时两支重合容易漏项": [
+    {
+      "q": "求 $(P\\to Q)\\wedge(Q\\to R)$ 的主析取范式，\n改用代数展开：$\\neg P\\vee Q$ 与 $\\neg Q\\vee R$\n交叉相乘，删掉恒假支，剩三支：\n$\\neg P\\wedge\\neg Q$、$\\neg P\\wedge R$、$Q\\wedge R$。\n\n① 三支各补全变元后，各给出哪两个小项？\n② 哪些小项出现了两次？\n③ 若漏掉 $Q\\wedge R$ 这一支，$\\Sigma m$ 变成什么？\n哪一条自查能立刻发现少了？",
+      "answer": "① $\\neg P\\wedge\\neg Q$ 缺 $R$，补成 $m_0$、$m_1$。\n$\\neg P\\wedge R$ 缺 $Q$，补成 $m_1$、$m_3$。\n$Q\\wedge R$ 缺 $P$，补成 $m_3$、$m_7$。\n\n② $m_1$ 与 $m_3$ 各出现两次：\n$m_1$ 来自前两支，$m_3$ 来自后两支。\n\n③ 只剩 $\\Sigma m(0,1,3)$，\n与正确的 $\\Sigma m(0,1,3,7)$ 差 $m_7$。\n自查：$\\Pi M(2,4,5,6)$ 与 $\\Sigma$ 合起来\n正好 8 个编号，缺 $m_7$ 时只有 7 个。",
+      "criteria": "① 三支都补成两个编号：\n$m_0,m_1$；$m_1,m_3$；$m_3,m_7$。\n缺变元不补、一支只写一个编号，按不通过。\n\n② 答出 $m_1$、$m_3$ 各两次，\n并说清重合的两个来源分别是哪两支。\n\n③ 答出 $\\Sigma m(0,1,3)$，\n并指出编号互补这条自查能立刻发现：\n$\\Sigma$ 与 $\\Pi$ 合起来正好 $2^n$ 个。\n\n正确结果：$\\Sigma m(0,1,3,7)$、$\\Pi M(2,4,5,6)$。\n把 $m_1$、$m_3$ 当成「算过了」就跳过，\n是这类题最常见的漏项来路。"
+    }
+  ],
+  "由主范式读出成真赋值与公式类型": [
+    {
+      "q": "三变元公式 $A$ 的主合取范式是\n$M_0\\wedge M_1\\wedge M_3$。\n\n① 它的主析取范式是哪些小项？\n成真赋值是哪几个？\n② $A$ 是重言式、矛盾式还是可满足式？说依据。\n③ 若另一式的主析取范式含全部八个小项，\n它的主合取范式写什么？",
+      "answer": "① 取补集：$m_2\\vee m_4\\vee m_5\\vee m_6\\vee m_7$。\n成真赋值 010、100、101、110、111，共五个。\n\n② 可满足式：五行真、三行假，\n既非全真也非全假。\n\n③ 一个项都没有，记作 $1$。\n它不是「把八个大项都写出来」——那是矛盾式。",
+      "criteria": "① 编号必须与 $M_0,M_1,M_3$ 互补且不多不少：\n$m_2,m_4,m_5,m_6,m_7$。\n赋值写成 010 这类串，五个都要有，顺序不限；\n编号与赋值必须对得上。\n\n② 依据要说清：$\\Sigma$ 含全部 $2^n$ 个小项\n是重言式，一个都没有是矛盾式，其余可满足。\n\n③ 必须答「空、记作 $1$」。\n答成 $M_0\\wedge\\cdots\\wedge M_7$ 就是不通过。"
+    }
+  ]
+}
