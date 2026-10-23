@@ -1,0 +1,343 @@
+<!DOCTYPE html>
+<html lang="zh-CN" data-theme="dark">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>奇点分类：零点与极点 · 复变函数与积分变换</title>
+
+<!-- 共享层在 .learning/assets/，课件在 .learning/subjects/<slug>/lessons/ 下，所以是 ../../../assets/ -->
+<link rel="stylesheet" href="../../../assets/sayo/sayo.css">
+<link rel="stylesheet" href="../../../assets/learn-theme.css">
+<link rel="stylesheet" href="../assets/style.css">
+
+<!-- 主题要在首帧前应用，避免闪白/闪黑 -->
+<script src="../../../assets/learn-theme.js"></script>
+<script>LearnTheme.apply();</script>
+</head>
+
+<body class="lesson-body">
+
+<nav class="lesson-bar">
+  <a href="../index.html">← 返回课程</a>
+  <span>复变函数与积分变换</span>
+  <span class="lesson-bar__no">0013</span>
+  <!-- 课件页自带主题开关：学生从文件管理器直接打开课件时也能切暗色 -->
+  <label class="syo-toggle syo-toggle--theme lesson-bar__toggle" title="切换深浅主题" aria-label="切换深浅主题">
+    <input type="checkbox" id="lesson-theme-checkbox" checked>
+    <span class="syo-toggle-track"></span>
+    <span class="syo-toggle-knob">
+      <svg class="syo-toggle-sun" viewBox="0 0 20 20" fill="none" aria-hidden="true"><circle cx="10" cy="10" r="3.5" stroke="#f57c00" stroke-width="1.5"/><path d="M10 2v2.5M10 15.5V18M2 10h2.5M15.5 10H18M4.34 4.34l1.77 1.77M13.89 13.89l1.77 1.77M4.34 15.66l1.77-1.77M13.89 6.11l1.77-1.77" stroke="#f57c00" stroke-width="1.2" stroke-linecap="round"/></svg>
+      <svg class="syo-toggle-moon" viewBox="0 0 20 20" fill="none" aria-hidden="true"><path d="M16.5 12.5A6 6 0 019 4.5a6 6 0 007.5 8z" stroke="#5c6bc0" stroke-width="1.5" stroke-linejoin="round"/></svg>
+    </span>
+  </label>
+</nav>
+
+<article class="lesson">
+
+  <header class="lesson-header">
+    <span class="lesson-header__eyebrow">0013 · 奇点分类：零点与极点</span>
+    <h1>奇点分类：零点与极点</h1>
+    <p class="lesson-goal"><b>本节目标：</b>能判定奇点类型与极点的阶，并写出零点阶。</p>
+  </header>
+
+  <!-- ── 正文：渲染器按内容文件（lessons/<序号>-<节点id>.md）产出，块词汇见 docs/规范/课件内容格式.md ── -->
+
+  <h2>卷面怎么考</h2>
+
+  <p>本节的题面只有两种形状：问某个点是哪一类、几阶，问一个函数有哪些奇点、各是什么。</p>
+
+  <ul>
+    <li>填空，3～4 分，只报个数。2024 年 B 卷：「函数 <span class="math-inline">f(z)=\frac{z}{\sin z}</span> 在 <span class="math-inline">|z|&lt;4</span> 内有 ___ 个奇点。」参考答案填 <span class="math-inline">3</span>。</li>
+    <li>选择，3 分，四个选项在一阶极点、二阶或三阶极点、可去奇点、本性奇点里挑。合肥工大几套卷的选择第 5 题连着考这个形状：<span class="math-inline">z=\pi</span> 是 <span class="math-inline">\frac{\sin z}{(z-\pi)^2}</span> 的什么，<span class="math-inline">z=0</span> 是 <span class="math-inline">\frac{(e^z-1)^2z^3}{\sin z^8}</span> 的什么，<span class="math-inline">z=\pi</span> 是 <span class="math-inline">\frac{z-\pi}{(\sin z)^3}</span> 的什么，<span class="math-inline">z=0</span> 是 <span class="math-inline">\frac{z\sin z^3}{\ln(1-z^4)}</span> 的什么。</li>
+    <li>解答题，10 分，第一问固定是「求 <span class="math-inline">f(z)</span> 在有限复平面内的奇点和类型，求出极点的阶」，第二问拿这些点去算闭路积分。2024 年 A 卷的 <span class="math-inline">\frac{z^2-\pi^2}{z\sin z}</span>、2024 年 B 卷的 <span class="math-inline">\frac{z+\cos z}{z(z-\pi)(z+\pi)}</span>、2025 年 A 卷的 <span class="math-inline">\frac{\sin z}{z^4-1}</span> 都是这个形状。</li>
+  </ul>
+
+  <p>本课只练两件事：认类型、数阶。留数公式怎么用留到下一课。</p>
+
+  <h2>零点与零点的阶</h2>
+
+  <p>极点的阶全靠零点阶数出来，所以先讲零点。</p>
+
+  <p>设 <span class="math-inline">f</span> 在 <span class="math-inline">z_0</span> 解析且 <span class="math-inline">f(z_0)=0</span>，称 <span class="math-inline">z_0</span> 是 <span class="math-inline">f</span> 的<b>零点</b>。若还能写成</p>
+
+  <div class="math-block">f(z)=(z-z_0)^m\varphi(z),\qquad \varphi(z_0)\ne0,\ m\ge1,</div>
+
+  <p>其中 <span class="math-inline">\varphi</span> 在 <span class="math-inline">z_0</span> 解析，则称 <span class="math-inline">z_0</span> 是 <span class="math-inline">f</span> 的 <b><span class="math-inline">m</span> 阶零点</b>。</p>
+
+  <p>阶数量的是零点趋零的快慢：一阶零点处函数近似于一次式，二阶零点近似于平方。数阶有三条等价的路，做题挑最快的一条。</p>
+
+  <table>
+    <thead>
+      <tr><th>数法</th><th>判据</th><th>例</th></tr>
+    </thead>
+    <tbody>
+      <tr><td>看展开</td><td>泰勒展开里第一个不为零的项是 <span class="math-inline">c_m(z-z_0)^m</span>，下标 <span class="math-inline">m</span> 就是阶</td><td><span class="math-inline">\sin z=z-\frac{z^3}{6}+\cdots</span>，在 <span class="math-inline">0</span> 处一阶</td></tr>
+      <tr><td>逐个求导</td><td><span class="math-inline">f(z_0)=f'(z_0)=\cdots=f^{(m-1)}(z_0)=0</span> 且 <span class="math-inline">f^{(m)}(z_0)\ne0</span></td><td><span class="math-inline">1-\cos z</span> 在 <span class="math-inline">0</span> 处：值 <span class="math-inline">0</span>、一阶导为 <span class="math-inline">0</span>、二阶导为 <span class="math-inline">1</span>，二阶</td></tr>
+      <tr><td>看因式</td><td>因式分解里 <span class="math-inline">(z-z_0)</span> 这个因子的最高次幂</td><td><span class="math-inline">z^2(z-\pi)</span> 在 <span class="math-inline">0</span> 处二阶</td></tr>
+    </tbody>
+  </table>
+
+  <p>三条判据在卷面上不需要都写，写清一条就够。</p>
+
+  <div class="quiz" data-quiz='[
+  {
+    "q": "$f(z)=z^2\\sin z$ 在 $z=0$ 处是几阶零点？\n挑最快的一条判据算，再看选项。",
+    "opts": [
+      "一阶零点",
+      "二阶零点",
+      "三阶零点",
+      "可去奇点"
+    ],
+    "ans": 2,
+    "why": "因式法：$z^2$ 给二阶、$\\sin z$ 带出一个 $z$，\n合起来是 $z^3$，所以三阶。\n展开核对：$z^2\\sin z=z^3-\\frac{z^5}{6}+\\cdots$，\n最低次项也是 $z^3$。"
+  }
+]'></div>
+
+  <h2>三类孤立奇点</h2>
+
+  <p><span class="math-inline">f</span> 在去心邻域 <span class="math-inline">0&lt;|z-z_0|&lt;R</span> 内解析时，<span class="math-inline">z_0</span> 叫 <span class="math-inline">f</span> 的<b>孤立奇点</b>。上一课的洛朗展开就在这个去心邻域里成立，负幂项（主要部分）有几项、最高到几次，把奇点分成三类。</p>
+
+  <ul>
+    <li><b>可去奇点</b>：主要部分一项都没有，展开是 <span class="math-inline">c_0+c_1(z-z_0)+\cdots</span>。此时 <span class="math-inline">\lim_{z\to z_0}f(z)=c_0</span> 存在且有限；把 <span class="math-inline">f(z_0)</span> 定义成 <span class="math-inline">c_0</span>，<span class="math-inline">f</span> 就在 <span class="math-inline">z_0</span> 解析，奇点被抹掉，所以叫可去。</li>
+    <li><b>极点</b>：主要部分只有有限多项，最高的一项是 <span class="math-inline">\frac{c_{-m}}{(z-z_0)^m}</span>（<span class="math-inline">c_{-m}\ne0</span>，<span class="math-inline">m\ge1</span>），则称 <span class="math-inline">z_0</span> 是 <b><span class="math-inline">m</span> 阶极点</b>，一阶极点也叫简单极点。此时 <span class="math-inline">|f(z)|\to+\infty</span>。</li>
+    <li><b>本性奇点</b>：主要部分有无限多项。此时 <span class="math-inline">\lim_{z\to z_0}f(z)</span> 不存在：沿不同路径趋近 <span class="math-inline">z_0</span>，可以取到任意远的值。</li>
+  </ul>
+
+  <table>
+    <thead>
+      <tr><th>类型</th><th>主要部分</th><th><span class="math-inline">\lim_{z\to z_0}f(z)</span></th><th>阶怎么写</th><th>留数</th></tr>
+    </thead>
+    <tbody>
+      <tr><td>可去奇点</td><td>无负幂项</td><td>有限值 <span class="math-inline">c_0</span></td><td>阶数按 <span class="math-inline">0</span> 看</td><td><span class="math-inline">0</span></td></tr>
+      <tr><td><span class="math-inline">m</span> 阶极点</td><td>最高到 <span class="math-inline">(z-z_0)^{-m}</span> 为止</td><td>无穷大</td><td>写清 <span class="math-inline">m</span></td><td><span class="math-inline">c_{-1}</span>，<span class="math-inline">m\ge2</span> 时要求 <span class="math-inline">m-1</span> 阶导</td></tr>
+      <tr><td>本性奇点</td><td>无限多项</td><td>不存在</td><td>无阶可写</td><td><span class="math-inline">c_{-1}</span>，只能从展开里读</td></tr>
+    </tbody>
+  </table>
+
+  <p>留数那一列上一课已经交代过：它就是洛朗展开里 <span class="math-inline">c_{-1}</span> 这一项。</p>
+
+  <figure class="lesson-figure">
+    <img src="../assets/img/pool/奇点分类-三类-洛朗负幂项-本机-01.png" alt="三行面板自上而下是可去奇点、m 阶极点、本性奇点；每行左边写类型名、负幂项个数和一个例子，右边写出洛朗展开，可去奇点只有常数项与正幂项，m 阶极点画出到 (z − z0) 的 −3 次为止的负幂项再接正幂，本性奇点从更低的幂次一直列到 −1 次；每行后面两句写极限行为与留数取法">
+    <figcaption>图 1 · 三类奇点的差别全在负幂项：没有、有限多项、无限多项。（来源：本机生成（<code>assets/img/gen/奇点分类-三类-洛朗负幂项-本机-01.py</code>），许可：本项目自产）</figcaption>
+  </figure>
+
+  <div class="lesson-warn">
+    <b>可去奇点也算一个奇点</b>
+    <p>填空问「有几个奇点」时，可去奇点照样占名额。2024 年 B 卷 <span class="math-inline">f(z)=\frac{z}{\sin z}</span> 的答案是 <span class="math-inline">3</span>：分母在 <span class="math-inline">|z|&lt;4</span> 内的零点是 <span class="math-inline">0,\pm\pi</span>，全算，<span class="math-inline">0</span> 处虽然可去也照算。定类型与数个数是两件事。</p>
+  </div>
+
+  <div class="quiz" data-quiz='[
+  {
+    "q": "$f(z)=\\frac{1}{z-1}+\\frac{1}{(z-1)^2}+3+\\frac{(z-1)^2}{5!}-\\cdots$\n在 $z=1$ 处是哪一类奇点？",
+    "opts": [
+      "二阶极点",
+      "三阶极点",
+      "可去奇点",
+      "本性奇点"
+    ],
+    "ans": 0,
+    "why": "主要部分只有两项负幂项，最高到 $(z-1)^{-2}$，\n所以是二阶极点。\n负幂项有限多项就是极点，无限多项才是本性。"
+  },
+  {
+    "q": "$f(z)=\\frac{z}{\\sin z}$ 在 $|z|&lt;4$ 内有几个奇点？\n（2024 年 B 卷填空，3 分）\n\n① 先把分母的零点列全。\n② 可去的那一个算不算名额？",
+    "answer": "3 个。\n分母零点是 $0,\\pm\\pi$，三个都在 $|z|&lt;4$ 内；\n$\\pm2\\pi$ 已经出了这个圆。\n\n$z=0$ 处分子分母都是一阶零点，抵消后是可去奇点，\n但可去奇点照样占一个名额，所以填 $3$。",
+    "criteria": "答案是 $3$，不是 $2$：$z=0$ 可去也必须算。\n① 必须列出 $0,\\pm\\pi$ 并说明都在圈内。\n② 必须说清「可去奇点也是奇点、也占名额」。\n答 $2$ 是把可去的那一个抹掉了；\n答 $5$ 是把 $\\pm2\\pi$ 也算进来了（$2\\pi&gt;4$）。"
+  }
+]'></div>
+
+  <h2>极点的阶怎么数</h2>
+
+  <p>两条路：一条用来算，一条用来核。</p>
+
+  <p><b>按零点阶相减。</b> 设 <span class="math-inline">f(z)=\frac{g(z)}{h(z)}</span>，<span class="math-inline">g</span> 在 <span class="math-inline">z_0</span> 有 <span class="math-inline">k</span> 阶零点、<span class="math-inline">h</span> 有 <span class="math-inline">n</span> 阶零点。则 <span class="math-inline">n-k&gt;0</span> 时 <span class="math-inline">z_0</span> 是 <span class="math-inline">f</span> 的 <span class="math-inline">n-k</span> 阶极点，<span class="math-inline">n-k=0</span> 时可去，<span class="math-inline">n-k&lt;0</span> 时 <span class="math-inline">z_0</span> 本身是 <span class="math-inline">f</span> 的零点。</p>
+
+  <p><b>用极限核。</b> <span class="math-inline">z_0</span> 是 <span class="math-inline">m</span> 阶极点，当且仅当</p>
+
+  <div class="math-block">\lim_{z\to z_0}(z-z_0)^m f(z)=c,\qquad c\ \text{为有限非零复数}.</div>
+
+  <p>用法是试：乘上 <span class="math-inline">(z-z_0)^m</span> 之后极限是有限非零数，<span class="math-inline">m</span> 就是阶；极限是 <span class="math-inline">0</span> 说明阶数比 <span class="math-inline">m</span> 低，极限是无穷说明比 <span class="math-inline">m</span> 高。</p>
+
+  <figure class="lesson-figure">
+    <img src="../assets/img/pool/极点阶-判定-分母阶减分子阶-本机-02.png" alt="左边四个框自上而下列出找奇点、数分母的零点阶 n、数分子的零点阶 k、相减得阶数；右上框把 n 减 k 大于零、等于零、小于零分别对到极点、可去奇点、零点；右下框给出极限判别，写成 (z − z0) 的 m 次方乘 f(z) 的极限等于 c 时 m 就是阶数；底部一张表用四个函数列出奇点、分母阶、分子阶与结论">
+    <figcaption>图 2 · 阶数由两个零点阶相减算出，再用极限核对一次。（来源：本机生成（<code>assets/img/gen/极点阶-判定-分母阶减分子阶-本机-02.py</code>），许可：本项目自产）</figcaption>
+  </figure>
+
+  <p>两个卷面原题走一遍。</p>
+
+  <p>2022 年 A 卷第 7 题：<span class="math-inline">f(z)=\frac{\cos z}{z^2(z^2-\pi^2)}</span>，求有限复平面内的奇点。分母 <span class="math-inline">z^2(z-\pi)(z+\pi)</span> 中，<span class="math-inline">0</span> 是二阶零点，<span class="math-inline">\pm\pi</span> 各是一阶零点；分子 <span class="math-inline">\cos z</span> 在这三点分别取 <span class="math-inline">1</span> 与 <span class="math-inline">-1</span>，都不是零。于是 <span class="math-inline">0</span> 处 <span class="math-inline">2-0=2</span>，二阶极点；<span class="math-inline">\pm\pi</span> 处 <span class="math-inline">1-0=1</span>，各是一阶极点。参考答案就分两行写这两句，每行 1 分。</p>
+
+  <p>2025 年 A 卷第 8 题：<span class="math-inline">f(z)=\frac{\sin z}{z^4-1}</span>。<span class="math-inline">z^4-1=(z-1)(z+1)(z-i)(z+i)</span>，四个根各一阶；分子在这四点都不为零。四个都是一阶极点。</p>
+
+  <div class="quiz" data-quiz='[
+  {
+    "q": "卷面原题（10 分题第一问）：\n$f(z)=\\frac{1}{(z+1)(z+2)^2}$，\n求它在有限复平面内的奇点、类型、极点的阶。\n\n① 逐点写：位置 + 类型 + 阶，一点一行。\n② 用极限判别核一遍 $z=-2$ 那一点，\n写出乘上 $(z+2)^2$ 之后的极限值。",
+    "answer": "$z=-1$：分母一阶零点，分子为 $1$，一阶极点。\n\n$z=-2$：分母二阶零点，分子为 $1$，二阶极点。\n\n核对：$(z+2)^2f(z)=\\frac{1}{z+1}$，\n在 $z=-2$ 取值 $-1$（有限非零），二阶无误。",
+    "criteria": "① 两点都要：$z=-1$ 一阶极点、$z=-2$ 二阶极点，\n每点写清「类型 + 阶」才算满分。\n只写「奇点是 $-1$ 与 $-2$」不写类型，按部分通过——\n卷面这两行各占 1 分。\n② 极限值必须是 $-1$，并写出 $(z+2)^2f(z)$ 这个式子；\n只给数不给式子按部分通过。\n写 $\\infty$ 或 $0$ 说明阶看错了。"
+  }
+]'></div>
+
+  <h3>抵消之后阶数会变</h3>
+
+  <p>分子在同一个点也带零点时，只看分母幂次会多算。下面六行都是抵消后阶数变了的形状，其中五行来自公开试卷。</p>
+
+  <table>
+    <thead>
+      <tr><th><span class="math-inline">f(z)</span></th><th>奇点</th><th>分母的零点阶 <span class="math-inline">n</span></th><th>分子的零点阶 <span class="math-inline">k</span></th><th>结论</th></tr>
+    </thead>
+    <tbody>
+      <tr><td><span class="math-inline">\frac{\sin z}{z^3}</span></td><td><span class="math-inline">0</span></td><td><span class="math-inline">3</span></td><td><span class="math-inline">1</span></td><td>二阶极点</td></tr>
+      <tr><td><span class="math-inline">\frac{\sin z}{(z-\pi)^2}</span></td><td><span class="math-inline">\pi</span></td><td><span class="math-inline">2</span></td><td><span class="math-inline">1</span></td><td>一阶极点</td></tr>
+      <tr><td><span class="math-inline">\frac{z-\pi}{(\sin z)^3}</span></td><td><span class="math-inline">\pi</span></td><td><span class="math-inline">3</span></td><td><span class="math-inline">1</span></td><td>二阶极点</td></tr>
+      <tr><td><span class="math-inline">\frac{(e^z-1)^2z^3}{\sin z^8}</span></td><td><span class="math-inline">0</span></td><td><span class="math-inline">8</span></td><td><span class="math-inline">5</span></td><td>三阶极点</td></tr>
+      <tr><td><span class="math-inline">\frac{z^2-\pi^2}{z\sin z}</span></td><td><span class="math-inline">0</span></td><td><span class="math-inline">2</span></td><td><span class="math-inline">0</span></td><td>二阶极点</td></tr>
+      <tr><td><span class="math-inline">\frac{z^2-\pi^2}{z\sin z}</span></td><td><span class="math-inline">\pi</span></td><td><span class="math-inline">1</span></td><td><span class="math-inline">1</span></td><td>可去奇点</td></tr>
+    </tbody>
+  </table>
+
+  <p>第一行就是最常被写错的那个：<span class="math-inline">z^3</span> 是三阶，指数函数里 <span class="math-inline">\sin z</span> 在 <span class="math-inline">0</span> 处一阶，<span class="math-inline">3-1=2</span>。展开核对一遍：<span class="math-inline">\frac{\sin z}{z^3}=\frac1{z^2}-\frac16+\cdots</span>，最高负幂是 <span class="math-inline">-2</span> 次，二阶极点。</p>
+
+  <p>第四行的分母是 <span class="math-inline">\sin z^8</span>，八阶零点：<span class="math-inline">\sin z^8\sim z^8</span>；分子 <span class="math-inline">(e^z-1)^2z^3\sim z^2\cdot z^3=z^5</span>，五阶零点，<span class="math-inline">8-5=3</span>。</p>
+
+  <p>第五、六行是 2024 年 A 卷的 10 分题。参考答案写：<span class="math-inline">0</span> 是分母的二阶零点，所以是二阶极点；<span class="math-inline">\pm\pi</span> 是分子分母的一阶零点，所以是可去奇点（卷面写作「可去极点」，指同一件事）；其余整数倍的 <span class="math-inline">k\pi</span> 是分母的一阶零点，各是一阶极点。</p>
+
+  <p>同一件事还换个说法考过：设 <span class="math-inline">z_0</span> 是 <span class="math-inline">f</span> 的一阶极点、<span class="math-inline">g</span> 的一阶零点，问 <span class="math-inline">z_0</span> 是 <span class="math-inline">f^3g^2</span> 的几阶。极点那一头是 <span class="math-inline">3\times1=3</span> 阶，零点那一头是 <span class="math-inline">2\times1=2</span> 阶，<span class="math-inline">3-2=1</span>，答一阶极点。</p>
+
+  <div class="quiz" data-quiz='[
+  {
+    "q": "题目：$f(z)=\\frac{\\sin z}{z^3}$，问 $z=0$ 是什么奇点。\n同学写：「分母 $z^3$ 是三阶零点，\n所以 $z=0$ 是三阶极点。」\n\n① 这个做法错在哪一步？\n② 正确阶数是多少，写出相减的算式。\n③ 用洛朗展开核对，写成两三项。",
+    "answer": "① 错在只数了分母，没数分子。\n$\\sin z$ 在 $z=0$ 是一阶零点，同一处两个零点相消，\n阶数要相减，不能只看分母幂次。\n\n② 分母 $n=3$，分子 $k=1$，$3-1=2$：\n$z=0$ 是二阶极点。\n\n③ $\\frac{\\sin z}{z^3}=\\frac1{z^2}-\\frac16+\\cdots$，\n最高负幂是 $-2$ 次，与二阶一致。",
+    "criteria": "三问都要，按点给分。\n① 必须点出「分子也带零点（$\\sin z$ 在 0 一阶）」；\n只说「算错了，应该是二阶」按不通过——本题考的就是根因。\n② 必须是 $3-1=2$，两个数都要写出来。\n③ 展开要写出 $\\frac1{z^2}-\\frac16+\\cdots$ 或等价的两三项；\n只写「展开核对一致」不算证据。"
+  }
+]'></div>
+
+  <h3>本性奇点别套公式</h3>
+
+  <p>极点那套留数公式里有 <span class="math-inline">(z-z_0)^m</span> 和 <span class="math-inline">m-1</span> 阶导，<span class="math-inline">m</span> 是阶数；本性奇点没有阶，公式没有下手处。判本性只有一条：负幂项无限多。常见形状是 <span class="math-inline">\sin\frac1z</span>、<span class="math-inline">e^{1/z}</span>、<span class="math-inline">\cos\frac1z</span> 在 <span class="math-inline">0</span> 处，把 <span class="math-inline">z</span> 换成 <span class="math-inline">\frac1z</span> 一展开，负幂项就永远列不完。</p>
+
+  <p>反过来，题面里分子分母全是 <span class="math-inline">z</span> 的幂、指数、三角、对数的组合时，答案落在可去奇点与极点里，几乎不会是本性奇点：把分子分母各展开到最低次，减一减就出阶数。上面第四行那道选择题的四个选项里，「本性奇点」是干扰项。</p>
+
+  <div class="quiz" data-quiz='[
+  {
+    "q": "题目：求 $f(z)=e^{1/z}$ 在 $z=0$ 处的留数。\n同学写：「先定阶，再套 $m$ 阶极点的留数公式\n$\\operatorname{Res}=\\frac{1}{(m-1)!}\\lim_{z\\to0}(z^mf(z))^{(m-1)}$；\n可阶数试到 5 都算不出有限值，结论是留数不存在。」\n\n① 根因：这条公式为什么用不上？\n② 留数是多少，从哪读出来？\n③ 以后怎么一眼认出这类题？",
+    "answer": "① 根因：$e^{1/z}$ 在 $z=0$ 是本性奇点，\n负幂项无限多，根本没有阶 $m$ 能代进去。\n公式的前提是有限阶极点，前提不成立，\n算不出有限值不是巧合。\n\n② 留数是 $1$。直接展开：\n$e^{1/z}=1+\\frac1z+\\frac{1}{2!z^2}+\\cdots$，\n$c_{-1}$ 就是 $1$，留数只能这样读出来。\n\n③ 看见 $e^{1/z}$、$\\sin\\frac1z$、$\\cos\\frac1z$\n这类把 $z$ 塞进分母的形状，就改走展开；\n分子分母都是 $z$ 的幂、指数、三角、对数时，\n答案才落在可去奇点与极点里。",
+    "criteria": "① 必须说出「本性奇点、没有阶、公式前提不成立」；\n只说「$m$ 代错了」或「该换个公式」按部分通过。\n② 必须是 $1$，并指出它来自展开里的 $\\frac1z$ 项（$c_{-1}$）。\n答 $0$ 或「留数不存在」按不通过——\n本性奇点的留数照样是确定的。\n③ 至少举出 $e^{1/z}$、$\\sin\\frac1z$ 一类，\n并说出「改走展开、直接读 $c_{-1}$」。"
+  }
+]'></div>
+
+  <h2>无穷远点的奇点</h2>
+
+  <p><span class="math-inline">f</span> 在某个 <span class="math-inline">|z|&gt;R</span> 内解析（<span class="math-inline">R</span> 以外没有奇点）时，<span class="math-inline">\infty</span> 也是它的孤立奇点。判法是把无穷远搬到原点：</p>
+
+  <div class="math-block">w=\frac1z,\qquad F(w)=f\!\left(\frac1w\right).</div>
+
+  <p>看 <span class="math-inline">F</span> 在 <span class="math-inline">w=0</span> 属于哪一类，结论就搬到 <span class="math-inline">f</span> 的 <span class="math-inline">\infty</span> 上：<span class="math-inline">F</span> 在 <span class="math-inline">0</span> 有 <span class="math-inline">m</span> 阶极点，<span class="math-inline">f</span> 在 <span class="math-inline">\infty</span> 也有 <span class="math-inline">m</span> 阶极点；<span class="math-inline">F</span> 在 <span class="math-inline">0</span> 可去，<span class="math-inline">\infty</span> 也可去；依此类推。</p>
+
+  <ul>
+    <li><span class="math-inline">f(z)=z^3</span>：<span class="math-inline">F(w)=w^{-3}</span>，<span class="math-inline">0</span> 处三阶极点，所以 <span class="math-inline">\infty</span> 是 <span class="math-inline">f</span> 的三阶极点。</li>
+    <li><span class="math-inline">f(z)=\frac1z</span>：<span class="math-inline">F(w)=w</span>，<span class="math-inline">0</span> 处一阶零点，所以 <span class="math-inline">\infty</span> 是可去奇点。</li>
+    <li><span class="math-inline">f(z)=e^z</span>：<span class="math-inline">F(w)=e^{1/w}</span>，负幂项无限多，所以 <span class="math-inline">\infty</span> 是本性奇点。</li>
+  </ul>
+
+  <p>卷面上 <span class="math-inline">\infty</span> 只在一种说法里出现。<b>「有限复平面内的奇点」</b>把 <span class="math-inline">\infty</span> 排除在外：分母的零点列完就是全部答案，不用再去想 <span class="math-inline">\infty</span>。题目若改说「扩充复平面上的奇点」或「复平面上的全部奇点」，才把 <span class="math-inline">\infty</span> 添上。卷面那几道 10 分题全用前一种说法。</p>
+
+  <div class="quiz" data-quiz='[
+  {
+    "q": "卷面原题（2024 年 B 卷第 7 题，10 分）：\n$f(z)=\\frac{z+\\cos z}{z(z-\\pi)(z+\\pi)}$，\n求它在有限复平面内的奇点、类型，求出极点的阶。\n\n① 逐点写：位置 + 类型 + 阶。\n② 这题为什么不用管 $\\infty$？\n③ 再判三个：$z^3$、$\\frac1z$、$e^z$\n在 $\\infty$ 处各是什么类型？",
+    "answer": "① $z=0$：分母一阶零点，分子 $\\cos0=1\\ne0$，\n一阶极点。\n$z=\\pi$：分母一阶零点，分子 $\\pi-1\\ne0$，\n一阶极点。\n$z=-\\pi$：分母一阶零点，分子 $-\\pi-1\\ne0$，\n一阶极点。\n三点都是一阶极点。\n\n② 「有限复平面内的奇点」把 $\\infty$ 排除在外，\n分母零点的有限个点列完就是全部答案。\n只有改说「扩充复平面上的奇点」时，\n才给 $\\infty$ 添一行。\n\n③ $z^3$：$F(w)=w^{-3}$，$\\infty$ 是三阶极点；\n$\\frac1z$：$F(w)=w$，$\\infty$ 是可去奇点；\n$e^z$：$F(w)=e^{1/w}$，负幂项无限多，\n$\\infty$ 是本性奇点。",
+    "criteria": "① 三点缺一不可，都是一阶极点；\n每点写清类型与阶，并给一句「分子在这一点不为零」。\n把 $\\pm\\pi$ 写成二阶极点（只看分母幂次）按部分通过——\n那正是上一处排错题要防的错。\n② 必须说清「有限复平面」这个说法排除 $\\infty$；\n只写「$\\infty$ 不是奇点」按不通过。\n③ 三个都要：三阶极点、可去奇点、本性奇点，\n并写出 $w=\\frac1z$ 的代换（至少举一个例子）。"
+  }
+]'></div>
+
+  <h2>上手做：拿数核对阶</h2>
+
+  <div class="lesson-practice">
+    <div class="lesson-practice__head">
+      <span class="lesson-practice__level">上手做</span>
+      <span class="lesson-practice__title">三行数核对阶数</span>
+    </div>
+
+      <p>第 1 步，纸上先写。<span class="math-inline">\frac{\sin z}{z^3}</span> 在 <span class="math-inline">0</span> 处的阶：用 <span class="math-inline">\sin z=z-\frac{z^3}{6}+\cdots</span> 除下去得 <span class="math-inline">\frac{\sin z}{z^3}=\frac1{z^2}-\frac16+\cdots</span>，最高负幂是 <span class="math-inline">-2</span> 次，二阶极点。再用分母减分子核对：<span class="math-inline">3-1=2</span>，一致。</p>
+
+      <p>第 2 步，把下面这段存成 <code>order.py</code> 跑一次。</p>
+
+      <pre data-lang="python"><code>import cmath
+
+def f(z):
+    return cmath.sin(z) / z**3
+
+R = 1e-3
+for m in range(5):
+    row = [abs((R * cmath.exp(1j * t)) ** m * f(R * cmath.exp(1j * t)))
+           for t in (0.0, 1.0, 2.0, 4.0)]
+    print(m, '  '.join(f'{v:9.4f}' for v in row))</code></pre>
+
+      <pre data-lang="term"><code>$ python order.py
+0 999999.8333  1000000.0694  1000000.1089  1000000.0243
+1  999.9998  1000.0001  1000.0001  1000.0000
+2    1.0000     1.0000     1.0000     1.0000
+3    0.0010     0.0010     0.0010     0.0010
+4    0.0000     0.0000     0.0000     0.0000</code></pre>
+
+      <p>每一行是一个 <span class="math-inline">m</span>：在圆 <span class="math-inline">|z|=10^{-3}</span> 上取四个角度，算出 <span class="math-inline">|(z-0)^mf(z)|</span>。<span class="math-inline">m=2</span> 那一行四个角度都停在 <span class="math-inline">1.0000</span>，它就是极限判别里的常数 <span class="math-inline">c</span>，所以 <span class="math-inline">0</span> 是二阶极点；<span class="math-inline">m=1</span> 那一行的数随半径变小而变大，<span class="math-inline">m=3</span> 那一行随半径变小而变小，都不是常数。</p>
+
+      <p>第 3 步，改一行看变化：把 <code>return</code> 那行换成 <code>return cmath.exp(1/z)</code>，把 <code>R = 1e-3</code> 换成 <code>R = 0.3</code>，再跑一次。每一行里四个角度算出的数相差成百倍，找不到停在常数上的那一行，这就是本性奇点的极限不存在在数值上的样子。</p>
+
+      <p>第 4 步，两条判据抄进纸笔题型整理册：极点的阶 <span class="math-inline">=n-k</span>（分母阶减分子阶）；<span class="math-inline">z_0</span> 是 <span class="math-inline">m</span> 阶极点当且仅当 <span class="math-inline">\lim_{z\to z_0}(z-z_0)^mf(z)</span> 是有限非零数。</p>
+  </div>
+
+  <h2>带走的速查表</h2>
+
+  <table>
+    <thead>
+      <tr><th>题面问什么</th><th>动作</th><th>答案的形状</th></tr>
+    </thead>
+    <tbody>
+      <tr><td>某点是零点还是极点，几阶</td><td>分母、分子各自数阶再相减，边写展开边核</td><td>二阶极点、一阶极点、可去奇点</td></tr>
+      <tr><td>求有限复平面内的奇点</td><td>分母零点全列出来，逐个定类型定阶</td><td>每点一行：位置 + 类型 + 阶</td></tr>
+      <tr><td>有几个奇点</td><td>分母零点的个数，可去的也算</td><td>一个整数</td></tr>
+      <tr><td>是不是本性奇点</td><td>看负幂项是否无限多</td><td><span class="math-inline">\sin\frac1z</span>、<span class="math-inline">e^{1/z}</span> 一类</td></tr>
+      <tr><td><span class="math-inline">\infty</span> 处的类型</td><td>令 <span class="math-inline">w=\frac1z</span>，看 <span class="math-inline">f(\frac1w)</span> 在 <span class="math-inline">0</span></td><td>几阶极点、可去、本性</td></tr>
+    </tbody>
+  </table>
+
+  <ul class="lesson-resources">
+    <li>李君、于非非《复变函数与积分变换》§3.4 零点与极点<span class="lesson-resources__meta">书 · 纸质教材，零点阶与极点阶的判定以它为准</span></li>
+    <li><a href="http://faculty.hfut.edu.cn/_resources/group1/M00/00/1C/rB_zR2ks_QyAOcheAAP1H6_9avI556.pdf">合肥工业大学期末试卷（含答案与逐题分值）</a><span class="lesson-resources__meta">试卷 · 填空与选择各有一处本课题型（3～4 分），解答题第 7 题是 10 分的「求奇点与类型、求阶、算积分」，各年形状一致</span></li>
+    <li><a href="https://netedu.xauat.edu.cn/jpkc/netclass/jpkc/fbhs/dir/other/复变积分B集习题.pdf">复变积分解题集 B 集习题（西安建筑科技大学）</a><span class="lesson-resources__meta">习题 · 5.1 孤立奇点的分类：选择题问 <span class="math-inline">\frac{\sin z}{z}</span> 在 <span class="math-inline">0</span> 处的类型，课后题要求「找出孤立奇点并加以分类，若为极点指出其阶数」</span></li>
+  </ul>
+
+  <!-- ── 提问提示：固定写法，别删 ── -->
+
+  <div class="lesson-ask">
+    <b>没看懂？随时问</b>
+    把看不懂的段落（或报错）原样复制回会话，说一句哪里不懂就行，我只解释这一段，不打断你的进度。
+  </div>
+
+  <!-- ── 上/下节课指针由渲染器按 curriculum.yaml 的 nodes 顺序算（第一课无 --prev、最后一课无 --next） ── -->
+
+  <nav class="lesson-nav" aria-label="上一课 / 下一课">
+    <a class="lesson-nav__link lesson-nav__link--prev" href="0012-ch3-taylor-laurent.html">
+      <span class="lesson-nav__dir">上节课</span>
+      <span class="lesson-nav__title">泰勒级数与洛朗级数</span>
+    </a>
+    <a class="lesson-nav__link lesson-nav__link--next" href="0014-ch3-residue.html">
+      <span class="lesson-nav__dir">下节课</span>
+      <span class="lesson-nav__title">留数与留数定理</span>
+    </a>
+  </nav>
+
+  <footer class="lesson-footer">
+    StudyMate · 0013 奇点分类：零点与极点 · 本地学习工作区
+  </footer>
+
+</article>
+
+<script src="../../../assets/sayo/sayo.js"></script>
+<link rel="stylesheet" href="../../../assets/katex/katex.min.css">
+<script src="../../../assets/katex/katex.min.js" defer></script>
+<script src="../../../assets/lesson-math.js" defer></script>
+<script src="../assets/quiz.js" defer></script>
+<script src="../assets/lesson-toc.js" defer></script>
+<script>LearnTheme.wire(document.getElementById('lesson-theme-checkbox'));</script>
+</body>
+</html>

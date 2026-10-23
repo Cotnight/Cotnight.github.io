@@ -1,0 +1,335 @@
+<!DOCTYPE html>
+<html lang="zh-CN" data-theme="dark">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>柯西积分定理及其推广 · 复变函数与积分变换</title>
+
+<!-- 共享层在 .learning/assets/，课件在 .learning/subjects/<slug>/lessons/ 下，所以是 ../../../assets/ -->
+<link rel="stylesheet" href="../../../assets/sayo/sayo.css">
+<link rel="stylesheet" href="../../../assets/learn-theme.css">
+<link rel="stylesheet" href="../assets/style.css">
+
+<!-- 主题要在首帧前应用，避免闪白/闪黑 -->
+<script src="../../../assets/learn-theme.js"></script>
+<script>LearnTheme.apply();</script>
+</head>
+
+<body class="lesson-body">
+
+<nav class="lesson-bar">
+  <a href="../index.html">← 返回课程</a>
+  <span>复变函数与积分变换</span>
+  <span class="lesson-bar__no">0010</span>
+  <!-- 课件页自带主题开关：学生从文件管理器直接打开课件时也能切暗色 -->
+  <label class="syo-toggle syo-toggle--theme lesson-bar__toggle" title="切换深浅主题" aria-label="切换深浅主题">
+    <input type="checkbox" id="lesson-theme-checkbox" checked>
+    <span class="syo-toggle-track"></span>
+    <span class="syo-toggle-knob">
+      <svg class="syo-toggle-sun" viewBox="0 0 20 20" fill="none" aria-hidden="true"><circle cx="10" cy="10" r="3.5" stroke="#f57c00" stroke-width="1.5"/><path d="M10 2v2.5M10 15.5V18M2 10h2.5M15.5 10H18M4.34 4.34l1.77 1.77M13.89 13.89l1.77 1.77M4.34 15.66l1.77-1.77M13.89 6.11l1.77-1.77" stroke="#f57c00" stroke-width="1.2" stroke-linecap="round"/></svg>
+      <svg class="syo-toggle-moon" viewBox="0 0 20 20" fill="none" aria-hidden="true"><path d="M16.5 12.5A6 6 0 019 4.5a6 6 0 007.5 8z" stroke="#5c6bc0" stroke-width="1.5" stroke-linejoin="round"/></svg>
+    </span>
+  </label>
+</nav>
+
+<article class="lesson">
+
+  <header class="lesson-header">
+    <span class="lesson-header__eyebrow">0010 · 柯西积分定理及其推广</span>
+    <h1>柯西积分定理及其推广</h1>
+    <p class="lesson-goal"><b>本节目标：</b>能判断积分是否为零，并用复合闭路处理有奇点的题。</p>
+  </header>
+
+  <!-- ── 正文：渲染器按内容文件（lessons/<序号>-<节点id>.md）产出，块词汇见 docs/规范/课件内容格式.md ── -->
+
+  <h2>卷面怎么考</h2>
+
+  <p>本课在公开试卷上有三处位置，三处都落在同一步：动笔之前先判断。</p>
+
+  <ul>
+    <li>填空，3～4 分：给一条正向圆周，填 <span class="math-inline">\oint_C</span> 的值，被积函数是多项式与 <span class="math-inline">\frac1z</span> 的组合。西建大那份卷的填空第 3 题问「<span class="math-inline">\operatorname{Ln}z</span> 在什么区域内连续」，参考答案是「不取原点和负实轴的区域」，问的就是定理能成立的那块区域长什么样。</li>
+    <li>选择，3～4 分：单连通与多连通的分界。2025 年卷的选择题给「<span class="math-inline">f(z)</span> 是区域 <span class="math-inline">D</span> 内的解析函数」，四个选项里有一条是「<span class="math-inline">f(z)</span> 在区域 <span class="math-inline">D</span> 内闭路上的积分总是零」——区域带洞时这条不成立。B 集 3.2 的两道选择也在这里：一道问 <span class="math-inline">\oint_C\frac{f(z)}{z-z_0}dz=0</span> 在什么条件下成立，答案是 <span class="math-inline">z_0</span> 在 <span class="math-inline">C</span> 外；另一道问「<span class="math-inline">f</span> 在单连通域内解析」是「沿该域内任一闭曲线积分为零」的什么条件，答案是充要条件。</li>
+    <li>解答题，6～7 分：本章大题以闭路积分为主，上一课已经练过圈内有奇点时套公式的那一类。本课管的是它前面的一步：能不能直接写 <span class="math-inline">0</span>、该不该挖洞、走哪条路。</li>
+  </ul>
+
+  <h2>唤醒：区域有没有洞</h2>
+
+  <p>高等数学里判断曲线积分与路径无关，除开 <span class="math-inline">\frac{\partial P}{\partial y}=\frac{\partial Q}{\partial x}</span>，还要区域单连通。复积分这里是同一件事：区域里带洞，绕洞走一圈的积分可以不为零。</p>
+
+  <p><b>单连通区域</b>指内部没有洞的区域：区域内任何一条闭曲线都能在区域里连续收缩成一点，收缩过程中不离开区域。带洞的区域叫<b>多连通区域</b>，有的教材写「复连通区域」。圆盘、半平面、整个复平面都是单连通的；圆环域 <span class="math-inline">1&lt;|z|&lt;2</span> 与去掉原点的平面是多连通的。</p>
+
+  <h2>柯西积分定理</h2>
+
+  <p>设 <span class="math-inline">f(z)</span> 在单连通区域 <span class="math-inline">D</span> 内解析，<span class="math-inline">C</span> 是 <span class="math-inline">D</span> 内任一简单闭曲线，则</p>
+
+  <div class="math-block">\oint_C f(z)\,dz=0.</div>
+
+  <p>这条结论称为<b>柯西积分定理</b>。卷面上要用它，动笔前核对两件事：</p>
+
+  <ul>
+    <li><span class="math-inline">C</span> 连同它的内部整块落在 <span class="math-inline">D</span> 里，且 <span class="math-inline">D</span> 单连通；</li>
+    <li><span class="math-inline">f</span> 在 <span class="math-inline">D</span> 内处处解析。</li>
+  </ul>
+
+  <p>第二条常被写成「<span class="math-inline">f</span> 在 <span class="math-inline">C</span> 上解析」，那不够：定理管的是 <span class="math-inline">C</span> 围起来的那块区域。定理本身的证明本课程不作要求，下面只用它算题。</p>
+
+  <p>例：<span class="math-inline">C</span> 为正向圆周 <span class="math-inline">|z-1|=1</span>，求 <span class="math-inline">\oint_C z\,dz</span>。<span class="math-inline">z</span> 在整个复平面上解析，复平面单连通，闭路积分直接写 <span class="math-inline">0</span>。</p>
+
+  <p>反例：<span class="math-inline">C</span> 为正向圆周 <span class="math-inline">|z|=1</span>，求 <span class="math-inline">\oint_C\frac{dz}{z}</span>。被积函数在 <span class="math-inline">C</span> 上处处解析；<span class="math-inline">C</span> 的内部却夹着奇点 <span class="math-inline">0</span>，含 <span class="math-inline">C</span> 又避开 <span class="math-inline">0</span> 的区域只剩去掉原点的平面，那是多连通区域。第 8 课用参数化算过这个值是 <span class="math-inline">2\pi i</span>，不为零。同一个被积函数，换一条把原点圈在外面的闭曲线（例如 <span class="math-inline">|z-2|=1</span>），积分就变成 <span class="math-inline">0</span>。</p>
+
+  <figure class="lesson-figure">
+    <img src="../assets/img/pool/柯西定理-单连通与多连通-对照-本机-01.png" alt="左格圆盘区域里一条闭曲线带三个收缩箭头收到中心的一点，下方写着 f 在区域内解析则沿这条闭路积分等于零；右格同样的区域中间挖掉一块，收缩箭头停在洞口，绕洞的闭曲线下方写着 1/z 在区域内解析但绕洞一圈的积分是 2πi">
+    <figcaption>图 1 · 区域里有没有洞，决定「闭路积分为零」这条结论能不能直接用。（来源：本机生成（<code>assets/img/gen/柯西定理-单连通与多连通-对照-本机-01.py</code>），许可：本项目自产）</figcaption>
+  </figure>
+
+  <div class="lesson-warn">
+    <b>积分为零，被积函数照样可以不为零</b>
+    <p>定理给出的是积分值 <span class="math-inline">0</span>。写理由时写「<span class="math-inline">f</span> 在 <span class="math-inline">D</span> 内解析」，不要写成 <span class="math-inline">f(z)=0</span>；卷面上这两个说法差着条件，阅卷按理由给分。</p>
+  </div>
+
+  <div class="quiz" data-quiz='[
+  {
+    "q": "$C$ 为正向圆周 $|z|=1$。三个说法各判断对错，每问补一句理由：\n① 「$f$ 在 $C$ 上解析，故 $\\oint_C f\\,dz=0$」\n② 「$f$ 在 $C$ 及其内部解析，故 $\\oint_C f\\,dz=0$」\n③ 「$\\oint_C f\\,dz=0$，故 $f$ 在 $C$ 上恒为 $0$」",
+    "answer": "① 错。缺的是「$C$ 的内部也解析」——\n定理管的是围起来那块区域，不只是这条线。\n反例：$\\frac1z$ 在 $C$ 上处处解析，\n而 $\\oint_C\\frac{dz}{z}=2\\pi i$。\n\n② 对。这正是动笔前要核对的两条：\n$f$ 在 $C$ 及内部解析，整块区域单连通。\n\n③ 错。定理给的是积分值 $0$，不是函数值 $0$。\n$z^2$ 就是反例：$\\oint_C z^2\\,dz=0$，\n而 $z^2$ 在 $C$ 上并不等于 $0$。",
+    "criteria": "三问都判对、理由落在「条件」上才算通过。\n① 必须点出缺的是「内部（围起来那块区域）也解析」；\n只写「$f$ 不解析」按部分通过，反例要给出 $1/z$。\n② 必须判对并说出条件已齐（解析＋单连通）。\n③ 必须点出「积分值为 $0$ 与函数值为 $0$ 是两件事」；\n答成「$f$ 必须为 $0$」按不通过——卷面上阅卷按理由给分，\n这一条写反直接丢分。"
+  }
+]'></div>
+
+  <h2>不解析时定理失效</h2>
+
+  <p>被积函数含 <span class="math-inline">\bar z</span>、<span class="math-inline">\operatorname{Re}z</span>、<span class="math-inline">\operatorname{Im}z</span>、<span class="math-inline">|z|</span> 时在圈内处处不解析，上面第二条核对通不过，闭路积分不能写 <span class="math-inline">0</span>。</p>
+
+  <p>例：<span class="math-inline">C</span> 为 <span class="math-inline">|z|=1</span> 正向，求 <span class="math-inline">\oint_C\bar z\,dz</span>。参数化得</p>
+
+  <div class="math-block">z=e^{i\theta},\qquad \bar z=e^{-i\theta},\qquad dz=ie^{i\theta}d\theta,</div>
+
+  <div class="math-block">\oint_C\bar z\,dz=\int_0^{2\pi}e^{-i\theta}\cdot ie^{i\theta}d\theta=i\int_0^{2\pi}d\theta=2\pi i.</div>
+
+  <p>被积函数不解析，结果不为零，与定理不冲突：定理只对解析函数下结论。</p>
+
+  <p>判据落到动作上：动笔前先看被积函数是不是 <span class="math-inline">z</span> 的解析表达式——多项式、<span class="math-inline">e^z</span>、<span class="math-inline">\sin z</span>、<span class="math-inline">\cos z</span>、<span class="math-inline">\frac{1}{z-z_0}</span> 这一类都算。出现 <span class="math-inline">\bar z</span>、<span class="math-inline">x</span>、<span class="math-inline">y</span>、<span class="math-inline">|z|</span>，改走参数化。</p>
+
+  <div class="quiz" data-quiz='[
+  {
+    "q": "题目：$C$ 为 $|z|=1$ 正向，求 $\\oint_C(\\bar z+3)\\,dz$。\n同学写：两项的被积函数都解析，故\n$\\oint_C\\bar z\\,dz+\\oint_C3\\,dz=0+0=0$。\n\n① 根因是什么？\n② 正确结果（要写出 $2\\pi i$ 是怎么来的）\n③ 以后怎么一眼认出这类题？",
+    "answer": "① 根因：$\\bar z$ 处处不解析，柯西定理对它不成立。\n同学把「在 $C$ 上有定义、能算」当成了「解析」。\n\n② 常数那一项确实是 $0$（$3$ 有原函数 $3z$）；\n$\\bar z$ 那一项不是。参数化看这一项：\n$z=e^{i\\theta}$，$dz=ie^{i\\theta}d\\theta$，\n$\\bar z\\,dz=i\\,d\\theta$，一圈积出 $i\\cdot2\\pi=2\\pi i$。\n所以结果是 $2\\pi i$。\n\n③ 看见 $\\bar z$、$\\operatorname{Re}z$、\n$\\operatorname{Im}z$、$|z|$ 这几样，就改走参数化；\n只有 $z$ 的解析表达式才谈柯西定理。",
+    "criteria": "三问都要有，按点给分。\n① 必须说出「$\\bar z$ 不解析」，不是「哪一步算错」；\n只说「答案错了」按不通过。\n② 必须是 $2\\pi i$，且写出来法（参数化，或直接说\n$\\oint_C\\bar z\\,dz=2\\pi i$）；答成 $0$ 说明根因没找到。\n③ 要列到 $\\bar z$、$\\operatorname{Re}z$、\n$\\operatorname{Im}z$、$|z|$ 里至少两个，\n并说出「改走参数化」。"
+  }
+]'></div>
+
+  <h2>挖洞：复合闭路</h2>
+
+  <p>奇点落在圈里时，定理不适用，可围道又不方便参数化。复合闭路定理把这种情况搬回定理能用的范围。</p>
+
+  <p>设 <span class="math-inline">C</span> 与 <span class="math-inline">C_1,\dots,C_n</span> 都是简单闭曲线，每个 <span class="math-inline">C_k</span> 全在 <span class="math-inline">C</span> 内部且彼此不相交，<span class="math-inline">D</span> 是 <span class="math-inline">C</span> 的内部挖掉各 <span class="math-inline">C_k</span> 内部后剩下的区域。若 <span class="math-inline">f</span> 在 <span class="math-inline">D</span> 内解析，则</p>
+
+  <div class="math-block">\oint_C f(z)\,dz=\sum_{k=1}^{n}\oint_{C_k}f(z)\,dz,</div>
+
+  <p>其中各曲线都取正向（逆时针）。</p>
+
+  <p>方向的由来与上一课定义正向时一致。沿 <span class="math-inline">C</span> 逆时针走、沿每个 <span class="math-inline">C_k</span> 顺时针走，拼成的闭路每走一段都把 <span class="math-inline">D</span> 留在左手边；这条合成的闭路记作</p>
+
+  <div class="math-block">\Gamma=C+C_1^{-}+\dots+C_n^{-},</div>
+
+  <p>称为<b>复合闭路</b>（<span class="math-inline">C_k^{-}</span> 表示把 <span class="math-inline">C_k</span> 走反向）。<span class="math-inline">f</span> 在 <span class="math-inline">\Gamma</span> 围出的 <span class="math-inline">D</span> 内解析，于是 <span class="math-inline">\oint_\Gamma f\,dz=0</span>，把内圈那几项移到右边就是定理的等式。内圈取顺时针这条规则由此而来。</p>
+
+  <p>例：<span class="math-inline">C</span> 为正向圆周 <span class="math-inline">|z|=2</span>，求 <span class="math-inline">\oint_C\frac{z}{z^2-1}dz</span>。被积函数的奇点是 <span class="math-inline">z=1</span> 与 <span class="math-inline">z=-1</span>，两个都在圈内。取 <span class="math-inline">C_1</span> 为 <span class="math-inline">|z-1|=\frac12</span>、<span class="math-inline">C_2</span> 为 <span class="math-inline">|z+1|=\frac12</span>，都取正向，按定理</p>
+
+  <div class="math-block">\oint_C\frac{z}{z^2-1}dz=\oint_{C_1}\frac{z}{z^2-1}dz+\oint_{C_2}\frac{z}{z^2-1}dz.</div>
+
+  <p>小圈上只剩一个一阶奇点。把被积函数写成 <span class="math-inline">\frac{z/(z+1)}{z-1}</span>，按上一课的公式得 <span class="math-inline">\oint_{C_1}\frac{z}{z^2-1}dz=2\pi i\cdot\frac{z}{z+1}\Big|_{z=1}=\pi i</span>；同法 <span class="math-inline">\oint_{C_2}\frac{z}{z^2-1}dz=\pi i</span>。两式相加：</p>
+
+  <div class="math-block">\oint_C\frac{z}{z^2-1}dz=2\pi i.</div>
+
+  <figure class="lesson-figure">
+    <img src="../assets/img/pool/柯西定理-复合闭路-挖洞方向-本机-02.png" alt="左侧复平面上画着一个大的正向圆周 C，内部有两个红色小圈，各圈住一个奇点，小圈上的箭头是顺时针；右侧文字栏写出复合闭路的等式：沿 Γ 一周积分为零，移项后大圈等于两个小圈之和，并给出 f 等于 z 除以 z 方减一时大圈为 2πi、两个小圈各 πi">
+    <figcaption>图 2 · 大圈逆时针、内圈顺时针，等式把大圈的积分换成两个小圈的积分之和。（来源：本机生成（<code>assets/img/gen/柯西定理-复合闭路-挖洞方向-本机-02.py</code>），许可：本项目自产）</figcaption>
+  </figure>
+
+  <p>挖洞时两处容易写错：</p>
+
+  <ul>
+    <li>内圈在复合闭路里漏了反向。沿 <span class="math-inline">\Gamma</span> 走时内圈要顺时针，写成逆时针等于把右边那一项的符号弄反，答案差一个负号。</li>
+    <li>内圈没圈全。圈内有两个奇点就挖两个洞，漏一个等于把那一项的贡献丢掉。</li>
+  </ul>
+
+  <div class="quiz" data-quiz='[
+  {
+    "q": "$C$ 为 $|z|=2$ 正向，求 $\\oint_C\\frac{2z+1}{z^2-1}\\,dz$。\n\n① 圈内有几个奇点，各在哪？\n② 挖两个洞，写出三个值：大圈、\n$|z-1|=\\frac12$ 上、$|z+1|=\\frac12$ 上。\n③ 内圈在复合闭路里取哪个方向？取反了差多少？",
+    "answer": "① 两个：$z=1$ 与 $z=-1$，都在 $|z|=2$ 内部。\n\n② 小圈 $|z-1|=\\frac12$：把被积函数写成\n$\\frac{(2z+1)/(z+1)}{z-1}$，分子在 $z=1$ 取值 $\\frac32$，\n乘 $2\\pi i$ 得 $3\\pi i$。\n小圈 $|z+1|=\\frac12$：同理分子在 $z=-1$ 取值 $\\frac12$，\n乘 $2\\pi i$ 得 $\\pi i$。\n大圈等于两者之和：$3\\pi i+\\pi i=4\\pi i$。\n\n③ 取顺时针（反向）。沿合成围道走时内圈顺时针，\n区域才留在左手边；写成逆时针，右边两项符号全反，\n合成围道的积分会变成 $8\\pi i$ 而不是 $0$。",
+    "criteria": "三问都要写，按点给分。\n① 两个奇点 $\\pm1$，且说明都在圈内。\n② 三个值缺一不可：$4\\pi i$、$3\\pi i$、$\\pi i$。\n最常错：只算一个大圈就交；或把分子在 $z=1$ 的值 $\\frac32$\n忘了乘 $2\\pi i$ 直接当答案。\n③ 必须写「内圈顺时针（反向）」；只说「方向相反」\n没说朝哪边，按部分通过。"
+  }
+]'></div>
+
+  <h2>原函数与不定积分</h2>
+
+  <p>柯西积分定理的直接推论：设 <span class="math-inline">f</span> 在单连通区域 <span class="math-inline">D</span> 内解析，则 <span class="math-inline">f</span> 在 <span class="math-inline">D</span> 内有原函数 <span class="math-inline">F</span>（<span class="math-inline">F'(z)=f(z)</span>），且沿 <span class="math-inline">D</span> 内任一从 <span class="math-inline">z_0</span> 到 <span class="math-inline">z_1</span> 的路径 <span class="math-inline">C</span></p>
+
+  <div class="math-block">\int_C f(z)\,dz=F(z_1)-F(z_0).</div>
+
+  <p>右端只看端点，积分与路径无关。原函数彼此差一个常数，把这一族函数记作 <span class="math-inline">f</span> 的<b>不定积分</b></p>
+
+  <div class="math-block">\int f(z)\,dz=F(z)+C.</div>
+
+  <p>卷面上出现「求不定积分」就写出 <span class="math-inline">F(z)+C</span>；出现「沿 <span class="math-inline">C</span> 从 <span class="math-inline">z_0</span> 到 <span class="math-inline">z_1</span>」就用端点值相减。</p>
+
+  <p>例：<span class="math-inline">C</span> 为从 <span class="math-inline">0</span> 到 <span class="math-inline">1+i</span> 的任意一条路径，求 <span class="math-inline">\int_C ze^z\,dz</span>。<span class="math-inline">ze^z</span> 在整个复平面上解析，分部积分得</p>
+
+  <div class="math-block">\int ze^z\,dz=(z-1)e^z+C,\qquad F(z)=(z-1)e^z.</div>
+
+  <p>代入端点：</p>
+
+  <div class="math-block">\int_C ze^z\,dz=F(1+i)-F(0)=ie^{1+i}+1.</div>
+
+  <p>折线也好，圆弧也好，路径的形状没有参与计算，只要整条路径落在解析的单连通区域里。含 <span class="math-inline">\bar z</span> 的被积函数没有原函数，第 8 课已经验过这一条：换一条路，答案就变。</p>
+
+  <div class="quiz" data-quiz='[
+  {
+    "q": "① 从 $-i$ 到 $i$ 沿任意路径，求 $\\int_C(2z+3)\\,dz$。\n写原函数与两端代入，一句说明为什么与路径无关。\n② 求不定积分 $\\int(3z^2-4z+1)\\,dz$。\n③ 为什么 $\\int_C\\bar z\\,dz$ 不能这样算？",
+    "answer": "① $F(z)=z^2+3z$。\n$F(i)=-1+3i$，$F(-i)=-1-3i$，相减得 $6i$。\n理由：多项式处处解析、复平面单连通，\n积分只看两端点，路径形状不参与。\n\n② $z^3-2z^2+z+C$。\n\n③ $\\bar z$ 不解析，没有原函数；\n换一条路答案就变，端点法整个失效。",
+    "criteria": "① 原函数 $z^2+3z$ 与结果 $6i$ 都要有；\n只给结果不写原函数按部分通过。\n得 $-6i$ 是上下限代反了；理由要落在「解析」两字上，\n只写「路径可以随便选」不算。\n② 三项都对且带 $+C$；漏 $+C$ 按部分通过。\n③ 要说出「不解析，所以没有原函数」；\n只说「不好算」按不通过。"
+  }
+]'></div>
+
+  <h2>Ln z 要先定分支</h2>
+
+  <p><span class="math-inline">\frac1z</span> 的原函数是 <span class="math-inline">\operatorname{Ln}z</span>，而 <span class="math-inline">\operatorname{Ln}z=\ln|z|+i\arg z</span> 的辐角部分有无穷多个取值，彼此差 <span class="math-inline">2k\pi</span>。要把它写成能求导的原函数，先把它固定成一支：把 <span class="math-inline">\arg z</span> 限制在某个长度 <span class="math-inline">2\pi</span> 的开区间内。</p>
+
+  <p><b>主值</b>取 <span class="math-inline">\ln z=\ln|z|+i\operatorname{Arg}z</span>，其中 <span class="math-inline">\operatorname{Arg}z\in(-\pi,\pi]</span>。它在去掉原点与负实轴的区域内解析，导数是 <span class="math-inline">\frac1z</span>；负实轴是这一支的割线。西建大那份卷填空问的「<span class="math-inline">\operatorname{Ln}z</span> 的连续区域」，答案就是这块区域。</p>
+
+  <p>例：<span class="math-inline">C</span> 为从 <span class="math-inline">1</span> 到 <span class="math-inline">-1</span> 的单位圆上半弧，求 <span class="math-inline">\int_C\frac{dz}{z}</span>。路径上 <span class="math-inline">\arg z</span> 从 <span class="math-inline">0</span> 连续增到 <span class="math-inline">\pi</span>，与主值相符，代端点：</p>
+
+  <div class="math-block">\int_C\frac{dz}{z}=\ln(-1)-\ln 1=\pi i.</div>
+
+  <p>同一对端点改走下半圆弧，<span class="math-inline">\arg z</span> 从 <span class="math-inline">0</span> 连续减到 <span class="math-inline">-\pi</span>，参数化得 <span class="math-inline">i\int_0^{-\pi}d\theta=-\pi i</span>。这一支在 <span class="math-inline">-1</span> 处给的是 <span class="math-inline">-\pi</span>；主值在 <span class="math-inline">-1</span> 处定义为 <span class="math-inline">\pi</span>，照主值代端点仍得 <span class="math-inline">\pi i</span>，与实际相差 <span class="math-inline">2\pi i</span>。</p>
+
+  <p>判据：路径不跨过割线、终点也不落在割线上，才能直接代端点；否则先把分支换成与路径相符的那一支，或者回到参数化。</p>
+
+  <figure class="lesson-figure">
+    <img src="../assets/img/pool/柯西定理-Ln分支-主值割线-本机-03.png" alt="左侧复平面上负实轴画成红色虚线并标注为割线，从 1 到负 1 的上半圆弧标着得 πi，下半圆弧标着得负 πi；右侧文字写出主值 ln z 的解析区域、上路代端点与实算一致、下路终点落在割线上所以差 2πi，最后一行给出判据">
+    <figcaption>图 3 · 同一对端点走两条半圆弧，积分差 <span class="math-inline">2\pi i</span>；差别来自选了哪一支 <span class="math-inline">\ln z</span>。（来源：本机生成（<code>assets/img/gen/柯西定理-Ln分支-主值割线-本机-03.py</code>），许可：本项目自产）</figcaption>
+  </figure>
+
+  <div class="quiz" data-quiz='[
+  {
+    "q": "卷面原题：$\\operatorname{Ln}z$ 在 ________ 的区域内连续。\n\n① 空里填什么？\n② 为什么不能填「去掉原点的复平面」？\n③ 在这块区域里取一条闭路，\n$\\oint\\frac{dz}{z}$ 是多少，为什么？",
+    "answer": "① 复平面去掉原点与负实轴。\n\n② 辐角主值 $\\operatorname{Arg}z\\in(-\\pi,\\pi]$，\n跨过负实轴时辐角从 $\\pi$ 跳到 $-\\pi$，\n$\\operatorname{Ln}z$ 在那条线上断开，谈不上连续。\n\n③ $0$。这块区域里 $\\frac1z$ 解析、区域又单连通，\n柯西定理直接给 $0$。\n绕原点一整圈才得 $2\\pi i$，而原点已被挖掉。",
+    "criteria": "① 必须同时排除原点与负实轴；\n只写「去掉原点」按部分通过。\n② 要落到「辐角在负实轴上不连续」这一点；\n只写「因为多值」按部分通过（没说断在哪）。\n③ 必须是 $0$，并补一句「区域内解析＋单连通」。\n答 $2\\pi i$ 是把区域条件丢了——这一问就是判据：\n同一个被积函数，换个区域答案就换。"
+  }
+]'></div>
+
+  <h2>三条路怎么选</h2>
+
+  <p>本章的闭路积分只有几条路，判断依据是圈内有没有奇点、以及围道是不是圆。</p>
+
+  <table>
+    <thead>
+      <tr><th>题面的样子</th><th>走哪条</th><th>卷面上的动作</th></tr>
+    </thead>
+    <tbody>
+      <tr><td>曲线给了参数式；被积函数含 <span class="math-inline">\bar z</span>、<span class="math-inline">\operatorname{Re}z</span>、<span class="math-inline">\operatorname{Im}z</span>、<span class="math-inline">\vert z\vert</span></td><td>参数化</td><td><span class="math-inline">z=z(t)</span>，<span class="math-inline">dz=z'(t)dt</span>，折线分段相加</td></tr>
+      <tr><td>闭路，圈内圈上 <span class="math-inline">f</span> 处处解析</td><td>柯西积分定理</td><td>写 <span class="math-inline">0</span>，附一句「在单连通区域内解析」</td></tr>
+      <tr><td>闭路，圈内有奇点，被积函数能凑成 <span class="math-inline">\frac{g(z)}{(z-z_0)^n}</span></td><td>柯西积分公式或高阶导数公式（上一课）</td><td>判 <span class="math-inline">z_0</span> 在圈内，代公式</td></tr>
+      <tr><td>闭路，圈内有几个奇点，或围道不是圆</td><td>复合闭路</td><td>先挖洞换成小圈，再按上一行算</td></tr>
+      <tr><td>开路径，<span class="math-inline">f</span> 在单连通区域内解析</td><td>原函数</td><td><span class="math-inline">F(z_1)-F(z_0)</span></td></tr>
+      <tr><td>路径跨过割线，或端点落在割线上</td><td>换分支</td><td>换到与路径相符的那一支，或参数化</td></tr>
+    </tbody>
+  </table>
+
+  <p>同一个被积函数，圈内情况一变就换路。取 <span class="math-inline">f(z)=\frac{e^z}{z^2+1}</span>，奇点是 <span class="math-inline">z=i</span> 与 <span class="math-inline">z=-i</span>：</p>
+
+  <ul>
+    <li>围道 <span class="math-inline">|z|=\frac12</span>：两个奇点都在圈外，<span class="math-inline">f</span> 在 <span class="math-inline">|z|\le\frac12</span> 上解析，复平面单连通，积分写 <span class="math-inline">0</span>。</li>
+    <li>围道 <span class="math-inline">|z|=2</span>：两个奇点都在圈内，挖两个洞换成小圈，各按上一课的公式算得 <span class="math-inline">\pi e^{i}</span> 与 <span class="math-inline">-\pi e^{-i}</span>，相加得 <span class="math-inline">2\pi i\sin 1</span>。</li>
+  </ul>
+
+  <div class="lesson-note">
+    <b>三条路一起用在同一道大题上</b>
+    <p>解答题里常见这种结构：先判被积函数在圈内是否解析，解析就写 <span class="math-inline">0</span>；有奇点先挖洞，把围道换成小圈；小圈上的积分再按公式算。三步各占一行，卷面按步给分。</p>
+  </div>
+
+  <div class="quiz" data-quiz='[
+  {
+    "q": "三条路各用一次，每问一句理由：\n① $\\oint_{|z|=1}\\frac{dz}{z-2}$\n② $\\oint_{|z|=3}\\frac{dz}{z-2}$\n③ 围道换成正方形边界 $|x|+|y|=3$，\n求 $\\oint\\frac{dz}{z-2}$",
+    "answer": "① $0$。奇点 $z=2$ 在圈外，圈内解析，\n柯西定理直接写 $0$。\n\n② $2\\pi i$。奇点在圈内、是一阶极点，\n已经是标准形式 $\\frac{g(z)}{z-2}$，\n$g(z)=1$ 在 $z=2$ 取值 $1$，乘 $2\\pi i$。\n\n③ 还是 $2\\pi i$。围道不是圆也不碍事：\n$|2|+|0|=2&lt;3$，$z=2$ 在正方形内部；\n挖洞换成小圈 $|z-2|=\\frac12$，按复合闭路定理\n大圈等于小圈，小圈再按上一行算。",
+    "criteria": "三问三值缺一不可：$0$、$2\\pi i$、$2\\pi i$。\n① 理由必须是「奇点在圈外」，不是「函数解析」——\n$\\frac{1}{z-2}$ 在圈内解析这句话才是理由。\n② 理由落在「奇点在圈内、一阶」。\n③ 理由要写出「挖洞换小圈」这一步；\n直接套公式不加这一步，按部分通过。\n三问只给数值不写理由，按部分通过。"
+  }
+]'></div>
+
+  <h2>练习：填完选型卡</h2>
+
+  <div class="lesson-practice">
+    <div class="lesson-practice__head">
+      <span class="lesson-practice__level">上手做</span>
+      <span class="lesson-practice__title">三问，一卡</span>
+    </div>
+
+      <p>三问写在工作本上，每题只留算式加一句理由。</p>
+
+      <ol>
+        <li>判零：<span class="math-inline">\oint_{|z-1|=1}z\,dz</span> 与 <span class="math-inline">\oint_{|z|=1}\frac{dz}{z}</span> 各写一行，并说明前者为什么能直接写 <span class="math-inline">0</span>、后者为什么不能。</li>
+        <li>挖洞：<span class="math-inline">\oint_{|z|=2}\frac{z}{z^2-1}dz</span>。画出大圈与两个小圈、标出方向，写三行等式，答案 <span class="math-inline">2\pi i</span>。</li>
+        <li>换围道：把第 2 题的围道换成 <span class="math-inline">|z-\frac12|=\frac12</span>，圈内只剩奇点 <span class="math-inline">1</span>，答案 <span class="math-inline">\pi i</span>。</li>
+      </ol>
+
+      <p>最后把「三条路怎么选」那张表抄进纸笔题型整理册的选型卡，表里每一行配一道自己的例题或错题。</p>
+
+      <p>本课的小 lab 收在科目目录的 <a href="../lab/">lab/</a> 下、目录名以 <code>0010</code> 开头：任务书与断言都在那里，<code>lab/README.md</code> 写着任务表与卡壳时的提示顺序。</p>
+  </div>
+
+  <h2>带走的公式卡</h2>
+
+  <table>
+    <thead>
+      <tr><th>要写的东西</th><th>写法</th></tr>
+    </thead>
+    <tbody>
+      <tr><td>定理的结论</td><td><span class="math-inline">\oint_C f\,dz=0</span>，<span class="math-inline">f</span> 在单连通区域 <span class="math-inline">D</span> 内解析</td></tr>
+      <tr><td>复合闭路</td><td><span class="math-inline">\oint_C f\,dz=\sum_k\oint_{C_k}f\,dz</span>，内圈取顺时针</td></tr>
+      <tr><td>原函数代端点</td><td><span class="math-inline">\int_C f\,dz=F(z_1)-F(z_0)</span>，<span class="math-inline">f</span> 在单连通区域内解析</td></tr>
+      <tr><td>不定积分</td><td><span class="math-inline">\int f(z)\,dz=F(z)+C</span></td></tr>
+      <tr><td><span class="math-inline">\frac1z</span> 的原函数</td><td><span class="math-inline">\ln z</span> 的某一支，取哪一支看路径落在哪块区域</td></tr>
+    </tbody>
+  </table>
+
+  <ul class="lesson-resources">
+    <li>李君、于非非《复变函数与积分变换》§2.3 柯西积分定理及其推广<span class="lesson-resources__meta">书 · 纸质教材，定理的陈述与复合闭路的写法以它为准</span></li>
+    <li><a href="https://netedu.xauat.edu.cn/jpkc/netclass/jpkc/fbhs/dir/other/复变积分B集习题.pdf">复变积分解题集 B 集习题（西安建筑科技大学，按节分组）</a><span class="lesson-resources__meta">习题 · 3.2 节两道选择正对定理条件与单连通，计算题组练挖洞</span></li>
+    <li><a href="http://faculty.hfut.edu.cn/_resources/group1/M00/00/1C/rB_zR2ks_QyAOcheAAP1H6_9avI556.pdf">合肥工业大学期末试卷（含答案与逐题分值）</a><span class="lesson-resources__meta">试卷 · 填空与选择里各有一处本课题型，分值 3～4 分</span></li>
+  </ul>
+
+  <!-- ── 提问提示：固定写法，别删 ── -->
+
+  <div class="lesson-ask">
+    <b>没看懂？随时问</b>
+    把看不懂的段落（或报错）原样复制回会话，说一句哪里不懂就行，我只解释这一段，不打断你的进度。
+  </div>
+
+  <!-- ── 上/下节课指针由渲染器按 curriculum.yaml 的 nodes 顺序算（第一课无 --prev、最后一课无 --next） ── -->
+
+  <nav class="lesson-nav" aria-label="上一课 / 下一课">
+    <a class="lesson-nav__link lesson-nav__link--prev" href="0009-ch2-cauchy-formula.html">
+      <span class="lesson-nav__dir">上节课</span>
+      <span class="lesson-nav__title">柯西积分公式与高阶导数</span>
+    </a>
+    <a class="lesson-nav__link lesson-nav__link--next" href="0011-ch3-power-series.html">
+      <span class="lesson-nav__dir">下节课</span>
+      <span class="lesson-nav__title">幂级数与收敛半径</span>
+    </a>
+  </nav>
+
+  <footer class="lesson-footer">
+    StudyMate · 0010 柯西积分定理及其推广 · 本地学习工作区
+  </footer>
+
+</article>
+
+<script src="../../../assets/sayo/sayo.js"></script>
+<link rel="stylesheet" href="../../../assets/katex/katex.min.css">
+<script src="../../../assets/katex/katex.min.js" defer></script>
+<script src="../../../assets/lesson-math.js" defer></script>
+<script src="../assets/quiz.js" defer></script>
+<script src="../assets/lesson-toc.js" defer></script>
+<script>LearnTheme.wire(document.getElementById('lesson-theme-checkbox'));</script>
+</body>
+</html>
