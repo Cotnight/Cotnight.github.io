@@ -1,0 +1,381 @@
+<!DOCTYPE html>
+<html lang="zh-CN" data-theme="dark">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>柯西积分公式与高阶导数 · 复变函数与积分变换</title>
+
+<!-- 共享层在 .learning/assets/，课件在 .learning/subjects/<slug>/lessons/ 下，所以是 ../../../assets/ -->
+<link rel="stylesheet" href="../../../assets/sayo/sayo.css">
+<link rel="stylesheet" href="../../../assets/learn-theme.css">
+<link rel="stylesheet" href="../assets/style.css">
+
+<!-- 主题要在首帧前应用，避免闪白/闪黑 -->
+<script src="../../../assets/learn-theme.js"></script>
+<script>LearnTheme.apply();</script>
+</head>
+
+<body class="lesson-body">
+
+<nav class="lesson-bar">
+  <a href="../index.html">← 返回课程</a>
+  <span>复变函数与积分变换</span>
+  <span class="lesson-bar__no">0009</span>
+  <!-- 课件页自带主题开关：学生从文件管理器直接打开课件时也能切暗色 -->
+  <label class="syo-toggle syo-toggle--theme lesson-bar__toggle" title="切换深浅主题" aria-label="切换深浅主题">
+    <input type="checkbox" id="lesson-theme-checkbox" checked>
+    <span class="syo-toggle-track"></span>
+    <span class="syo-toggle-knob">
+      <svg class="syo-toggle-sun" viewBox="0 0 20 20" fill="none" aria-hidden="true"><circle cx="10" cy="10" r="3.5" stroke="#f57c00" stroke-width="1.5"/><path d="M10 2v2.5M10 15.5V18M2 10h2.5M15.5 10H18M4.34 4.34l1.77 1.77M13.89 13.89l1.77 1.77M4.34 15.66l1.77-1.77M13.89 6.11l1.77-1.77" stroke="#f57c00" stroke-width="1.2" stroke-linecap="round"/></svg>
+      <svg class="syo-toggle-moon" viewBox="0 0 20 20" fill="none" aria-hidden="true"><path d="M16.5 12.5A6 6 0 019 4.5a6 6 0 007.5 8z" stroke="#5c6bc0" stroke-width="1.5" stroke-linejoin="round"/></svg>
+    </span>
+  </label>
+</nav>
+
+<article class="lesson">
+
+  <header class="lesson-header">
+    <span class="lesson-header__eyebrow">0009 · 柯西积分公式与高阶导数</span>
+    <h1>柯西积分公式与高阶导数</h1>
+    <p class="lesson-goal"><b>本节目标：</b>能用柯西积分公式与高阶导数公式算出闭路积分。</p>
+  </header>
+
+  <!-- ── 正文：渲染器按内容文件（lessons/<序号>-<节点id>.md）产出，块词汇见 docs/规范/课件内容格式.md ── -->
+
+  <h2>卷面怎么考</h2>
+
+  <p>本节的题只有一种形状：分母是 <span class="math-inline">(z-z_0)</span> 或它的幂，分子是解析函数，求沿正向圆周一整圈的积分。</p>
+
+  <ul>
+    <li>解答题，7～10 分。合肥工业大学 2022～2024 的六套卷里有五套把这道题排在第 4 题，五个题面分别是 <span class="math-inline">\frac{e^{iz}}{z^2-3\pi z+2\pi^2}</span>（圆心 <span class="math-inline">3</span>、半径 <span class="math-inline">4</span>）、<span class="math-inline">\frac{\sin z}{z^2+1}</span>（圆心 <span class="math-inline">1</span>、半径 <span class="math-inline">4</span>）、<span class="math-inline">\frac{\sin z+2z}{(z+\pi)^2}</span>（圆心 <span class="math-inline">-1</span>、半径 <span class="math-inline">4</span>）、<span class="math-inline">\frac{\cos z}{z^2(z+i)}</span>（<span class="math-inline">|z|=2</span>）、<span class="math-inline">\frac{e^z}{z(z-\pi i)^2}</span>（<span class="math-inline">|z|=4</span>）。剩下的 2022 年 B 卷把它排在第 6 题，7 分。</li>
+    <li>填空与选择，3 分。2022 年 B 卷填 <span class="math-inline">\oint_{|z|=1}\frac{1+z+z^2}{z^3}dz</span>；2023 年 B 卷填 <span class="math-inline">\oint_{|z|=2}\frac{dz}{(z+i)^{2023}}</span>；2023 年两套卷的选择题给一个由积分定义的函数，问它在某点的导数值。</li>
+    <li>西安建筑科技大学的第四大题是两个 5 分小题：<span class="math-inline">\oint_{|z|=2}\frac{z}{z-1}dz</span> 与 <span class="math-inline">\oint_C\frac{\cos z}{(z-i)^3}dz</span>。</li>
+  </ul>
+
+  <p>两条公式加一套四步动作覆盖这三处。第三章的留数定理会把同一批题压成一行，本节先把四步练熟。</p>
+
+  <h2>唤醒：求导与因式分解</h2>
+
+  <p>只用到两件旧工具，各一句。</p>
+
+  <p>求导：<span class="math-inline">\cos z</span>、<span class="math-inline">\sin z</span>、<span class="math-inline">e^z</span> 的导数与实函数同形，分式的商法则照用。高阶导数公式最多求到二阶、三阶。</p>
+
+  <p>因式分解：把分母拆成 <span class="math-inline">(z-z_0)^m</span> 与其余因子之积，例如 <span class="math-inline">z^2-3\pi z+2\pi^2=(z-\pi)(z-2\pi)</span>，<span class="math-inline">z^2+1=(z-i)(z+i)</span>，<span class="math-inline">z^2(z+i)=z^2\cdot(z+i)</span>。拆完，幂次与分母的零点同时到手；卷面上把分母的零点叫被积函数的<b>奇点</b>，本课沿用这个说法。</p>
+
+  <p>公式还有一条前提要记：除分母的零点外，被积函数在 <span class="math-inline">C</span> 及其内部解析。<span class="math-inline">e^z</span>、<span class="math-inline">\cos z</span>、<span class="math-inline">1/(z-z_0)</span> 这类商在分母零点之外都解析，判断依据是上一章的柯西-黎曼条件。</p>
+
+  <h2>柯西积分公式</h2>
+
+  <p>设 <span class="math-inline">C</span> 为正向简单闭曲线，<span class="math-inline">f</span> 在 <span class="math-inline">C</span> 及其内部解析，<span class="math-inline">z_0</span> 在 <span class="math-inline">C</span> 内部，则</p>
+
+  <div class="math-block">\oint_C \frac{f(z)}{z-z_0}\,dz=2\pi i\,f(z_0).</div>
+
+  <p>用法一句话：分母是 <span class="math-inline">z-z_0</span> 的一次方时，把分子里的 <span class="math-inline">z</span> 全体换成 <span class="math-inline">z_0</span>，再乘 <span class="math-inline">2\pi i</span>。</p>
+
+  <p>上一节用参数化算出 <span class="math-inline">\oint_{|z|=1}\frac{dz}{z}=2\pi i</span>，那里用了一整行代换；这里取 <span class="math-inline">f(z)\equiv1</span>、<span class="math-inline">z_0=0</span> 代入公式，同一个 <span class="math-inline">2\pi i</span> 一行就到。</p>
+
+  <p>例（西建大第四大题，5 分）：<span class="math-inline">C</span> 为 <span class="math-inline">|z|=2</span>，求 <span class="math-inline">\oint_C\frac{z}{z-1}dz</span>。</p>
+
+  <p>分母零点 <span class="math-inline">z_0=1</span>，<span class="math-inline">|1|&lt;2</span> 在圈内；分子 <span class="math-inline">f(z)=z</span> 在圈内解析。于是</p>
+
+  <div class="math-block">\oint_{|z|=2}\frac{z}{z-1}\,dz=2\pi i\cdot z\Big|_{z=1}=2\pi i.</div>
+
+  <div class="quiz" data-quiz='[
+  {
+    "q": "$\\oint_C\\frac{f(z)}{z-z_0}dz=2\\pi i\\,f(z_0)$\n成立，要求哪一组条件？",
+    "opts": [
+      "$f$ 在 $C$ 及其内部解析，$z_0$ 在 $C$ 内部",
+      "$f$ 在 $C$ 上解析，$z_0$ 可以落在 $C$ 上",
+      "$f$ 只在 $C$ 内部解析，$C$ 取顺时针为正向",
+      "$f$ 在 $C$ 外部解析，$z_0$ 取在 $C$ 外部"
+    ],
+    "ans": 0,
+    "why": "三条一起要：$C$ 是正向简单闭曲线；\n$f$ 在 $C$ 及其内部解析；\n$z_0$ 在 $C$ 内部。\n$z_0$ 落在 $C$ 上时分母在围道上为零，\n公式没有下手处。"
+  },
+  {
+    "q": "$C$ 为 $|z|=3$（正向），\n求 $\\oint_C\\frac{e^z}{z-1}dz$。\n三行写完，只给一个数不算过：\n\n① 分母零点 $z_0$ 是多少、在不在圈内；\n② 分子在圈内解析吗，一句话；\n③ 积分的值。",
+    "answer": "$z_0=1$，$|1|=1&lt;3$，在圈内。\n分子 $e^z$ 处处解析，条件全满足。\n分母是一次方，套公式把 $z=1$ 代进分子：\n$\\oint_C\\frac{e^z}{z-1}dz=2\\pi i\\cdot e$\n即 $2\\pi i\\,e$。",
+    "criteria": "三行都要有，缺一行按部分通过。\n① 要写出 $z_0=1$、判出在圈内（$1&lt;3$）。\n② 要说出 $e^z$ 处处解析——这是前提。\n③ 值必须是 $2\\pi i\\,e$。\n写成 $2\\pi i\\,e^z$（没代 $z=1$）按不通过；\n写成 $e$ 是漏了 $2\\pi i$；\n写成 $2\\pi e$ 是漏了 $i$。"
+  }
+]'></div>
+
+  <h2>高阶导数公式</h2>
+
+  <p>分母幂次高于 <span class="math-inline">1</span> 时，用同一条公式的高阶版本：</p>
+
+  <div class="math-block">\oint_C\frac{f(z)}{(z-z_0)^{n+1}}\,dz=\frac{2\pi i}{n!}f^{(n)}(z_0),</div>
+
+  <p>条件与前一条相同。为便于上手，把分母幂次记作 <span class="math-inline">m</span>，则 <span class="math-inline">n=m-1</span>：</p>
+
+  <div class="math-block">\oint_C\frac{f(z)}{(z-z_0)^{m}}\,dz=\frac{2\pi i}{(m-1)!}f^{(m-1)}(z_0).</div>
+
+  <p>要记牢的只有三处：分母幂次 <span class="math-inline">m</span>、求 <span class="math-inline">m-1</span> 阶导、系数 <span class="math-inline">\frac{2\pi i}{(m-1)!}</span>。</p>
+
+  <table>
+    <thead>
+      <tr><th>分母幂次 <span class="math-inline">m</span></th><th>求几阶导</th><th>系数</th></tr>
+    </thead>
+    <tbody>
+      <tr><td><span class="math-inline">m=1</span></td><td>不求导，直接代 <span class="math-inline">z_0</span></td><td><span class="math-inline">2\pi i</span></td></tr>
+      <tr><td><span class="math-inline">m=2</span></td><td>一阶</td><td><span class="math-inline">2\pi i</span></td></tr>
+      <tr><td><span class="math-inline">m=3</span></td><td>二阶</td><td><span class="math-inline">\pi i</span></td></tr>
+      <tr><td><span class="math-inline">m=4</span></td><td>三阶</td><td><span class="math-inline">\frac{\pi i}{3}</span></td></tr>
+    </tbody>
+  </table>
+
+  <p><span class="math-inline">m=1</span> 那一行就是柯西积分公式，因为 <span class="math-inline">0!=1</span>。两条公式是同一条：分母幂次决定求几阶导，也决定阶乘的样子。</p>
+
+  <p>例（西建大第四大题，5 分）：<span class="math-inline">C</span> 为绕 <span class="math-inline">i</span> 一周的正向简单闭曲线，求 <span class="math-inline">\oint_C\frac{\cos z}{(z-i)^3}dz</span>。</p>
+
+  <p><span class="math-inline">m=3</span>、<span class="math-inline">z_0=i</span>、<span class="math-inline">f(z)=\cos z</span>，二阶导为 <span class="math-inline">(\cos z)''=-\cos z</span>：</p>
+
+  <div class="math-block">\oint_C\frac{\cos z}{(z-i)^3}\,dz=\frac{2\pi i}{2!}(-\cos i)=-\pi i\cos i.</div>
+
+  <p>两个填空题走同一条路，差别只在分子：</p>
+
+  <ul>
+    <li>2022 年 B 卷，<span class="math-inline">\oint_{|z|=1}\frac{1+z+z^2}{z^3}dz</span>：<span class="math-inline">m=3</span>、<span class="math-inline">f(z)=1+z+z^2</span>、<span class="math-inline">f''=2</span>，答案为 <span class="math-inline">\frac{2\pi i}{2!}\cdot2=2\pi i</span>。</li>
+    <li>2023 年 B 卷，<span class="math-inline">\oint_{|z|=2}\frac{dz}{(z+i)^{2023}}</span>：<span class="math-inline">m=2023</span>、<span class="math-inline">f(z)=1</span>，常数求任何正阶导都得 <span class="math-inline">0</span>，答案为 <span class="math-inline">0</span>，不必真去求 <span class="math-inline">2022</span> 阶导。</li>
+  </ul>
+
+  <div class="quiz" data-quiz='[
+  {
+    "q": "分母是 $(z-z_0)^3$ 时，\n$\\oint_C\\frac{f(z)}{(z-z_0)^3}dz$ 等于哪个？\n（$f$ 在 $C$ 及其内部解析）",
+    "opts": [
+      "$\\frac{2\\pi i}{2!}f&#39;&#39;(z_0)$",
+      "$2\\pi i\\cdot2!\\,f&#39;&#39;(z_0)$",
+      "$\\frac{2\\pi i}{3!}f&#39;&#39;(z_0)$",
+      "$\\frac{2\\pi i}{2!}f&#39;&#39;&#39;(z_0)$"
+    ],
+    "ans": 0,
+    "why": "幂次 $m=3$ 时 $n=m-1=2$：\n求二阶导，阶乘除 $2!$ 而不是 $3!$。\n$2\\pi i$ 永远写在分子上，\n它不跟阶乘换位置。"
+  },
+  {
+    "q": "同学算 $\\frac{e^z}{z^3}$ 沿 $|z|=1$ 一圈，\n写的是：\n\n```text\nm = 3，所以原式 = 2πi × (e^z)&#39;&#39; = 2πi\n```\n\n① 他漏了哪一处？正确值多少？\n② 再算 $\\oint_{|z|=1}\\frac{\\sin z}{z^4}dz$：\n写出求几阶导、系数是几、值是几。",
+    "answer": "① 漏了 $1/(m-1)!$，少除一个 $2!$。\n$(e^z)&#39;&#39;=e^z$，代 $z=0$ 得 $1$：\n原式 $=\\frac{2\\pi i}{2!}\\cdot1=\\pi i$。\n\n② $m=4$，求 $m-1=3$ 阶导，\n系数 $\\frac{2\\pi i}{3!}=\\frac{\\pi i}{3}$。\n$(\\sin z)&#39;&#39;&#39;=-\\cos z$，代 $0$ 得 $-1$：\n原式 $=\\frac{\\pi i}{3}\\cdot(-1)$\n$=-\\frac{\\pi i}{3}$。",
+    "criteria": "① 必须点到「漏了 $1/(m-1)!$」，值改到 $\\pi i$。\n只说「算错了」不说漏哪一处，按不通过；\n把系数改成 $2\\pi i\\cdot2!$ 也不通过。\n② 三样都要：三阶导、系数 $\\frac{\\pi i}{3}$、\n值 $-\\frac{\\pi i}{3}$。\n只求到两阶导会得 $\\sin&#39;&#39;0=0$，\n答案变成 $0$——这是最常见的错法。"
+  }
+]'></div>
+
+  <h3>反向读公式</h3>
+
+  <p>公式还有第二种用法：<span class="math-inline">g</span> 在 <span class="math-inline">C</span> 内解析、<span class="math-inline">z</span> 在 <span class="math-inline">C</span> 内时，<span class="math-inline">\oint_C\frac{g(\zeta)}{\zeta-z}d\zeta</span> 等于 <span class="math-inline">2\pi i\,g(z)</span>，于是求 <span class="math-inline">f'</span> 只需对 <span class="math-inline">g</span> 求导再乘 <span class="math-inline">2\pi i</span>。2023 年卷的选择题：设 <span class="math-inline">f(z)=\oint_{|\zeta|=4}\frac{\sin\zeta-\cos\zeta}{\zeta-z}d\zeta</span>，求 <span class="math-inline">f'(\pi)</span>。读出 <span class="math-inline">f(z)=2\pi i(\sin z-\cos z)</span>，则</p>
+
+  <div class="math-block">f'(\pi)=2\pi i(\cos\pi+\sin\pi)=-2\pi i.</div>
+
+  <h2>四步套公式</h2>
+
+  <p>题面一变，动作不变：</p>
+
+  <ol>
+    <li><b>找奇点</b>：分母 <span class="math-inline">=0</span> 的根。分母因式有几个，奇点就有几个。</li>
+    <li><b>看内外</b>：<span class="math-inline">|z_0-a|</span> 与半径 <span class="math-inline">r</span> 比大小。小于 <span class="math-inline">r</span> 在圈内，大于 <span class="math-inline">r</span> 在圈外。</li>
+    <li><b>凑标准形式</b>：把被积函数写成 <span class="math-inline">\frac{g(z)}{(z-z_0)^m}</span>，<span class="math-inline">g</span> 在 <span class="math-inline">C</span> 内解析。分母的其余因子连同分子一起归给 <span class="math-inline">g</span>；分子含 <span class="math-inline">(z-z_0)</span> 因子的先约掉，再数 <span class="math-inline">m</span>。</li>
+    <li><b>套公式</b>：<span class="math-inline">m=1</span> 用柯西积分公式，<span class="math-inline">m\ge2</span> 用高阶导数公式。</li>
+  </ol>
+
+  <figure class="lesson-figure">
+    <img src="../assets/img/pool/柯西积分公式-四步流程-套公式-本机-01.png" alt="四个流程框自上而下依次是找奇点、看 z0 在围道 C 内还是外、凑成标准形式、按幂次 m 套公式；右侧两个分支框分别写着「在围道外整项为 0」与「m 等于 1 用 2πi 乘 g(z0)、m 大于等于 2 用 2πi 除以 (m 减 1) 的阶乘再乘 g 的 m 减 1 阶导」">
+    <figcaption>图 1 · 四步走到底，中间两个岔口各有一句话的结论。（来源：本机生成（<code>assets/img/gen/柯西积分公式-四步流程-套公式-本机-01.py</code>），许可：本项目自产）</figcaption>
+  </figure>
+
+  <p>第 3 步是唯一要动手变形的环节。2022 年那份 10 分题：</p>
+
+  <div class="math-block">\oint_{|z-3|=4}\frac{e^{iz}}{z^2-3\pi z+2\pi^2}\,dz</div>
+
+  <p>四步落在纸上：</p>
+
+  <ol>
+    <li>分母 <span class="math-inline">z^2-3\pi z+2\pi^2=(z-\pi)(z-2\pi)</span>，奇点是 <span class="math-inline">\pi</span> 与 <span class="math-inline">2\pi</span>。</li>
+    <li>圆心 <span class="math-inline">3</span>、半径 <span class="math-inline">4</span>：<span class="math-inline">|\pi-3|\approx0.14&lt;4</span>，<span class="math-inline">|2\pi-3|\approx3.28&lt;4</span>，两个都在圈内。</li>
+    <li>分母各是一次方。对 <span class="math-inline">z_0=\pi</span> 取 <span class="math-inline">g(z)=\frac{e^{iz}}{z-2\pi}</span>；对 <span class="math-inline">z_0=2\pi</span> 取 <span class="math-inline">g(z)=\frac{e^{iz}}{z-\pi}</span>。</li>
+    <li>各套一次柯西积分公式，再相加：</li>
+  </ol>
+
+  <div class="math-block">\oint_C f(z)\,dz=2\pi i\left(\frac{e^{i\pi}}{\pi-2\pi}+\frac{e^{2\pi i}}{2\pi-\pi}\right)=2\pi i\left(\frac1\pi+\frac1\pi\right)=4i.</div>
+
+  <p>末一步用了 <span class="math-inline">e^{i\pi}=-1</span> 与 <span class="math-inline">e^{2\pi i}=1</span>。</p>
+
+  <p>第 3 步的三种常见形状：</p>
+
+  <table>
+    <thead>
+      <tr><th>分母</th><th>奇点</th><th>凑出的 <span class="math-inline">g</span> 与 <span class="math-inline">m</span></th></tr>
+    </thead>
+    <tbody>
+      <tr><td><span class="math-inline">z-z_0</span></td><td><span class="math-inline">z_0</span></td><td>分子即 <span class="math-inline">g</span>，<span class="math-inline">m=1</span></td></tr>
+      <tr><td><span class="math-inline">(z-z_1)(z-z_2)</span></td><td><span class="math-inline">z_1,\ z_2</span></td><td>对 <span class="math-inline">z_1</span>：<span class="math-inline">g=\frac{\text{分子}}{z-z_2}</span>，<span class="math-inline">m=1</span>；对 <span class="math-inline">z_2</span> 对称地写</td></tr>
+      <tr><td><span class="math-inline">z^2(z+i)</span></td><td><span class="math-inline">0,\ -i</span></td><td>对 <span class="math-inline">0</span>：<span class="math-inline">g=\frac{\text{分子}}{z+i}</span>，<span class="math-inline">m=2</span>；对 <span class="math-inline">-i</span>：<span class="math-inline">g=\frac{\text{分子}}{z^2}</span>，<span class="math-inline">m=1</span></td></tr>
+    </tbody>
+  </table>
+
+  <p>最后一行对应 2024 年卷的 10 分题 <span class="math-inline">\oint_{|z|=2}\frac{\cos z}{z^2(z+i)}dz</span>：奇点 <span class="math-inline">0</span> 那一项把 <span class="math-inline">\frac{\cos z}{z+i}</span> 求一阶导、代 <span class="math-inline">z=0</span> 得 <span class="math-inline">1</span>；奇点 <span class="math-inline">-i</span> 那一项把 <span class="math-inline">\frac{\cos z}{z^2}</span> 代 <span class="math-inline">z=-i</span> 得 <span class="math-inline">-\cos i</span>。两项相加：</p>
+
+  <div class="math-block">\oint_{|z|=2}\frac{\cos z}{z^2(z+i)}\,dz=2\pi i(1-\cos i)=\left(2-e-\frac1e\right)\pi i.</div>
+
+  <div class="quiz" data-quiz='[
+  {
+    "q": "下面是同学的解答，错的不止一处。\n题目：$\\frac{z^3+1}{(z-1)^3}$ 沿 $|z|=2$ 一圈。\n\n```text\n分母幂次 m = 3，所以求三阶导。\nf(z) = z^3 + 1，f&#39;&#39;&#39;(z) = 6。\n原式 = (2πi / 3!)·6 = 2πi。\n```\n\n① 哪两处写错了（要指到具体的数）；\n② 正确的值与它的系数；\n③ 幂次配阶数：$m=1,2,3,4$\n各求几阶导、系数是多少。",
+    "answer": "① 两处都把 $m$ 当成了 $n$：\n求导阶数应是 $m-1=2$，不是 $3$；\n阶乘应是 $(m-1)!=2!$，不是 $3!$。\n分子取 $g=z^3+1$ 这一处没错。\n\n② $g&#39;&#39;=6z$，代 $z=1$ 得 $6$，\n系数 $\\frac{2\\pi i}{2!}=\\pi i$：\n原式 $=\\pi i\\cdot6=6\\pi i$。\n\n③ $m=1$：不求导，$2\\pi i$；\n$m=2$：一阶导，$2\\pi i$；\n$m=3$：二阶导，$\\pi i$；\n$m=4$：三阶导，$\\frac{\\pi i}{3}$。",
+    "criteria": "① 两处都指到才算对：\n求导阶数（$3$ 应为 $2$）、阶乘（$3!$ 应为 $2!$）。\n只说「$m$ 与 $n$ 混了」却指不出这两个数，\n按部分通过。\n② 值必须是 $6\\pi i$，系数必须写 $\\pi i$。\n还是写 $2\\pi i$，说明仍在用错的那个式子。\n③ 四行里对到三行以上算通过；\n$m=4$ 那行系数写成 $\\pi i$（漏阶乘）\n按部分通过。"
+  }
+]'></div>
+
+  <h2>奇点在围道内与外</h2>
+
+  <p>围道决定答案。同一个被积函数换一条围道，圈进去的奇点变了，结果就变。</p>
+
+  <figure class="lesson-figure">
+    <img src="../assets/img/pool/柯西积分公式-围道内外-奇点位置-本机-02.png" alt="三格复平面并排。第一格圆心在原点、半径为 2 的圆里有一个红点标着 z0 等于 1；第二格绕 i 的小圆把红点 i 圈在圆内；第三格单位圆在原点，灰点 3 落在圆外的实轴上；每一格下方写着一行对应的结果">
+    <figcaption>图 2 · 奇点在圈内、圈内且幂次高、圈外三种情形，各配一行结果。（来源：本机生成（<code>assets/img/gen/柯西积分公式-围道内外-奇点位置-本机-02.py</code>），许可：本项目自产）</figcaption>
+  </figure>
+
+  <p>圈内有两个以上奇点时，每个奇点各算一项，全部相加，少算一项就丢一半分。</p>
+
+  <p>例（B 集 3.2）：<span class="math-inline">C</span> 为 <span class="math-inline">|z|=2</span>，求 <span class="math-inline">\oint_C\frac{dz}{z^2-1}</span>。分母 <span class="math-inline">z^2-1=(z-1)(z+1)</span>，<span class="math-inline">\pm1</span> 都在圈内，各是一次方：</p>
+
+  <div class="math-block">\oint_{|z|=2}\frac{dz}{z^2-1}=2\pi i\left(\frac{1}{1+1}+\frac{1}{-1-1}\right)=2\pi i\left(\frac12-\frac12\right)=0.</div>
+
+  <p>两项分别是 <span class="math-inline">\pi i</span> 与 <span class="math-inline">-\pi i</span>，相加才是 <span class="math-inline">0</span>；只算一项会写成 <span class="math-inline">\pi i</span>。2023 年卷的 <span class="math-inline">\oint_{|z-1|=4}\frac{\sin z}{z^2+1}dz</span> 同样办：<span class="math-inline">\pm i</span> 各一项，合计 <span class="math-inline">2\pi\sin i=\pi i\left(e-\frac1e\right)</span>。</p>
+
+  <div class="quiz" data-quiz='[
+  {
+    "q": "$C$ 为 $|z|=3$（正向），10 分题：\n$\\oint_C\\frac{2z+1}{z^2+z-2}dz$。\n四步都落在纸上：\n\n① 分母因式分解，写出全部奇点；\n② 每个奇点都比一次半径，判内外；\n③ 每个奇点各写 $g(z)$ 与它的 $m$，\n再算出这一项的值；\n④ 两项相加，给最终值。\n\n最后补一行：只算一个会得多少？",
+    "answer": "① $z^2+z-2=(z-1)(z+2)$，\n奇点是 $1$ 与 $-2$。\n② $|1|=1&lt;3$、$|-2|=2&lt;3$，都在圈内。\n③ 对 $z_0=1$：\n$g(z)=\\frac{2z+1}{z+2}$，$m=1$，\n$g(1)=\\frac{3}{3}=1$，这一项是 $2\\pi i$；\n对 $z_0=-2$：\n$g(z)=\\frac{2z+1}{z-1}$，$m=1$，\n$g(-2)=\\frac{-3}{-3}=1$，这一项也是 $2\\pi i$。\n④ $2\\pi i+2\\pi i=4\\pi i$。\n\n只算一项得 $2\\pi i$，那题按一半给分。",
+    "criteria": "四步各占分，缺一步按部分通过。\n① 因式必须拆成 $(z-1)(z+2)$，两个奇点都写；\n只写一个奇点直接按不通过——这正是失分点。\n② 两处比较都要有数：$1&lt;3$、$2&lt;3$。\n③ 每项要写清 $g$ 是谁、$m=1$、\n$g(z_0)$ 是多少。\n$g$ 取错（两项都用整个分子）会算出别的值，\n按不通过。\n④ 必须是 $4\\pi i$。\n写成 $2\\pi i$ 是只算了一项；\n写成 $0$ 是把两项相减了。"
+  }
+]'></div>
+
+  <p>奇点落在圈外时，这一项的值是 <span class="math-inline">0</span>。例：<span class="math-inline">\oint_{|z|=1}\frac{e^z}{z-3}dz</span>，分母零点 <span class="math-inline">3</span> 满足 <span class="math-inline">|3|=3&gt;1</span>，圈内没有奇点，答案为 <span class="math-inline">0</span>。</p>
+
+  <p>这一条在选择题里正面考过（B 集 3.2 第 4 题）：设 <span class="math-inline">f</span> 为解析函数、<span class="math-inline">f(z_0)\ne0</span>，则 <span class="math-inline">\oint_C\frac{f(z)}{z-z_0}dz=0</span> 成立的条件是 <span class="math-inline">z_0</span> 在 <span class="math-inline">C</span> 外。</p>
+
+  <p>答案出现 <span class="math-inline">0</span> 的三种情形要分清：</p>
+
+  <table>
+    <thead>
+      <tr><th>情形</th><th>为什么是 0</th></tr>
+    </thead>
+    <tbody>
+      <tr><td>分母零点全在圈外</td><td>圈内处处解析，公式没有下手处</td></tr>
+      <tr><td>分子是常数、幂次 <span class="math-inline">m&gt;1</span></td><td>常数求 <span class="math-inline">m-1</span> 阶导得 <span class="math-inline">0</span></td></tr>
+      <tr><td>各奇点的项相加后抵消</td><td>每一项都不为 <span class="math-inline">0</span>，只有和是 <span class="math-inline">0</span></td></tr>
+    </tbody>
+  </table>
+
+  <div class="quiz" data-quiz='[
+  {
+    "q": "设 $f$ 在 $C$ 及其内部解析，且 $f(z_0)\\ne0$。\n$\\oint_C\\frac{f(z)}{z-z_0}dz=0$ 成立的条件是？",
+    "opts": [
+      "$z_0$ 落在 $C$ 的外部",
+      "$z_0$ 落在 $C$ 的内部",
+      "$C$ 取成顺时针为正向",
+      "$f$ 在 $z_0$ 处不解析"
+    ],
+    "ans": 0,
+    "why": "零点在圈外时，圈内处处解析，\n柯西积分定理直接给 $0$。\n$z_0$ 在圈内才是 $2\\pi i\\,f(z_0)$。"
+  },
+  {
+    "q": "同一个被积函数 $\\frac{z+1}{z-3}$，\n两条围道各算一次：\n\n① $\\oint_{|z|=1}$：奇点在哪、结果多少；\n② $\\oint_{|z|=5}$：结果多少；\n③ 一句话：答案从 $0$ 变成 $2\\pi i\\,f(z_0)$，\n是哪个条件变了？",
+    "answer": "① $z_0=3$，$|3|=3&gt;1$，在圈外：结果为 $0$。\n② $|3|=3&lt;5$，在圈内：\n$g(3)=3+1=4$，结果 $2\\pi i\\cdot4=8\\pi i$。\n③ 变的是「$z_0$ 在不在围道内」这一条，\n被积函数没换，公式也没换。",
+    "criteria": "① 要写「$3&gt;1$ 在圈外」和结果 $0$ 两样；\n只写 $0$ 不判内外，按部分通过。\n② 必须是 $8\\pi i$：$g(3)=4$，再乘 $2\\pi i$。\n写成 $2\\pi i$ 是忘了代 $z_0$；\n写成 $0$ 是把①的结论抄了下来。\n③ 要落在「$z_0$ 在圈内还是圈外」。\n答成「换公式了」「被积函数变了」按不通过。"
+  }
+]'></div>
+
+  <h2>与留数定理的分工</h2>
+
+  <p>同一条 10 分题（「四步套公式」里那道 <span class="math-inline">|z-3|=4</span> 的题），参考答案写的是留数：<span class="math-inline">\oint_C f\,dz=2\pi i\left(\operatorname{Res}[f,\pi]+\operatorname{Res}[f,2\pi]\right)=4i</span>。本节公式给出的每一项 <span class="math-inline">2\pi i\,g(z_0)</span> 就是 <span class="math-inline">2\pi i</span> 乘该奇点的留数，两套算法落在同一串数上。</p>
+
+  <p>分工按题面形状定：</p>
+
+  <ul>
+    <li>分母幂次清楚、分子求两阶导还便宜：用本节两条公式，这是第二章的位置。</li>
+    <li>奇点个数多、幂次高，或分子求到三阶以上导数才见分晓：用第三章的留数定理，一次加成。</li>
+    <li>卷面上两条路都给满分，先用先算完的那条。</li>
+  </ul>
+
+  <div class="quiz" data-quiz='[
+  {
+    "q": "① 四道题里只有一道最该用本节两条公式，\n是哪一道？另外三道各该走哪条路？\n\n```text\nA: ∮_{|z|=1} e^z / z^3 dz\nB: ∮_{|z|=4} z^5 / ((z-1)^2 (z+i)^3) dz\nC: ∫_C z̄ dz，C 从 0 到 1+i 的直线段\nD: ∮_{|z|=1} dz / (z-1)\n```\n\n② 一句话：本节公式算出的每一项\n$2\\pi i\\,g(z_0)$ 与留数定理是什么关系？",
+    "answer": "① A。分母幂次清楚，分子求两阶导还便宜。\nB：奇点多、幂次高，留给第三章留数定理；\nC：被积函数含 $\\bar z$ 不解析，只能参数化；\nD：奇点 $1$ 就在围道上，两条公式都不适用。\n\n② 每一项 $2\\pi i\\,g(z_0)$ 就是\n$2\\pi i$ 乘该奇点的留数；\n留数定理把各项一次加成，\n结果落在同一串数上。",
+    "criteria": "① 选 A，并且另外三道各说对一条理由：\nB 走留数、C 只能参数化、\nD 奇点在围道上。\n只答出 A、不说另外三道，按部分通过。\n② 要说出「$2\\pi i\\,g(z_0)$ 就是\n$2\\pi i$ 乘该点的留数」；\n只说「两条路结果一样」按部分通过。"
+  }
+]'></div>
+
+  <h2>上手做</h2>
+
+  <div class="lesson-practice">
+    <div class="lesson-practice__head">
+      <span class="lesson-practice__level">上手做</span>
+      <span class="lesson-practice__title">幂次对照卡与一道 10 分题</span>
+    </div>
+
+      <p>这一课动手做两件事。</p>
+
+      <ol>
+        <li>写一张对照卡。左列分母形状：<span class="math-inline">z-z_0</span>、<span class="math-inline">(z-z_0)^2</span>、<span class="math-inline">(z-z_0)^3</span>、<span class="math-inline">(z-z_1)(z-z_2)</span>、<span class="math-inline">z^2(z+i)</span>；中列奇点与幂次；右列对应的 <span class="math-inline">g(z)</span> 与该套的公式。每一行十秒内填完才算过。卡片收进纸笔题型整理册，第三章学留数时并排着用。</li>
+      </ol>
+
+      <ol>
+        <li>独立算完一道 10 分题，四步全写在纸上：找奇点 → 看内外 → 凑标准形式 → 套公式。算完把每一项的 <span class="math-inline">g(z_0)</span> 或 <span class="math-inline">g^{(m-1)}(z_0)</span> 单独核对一遍，丢分大多丢在这一格。</li>
+      </ol>
+
+      <p>本课的小 lab 收在科目目录的 <a href="../lab/">lab/</a> 下、目录名以 <code>0009</code> 开头：任务书、断言与参考解都在那里，<code>lab/README.md</code> 写着任务表与卡壳时的提示顺序。</p>
+  </div>
+
+  <h2>带走的公式卡</h2>
+
+  <table>
+    <thead>
+      <tr><th>题面给什么</th><th>用哪条</th><th>卷面位置</th></tr>
+    </thead>
+    <tbody>
+      <tr><td><span class="math-inline">\frac{f(z)}{z-z_0}</span>，<span class="math-inline">z_0</span> 在 <span class="math-inline">C</span> 内</td><td><span class="math-inline">2\pi i\,f(z_0)</span></td><td>填空、选择、解答题</td></tr>
+      <tr><td><span class="math-inline">\frac{f(z)}{(z-z_0)^m}</span>，<span class="math-inline">z_0</span> 在 <span class="math-inline">C</span> 内</td><td><span class="math-inline">\frac{2\pi i}{(m-1)!}f^{(m-1)}(z_0)</span></td><td>解答题 7～10 分</td></tr>
+      <tr><td>分母的零点有好几个，都在圈内</td><td>每个零点各算一项，相加</td><td>解答题 7～10 分</td></tr>
+      <tr><td><span class="math-inline">z_0</span> 在 <span class="math-inline">C</span> 外</td><td>这一项写 <span class="math-inline">0</span></td><td>填空、选择</td></tr>
+      <tr><td>由 <span class="math-inline">\oint_C\frac{g(\zeta)}{\zeta-z}d\zeta</span> 定义的 <span class="math-inline">f</span></td><td><span class="math-inline">f=2\pi i\,g</span>，<span class="math-inline">f'=2\pi i\,g'</span></td><td>选择 3 分</td></tr>
+    </tbody>
+  </table>
+
+  <ul class="lesson-resources">
+    <li>李君、于非非《复变函数与积分变换》§2.2 柯西积分公式<span class="lesson-resources__meta">书 · 纸质教材，公式的写法与例题口径以它为准</span></li>
+    <li><a href="http://faculty.hfut.edu.cn/_resources/group1/M00/00/1C/rB_zR2ks_QyAOcheAAP1H6_9avI556.pdf">合肥工业大学期末试卷（含答案与逐题分值）</a><span class="lesson-resources__meta">试卷 · 解答题第 4 题连续多套是本课题型，2022 年那道两个奇点的 10 分题在正文里走过一遍</span></li>
+    <li><a href="https://netedu.xauat.edu.cn/jpkc/netclass/jpkc/fbhs/dir/other/复变积分B集习题.pdf">复变积分解题集 B 集习题（西安建筑科技大学，按节分组）</a><span class="lesson-resources__meta">习题 · §3.2 里「<span class="math-inline">z_0</span> 在 <span class="math-inline">C</span> 外」的选择题与 <span class="math-inline">\oint\frac{dz}{z^2-1}</span> 的计算题都在这一节</span></li>
+  </ul>
+
+  <!-- ── 提问提示：固定写法，别删 ── -->
+
+  <div class="lesson-ask">
+    <b>没看懂？随时问</b>
+    把看不懂的段落（或报错）原样复制回会话，说一句哪里不懂就行，我只解释这一段，不打断你的进度。
+  </div>
+
+  <!-- ── 上/下节课指针由渲染器按 curriculum.yaml 的 nodes 顺序算（第一课无 --prev、最后一课无 --next） ── -->
+
+  <nav class="lesson-nav" aria-label="上一课 / 下一课">
+    <a class="lesson-nav__link lesson-nav__link--prev" href="0008-ch2-integral-direct.html">
+      <span class="lesson-nav__dir">上节课</span>
+      <span class="lesson-nav__title">复积分的概念与直接计算</span>
+    </a>
+    <a class="lesson-nav__link lesson-nav__link--next" href="0010-ch2-cauchy-theorem.html">
+      <span class="lesson-nav__dir">下节课</span>
+      <span class="lesson-nav__title">柯西积分定理及其推广</span>
+    </a>
+  </nav>
+
+  <footer class="lesson-footer">
+    StudyMate · 0009 柯西积分公式与高阶导数 · 本地学习工作区
+  </footer>
+
+</article>
+
+<script src="../../../assets/sayo/sayo.js"></script>
+<link rel="stylesheet" href="../../../assets/katex/katex.min.css">
+<script src="../../../assets/katex/katex.min.js" defer></script>
+<script src="../../../assets/lesson-math.js" defer></script>
+<script src="../assets/quiz.js" defer></script>
+<script src="../assets/lesson-toc.js" defer></script>
+<script>LearnTheme.wire(document.getElementById('lesson-theme-checkbox'));</script>
+</body>
+</html>

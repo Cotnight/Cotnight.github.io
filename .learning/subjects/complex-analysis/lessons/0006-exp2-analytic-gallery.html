@@ -1,0 +1,285 @@
+<!DOCTYPE html>
+<html lang="zh-CN" data-theme="dark">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>实验二：解析函数长什么样 · 复变函数与积分变换</title>
+
+<!-- 共享层在 .learning/assets/，课件在 .learning/subjects/<slug>/lessons/ 下，所以是 ../../../assets/ -->
+<link rel="stylesheet" href="../../../assets/sayo/sayo.css">
+<link rel="stylesheet" href="../../../assets/learn-theme.css">
+<link rel="stylesheet" href="../assets/style.css">
+
+<!-- 主题要在首帧前应用，避免闪白/闪黑 -->
+<script src="../../../assets/learn-theme.js"></script>
+<script>LearnTheme.apply();</script>
+</head>
+
+<body class="lesson-body">
+
+<nav class="lesson-bar">
+  <a href="../index.html">← 返回课程</a>
+  <span>复变函数与积分变换</span>
+  <span class="lesson-bar__no">0006</span>
+  <!-- 课件页自带主题开关：学生从文件管理器直接打开课件时也能切暗色 -->
+  <label class="syo-toggle syo-toggle--theme lesson-bar__toggle" title="切换深浅主题" aria-label="切换深浅主题">
+    <input type="checkbox" id="lesson-theme-checkbox" checked>
+    <span class="syo-toggle-track"></span>
+    <span class="syo-toggle-knob">
+      <svg class="syo-toggle-sun" viewBox="0 0 20 20" fill="none" aria-hidden="true"><circle cx="10" cy="10" r="3.5" stroke="#f57c00" stroke-width="1.5"/><path d="M10 2v2.5M10 15.5V18M2 10h2.5M15.5 10H18M4.34 4.34l1.77 1.77M13.89 13.89l1.77 1.77M4.34 15.66l1.77-1.77M13.89 6.11l1.77-1.77" stroke="#f57c00" stroke-width="1.2" stroke-linecap="round"/></svg>
+      <svg class="syo-toggle-moon" viewBox="0 0 20 20" fill="none" aria-hidden="true"><path d="M16.5 12.5A6 6 0 019 4.5a6 6 0 007.5 8z" stroke="#5c6bc0" stroke-width="1.5" stroke-linejoin="round"/></svg>
+    </span>
+  </label>
+</nav>
+
+<article class="lesson">
+
+  <header class="lesson-header">
+    <span class="lesson-header__eyebrow">0006 · 实验二：解析函数长什么样</span>
+    <h1>实验二：解析函数长什么样</h1>
+    <p class="lesson-goal"><b>本节目标：</b>做出解析与非解析函数的图像对照，并数值验证柯西-黎曼条件——<code>python test_analytic_gallery.py</code> 打出 <code>OK</code>，<code>out/</code> 里留下结论表与两张残差图。</p>
+  </header>
+
+  <!-- ── 正文：渲染器按内容文件（lessons/<序号>-<节点id>.md）产出，块词汇见 docs/规范/课件内容格式.md ── -->
+
+  <p>这是图像画廊的第二块。第 5 课在纸上判解析：拆出 <span class="math-inline">u</span> 与 <span class="math-inline">v</span>、求四个偏导、验柯西-黎曼条件。实验一把复数画上了复平面。这一课把两件事接起来——<b>同一套偏导，改用数值差分去算，逐点判，再画成图</b>。</p>
+
+  <p>验收的那句话是：<b>做出解析与非解析函数的图像对照，并数值验证柯西-黎曼条件。</b> 图不是装饰，它是判据的样子：解析函数的模与辐角两组等值线处处垂直，<span class="math-inline">\bar z</span> 与 <span class="math-inline">\lvert z\rvert^2</span> 不是。</p>
+
+  <h2>这次要交出什么</h2>
+
+  <p>三样东西，交到 <a href="../lab/0006-analytic-gallery/"><code>lab/0006-analytic-gallery</code></a>：</p>
+
+  <table>
+    <thead>
+      <tr><th>交出什么</th><th>落在哪</th><th>一句话说明</th></tr>
+    </thead>
+    <tbody>
+      <tr><td><code>analytic_gallery.py</code> 里 9 个函数</td><td><code>lab/0006-analytic-gallery/analytic_gallery.py</code></td><td>铺窗口、逐点判 CR、残差图、正交性、存表</td></tr>
+      <tr><td><code>out/</code> 三份 CSV</td><td><code>lab/0006-analytic-gallery/out/</code></td><td><code>scan.csv</code> 是结论表，另两张是残差图</td></tr>
+      <tr><td>三句结论</td><td>写进 notebook，或直接回话</td><td>第 3 步给了该写哪三句</td></tr>
+    </tbody>
+  </table>
+
+  <p>六个样板已经写好、<b>别改</b>：<code>pixel_to_re</code> / <code>pixel_to_im</code> 来自实验一的 <code>gallery.py</code>， <code>d_dx</code> / <code>d_dy</code> / <code>cr_residual</code> / <code>cr_holds</code> 来自第 5 课的 <code>cr_tool.py</code>。你填的是它们上面的 9 处留白。</p>
+
+  <p>任务表、装环境、卡壳顺序都在 <a href="../lab/README.md"><code>lab/README.md</code></a> 里，找标题「实验二 · 解析函数长什么样」。</p>
+
+  <h2>怎么算过</h2>
+
+  <p>被验收的要求拆成三条，逐条都有可观察的证据：</p>
+
+  <ol>
+    <li><b>能跑</b>：<code>python test_analytic_gallery.py</code> 打出 <code>OK</code>（38 条断言；没装 numpy 时 <code>OK (skipped=2)</code> 也算）。这是「数值验证 CR」的硬证据。</li>
+    <li><b>有对照</b>：<code>out/scan.csv</code> 六行分得开——<span class="math-inline">e^z</span>、<span class="math-inline">\sin z</span>、<span class="math-inline">z^2</span> 三行都是 <code>1.0000</code>，<span class="math-inline">\bar z</span> 是 <code>0.0000</code>，<span class="math-inline">\lvert z\rvert^2</span> 是 <code>0.0015</code>；两张残差图一张整片 <span class="math-inline">10^{-10}</span>、一张整片 <code>2</code>。</li>
+    <li><b>说得出</b>：三句结论各一句（第 3 步给的），并且能指着代码说出「哪一行算出残差」「<span class="math-inline">\bar z</span> 的两组线也垂直，凭什么说它不解析」。</li>
+  </ol>
+
+  <p>三档结论：</p>
+
+  <ul>
+    <li><b>通过</b>：三条都成立。差一步：结论表对了但说不出 <span class="math-inline">\bar z</span> 那一格的理由。</li>
+    <li><b>部分通过</b>：测试 <code>OK</code>，但结论表里的点数不对（<span class="math-inline">\lvert z\rvert^2</span> 不是 <code>1</code>、<span class="math-inline">\operatorname{Ln} z</span> 不是 <code>651</code>）——窗口或行序有问题；或者数据齐了却说不出 <span class="math-inline">\bar z</span> 为什么正交。</li>
+    <li><b>不通过</b>：只填了函数、没有 <code>out/</code> 三份数据；或表里解析与非解析两行看不出区别（残差都写成 <code>0.0000</code> 就是这个症状）。</li>
+  </ul>
+
+  <div class="lesson-warn">
+    <b>说懂了不算</b>
+    <p>这一课只认三样：<code>OK</code> 的测试输出、<code>out/</code> 里那三份数据、三句能对得上数的话。三样到手才算过。</p>
+  </div>
+
+  <h2>三步走</h2>
+
+  <div class="lesson-practice">
+    <div class="lesson-practice__head">
+      <span class="lesson-practice__level">上手做</span>
+      <span class="lesson-practice__title">第 1 步 · 填 9 个函数</span>
+    </div>
+
+      <p>打开 <a href="../lab/0006-analytic-gallery/analytic_gallery.py"><code>analytic_gallery.py</code></a>，按 <a href="../lab/README.md"><code>lab/README.md</code></a> 的任务表填，<b>填一个验一个</b>：</p>
+
+      <pre data-lang="term"><code>$ cd lab/0006-analytic-gallery
+$ python test_analytic_gallery.py -k step1</code></pre>
+
+      <p>还没动手时跑全量是 <code>FAILED (errors=36, skipped=2)</code>、退出码 1——先红后绿，这是设计。</p>
+  </div>
+
+  <div class="lesson-practice">
+    <div class="lesson-practice__head">
+      <span class="lesson-practice__level">上手做</span>
+      <span class="lesson-practice__title">第 2 步 · 跑自检交出 out/</span>
+    </div>
+
+      <p>九步填完后跑一次全量，再把自检跑一遍：</p>
+
+      <pre data-lang="term"><code>$ python test_analytic_gallery.py
+$ python test_analytic_gallery.py -k selfcheck</code></pre>
+
+      <p>第二个命令会写出 <code>out/scan.csv</code>、<code>out/residual-exp.csv</code>、<code>out/residual-conj.csv</code>。自检全绿才算数据出来了：它同时验了「解析的三个整片成立」和「<span class="math-inline">\operatorname{Ln} z</span> 换窗口后整片成立」。</p>
+  </div>
+
+  <div class="lesson-practice">
+    <div class="lesson-practice__head">
+      <span class="lesson-practice__level">上手做</span>
+      <span class="lesson-practice__title">第 3 步 · 写三句结论</span>
+    </div>
+
+      <p>只要三句，别写小作文：</p>
+
+      <ol>
+        <li><span class="math-inline">e^z</span>、<span class="math-inline">\sin z</span>、<span class="math-inline">z^2</span> 整片成立（651/651），残差在 <span class="math-inline">10^{-10}</span>：这三个在窗口内解析。</li>
+        <li><span class="math-inline">\bar z</span> 一个点都不成立（残差恒为 2），<span class="math-inline">\lvert z\rvert^2</span> 只有原点成立：前者处处不解析，后者只在一点可导、不解析。</li>
+        <li><span class="math-inline">\operatorname{Ln} z</span> 在右半平面整片成立；跨负实轴那列点的「失败」是假失败。</li>
+      </ol>
+
+      <p>第 2 句是这一课的重点：<b>点集的一两个点不等于一整片区域</b>，这就是第 5 课「可导推不出解析」那句话的数值版。</p>
+  </div>
+
+  <h2>等值线为什么正交</h2>
+
+  <p>解析函数在图上有一个签名：<b>模的等值线与辐角的等值线处处垂直</b>。三行就能推完。</p>
+
+  <p>若 <span class="math-inline">f=u+iv</span> 解析，则 <span class="math-inline">\lvert f\rvert=e^{u}</span>（因为 <span class="math-inline">u=\ln\lvert f\rvert</span>），而 <span class="math-inline">\arg f=v</span>。所以「模的等值线」就是 <span class="math-inline">u</span> 的等值线，「辐角的等值线」就是 <span class="math-inline">v</span> 的等值线。两组线垂直 ⟺ 两个梯度垂直：</p>
+
+  <div class="math-block">\nabla u\cdot\nabla v=u_xv_x+u_yv_y=v_yv_x-v_xv_y=0,</div>
+
+  <p>最后一步用的正是柯西-黎曼条件 <span class="math-inline">u_x=v_y</span> 与 <span class="math-inline">u_y=-v_x</span>。</p>
+
+  <figure class="lesson-figure lesson-figure--inline" role="img" aria-label="三圈同心圆与四条从圆心射出的直线，每个交点处圆与射线都成直角">
+<svg viewBox="0 0 120 100" role="img" aria-hidden="true">
+<g fill="none" stroke="currentColor" stroke-width="0.7">
+<circle cx="60" cy="50" r="14"/>
+<circle cx="60" cy="50" r="28"/>
+<circle cx="60" cy="50" r="42"/>
+<line x1="60" y1="50" x2="106" y2="50"/>
+<line x1="60" y1="50" x2="83" y2="10"/>
+<line x1="60" y1="50" x2="14" y2="50"/>
+<line x1="60" y1="50" x2="37" y2="90"/>
+</g>
+<circle cx="60" cy="50" r="1.5" fill="currentColor"/>
+</svg>
+    <figcaption>图 1 · 模的等值线（圆）与辐角的等值线（射线）在每个交点处都垂直；这是解析函数的签名。</figcaption>
+  </figure>
+
+  <div class="lesson-tip">
+    <b>用到的偏导只有这一条</b>
+    <p><span class="math-inline">\nabla u=(u_x,u_y)</span>、<span class="math-inline">\nabla v=(v_x,v_y)</span>，点积是 <span class="math-inline">u_xv_x+u_yv_y</span>——多元微积分里那点东西，够了。数值上这四个偏导都由中心差分给：<span class="math-inline">u_x\approx\frac{u(x+h)-u(x-h)}{2h}</span>，沿 <span class="math-inline">y</span> 方向换成 <span class="math-inline">z\pm ih</span>。</p>
+  </div>
+
+  <h2>正交不等于解析</h2>
+
+  <p>这一条是这一课最容易想歪的地方。<span class="math-inline">\bar z</span> 的实部是 <span class="math-inline">x</span>、虚部是 <span class="math-inline">-y</span>，两组等值线是竖线和横线—— <b>它也处处垂直</b>。所以「正交」这个现象判不出解析。</p>
+
+  <p>分开它们的是方向：解析函数的雅可比行列式 <span class="math-inline">u_xv_y-u_yv_x=\lvert f'(z)\rvert^2&gt;0</span>，<span class="math-inline">\bar z</span> 的那个是 <span class="math-inline">-1</span>。数值上量出来：<span class="math-inline">z^2</span> 在 <span class="math-inline">2+i</span> 处是 <code>20</code>，<span class="math-inline">\bar z</span> 在 <span class="math-inline">0.5+0.3i</span> 处是 <code>-1</code>。所以判据是「CR 残差为 0 <b>且</b> 行列式为正」，只看图上的直角是不够的。</p>
+
+  <h2>Ln z 的割线</h2>
+
+  <p>主值 <span class="math-inline">\operatorname{Ln} z</span> 在负实轴上不连续，而那正是差分要跨过去的地方。第 2 步的自检里：</p>
+
+  <ul>
+    <li>右半平面 <span class="math-inline">[0.25,1.5]\times[-1.5,1.5]</span>：<code>651 / 651</code> 成立，残差 <span class="math-inline">1.7\times10^{-10}</span>；</li>
+    <li>左半平面 <span class="math-inline">[-1.5,-0.25]\times[-1.5,1.5]</span>：<code>620 / 651</code>，失败的正好是 <span class="math-inline">y=0</span> 那一行的 31 个点，残差约 <span class="math-inline">3.1\times10^{6}</span>。</li>
+  </ul>
+
+  <p><span class="math-inline">3.1\times10^{6}</span> 就是 <span class="math-inline">\pi/h</span>：<span class="math-inline">h=10^{-6}</span>，相位在割线两侧差 <span class="math-inline">2\pi</span>，被差分当成了导数。 <b>认假失败的办法是看残差量级</b>——解析函数的残差在 <span class="math-inline">10^{-10}</span>，假失败在 <span class="math-inline">10^{6}</span>，差十几个数量级。这也是大纲第 3 条坑「分割线被误判为不解析」的数值形态。</p>
+
+  <h2>不装包也能自检</h2>
+
+  <p><code>test_analytic_gallery.py</code> 只用标准库（<code>cmath</code> / <code>csv</code> / <code>math</code> / <code>unittest</code>），不装 numpy、matplotlib、Jupyter 都能跑。本机两个解释器的实测输出：</p>
+
+  <pre data-lang="term"><code>$ python test_analytic_gallery.py            # Python 3.13.15，只有标准库
+Ran 38 tests in 0.046s
+
+OK (skipped=2)</code></pre>
+
+  <pre data-lang="term"><code>$ python test_analytic_gallery.py            # bundled runtime，Python 3.12.14 + numpy 2.3.5
+Ran 38 tests in 0.032s
+
+OK</code></pre>
+
+  <p>留白态是 <code>FAILED (errors=36, skipped=2)</code>、退出码 1——先红也量过。</p>
+
+  <p>想看「图」但没有 matplotlib：把残差图当字符矩阵打出来，只用标准库，<code>1e-6</code> 以上画 <code>#</code>、以下画 <code>.</code>。 <span class="math-inline">\lvert z\rvert^2</span> 会只剩正中一个点，<span class="math-inline">\bar z</span> 整片 <code>#</code>，<span class="math-inline">e^z</span> 整片 <code>.</code>——同一份数据，另一种画法。代码在 <a href="../lab/README.md"><code>lab/README.md</code></a> 第七节，字符图与 CSV 是同一批数字。</p>
+
+  <h2>最可能卡在哪</h2>
+
+  <table>
+    <thead>
+      <tr><th>症状或报错</th><th>原因</th><th>去哪一步</th></tr>
+    </thead>
+    <tbody>
+      <tr><td><code>NotImplementedError: 第 N 步还没写</code></td><td>那一步还没填，不是环境坏了</td><td>任务表第 N 行</td></tr>
+      <tr><td><code>ZeroDivisionError</code></td><td>空点集没判空，或梯度是零向量（<span class="math-inline">\lvert z\rvert^2</span> 的 <span class="math-inline">\nabla v\equiv0</span>）</td><td>第 3、6 步</td></tr>
+      <tr><td>残差图整片 <span class="math-inline">10^{6}</span></td><td>点在 <span class="math-inline">\operatorname{Ln} z</span> 的割线上，差分跨了割线</td><td>换窗口，别把割线框进来</td></tr>
+      <tr><td>残差图上下颠倒 / 转了 90°</td><td>第 0 行不是 <code>im_min</code>，或切片按列切了</td><td>第 4 步</td></tr>
+      <tr><td>结论表里两行都是 <code>0.0000</code></td><td>残差写成四位小数，<span class="math-inline">10^{-10}</span> 被抹平了</td><td>第 8 步</td></tr>
+      <tr><td>CSV 每行之间有空白行</td><td><code>open</code> 少了 <code>newline=""</code></td><td>第 8、9 步</td></tr>
+      <tr><td>余弦到处不为 0</td><td>四个偏导错位（<span class="math-inline">v_x</span> 与 <span class="math-inline">v_y</span> 对调）</td><td>第 5、6 步</td></tr>
+      <tr><td><span class="math-inline">\bar z</span> 的行列式是正的</td><td>取了绝对值，或写成了 <span class="math-inline">u_xv_y+u_yv_x</span></td><td>第 7 步</td></tr>
+    </tbody>
+  </table>
+
+  <h2>自查清单</h2>
+
+  <ol>
+    <li><code>python test_analytic_gallery.py</code> 打出 <code>OK</code>（没 numpy 时 <code>OK (skipped=2)</code> 也算）。</li>
+    <li><code>out/scan.csv</code> 七行（表头 + 六个函数），三行 <code>1.0000</code>、一行 <code>0.0000</code>、<code>|z|^2</code> 那行 <code>1</code>。</li>
+    <li><code>out/residual-exp.csv</code> 是 21 行、每行 31 个数，最大不超过 <span class="math-inline">10^{-8}</span>。</li>
+    <li><code>out/residual-conj.csv</code> 也是 21 × 31，每个数都是 <code>2</code>。</li>
+    <li>能说出 <span class="math-inline">\bar z</span> 的两组等值线为什么也垂直，以及凭什么判它不解析（行列式 <span class="math-inline">-1</span>）。</li>
+    <li>第 3 步那三句是你自己写的，不是抄课件的整段。</li>
+  </ol>
+
+  <h2>卡壳了怎么走</h2>
+
+  <ol>
+    <li>先读断言最后一行：<code>AssertionError</code> 后面通常带着期望值与实际值，差符号、差行序、差点数都在那里。</li>
+    <li>对不上就查 <a href="../lab/README.md"><code>lab/README.md</code></a> 第九节的症状对表，按症状定位到哪一步。</li>
+    <li>还不对，只打开参考解里<b>卡住的那一个函数</b>（<a href="../lab/solutions/0006-analytic-gallery/analytic_gallery.py"><code>solutions/0006-analytic-gallery/analytic_gallery.py</code></a>），看完立刻自己重写一遍。</li>
+  </ol>
+
+  <h2>下一步</h2>
+
+  <p>实验三「保角映射的网格实验」会把同一套东西用到 <span class="math-inline">z^2</span>、<span class="math-inline">e^z</span>、<span class="math-inline">1/z</span> 上：铺网格、逐点映射、看直角有没有被保持。它要的判据「保角 ⟺ 导数非零」，正是这一课的 <code>jacobian</code>：<span class="math-inline">\det J=\lvert f'(z)\rvert^2</span>，为零的点就是保角失效的临界点。所以 <code>analytic_gallery.py</code> 与 <code>out/</code> 别删。</p>
+
+  <ul class="lesson-resources">
+    <li>李君、于非非《复变函数与积分变换》§1.4 可导与解析、§1.3 初等函数<span class="lesson-resources__meta">书 · 柯西-黎曼条件与解析的定义以它为准</span></li>
+    <li><a href="0005-ch1-analytic.html">第 5 课：可导与解析的判定</a><span class="lesson-resources__meta">课件 · 纸面那套四步判定，本课是它的数值版</span></li>
+    <li><a href="0003-exp1-complex-gallery.html">实验一：把复数画上复平面</a><span class="lesson-resources__meta">课件 · 坐标换算与铺网格的出处</span></li>
+  </ul>
+
+  <!-- ── 提问提示：固定写法，别删 ── -->
+
+  <div class="lesson-ask">
+    <b>没看懂？随时问</b>
+    把看不懂的段落（或报错）原样复制回会话，说一句哪里不懂就行，我只解释这一段，不打断你的进度。
+  </div>
+
+  <!-- ── 上/下节课指针由渲染器按 curriculum.yaml 的 nodes 顺序算（第一课无 --prev、最后一课无 --next） ── -->
+
+  <nav class="lesson-nav" aria-label="上一课 / 下一课">
+    <a class="lesson-nav__link lesson-nav__link--prev" href="0005-ch1-analytic.html">
+      <span class="lesson-nav__dir">上节课</span>
+      <span class="lesson-nav__title">可导与解析的判定</span>
+    </a>
+    <a class="lesson-nav__link lesson-nav__link--next" href="0007-exp3-mapping-grid.html">
+      <span class="lesson-nav__dir">下节课</span>
+      <span class="lesson-nav__title">实验三：保角映射的网格实验</span>
+    </a>
+  </nav>
+
+  <footer class="lesson-footer">
+    StudyMate · 0006 实验二：解析函数长什么样 · 本地学习工作区
+  </footer>
+
+</article>
+
+<script src="../../../assets/sayo/sayo.js"></script>
+<link rel="stylesheet" href="../../../assets/katex/katex.min.css">
+<script src="../../../assets/katex/katex.min.js" defer></script>
+<script src="../../../assets/lesson-math.js" defer></script>
+<script src="../assets/quiz.js" defer></script>
+<script src="../assets/lesson-toc.js" defer></script>
+<script>LearnTheme.wire(document.getElementById('lesson-theme-checkbox'));</script>
+</body>
+</html>

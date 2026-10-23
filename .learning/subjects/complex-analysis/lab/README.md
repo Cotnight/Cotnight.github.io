@@ -564,3 +564,633 @@ OK
 实验二（解析函数长什么样）要画 $e^z$、$\sin z$、$\operatorname{Ln} z$ 与 $\bar z$、$|z|^2$ 的
 模—辐角着色图，用的正是本节的 `pixel_to_re` / `pixel_to_im` 与「铺一格窗口、逐点算一个数」的
 套路；`save_points_csv` 到那时也照用。所以 `gallery.py` 与 `out/` 别删，下一块图要接着长在它上面。
+
+---
+
+# 实验二 · 解析函数长什么样（0006-analytic-gallery）
+
+上面两节分别是第 5 课的小 lab 与实验一，本节是**实验二**。它验收的那句话是：
+**做出解析与非解析函数的图像对照，并数值验证柯西-黎曼条件。**
+
+它接着实验一长，不从零开始：
+
+- 实验一的 `pixel_to_re` / `pixel_to_im`（像素下标 ↔ 复平面坐标）与「铺一格窗口、逐点算一个数」
+  的套路照用；
+- 第 5 课那套 `d_dx` / `d_dy` / `cr_residual` / `cr_holds` 也照用。
+
+所以 `analytic_gallery.py` 开头就把这六个样板放好了（**别改**），你从第 7 个函数开始填。
+三个目录各跑各的测试，互不依赖：`cr_tool.py`、`gallery.py` 都别删，也不要改。
+
+---
+
+## 一、要交出什么
+
+| 交付物 | 落在哪 | 怎么算合格 |
+|---|---|---|
+| `analytic_gallery.py` 里 9 个留白函数 | `lab/0006-analytic-gallery/analytic_gallery.py` | `python test_analytic_gallery.py` 打出 `OK` |
+| `out/scan.csv` | `lab/0006-analytic-gallery/out/` | 六个函数各一行：总点数、成立点数、比例、最大残差 |
+| `out/residual-exp.csv`、`out/residual-conj.csv` | 同上 | 21 行 × 31 列的残差矩阵；前者整片 `1e-10` 量级，后者整片 `2` |
+| 三句结论（写进 notebook，或直接回话） | — | 见第七节末，三条各一句 |
+
+`out/` 里的三份 CSV 就是「图的数据」：没有 matplotlib 也能把它们交出来，图只是数据的另一种画法
+（第七节给了一个只用标准库的字符图）。
+
+---
+
+## 二、环境依赖
+
+**只要 Python 3.8+，只用标准库（`cmath` / `csv` / `math` / `unittest`）**，不装任何第三方包。
+
+- numpy 可选，只用于第 10 步的向量化残差图；没装那两条测试自动跳过，不影响结论；
+- matplotlib 与 Jupyter **完全不需要**：交付物是 CSV，画图是可选的第 8 节。
+
+本机实测的两个解释器：`D:/Program Files/Python313/python.exe`（3.13.15，无 numpy）与
+bundled runtime（3.12.14 + numpy 2.3.5）。命令里的 `python` 按你自己的环境换。
+
+---
+
+## 三、目录
+
+```
+lab/
+├── README.md                            ← 本文件（第 5 课 CR 检查器 + 实验一 + 实验二）
+├── 0005-cr-check-tool/                  ← 第 5 课那节
+├── 0006-analytic-gallery/
+│   ├── analytic_gallery.py              ← 你要填的 9 个函数（留白）
+│   ├── test_analytic_gallery.py         ← 38 条断言，自动判分
+│   └── out/                             ← 自检写出 scan.csv 与两张残差图
+├── 0003-gallery/                        ← 实验一那节
+└── solutions/
+    ├── 0005-cr-check-tool/
+    ├── 0006-analytic-gallery/
+    │   ├── analytic_gallery.py          ← 参考解（做完才看）
+    │   └── README.md                    ← 九个函数为什么这样写、常见错法
+    └── 0003-gallery/
+```
+
+---
+
+## 四、怎么算做完
+
+进到任务目录，跑：
+
+```term
+$ cd lab/0006-analytic-gallery
+$ python test_analytic_gallery.py
+```
+
+现在（还没动手）会是这样——38 条里 36 条 ERROR，**退出码 1**：
+
+```term
+$ python test_analytic_gallery.py
+...
+NotImplementedError: 第 1 步还没写：scan_window —— 见 lab/README.md 任务表第 1 行
+...
+Ran 38 tests in 0.014s
+
+FAILED (errors=36, skipped=2)
+```
+
+九步填完、跑出下面这两行，数值这一半才算做完（退出码 0）：
+
+```term
+$ python test_analytic_gallery.py
+...
+Ran 38 tests in 0.046s
+
+OK (skipped=2)                       ← 只有标准库的解释器：numpy 那两条跳过
+```
+
+```term
+$ python test_analytic_gallery.py
+...
+Ran 38 tests in 0.032s
+
+OK                                   ← 有 numpy 的解释器：38 条全跑
+```
+
+只验某一步（填一步验一步，别一次填完）：`python test_analytic_gallery.py -k step4`。
+`-k` 后面写测试名里的一段：`step1` … `step9`、`numpy`、`selfcheck`。
+
+---
+
+## 五、任务表
+
+| 步 | 填哪个函数 | 要算出什么 | 立刻验（条数） |
+|---|---|---|---|
+| 1 | `scan_window` | 把一块矩形窗口铺成复数点，一行行往下展平 | `-k step1`（3） |
+| 2 | `cr_scan` | 逐点的 CR 标签（保持顺序的 bool 列表） | `-k step2`（4） |
+| 3 | `analytic_fraction` | CR 成立的点占多大比例 | `-k step3`（4） |
+| 4 | `residual_map` | 残差图数据：每格 $\max(\lvert r_1\rvert,\lvert r_2\rvert)$ | `-k step4`（4） |
+| 5 | `grad_u_v` | $u$、$v$ 的两个梯度向量 | `-k step5`（3） |
+| 6 | `orthogonality` | 两个梯度夹角的余弦（0 = 正交） | `-k step6`（4） |
+| 7 | `jacobian` | $u_xv_y-u_yv_x$：解析为正、反解析为负 | `-k step7`（4） |
+| 8 | `save_summary_csv` | 六个函数一张对照结论表 | `-k step8`（3） |
+| 9 | `save_grid_csv` | 残差图存成 CSV（小残差不许丢成 0） | `-k step9`（3） |
+| 10 | `residual_map_np`（可选） | 第 4 步的 numpy 向量化版 | `-k numpy`（2） |
+| — | 不用填 | 整块自检：跑六个函数、写出 `out/` 三份数据 | `-k selfcheck`（4） |
+
+六个样板（`pixel_to_re`、`pixel_to_im`、`d_dx`、`d_dy`、`cr_residual`、`cr_holds`）已经写好，
+照它们的形状往下填。
+
+---
+
+## 六、逐步做
+
+### 第 1 步 · 铺一格窗口
+
+```python
+def scan_window(re_min, re_max, im_min, im_max, width, height):
+    return [complex(pixel_to_re(col, width, re_min, re_max),
+                    pixel_to_im(row, height, im_min, im_max))
+            for row in range(height)
+            for col in range(width)]
+```
+
+两个循环的**嵌套顺序**决定展平的顺序：外层行、内层列 → 第 0 行整行在前。第 0 行是 $y$ 最小的
+那一行（`im_min`），这也是实验一那个坑的同一个位置。
+
+**唯一容易错的地方**：内层循环写成 `for row in range(...)`（每行内容一样），或者自己再写一遍坐标
+公式——自己写的和样板差一个末位，第 4 步的残差图就会跟逐点算的对不上。
+
+写完后 `python test_analytic_gallery.py -k step1`，应看到 `OK`（3 个测试）。
+
+### 第 2 步 · 逐点的标签
+
+```python
+return [cr_holds(f, z, tol, h) for z in points]
+```
+
+第 5 课的 `cr_points` 返回的是**筛出来的点**，这里要的是**每个点成立不成立**——这批标签后面要拿去
+上色，一个点都不能丢。
+
+### 第 3 步 · 比例
+
+先判空（空点集返回 `0.0`，别让 `ZeroDivisionError` 冒出来），再「命中数 / 总数」。
+
+为什么用比例：「CR 成立的点集有多大」才是结论的强弱。参考解在 $31\times21$ 的窗口上量出来是
+$e^z$、$\sin z$、$z^2$ 各 `1.0000`，$\bar z$ 是 `0.0000`，$\lvert z\rvert^2$ 是 `0.0015`
+（$651$ 个点里只有原点一个，因为原点正好落在格点上）。
+
+### 第 4 步 · 残差图
+
+先 `scan_window` 铺点，再对每个点算 `max(abs(r1), abs(r2))`，最后按 `width` 一段段切开成行。
+
+两个坑：切片写成 `values[row::height]` 会按列切（图转 90°）；行序按 `im_max` 往下排会上下颠倒。
+参考解的残差图：$e^z$ 整片 $6.7\times10^{-10}$（解析），$\bar z$ 整片 `2`（$r_1=1-(-1)$，满幅）。
+
+### 第 5 步 · 两个梯度
+
+`d_dx` 给的是 $u_x+i v_x$、`d_dy` 给的是 $u_y+i v_y$，实部虚部各取一次就得到四个偏导：
+
+```python
+dx, dy = d_dx(f, z, h), d_dy(f, z, h)
+return ((dx.real, dy.real), (dx.imag, dy.imag))
+```
+
+这两个向量是**等值线的法向量**：解析函数满足 $\lvert f\rvert=e^u$，所以模的等值线就是 $u$ 的等值线；
+而 $\arg f=v$，辐角的等值线就是 $v$ 的等值线。两组线正交 ⟺ 两个法向量垂直。
+
+### 第 6 步 · 正交吗
+
+$$\cos\theta=\frac{\nabla u\cdot\nabla v}{\lvert\nabla u\rvert\,\lvert\nabla v\rvert}$$
+
+模长用 `math.hypot`。任一梯度是零向量时返回 `None`：$\lvert z\rvert^2$ 的 $v\equiv0$，谈不上
+「辐角等值线」，夹角没有意义。
+
+### 第 7 步 · 方向（行列式）
+
+$$\det J=u_xv_y-u_yv_x .$$
+
+CR 成立时 $\det J=u_x^2+u_y^2=\lvert f'(z)\rvert^2>0$。$\bar z$ 的 $\det J=-1$——**它的两组线也正交**，
+所以「正交」判不出解析，方向（符号）才判得出。这一步是第 5 课「处处不解析函数」那张表的又一个维度。
+
+### 第 8 步 · 结论表
+
+`csv.writer` + `utf-8` + `newline=""` 三件套；比例写四位小数，**残差写 `"{:.6g}"`**。
+残差写成四位小数的话，$10^{-10}$ 全变 `0.0000`，表里「解析」和「非解析」两行就看不出差别了。
+
+### 第 9 步 · 残差图存盘
+
+一行一个像素行、不写表头、每格 `"{:.6g}"`，返回 `(行数, 列数)`。和第 8 步一样，格式决定这张图还能
+不能读出东西。
+
+### 第 10 步 · 向量化（可选）
+
+```python
+c = re[None, :] + 1j * im[:, None]     # 形状 (高, 宽)
+dx = (f_np(c + h) - f_np(c - h)) / (2 * h)
+dy = (f_np(c + 1j * h) - f_np(c - 1j * h)) / (2 * h)
+```
+
+`f_np` 必须能吃数组（`np.exp`、`np.sin`、`np.conj`），`cmath.exp` 不行。形状是 `(高, 宽)` 不是
+`(宽, 高)`；坐标仍走 `pixel_to_re` / `pixel_to_im`，这样才和逐点版逐格相同（断言比到 $10^{-12}$）。
+
+### 整块自检（不用填）
+
+`-k selfcheck` 跑六个函数，写出三份交付数据，并验两件事：
+
+| 函数 | 窗口 | 成立点数 | 比例 | 最大残差 |
+|---|---|---|---|---|
+| $e^z$ | $[-1.5,1.5]^2$ | 651 / 651 | 1.0000 | `6.66134e-10` |
+| $\sin z$ | 同上 | 651 / 651 | 1.0000 | `4.44089e-10` |
+| $z^2$ | 同上 | 651 / 651 | 1.0000 | `4.44089e-10` |
+| $\bar z$ | 同上 | 0 / 651 | 0.0000 | `2` |
+| $\lvert z\rvert^2$ | 同上 | 1 / 651 | 0.0015 | `3` |
+| $\operatorname{Ln} z$ | $[0.25,1.5]\times[-1.5,1.5]$ | 651 / 651 | 1.0000 | `1.66533e-10` |
+
+**$\operatorname{Ln} z$ 为什么换窗口**：主值 $\operatorname{Ln} z$ 在负实轴上不连续，而那正是差分要跨的
+地方。把窗口挪到左半平面（$[-1.5,-0.25]\times[-1.5,1.5]$）再跑，比例掉到 `620 / 651`——失败的正好是
+$y=0$ 那一行的 31 个点，残差约 $3.1\times10^{6}$（那是 $\pi/h$）。这不是函数不解析，是**差分跨了割线**：
+$2\pi$ 的相位跳变被当成了导数。大纲里那条「$\operatorname{Ln} z$ 的分割线被误判为不解析」，在数值上
+就是这个形态——认它的办法是看残差量级：解析函数的残差在 $10^{-10}$，假失败是 $10^{6}$，差十几个数量级。
+
+---
+
+## 七、不装 matplotlib 也能看图
+
+交付物是 CSV，但你还是想「看见」一点东西。把残差图当字符矩阵打出来就行，只要标准库：
+
+```python
+import analytic_gallery as ag
+
+def show(grid):
+    for line in grid:
+        print("".join("#" if v > 1e-6 else "." for v in line))
+
+for name, f in (("|z|^2", ag.f_mod_sq), ("z-bar", ag.f_conj), ("e^z", ag.f_exp)):
+    print(name)
+    show(ag.residual_map(f, -1.0, 1.0, -1.0, 1.0, 17, 5))
+```
+
+实测输出（$-1..1$ 的窗口，第 0 行在最下面）：
+
+```term
+|z|^2
+#################
+#################
+########.########
+#################
+#################
+z-bar
+#################
+#################
+#################
+#################
+#################
+e^z
+.................
+.................
+.................
+.................
+.................
+```
+
+`#` = 残差大于 $10^{-6}$（CR 不成立），`.` = 残差在容差内（成立）。$\lvert z\rvert^2$ 只剩正中一个点，
+$\bar z$ 整片不成立，$e^z$ 整片成立——这就是「对照」肉眼能看的那一面。
+
+三份数据出来后，**结论段三句话**（写进 notebook，或直接回话）：
+
+1. $e^z$、$\sin z$、$z^2$ 整片成立（651/651），残差在 $10^{-10}$：这三个在窗口内解析。
+2. $\bar z$ 一个点都不成立（残差恒为 2），$\lvert z\rvert^2$ 只有原点成立：前者处处不解析，
+   后者只在一点可导、不解析——点集的一两个点不等于一整片区域。
+3. $\operatorname{Ln} z$ 在右半平面整片成立；跨负实轴那列点的「失败」是差分跨过割线造成的假失败
+   （残差 $10^{6}$ 量级），不是函数不解析。
+
+---
+
+## 八、装了 matplotlib 就画出来（可选）
+
+```python
+import matplotlib.pyplot as plt
+import analytic_gallery as ag
+
+grid = ag.residual_map(ag.f_exp, -1.5, 1.5, -1.5, 1.5, 31, 21)
+plt.imshow(grid, origin="lower", extent=[-1.5, 1.5, -1.5, 1.5], cmap="magma")
+plt.colorbar(label="max(|r1|, |r2|)")
+plt.title("e^z 的 CR 残差：整片接近 0")
+plt.show()
+```
+
+`origin="lower"` 不能省（`grid[0]` 是最下面那一行，而 `imshow` 默认把第 0 行画在最上面）。
+把 `ag.f_exp` 换成 `ag.f_conj`，同一张图会整片变亮——两张并排就是「解析与非解析」的对照图。
+
+---
+
+## 九、卡壳的时候，按这个顺序走
+
+1. **先读断言最后一行**：`AssertionError` 后面一般带着期望值与实际值。差符号、差一个 `i`、
+   差一个行序，都在那一行看得出来。
+2. **按症状对表**：
+
+   | 症状 | 大概率是 |
+   |---|---|
+   | step1 每行内容都一样 | 内层循环用了 `row` |
+   | step1 每行从右往左 | 列下标写成了 `width-1-col` |
+   | step2 断言说长度不对 / 点丢了 | 照抄了第 5 课的 `cr_points`（返回筛出来的点） |
+   | step3 抛 `ZeroDivisionError` | 漏了空列表的判空 |
+   | step4 整张图转了 90° | 切片写成了 `values[row::height]` |
+   | step4 整张图上下颠倒 | 行序按 `im_max` 往下排了，应为 `im_min` 在最下面 |
+   | step4 残差大得离谱（$10^{6}$） | 点在割线上（`Ln z` 换窗口），不是函数不解析 |
+   | step6 抛 `ZeroDivisionError` | 没判零向量（$\lvert z\rvert^2$ 的 $\nabla v\equiv0$） |
+   | step6 余弦到处不为 0 | 两个梯度的四个分量错位（$v_x$ 与 $v_y$ 对调了） |
+   | step7 $\bar z$ 的行列式是正数 | 取了绝对值，或写成了 $u_xv_y+u_yv_x$ |
+   | step8 / step9 文件里每行之间有空白行 | `open` 少了 `newline=""` |
+   | step9 CSV 读回来一片 `0` | 每格写成四位小数了，要用 `"{:.6g}"` |
+   | numpy 与逐点版差几个格子 | 坐标改用 `np.linspace` 了 |
+   | selfcheck 说 $\lvert z\rvert^2$ 的成立点数不是 1 | 窗口不是 $31\times21$，或原点没落在格点上 |
+
+3. **还不对，再看参考解**：`solutions/0006-analytic-gallery/analytic_gallery.py`，
+   **先只读卡住的那一个函数**，对照完立刻回来自己写一遍（自检验的是「你填完以后数据对不对」）。
+
+参考解那一步为什么这样写，`solutions/0006-analytic-gallery/README.md` 里有逐条说明。
+
+---
+
+## 十、做完之后的对照方式
+
+把参考解拷进任务目录、覆盖同名文件，再跑一次：
+
+```term
+$ copy ..\solutions\0006-analytic-gallery\analytic_gallery.py .    # Windows
+$ python test_analytic_gallery.py
+...
+Ran 38 tests in 0.046s
+
+OK
+```
+
+**先自己全绿、再对照**。两者差别如果只在写法（列表推导还是 `for`），不用改；如果差在行序、切片方向、
+格式精度，那就是你图和数据出错的根源。
+
+---
+
+## 十一、和实验三的关系
+
+实验三（保角映射的网格实验）会把同一套东西用在 $z^2$、$e^z$、$1/z$ 上：铺网格 → 逐点映射 → 看直角
+是否被保持。它要的判据「保角 ⟺ 导数非零」，正是这里的 `jacobian`：$\det J=\lvert f'(z)\rvert^2$，
+$\det J=0$ 的点就是保角失效的临界点（$z^2$ 在原点）。所以 `analytic_gallery.py` 与 `out/` 别删。
+
+# 第 9 课 · 柯西积分公式与高阶导数的数值核对（0009-cauchy-formula-tool）
+
+上面两节是第 5 课（CR 检查器，磁盘上叫 `0005`）与实验一（画廊，`0003`）。本节是第 9 课
+「柯西积分公式与高阶导数」的小 lab，三节互不影响：各用各的目录、各跑各的测试。
+
+前面那一节验的是「导数存不存在」，这一节验的是**公式算得对不对**：把
+$\oint_C\frac{f(z)}{(z-z_0)^m}dz$ 沿圆周真积一遍，再拿纸上的
+$\frac{2\pi i}{(m-1)!}f^{(m-1)}(z_0)$ 去对照。数值对上，那道 7～10 分的大题就多一层保险；
+第 9 步还会把课件里那几道真题整表跑一遍。
+
+工具的用法一句话：**先把纸上的答案写下来，再让数值围道积分去验它。**
+
+---
+
+## 一、要交出什么
+
+| 交付物 | 落在哪 | 怎么算合格 |
+|---|---|---|
+| `cauchy_tool.py` 里 8 个留白函数 | `lab/0009-cauchy-formula-tool/cauchy_tool.py` | `python test_cauchy_tool.py` 打出 `OK`（26 条断言） |
+| 一张幂次对照卡（纸笔，不用交文件） | 手边 / 纸笔题型整理册 | 第 7 步填完后能十秒内说清 $m=1,2,3,4$ 各求几阶导 |
+
+`out/`、CSV、图都不用交——这一节只产代码。
+
+## 二、环境依赖
+
+**只要 Python 3.8+，只用标准库（`cmath`、`math`、`unittest`），不装任何第三方包。**
+没有 `requirements.txt`，也不需要 numpy：
+
+- 复数是内置类型 `complex`，`1j` 就是虚数单位，$e^{i\theta}$ 写 `cmath.exp(1j * theta)`；
+- $2\pi i$ 写成 `2j * math.pi`（文件里已经给成 `TAU`）——这样不会把 $i$ 丢掉；
+- 测试用内置 `unittest`，`python test_cauchy_tool.py` 直接跑。
+
+本机实测两个解释器都能跑同一份代码：`D:/Program Files/Python313/python.exe`（Python 3.13.15，
+只有标准库）与带 numpy 的
+`C:\Users\Administrator\.dsh\dsh-runtimes\dsh-primary-runtime\dependencies\python\python.exe`，
+两边都是 `Ran 26 tests … OK`。命令里的 `python` 换成本机任意一个 3.8+ 都可以。
+
+## 三、目录
+
+```
+lab/
+├── README.md                          ← 本文件（第 5 课 + 实验一 + 第 9 课三节）
+├── 0009-cauchy-formula-tool/
+│   ├── cauchy_tool.py                 ← 你要填的 8 个函数（留白）
+│   └── test_cauchy_tool.py            ← 26 条断言，自动判分
+└── solutions/
+    └── 0009-cauchy-formula-tool/
+        ├── cauchy_tool.py             ← 参考解（做完才看）
+        └── README.md                  ← 每一步为什么这样写、常见错法
+```
+
+## 四、怎么算做完
+
+进到任务目录，跑：
+
+```term
+$ cd lab/0009-cauchy-formula-tool
+$ python test_cauchy_tool.py
+```
+
+现在（还没动手）会是这样——26 个 ERROR，**退出码 1**：
+
+```term
+$ python test_cauchy_tool.py
+test_step1_direction (__main__.Step1_围道采样.test_step1_direction) ... ERROR
+...
+NotImplementedError: 第 1 步还没写：circle_points —— 见 lab/README.md 任务表第 1 行
+...
+Ran 26 tests in 0.006s
+
+FAILED (errors=26)
+```
+
+最后那行 `FAILED (errors=26)` 是重点：**留白态必须是不通过的**，退出码 1
+（PowerShell 里紧接着跑 `echo $LASTEXITCODE` 能看到 1）。
+
+八步填完、跑出下面这两行，就算做完（退出码 0）：
+
+```term
+$ python test_cauchy_tool.py
+...
+Ran 26 tests in 0.008s
+
+OK
+```
+
+只验某一步（填一步验一步，别一次填完）：
+
+```term
+$ python test_cauchy_tool.py -k step3
+...
+Ran 3 tests in 0.000s
+
+OK
+```
+
+`-k` 后面**大小写要照写**（`step3` 能选中，`Step3` 也行，写成 `steps3` 就是 `NO TESTS RAN`、退出码 5）。
+
+## 五、任务表
+
+| 步 | 填哪个函数 | 要算出什么 | 立刻验 |
+|---|---|---|---|
+| 1 | `circle_points` | 围道 $\lvert z-a\rvert=r$ 上等距的 $n$ 个点（逆时针） | `-k step1` |
+| 2 | `contour_integral` | 数值围道积分 $\oint_C f\,dz$（$dz$ 换成 $i\Delta\theta\,(z_k-a)$） | `-k step2` |
+| 3 | `inside` | 奇点 $z_0$ 在圈内还是圈外 | `-k step3` |
+| 4 | `deriv_n` | 0／1／2 阶数值导（$g^{(m-1)}$ 用它） | `-k step4` |
+| 5 | `cauchy_value` | 分母一次方那一项 $2\pi i\,g(z_0)$ | `-k step5` |
+| 6 | `high_order_value` | 分母 $m$ 次方那一项 $\frac{2\pi i}{(m-1)!}g^{(m-1)}(z_0)$ | `-k step6` |
+| 7 | `formula_value` | 幂次决定用哪个公式（对照卡的代码版） | `-k step7` |
+| 8 | `contour_total` | 圈内各项相加、圈外的项按 $0$ | `-k step8` |
+| 9 | —（不用填） | 课件那几道考试题整表自检 | `-k step9` |
+
+文件里已经写好的常数是 `DEFAULT_N`、`DEFAULT_H`、`DEFAULT_H2`、`TAU`——照它们的用法往下填，**别改**。
+
+## 六、逐步做
+
+### 第 1 步 · 围道采样
+
+$$ z_k=a+r\,e^{i\theta_k},\qquad \theta_k=\frac{2\pi k}{n},\ k=0,1,\dots,n-1 . $$
+
+从 $a+r$ 出发、逆时针走一圈，正好是「正向简单闭曲线」。$n$ 取 2048：梯形法对**周期解析**
+被积函数收敛得极快（误差按 $(d/r)^n$ 掉，$d$ 是奇点到圆心的距离），2048 点已经到机器精度。
+
+**坑**：从圆心出发（忘了乘 $r$）会让第 1 步的 3 条断言全红，后面几步也跟着红；角度写
+$-2\pi k/n$ 方向就反了，`test_step1_direction` 会点名「相邻两点的角差」。
+
+### 第 2 步 · $dz$ 换成什么（这一步最容易错）
+
+$z=a+r e^{i\theta}$ 求微分：
+
+$$ dz=i\,r\,e^{i\theta}\,d\theta=i\,\Delta\theta\,(z-a),\qquad \Delta\theta=\frac{2\pi}{n}. $$
+
+于是每一项是 `f(z_k) * (1j * dtheta * (z_k - center))`。八步里只有这一步在跟纸上的
+「$dz$ 要换元」打交道——上一节课（复积分的直接计算）那条「$dz$ 忘了换」的坑，在这里变成一行代码。
+
+**两个坑**：漏掉 `1j`，$\oint dz/z$ 会算出 $2\pi$（实数，没有 $i$）；漏掉 `(z_k - center)`，
+常数被积函数会算出 $2\pi i$ 而不是 $0$。
+
+### 第 3 步 · 奇点在圈内还是圈外
+
+就是「看内外」那一步的代码版：$\lvert z_0-a\rvert<r$ 才算圈内。**用严格小于**：
+距离恰好等于半径时奇点压在围道上，两条公式都不适用（分母在围道上为零），
+`test_step3_on_contour` 专门验这两点（$z_0=\pm2$ 在 $\lvert z\rvert=2$ 上）。
+
+### 第 4 步 · 数值求导（0 阶那一条别忘）
+
+$$ g'(z)\approx\frac{g(z+h)-g(z-h)}{2h},\qquad
+   g''(z)\approx\frac{g(z+h)-2g(z)+g(z-h)}{h^2}. $$
+
+三件事：
+
+1. **`order = 0` 直接返回 `g(z)`**——公式里 $m=1$ 那一行是「不求导、直接代 $z_0$」，
+   对应 $0!=1$。这一步写不出来，第 7 步就分不开两条公式。
+2. **二阶差分要除以 $h^2$**，所以默认步长是 `DEFAULT_H2 = 1e-4`；用 `DEFAULT_H = 1e-6`
+   会被舍入误差放大到 $10^{-3}$ 量级（第 5 课 `laplacian` 踩的是同一个坑）。
+3. 这里算出来的导数**不是精确值**：参考解在 `m=3、g=cos z、z0=i` 处差 $2\times10^{-8}$，
+   那是截断误差，不是算错。断言的容差是 $10^{-6}$，就是为了容纳它。
+
+### 第 5 步 · 分母一次方那一项
+
+$$\oint_C\frac{g(z)}{z-z_0}dz=2\pi i\,g(z_0).$$
+
+一行就够：`TAU * g(z0)`。**不要**在这里再求导——求导是高阶导数公式那一支的事。
+
+### 第 6 步 · 分母 $m$ 次方那一项
+
+$$\oint_C\frac{g(z)}{(z-z_0)^m}dz=\frac{2\pi i}{(m-1)!}\,g^{(m-1)}(z_0).$$
+
+三处用的是同一个数 $m-1$：**求导阶数、阶乘、以及「$m=1$ 时它退化成柯西公式」**。
+写成 `TAU / math.factorial(m - 1) * deriv_n(g, z0, m - 1)` 就不会错位。
+
+断言里那两条真题值得自己对一遍：$(1+z+z^2)/z^3$ 的二阶导是常数 $2$，答案 $2\pi i$；
+分子是常数时求任何正阶导都得 $0$（2023 年 B 卷填空就考这个，**不用真去求 2022 阶导**）。
+
+### 第 7 步 · 幂次决定用哪个（对照卡的代码版）
+
+`formula_value` 只做一个判断：`m == 1` 走第 5 步，`m >= 2` 走第 6 步。
+这一步同时是你那张幂次对照卡的自动化版本：
+
+| $m$ | 求几阶导 | 系数 |
+|---|---|---|
+| 1 | 不求导 | $2\pi i$ |
+| 2 | 一阶 | $2\pi i$ |
+| 3 | 二阶 | $\pi i$ |
+| 4 | 三阶 | $\pi i/3$ |
+
+### 第 8 步 · 两个奇点拆开相加
+
+`terms` 里每个元素是**一个奇点的配方** `(它的 g, 它的位置, 它的幂次)`——$g$ 是
+「分子 ÷ 分母的其余因子」，每个奇点的 $g$ 都不一样。先用第 3 步筛，圈外的项跳过，
+圈内的用第 7 步算出来累加。
+
+**这一条对应的正是「围道内有两个奇点时只算一个」那个失分点**：
+`test_step8_two_poles` 除了比总和，还单独比了「合计 == 两项相加」，
+少一项在第 8 步就露馅。同一步还验了两种 $0$：换一条圈不进去的围道（$8\pi i\to0$）
+与两项恰好抵消（$\pi i+(-\pi i)$）——后者不是「圈内没奇点」，是**加起来是零**。
+
+### 第 9 步 · 整表自检（不用填）
+
+`-k step9` 把课件里那几道题一张表跑完，每道都验两列：**数值围道积分**与**按公式两项相加**，
+两列都要落在理论值上。
+
+| 题 | 围道 | 理论值 |
+|---|---|---|
+| $z/(z-1)$ | $\lvert z\rvert=2$ | $2\pi i$ |
+| $\cos z/(z-i)^3$ | $\lvert z-i\rvert=1$ | $-\pi i\cos i\approx-4.8477i$ |
+| $(1+z+z^2)/z^3$ | $\lvert z\rvert=1$ | $2\pi i$ |
+| $e^z/(z-3)$ | $\lvert z\rvert=1$ | $0$ |
+| $\cos z/(z^2(z+i))$ | $\lvert z\rvert=2$ | $2\pi i(1-\cos i)\approx-3.4123i$ |
+| $e^{iz}/(z^2-3\pi z+2\pi^2)$ | $\lvert z-3\rvert=4$ | $4i$ |
+| 反向读：$f(\pi)$、$f'(\pi)$ | $\lvert\zeta\rvert=4$ | $2\pi i$、$-2\pi i$ |
+
+最后一条是 2023 年那道选择题：$f(z)=\oint_{\lvert\zeta\rvert=4}\frac{\sin\zeta-\cos\zeta}{\zeta-z}d\zeta$，
+读成 $f=2\pi i(\sin z-\cos z)$，再对**这个数值定义的函数**求一次差分，验 $f'(\pi)=-2\pi i$。
+
+它全绿，说明你的工具和纸面结论对上了——这就是这一节的交付证据。
+
+## 七、卡壳的时候，按这个顺序走
+
+1. **先读断言最后一行**：`期望 X，实际 Y`。两个数一比，差符号、差因子、差一个 $i$ 都看得出来。
+2. **按症状对表**：
+
+   | 症状 | 大概率是 |
+   |---|---|
+   | step1 所有点都落在圆心上 | 忘了乘 `radius` |
+   | step1 相邻角差是负的 / 点顺时针排 | 角度写成 $-2\pi k/n$ |
+   | step2 $\oint dz/z$ 得 $2\pi$（实数） | $dz$ 漏了 `1j` |
+   | step2 常数被积函数得 $2\pi i$ 而不是 $0$ | $dz$ 漏了 `(z_k - center)` |
+   | step3 围道上的点被判成圈内 | 写成了 `<=`，应为 `<` |
+   | step4 二阶导数量级离谱（$10^{-3}$ 以上误差） | 用了 `DEFAULT_H`，应换 `DEFAULT_H2` |
+   | step5/6 结果差 $2\pi$ 或差一个 $i$ | 用了 `2*math.pi` 而不是 `TAU`（`2j*math.pi`） |
+   | step6 $m=3$ 差 2 倍 / 差 6 倍 | 阶乘写了 `m!` 或求导阶数写了 `m`，两处都要换成 `m-1` |
+   | step7 $m=1$ 走进高阶那一支 | 判断写成 `m > 1`，第一支必须是 `m == 1` |
+   | step8 只算出一个奇点 | 没遍历 `terms`；`g` 里还带着自己的极点（会 `ZeroDivisionError`） |
+   | step9 只有「公式」那一列差 $10^{-8}$ | 正常，是 `deriv_n` 的截断误差，不是错 |
+
+3. **还不对，再看参考解**：`solutions/0009-cauchy-formula-tool/cauchy_tool.py`，
+   **先只读卡住的那一个函数**，对照完立刻回来自己写一遍（第 9 步验的是整表，整段拷会让你跳过判断过程）。
+
+参考解那一步为什么这样写，`solutions/0009-cauchy-formula-tool/README.md` 里有逐条说明。
+
+## 八、做完之后的对照方式
+
+把参考解拷进任务目录、覆盖同名文件，再跑一次：
+
+```term
+$ copy ..\solutions\0009-cauchy-formula-tool\cauchy_tool.py .    # Windows
+$ python test_cauchy_tool.py
+...
+Ran 26 tests in 0.008s
+
+OK
+```
+
+**先自己全绿、再对照**：直接拷参考解会跳过判断过程，第 9 步验的正是「你的公式和数值对不对得上」。
+
+## 九、和后面几课的关系
+
+- **第 10 课（柯西积分定理及其推广）**要用 `contour_total` 的「哪一项算、哪一项不算」去解释复合闭路；
+- **第 13 课（留数定理）**会把每一项 $2\pi i\,g(z_0)$ 改叫「$2\pi i$ 乘留数」，
+  `cauchy_tool.py` 里这几个函数照用，断言换成留数公式即可；
+- **实验四（围道上的留数）**要把这里的 `circle_points` 拿出来画围道、标极点——
+  曲线怎么采点、积分怎么求，这一节已经给了。

@@ -1,0 +1,423 @@
+<!DOCTYPE html>
+<html lang="zh-CN" data-theme="dark">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>复数的运算与几何表示 · 复变函数与积分变换</title>
+
+<!-- 共享层在 .learning/assets/，课件在 .learning/subjects/<slug>/lessons/ 下，所以是 ../../../assets/ -->
+<link rel="stylesheet" href="../../../assets/sayo/sayo.css">
+<link rel="stylesheet" href="../../../assets/learn-theme.css">
+<link rel="stylesheet" href="../assets/style.css">
+
+<!-- 主题要在首帧前应用，避免闪白/闪黑 -->
+<script src="../../../assets/learn-theme.js"></script>
+<script>LearnTheme.apply();</script>
+</head>
+
+<body class="lesson-body">
+
+<nav class="lesson-bar">
+  <a href="../index.html">← 返回课程</a>
+  <span>复变函数与积分变换</span>
+  <span class="lesson-bar__no">0002</span>
+  <!-- 课件页自带主题开关：学生从文件管理器直接打开课件时也能切暗色 -->
+  <label class="syo-toggle syo-toggle--theme lesson-bar__toggle" title="切换深浅主题" aria-label="切换深浅主题">
+    <input type="checkbox" id="lesson-theme-checkbox" checked>
+    <span class="syo-toggle-track"></span>
+    <span class="syo-toggle-knob">
+      <svg class="syo-toggle-sun" viewBox="0 0 20 20" fill="none" aria-hidden="true"><circle cx="10" cy="10" r="3.5" stroke="#f57c00" stroke-width="1.5"/><path d="M10 2v2.5M10 15.5V18M2 10h2.5M15.5 10H18M4.34 4.34l1.77 1.77M13.89 13.89l1.77 1.77M4.34 15.66l1.77-1.77M13.89 6.11l1.77-1.77" stroke="#f57c00" stroke-width="1.2" stroke-linecap="round"/></svg>
+      <svg class="syo-toggle-moon" viewBox="0 0 20 20" fill="none" aria-hidden="true"><path d="M16.5 12.5A6 6 0 019 4.5a6 6 0 007.5 8z" stroke="#5c6bc0" stroke-width="1.5" stroke-linejoin="round"/></svg>
+    </span>
+  </label>
+</nav>
+
+<article class="lesson">
+
+  <header class="lesson-header">
+    <span class="lesson-header__eyebrow">0002 · 复数的运算与几何表示</span>
+    <h1>复数的运算与几何表示</h1>
+    <p class="lesson-goal"><b>本节目标：</b>能算出复数的四则与共轭、模与辐角主值，写出全部 <span class="math-inline">n</span> 次方根，并把圆盘、圆环、半平面写成不等式。</p>
+  </header>
+
+  <!-- ── 正文：渲染器按内容文件（lessons/<序号>-<节点id>.md）产出，块词汇见 docs/规范/课件内容格式.md ── -->
+
+  <h2>卷面考哪些</h2>
+
+  <p>按大纲的顺序，本课排在绪论之后、初等函数之前。这一轮是学完初等函数与可导解析之后回头补的编号课，所以下面每一节都自成一格：哪一节忘了就单翻哪一节，与前后课程的接头放在每节末尾一句。</p>
+
+  <p>公开试卷里，本章的分数全落在运算上，固定出现在四处：</p>
+
+  <ul>
+    <li>解答题第 1 题（6 分）：给一个分式或乘积式的 <span class="math-inline">z</span>，求它的模和辐角。参考答案按「化简 2 分、模 2 分、辐角 2 分」给分，旁边注明「只有主值得 1 分」。</li>
+    <li>填空题（3 分）：问辐角主值，问某点绕原点旋转之后的复数，问 <span class="math-inline">1+z+z^2+\cdots</span> 的值。</li>
+    <li>解答题第 2 题（6 分）：求 <span class="math-inline">\sqrt[3]{-8}</span> 这类方根，几个值都要写全。</li>
+    <li>选择题（3 分）：给一个不等式或绝对值方程，问它表示什么区域、什么曲线。</li>
+  </ul>
+
+  <table>
+    <thead>
+      <tr><th>卷面问法</th><th>分值</th><th>要交的东西</th></tr>
+    </thead>
+    <tbody>
+      <tr><td>求 <span class="math-inline">z</span> 的模和辐角</td><td>6</td><td>化简后的 <span class="math-inline">x+iy</span>、<span class="math-inline">|z|</span>、<span class="math-inline">\arg z = \operatorname{Arg} z + 2k\pi</span></td></tr>
+      <tr><td>求辐角主值</td><td>3</td><td>一个落在 <span class="math-inline">(-\pi,\pi]</span> 内的角</td></tr>
+      <tr><td>求 <span class="math-inline">n</span> 次方根</td><td>6</td><td><span class="math-inline">n</span> 个值，按 <span class="math-inline">k = 0,1,\dots,n-1</span> 列全</td></tr>
+      <tr><td>不等式表示的区域</td><td>3</td><td>有界或无界、单连通或多连通、开还是闭</td></tr>
+    </tbody>
+  </table>
+
+  <h2>复数与四则运算</h2>
+
+  <p>复数写成 <span class="math-inline">z = x + iy</span>，其中 <span class="math-inline">x, y</span> 为实数，<span class="math-inline">i^2 = -1</span>。<span class="math-inline">x</span> 叫实部、<span class="math-inline">y</span> 叫虚部，记 <span class="math-inline">\operatorname{Re} z</span> 与 <span class="math-inline">\operatorname{Im} z</span>。</p>
+
+  <p>四则的算法与实数相同，只在出现 <span class="math-inline">i^2</span> 时换成 <span class="math-inline">-1</span>：</p>
+
+  <ul>
+    <li>加减：实部与实部加，虚部与虚部加。</li>
+    <li>乘：按多项式展开，<span class="math-inline">i^2</span> 换成 <span class="math-inline">-1</span>，再把实部、虚部分别并起来。</li>
+    <li>除：分子分母同乘分母的共轭，把分母化成实数，这一步叫分母实数化。</li>
+  </ul>
+
+  <p>共轭是虚部改号：<span class="math-inline">\overline{z} = x - iy</span>。它的用处集中在四条：</p>
+
+  <table>
+    <thead>
+      <tr><th>式子</th><th>等于</th></tr>
+    </thead>
+    <tbody>
+      <tr><td><span class="math-inline">z + \overline{z}</span></td><td><span class="math-inline">2x</span></td></tr>
+      <tr><td><span class="math-inline">z - \overline{z}</span></td><td><span class="math-inline">2iy</span></td></tr>
+      <tr><td><span class="math-inline">z\,\overline{z}</span></td><td><span class="math-inline">|z|^2</span></td></tr>
+      <tr><td><span class="math-inline">\overline{z_1 z_2}</span></td><td><span class="math-inline">\overline{z_1}\,\overline{z_2}</span></td></tr>
+    </tbody>
+  </table>
+
+  <p>卷面上的三个算例，都靠这几条：</p>
+
+  <ul>
+    <li><span class="math-inline">\dfrac{2+i}{1-2i} = \dfrac{(2+i)(1+2i)}{5} = \dfrac{2+5i-2}{5} = i</span>。分母实数化之后恰好只剩一个 <span class="math-inline">i</span>。</li>
+    <li><span class="math-inline">\dfrac{(1+i)^3}{(1-i)^3}</span>：先把商化成 <span class="math-inline">\dfrac{1+i}{1-i} = i</span>，再立方得 <span class="math-inline">i^3 = -i</span>。逐个乘开会多写三行。</li>
+    <li>设 <span class="math-inline">z = -i</span>，求 <span class="math-inline">1 + z + z^2 + z^3 + z^4</span>：由 <span class="math-inline">z^2 = -1</span>、<span class="math-inline">z^3 = i</span>、<span class="math-inline">z^4 = 1</span> 得四项正负相抵，答案是 <span class="math-inline">1</span>。</li>
+  </ul>
+
+  <p>几何上有两条要记：加法按平行四边形合成；乘法是模相乘、辐角相加。特别地，乘 <span class="math-inline">i</span> 等于绕原点逆时针转 <span class="math-inline">\dfrac{\pi}{2}</span>，模不变。填空里问「<span class="math-inline">2023 - i</span> 绕原点逆时针旋转 <span class="math-inline">\dfrac{\pi}{2}</span> 后是什么」，就是算 <span class="math-inline">i(2023 - i) = 1 + 2023i</span>。</p>
+
+  <div class="quiz" data-quiz='[
+  {
+    "q": "$z=x+iy$，$z\\neq 0$。填空要给 $\\frac{1}{z}$ 的实部与虚部。\n\n① 写出 $\\operatorname{Re}\\frac{1}{z}$ 与 $\\operatorname{Im}\\frac{1}{z}$（用 $x,y$ 表示）。\n② 一句话说明：分子分母乘 $\\bar z$，分母为什么就不含 $i$ 了？",
+    "answer": "① $\\frac{1}{z}=\\frac{\\bar z}{z\\bar z}=\\frac{x-iy}{x^2+y^2}$，所以\n$\\operatorname{Re}\\frac{1}{z}=\\frac{x}{x^2+y^2}$，$\\operatorname{Im}\\frac{1}{z}=-\\frac{y}{x^2+y^2}$。\n② 因为 $z\\bar z=x^2+y^2=|z|^2$ 是实数，\n分母乘上它之后只剩实数，$i$ 就没了。",
+    "criteria": "① 两个分量都要写对，虚部必须带负号：\n虚部写成 $\\frac{y}{x^2+y^2}$ 算不通过（共轭改的是虚部符号）。\n② 必须点到 $z\\bar z=|z|^2$ 是实数这一句；\n只说「乘共轭能消掉 $i$」却不说为什么，算部分通过。\n分母留成 $z\\bar z$ 或展成 $x^2+y^2$ 都算对。"
+  }
+]'></div>
+
+  <h2>模与辐角主值</h2>
+
+  <p><span class="math-inline">z = x + iy</span> 在复平面上对应点 <span class="math-inline">(x,y)</span>，它到原点的距离叫模：</p>
+
+  <div class="math-block">|z| = \sqrt{x^2 + y^2}.</div>
+
+  <p>它与正实轴的有向夹角叫辐角 <span class="math-inline">\arg z</span>，逆时针取正号、顺时针取负号。同一个点绕一圈又回到原处，所以 <span class="math-inline">\arg z</span> 有多值，彼此差 <span class="math-inline">2k\pi</span>；把范围卡在 <span class="math-inline">(-\pi,\pi]</span> 之内的那一个叫主值，记 <span class="math-inline">\operatorname{Arg} z</span>。反过来由模与辐角求实部、虚部，用 <span class="math-inline">x = r\cos\theta</span>、<span class="math-inline">y = r\sin\theta</span>。</p>
+
+  <p>求主值按点落在哪个象限分情况，四种写法都要会：</p>
+
+  <table>
+    <thead>
+      <tr><th>点在哪</th><th>主值怎么算</th><th>例</th></tr>
+    </thead>
+    <tbody>
+      <tr><td>第一象限 <span class="math-inline">x&gt;0,\ y&gt;0</span></td><td><span class="math-inline">\arctan\dfrac{y}{x}</span></td><td><span class="math-inline">1+i</span> 得 <span class="math-inline">\dfrac{\pi}{4}</span></td></tr>
+      <tr><td>第二象限 <span class="math-inline">x&lt;0,\ y&gt;0</span></td><td><span class="math-inline">\pi - \arctan\dfrac{|y|}{|x|}</span></td><td><span class="math-inline">-1+\sqrt3 i</span> 得 <span class="math-inline">\dfrac{2\pi}{3}</span></td></tr>
+      <tr><td>第三象限 <span class="math-inline">x&lt;0,\ y&lt;0</span></td><td><span class="math-inline">-\pi + \arctan\dfrac{|y|}{|x|}</span></td><td><span class="math-inline">-1-i</span> 得 <span class="math-inline">-\dfrac{3\pi}{4}</span></td></tr>
+      <tr><td>第四象限 <span class="math-inline">x&gt;0,\ y&lt;0</span></td><td><span class="math-inline">-\arctan\dfrac{|y|}{|x|}</span></td><td><span class="math-inline">1-i</span> 得 <span class="math-inline">-\dfrac{\pi}{4}</span></td></tr>
+    </tbody>
+  </table>
+
+  <p>四条轴上的点单独记：<span class="math-inline">1</span> 是 <span class="math-inline">0</span>，<span class="math-inline">i</span> 是 <span class="math-inline">\dfrac{\pi}{2}</span>，<span class="math-inline">-1</span> 是 <span class="math-inline">\pi</span>，<span class="math-inline">-i</span> 是 <span class="math-inline">-\dfrac{\pi}{2}</span>。</p>
+
+  <figure class="lesson-figure">
+    <img src="../assets/img/pool/复数运算-模与辐角-主值与共轭-本机-01.png" alt="复平面上画出第二象限的点 z 等于负一加根号三 i 与它在第四象限的共轭点，两条斜边等长标出模等于 2，两段圆弧分别标出逆时针的 θ 等于 2π/3 与顺时针的负 2π/3，虚线投影标出实部负一与虚部根号三">
+    <figcaption>图 1 · 主值取在 (−π, π] 内：同一个点到原点的两条射线，模相同、辐角差一个符号。（来源：本机生成（<code>assets/img/gen/复数运算-模与辐角-主值与共轭-本机-01.py</code>），许可：本项目自产）</figcaption>
+  </figure>
+
+  <p>模与辐角在乘除之下的变化是后面所有计算的地基：</p>
+
+  <div class="math-block">|z_1 z_2| = |z_1|\,|z_2|, \qquad \arg(z_1z_2) = \arg z_1 + \arg z_2, \qquad \left|\frac{z_1}{z_2}\right| = \frac{|z_1|}{|z_2|}.</div>
+
+  <p>第二式写的是 <span class="math-inline">\arg</span>：两边本来就是值的集合，各带 <span class="math-inline">2k\pi</span>，相加仍落在这个集合里。换成主值 <span class="math-inline">\operatorname{Arg}</span> 就不成立了——两个主值相加可能超出 <span class="math-inline">(-\pi,\pi]</span>，要减一个 <span class="math-inline">2\pi</span> 或加一个 <span class="math-inline">2\pi</span> 才回到主值。选择题里「<span class="math-inline">\operatorname{Arg}(z_1z_2) = \operatorname{Arg} z_1 + \operatorname{Arg} z_2</span> 未必成立」考的就是这一句。</p>
+
+  <div class="lesson-warn">
+    <b>卷面上丢分的两处</b>
+    <p>一是辐角只写主值。参考答案在辐角这一行标着「只有主值得 1 分」，要写的是 <span class="math-inline">\arg z = \operatorname{Arg} z + 2k\pi</span>，<span class="math-inline">k \in \mathbb Z</span>。二是模没有化简：<span class="math-inline">\sqrt{40}</span> 要写成 <span class="math-inline">2\sqrt{10}</span>。</p>
+  </div>
+
+  <div class="quiz" data-quiz='[
+  {
+    "q": "同学交的答卷（6 分题：设 $z=-3+3i$，求模和辐角）里有两处丢分。\n\n他写的三步：\n$|z|=\\sqrt{9+9}=3\\sqrt2$\n$\\operatorname{Arg} z=\\arctan(-1)=-\\frac{\\pi}{4}$\n$\\arg z=-\\frac{\\pi}{4}$\n\n① 第一处错在哪？正确的 $\\operatorname{Arg} z$ 是多少？\n② 第二处漏了什么？$\\arg z$ 该写全成什么样？",
+    "answer": "① 主值取错：$-3+3i$ 在第二象限，\n直接 $\\arctan\\frac{y}{x}$ 会算成第四象限的角。\n该用 $\\operatorname{Arg} z=\\pi-\\arctan 1=\\frac{3\\pi}{4}$。\n② 漏了全部辐角，只写主值（卷面这一行只给 1 分）：\n$\\arg z=\\frac{3\\pi}{4}+2k\\pi$，$k\\in\\mathbb Z$。\n模 $3\\sqrt2$ 是对的，不用改。",
+    "criteria": "① 要指出点在第二象限，并给出 $\\frac{3\\pi}{4}$；\n只说「主值错了」却给不出正确值，算部分通过。\n② 要指出漏了 $2k\\pi$，并写出\n$\\arg z=\\frac{3\\pi}{4}+2k\\pi$，$k\\in\\mathbb Z$；\n顺带给 $\\operatorname{Arg} z$ 也补 $2k\\pi$ 算不通过\n（主值必须落在 $(-\\pi,\\pi]$ 内）。\n指出「模没化简」而没找到这两处，不通过——\n$3\\sqrt2$ 本来就对。"
+  }
+]'></div>
+
+  <h2>三角表示与指数表示</h2>
+
+  <p>把模与辐角拼起来，同一个 <span class="math-inline">z</span> 有两种写法：</p>
+
+  <div class="math-block">z = r(\cos\theta + i\sin\theta) = r e^{i\theta}, \qquad r = |z| &gt; 0,\ \ \theta = \arg z.</div>
+
+  <p>前一个叫三角表示，后一个叫指数表示，两者之间的桥是欧拉公式 <span class="math-inline">e^{i\theta} = \cos\theta + i\sin\theta</span>。</p>
+
+  <p>互相换算各三步：</p>
+
+  <ul>
+    <li>代数形式化成指数形式：算模、算主值、写成 <span class="math-inline">re^{i\theta}</span>（要写全部值时补 <span class="math-inline">2k\pi</span>）。</li>
+    <li>指数形式化回代数形式：把 <span class="math-inline">e^{i\theta}</span> 换回 <span class="math-inline">\cos\theta + i\sin\theta</span>，实部是 <span class="math-inline">r\cos\theta</span>、虚部是 <span class="math-inline">r\sin\theta</span>。</li>
+  </ul>
+
+  <p>写成指数形式之后，乘除只剩两个动作：</p>
+
+  <table>
+    <thead>
+      <tr><th>运算</th><th>指数形式的写法</th><th>结果</th></tr>
+    </thead>
+    <tbody>
+      <tr><td>乘</td><td><span class="math-inline">r_1e^{i\theta_1} \cdot r_2e^{i\theta_2}</span></td><td><span class="math-inline">r_1r_2\,e^{i(\theta_1+\theta_2)}</span></td></tr>
+      <tr><td>除</td><td><span class="math-inline">\dfrac{r_1e^{i\theta_1}}{r_2e^{i\theta_2}}</span></td><td><span class="math-inline">\dfrac{r_1}{r_2}\,e^{i(\theta_1-\theta_2)}</span></td></tr>
+    </tbody>
+  </table>
+
+  <p>乘 <span class="math-inline">e^{i\varphi}</span> 的几何意思是把整个图形绕原点转 <span class="math-inline">\varphi</span>（<span class="math-inline">\varphi&gt;0</span> 逆时针），模不变。上一节那道旋转填空，算 <span class="math-inline">i(2023-i)</span> 与写成 <span class="math-inline">\left|2023-i\right|e^{i(\operatorname{Arg}(2023-i)+\pi/2)}</span> 是同一件事。</p>
+
+  <p>这一节与后面课程的接头：<span class="math-inline">e^{i\theta}</span> 就是初等函数那一课里 <span class="math-inline">e^z = e^x(\cos y + i\sin y)</span> 的雏形，把衰减因子 <span class="math-inline">e^x</span> 乘上就得到 <span class="math-inline">e^z</span>。第 4 课已经讲过 <span class="math-inline">e^z</span> 的整套性质，回头补到这里，接上的是 <span class="math-inline">e^{i\theta}</span> 从哪里来。</p>
+
+  <div class="quiz" data-quiz='[
+  {
+    "q": "把 $z=-\\sqrt3+i$ 化成 $re^{i\\theta}$，卷面这样写（已给）：\n$r=2$，$z=2e^{i\\frac{5\\pi}{6}}$。\n\n现在只改一处：辐角不取主值，改成 $\\theta=\\frac{5\\pi}{6}+2\\pi$，其余照旧。\n\n① 算回 $x+iy$，还是 $-\\sqrt3+i$ 吗？\n② $\\operatorname{Arg} z$ 跟着变吗？说一句为什么。\n③ 若接着求它的三个三次方根，根集变不变？",
+    "answer": "① 还是 $-\\sqrt3+i$：$e^{i2\\pi}=1$，多转一圈回到原处。\n② 不变，仍是 $\\frac{5\\pi}{6}$。\n主值由点所在的象限定，与写哪个辐角无关。\n③ 不变，还是那三个根。公式里是 $\\frac{\\theta+2k\\pi}{3}$，\n$\\theta$ 多出的 $2\\pi$ 只让 $k$ 整体挪一位。",
+    "criteria": "① 要答「相等」，并用 $e^{i2\\pi}=1$ 或「转一圈回到原处」解释；\n只答相等不说理由，算部分通过。\n② 要答「不变」并给出理由（主值由点定）；\n答「变成 $\\frac{5\\pi}{6}+2\\pi$」不通过\n（$\\operatorname{Arg}$ 必须落在 $(-\\pi,\\pi]$）。\n③ 要答「不变」并点到 $k$ 只挪了位置；\n答「多出三个根」不通过（$n$ 次方根恰好 $n$ 个）。"
+  }
+]'></div>
+
+  <h2>乘幂与方根</h2>
+
+  <p>指数形式下乘方最省事：模取乘方、辐角乘上次数，</p>
+
+  <div class="math-block">z^n = \left(re^{i\theta}\right)^n = r^n e^{in\theta}.</div>
+
+  <p>例：<span class="math-inline">(-1+i)^{10}</span>。先化指数形式 <span class="math-inline">-1+i = \sqrt2\,e^{\frac{3\pi i}{4}}</span>，于是</p>
+
+  <div class="math-block">(-1+i)^{10} = (\sqrt2)^{10} e^{\frac{30\pi i}{4}} = 32e^{\frac{15\pi i}{2}} = 32e^{\frac{3\pi i}{2}} = -32i.</div>
+
+  <p>同法算出 <span class="math-inline">(-1-i)^{10} = 32i</span>，两者相减得 <span class="math-inline">-64i</span>。这一步是解答题第 1 题的一种考法。</p>
+
+  <p>方根要把辐角的多值性带进来。方程 <span class="math-inline">w^n = z</span> 的解写成</p>
+
+  <div class="math-block">w_k = \sqrt[n]{r}\, e^{i\frac{\theta + 2k\pi}{n}}, \qquad k = 0, 1, \dots, n-1,</div>
+
+  <p>其中 <span class="math-inline">r = |z|</span>、<span class="math-inline">\theta</span> 取 <span class="math-inline">z</span> 的任一辐角（取主值最省事）。<span class="math-inline">k</span> 取到 <span class="math-inline">n-1</span> 为止：再往上加，指数里多出的恰好是 <span class="math-inline">2\pi</span> 的整数倍，得到的根与前面某个重合。</p>
+
+  <p>这 <span class="math-inline">n</span> 个根有三个可数的特征，落笔后拿它们自查：</p>
+
+  <ul>
+    <li>都在以原点为心、半径 <span class="math-inline">\sqrt[n]{r}</span> 的圆上。</li>
+    <li>相邻两个的辐角差 <span class="math-inline">\dfrac{2\pi}{n}</span>，均匀铺满整个圆周。</li>
+    <li>恰好 <span class="math-inline">n</span> 个，不多不少。</li>
+  </ul>
+
+  <p>求 <span class="math-inline">\sqrt[3]{-8}</span> 的三步：写成指数形式 <span class="math-inline">-8 = 8e^{i\pi}</span>；套公式得 <span class="math-inline">w_k = 2e^{i\frac{\pi+2k\pi}{3}}</span>；取 <span class="math-inline">k=0,1,2</span> 得</p>
+
+  <div class="math-block">w_0 = 2e^{\frac{\pi i}{3}} = 1+\sqrt3 i, \qquad w_1 = 2e^{i\pi} = -2, \qquad w_2 = 2e^{\frac{5\pi i}{3}} = 1-\sqrt3 i.</div>
+
+  <figure class="lesson-figure">
+    <img src="../assets/img/pool/复数运算-方根-均匀分布-本机-02.png" alt="左右两栏圆上点的分布，左栏半径 2 的圆上三个根每 120 度一个排开，右栏单位圆上四个根每 90 度一个排开，每个点旁标出 k 的取值，下方列出 k 与根的对应">
+    <figcaption>图 2 · n 次方根的 n 个值均匀分布在圆上，相邻两个相差 2π/n。（来源：本机生成（<code>assets/img/gen/复数运算-方根-均匀分布-本机-02.py</code>），许可：本项目自产）</figcaption>
+  </figure>
+
+  <div class="lesson-warn">
+    <b>方根的两个错法</b>
+    <p>只写一个根（把 <span class="math-inline">k</span> 漏掉）是最常见的丢分点，6 分题按「指数形式 2 分、公式 2 分、几个值 2 分」给分。二是算完不核对：取完 <span class="math-inline">k</span> 之后看一眼几个根是不是均匀铺在圆上、辐角是不是差着 <span class="math-inline">\frac{2\pi}{n}</span>，错了当场就能发现。</p>
+  </div>
+
+  <p>方根的多值性后面还会遇到两次：第三章的幂函数 <span class="math-inline">z^\alpha</span> 按 <span class="math-inline">\alpha</span> 的类型决定取几个值，洛朗展开里的负幂项也是从这种多值结构里读出来的。</p>
+
+  <div class="quiz" data-quiz='[
+  {
+    "q": "卷面 6 分题那一类：求方程 $z^4=-4$ 的全部根，写成 $a+bi$。\n\n要写出三样：\n① $-4$ 的指数形式与模 $r$；\n② $k$ 取哪些值，四个根列全；\n③ 一句自查：为什么恰好四个。",
+    "answer": "① $-4=4e^{i\\pi}$，故 $r=\\sqrt[4]{4}=\\sqrt2$，\n$z_k=\\sqrt2\\,e^{i\\frac{\\pi+2k\\pi}{4}}$。\n② $k=0,1,2,3$：$1+i$、$-1+i$、$-1-i$、$1-i$。\n③ $k$ 每加 1 只把辐角加 $\\frac{\\pi}{2}$，转满 $2\\pi$ 就重复；\n四个根均匀铺在半径 $\\sqrt2$ 的圆上。",
+    "criteria": "① 指数形式要有模 $4$ 与辐角 $\\pi$（写 $-\\pi$ 也对）；\n把 $-4$ 当成 $4e^{0}$ 不通过。\n② 四个值齐全才算通过：$1+i$、$-1+i$、$-1-i$、$1-i$\n（顺序可换，写成 $\\sqrt2\\,e^{i\\frac{\\pi}{4}}$ 这类指数形式也算对）。\n漏两个算部分通过，只写一个不通过——6 分题扣在这个位置。\n③ 自查要点到「$k$ 再大就重复」或「相邻差 $\\frac{2\\pi}{4}$」，\n说清一个即可。"
+  }
+]'></div>
+
+  <h2>用不等式表示区域</h2>
+
+  <p>卷面给的是不等式，问的是「它确定什么区域」。先认图形，再答三件事：有没有界、单连通还是多连通、边界含不含。</p>
+
+  <table>
+    <thead>
+      <tr><th>不等式</th><th>图形</th><th>边界</th></tr>
+    </thead>
+    <tbody>
+      <tr><td><span class="math-inline">|z - z_0| = r</span></td><td>以 <span class="math-inline">z_0</span> 为心、<span class="math-inline">r</span> 为半径的圆周</td><td>本身就是边界</td></tr>
+      <tr><td><span class="math-inline">|z - z_0| &lt; r</span></td><td>圆盘内部</td><td>不含</td></tr>
+      <tr><td><span class="math-inline">|z - z_0| \le r</span></td><td>闭圆盘</td><td>含</td></tr>
+      <tr><td><span class="math-inline">r_1 &lt; |z - z_0| &lt; r_2</span></td><td>圆环</td><td>两个圆都不含</td></tr>
+      <tr><td><span class="math-inline">\operatorname{Re} z &gt; a</span></td><td>右半平面</td><td>不含那条直线</td></tr>
+      <tr><td><span class="math-inline">a &lt; \operatorname{Re} z &lt; b</span></td><td>竖直带</td><td>两条竖线都不含</td></tr>
+      <tr><td><span class="math-inline">a &lt; \operatorname{Im} z &lt; b</span></td><td>水平带</td><td>两条横线都不含</td></tr>
+      <tr><td><span class="math-inline">\theta_1 &lt; \arg z &lt; \theta_2</span></td><td>从原点张开的角域</td><td>两条射线都不含</td></tr>
+      <tr><td><span class="math-inline">|z - z_0| = |z - z_1|</span></td><td>两点连线的中垂线</td><td>是一条直线</td></tr>
+    </tbody>
+  </table>
+
+  <p>三个判定各有指标：</p>
+
+  <ul>
+    <li>有界：图形能被一个以原点为心的大圆装进去。圆盘、圆环、闭圆盘有界；半平面、竖带、角域无界。</li>
+    <li>单连通：图形里没有洞。圆盘单连通；圆环把内圆挖掉了，是多连通；<span class="math-inline">0 &lt; |z| &lt; 1</span> 也是多连通，它挖掉的是一个点。</li>
+    <li>开闭：严格不等号是开区域，边界不算；写成 <span class="math-inline">\le</span>、<span class="math-inline">\ge</span>、<span class="math-inline">=</span> 才把边界并进来。</li>
+  </ul>
+
+  <figure class="lesson-figure">
+    <img src="../assets/img/pool/复数运算-区域-不等式对照-本机-03.png" alt="四格示意图，左上是圆心为一半径二的圆盘，右上半径一到三之间的圆环并注明内圆被挖掉，左下零到一之间的竖直带，右下张角九十度的角域，每格标题下写出有界或无界、单连通或多连通与开">
+    <figcaption>图 3 · 四种常考区域与不等式写法，虚线边界表示边界不算在内。（来源：本机生成（<code>assets/img/gen/复数运算-区域-不等式对照-本机-03.py</code>），许可：本项目自产）</figcaption>
+  </figure>
+
+  <p>四道真题就是照这张表答的：</p>
+
+  <ul>
+    <li><span class="math-inline">1 &lt; |z| &lt; 2</span>：有界多连通区域。</li>
+    <li><span class="math-inline">0 &lt; \operatorname{Re} z &lt; 1</span>：无界单连通区域。</li>
+    <li><span class="math-inline">-1 \le \arg z \le \pi - 1</span>：无界单连通闭区域，边界那两条射线被 <span class="math-inline">\le</span> 写了进去。</li>
+    <li><span class="math-inline">|z - 1| \ge |z - i|</span>：这是「到 <span class="math-inline">1</span> 的距离不小于到 <span class="math-inline">i</span> 的距离」，取中垂线的一侧，无界单连通闭区域。</li>
+  </ul>
+
+  <p>同一类题还会问曲线：<span class="math-inline">|z+i| = |z-i|</span> 是实轴这条直线；<span class="math-inline">\bigl|\,|z+i| - |z-i|\,\bigr| = 1</span> 是双曲线，因为到两个定点的距离之差是常数。</p>
+
+  <div class="quiz" data-quiz='[
+  {
+    "q": "卷面 3 分选择：不等式 $\\operatorname{Re} z+\\operatorname{Im} z&gt;0$ 确定的是：",
+    "opts": [
+      "有界单连通开区域",
+      "无界单连通开区域",
+      "无界多连通开区域",
+      "无界单连通闭区域"
+    ],
+    "ans": 1,
+    "why": "记 $z=x+iy$，不等式就是 $x+y&gt;0$，\n即以直线 $y=-x$ 为界的半平面。\n直线本身被 $&gt;$ 排除，故无界、单连通、开。"
+  }
+]'></div>
+
+  <h2>解答题第一题的写法</h2>
+
+  <p>这道 6 分题的题面是一个式子加一句话：「设 <span class="math-inline">z = \cdots</span>，求 <span class="math-inline">z</span> 的模和辐角」。按四步写，每一步都占分：</p>
+
+  <ol>
+    <li>先把 <span class="math-inline">z</span> 化成 <span class="math-inline">x + iy</span>。有分母就乘共轭，有乘方就先用指数形式算乘方。</li>
+    <li>写模 <span class="math-inline">|z| = \sqrt{x^2+y^2}</span>，能开方就开方、能化简就化简。</li>
+    <li>写辐角主值 <span class="math-inline">\operatorname{Arg} z</span>：看象限，按前一节的表算，结果落在 <span class="math-inline">(-\pi,\pi]</span> 内。</li>
+    <li>补全部辐角：<span class="math-inline">\arg z = \operatorname{Arg} z + 2k\pi</span>，<span class="math-inline">k \in \mathbb Z</span>。</li>
+  </ol>
+
+  <p>以 <span class="math-inline">z = \dfrac{5+i}{2+3i}</span> 为例（卷面原题），参考答案的分步是：</p>
+
+  <div class="math-block">z = \frac{(5+i)(2-3i)}{13} = \frac{10-15i+2i+3}{13} = \frac{13-13i}{13} = 1-i \qquad (\text{化简，}2\text{ 分})</div>
+
+  <div class="math-block">|z| = \sqrt{1^2 + (-1)^2} = \sqrt2 \qquad (\text{模，}2\text{ 分})</div>
+
+  <div class="math-block">\arg z = 2k\pi - \frac{\pi}{4},\quad k \in \mathbb Z \qquad (\text{辐角，}2\text{ 分})</div>
+
+  <p>另一类题面把「求模和辐角」换成「计算 <span class="math-inline">z^5</span>」，动作一样，只把第 4 步换成乘方：设 <span class="math-inline">z = \sqrt2 (1-i) = 2e^{-\frac{\pi i}{4}}</span>，则</p>
+
+  <div class="math-block">z^5 = 2^5 e^{-\frac{5\pi i}{4}} = 32e^{\frac{3\pi i}{4}} = 32\left(-\frac{\sqrt2}{2} + \frac{\sqrt2}{2}i\right) = -16\sqrt2 + 16\sqrt2 i.</div>
+
+  <h2>练习：四条命令核对</h2>
+
+  <div class="lesson-practice">
+    <div class="lesson-practice__head">
+      <span class="lesson-practice__level">上手做</span>
+      <span class="lesson-practice__title">四条命令核对换算</span>
+    </div>
+
+      <p>Python 标准库 <code>cmath</code> 里复数是内置类型，模与辐角两条命令各对应本节一个结论。跑之前先按公式手算一遍，再对输出。</p>
+
+      <pre data-lang="python"><code>import cmath, math
+z = (2 + 1j) / (1 - 2j)          # 分母乘共轭
+print(z, abs(z), cmath.phase(z))
+w = math.sqrt(2) * (1 - 1j)
+print(w ** 5)                     # 先化指数形式再乘方
+for k in range(3):                # -8 的三个方根
+    print(cmath.rect(2, (math.pi + 2 * k * math.pi) / 3))</code></pre>
+
+      <ol>
+        <li>第 1 行打出 <code>1j</code>、<code>1.0</code>、<code>1.5707963267948966</code>：这就是 <span class="math-inline">\dfrac{2+i}{1-2i} = i</span>，模为 <span class="math-inline">1</span>，辐角为 <span class="math-inline">\dfrac{\pi}{2}</span>。<code>cmath.phase</code> 只给主值，全部辐角要自己补 <span class="math-inline">2k\pi</span>。</li>
+        <li>第 2 行打出 <code>(-22.627...+22.627...j)</code>，即 <span class="math-inline">-16\sqrt2 + 16\sqrt2 i</span>，与手算的 <span class="math-inline">z^5</span> 一致。</li>
+        <li>第 3 行打出 <code>(1+1.732...j)</code>、<code>(-2+0j)</code>、<code>(1-1.732...j)</code>：三个根，虚部就是 <span class="math-inline">\pm\sqrt3</span>。</li>
+        <li>把第 3 行的 <code>math.pi</code> 换成 <code>-math.pi</code> 再跑一次：根集仍是这三个，只有 <span class="math-inline">k</span> 的顺序挪了一位。辐角取主值还是取别的值，根集不变。</li>
+      </ol>
+
+      <p>没有 Python 时，用 <span class="math-inline">i</span>、<span class="math-inline">\sqrt2(1-i)</span>、<span class="math-inline">\sqrt[3]{-8}</span> 三组数在纸上按上一节那四步走一遍，效果相同。</p>
+  </div>
+
+  <h2>带走的速查卡</h2>
+
+  <table>
+    <thead>
+      <tr><th>要算的</th><th>公式</th><th>卷面要点</th></tr>
+    </thead>
+    <tbody>
+      <tr><td>除法</td><td>分子分母乘分母的共轭</td><td>分母变成实数后立刻写成 <span class="math-inline">x+iy</span></td></tr>
+      <tr><td>模</td><td><span class="math-inline">|z| = \sqrt{x^2+y^2}</span></td><td>化简到最简根式</td></tr>
+      <tr><td>辐角</td><td><span class="math-inline">\arg z = \operatorname{Arg} z + 2k\pi</span></td><td>主值取 <span class="math-inline">(-\pi,\pi]</span>，漏 <span class="math-inline">k</span> 丢分</td></tr>
+      <tr><td>指数表示</td><td><span class="math-inline">z = re^{i\theta}</span></td><td>乘除时模乘除、辐角加减</td></tr>
+      <tr><td>乘幂</td><td><span class="math-inline">z^n = r^ne^{in\theta}</span></td><td>先化指数形式再乘方</td></tr>
+      <tr><td>方根</td><td><span class="math-inline">w_k = \sqrt[n]{r}\,e^{i\frac{\theta+2k\pi}{n}}</span>，<span class="math-inline">k=0,\dots,n-1</span></td><td><span class="math-inline">n</span> 个值均匀铺在圆上</td></tr>
+      <tr><td>区域</td><td><span class="math-inline">|z-z_0|</span> 与 <span class="math-inline">r</span> 比大小、<span class="math-inline">\operatorname{Re} z</span> 的范围、角域</td><td>答有界、单连通、开闭</td></tr>
+    </tbody>
+  </table>
+
+  <div class="lesson-related">
+    <a href="0004-ch1-elementary.html">第 4 课：初等函数：指数、三角与对数</a>
+    <a href="0005-ch1-analytic.html">第 5 课：可导与解析的判定</a>
+  </div>
+
+  <ul class="lesson-resources">
+    <li>李君、于非非《复变函数与积分变换》§1.1 复数及其运算、§1.2 复变函数（平面点集）<span class="lesson-resources__meta">书 · 纸质教材，本节的公式与例题顺序以它为准</span></li>
+    <li><a href="http://faculty.hfut.edu.cn/_resources/group1/M00/00/1C/rB_zR2ks_QyAOcheAAP1H6_9avI556.pdf">合肥工业大学期末试卷（含答案与逐题分值）</a><span class="lesson-resources__meta">试卷 · 解答题第 1 题就是本节题型，可看每一分给在哪一步</span></li>
+    <li><a href="https://netedu.xauat.edu.cn/jpkc/netclass/jpkc/fbhs/dir/other/复变函数与积分变换试题及答案12.pdf">复变函数与积分变换试题及答案（西安建筑科技大学）</a><span class="lesson-resources__meta">试卷 · 填空 3 分×10 里有辐角主值、方根与区域三问</span></li>
+  </ul>
+
+  <!-- ── 提问提示：固定写法，别删 ── -->
+
+  <div class="lesson-ask">
+    <b>没看懂？随时问</b>
+    把看不懂的段落（或报错）原样复制回会话，说一句哪里不懂就行，我只解释这一段，不打断你的进度。
+  </div>
+
+  <!-- ── 上/下节课指针由渲染器按 curriculum.yaml 的 nodes 顺序算（第一课无 --prev、最后一课无 --next） ── -->
+
+  <nav class="lesson-nav" aria-label="上一课 / 下一课">
+    <a class="lesson-nav__link lesson-nav__link--prev" href="0001-ch1-intro.html">
+      <span class="lesson-nav__dir">上节课</span>
+      <span class="lesson-nav__title">绪论：从相量到曼德博集</span>
+    </a>
+    <a class="lesson-nav__link lesson-nav__link--next" href="0003-exp1-complex-gallery.html">
+      <span class="lesson-nav__dir">下节课</span>
+      <span class="lesson-nav__title">实验一：把复数画上复平面</span>
+    </a>
+  </nav>
+
+  <footer class="lesson-footer">
+    StudyMate · 0002 复数的运算与几何表示 · 本地学习工作区
+  </footer>
+
+</article>
+
+<script src="../../../assets/sayo/sayo.js"></script>
+<link rel="stylesheet" href="../../../assets/katex/katex.min.css">
+<script src="../../../assets/katex/katex.min.js" defer></script>
+<script src="../../../assets/lesson-math.js" defer></script>
+<script src="../assets/quiz.js" defer></script>
+<script src="../assets/lesson-toc.js" defer></script>
+<script>LearnTheme.wire(document.getElementById('lesson-theme-checkbox'));</script>
+</body>
+</html>

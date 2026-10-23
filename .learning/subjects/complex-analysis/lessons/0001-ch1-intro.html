@@ -1,0 +1,296 @@
+<!DOCTYPE html>
+<html lang="zh-CN" data-theme="dark">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>绪论：从相量到曼德博集 · 复变函数与积分变换</title>
+
+<!-- 共享层在 .learning/assets/，课件在 .learning/subjects/<slug>/lessons/ 下，所以是 ../../../assets/ -->
+<link rel="stylesheet" href="../../../assets/sayo/sayo.css">
+<link rel="stylesheet" href="../../../assets/learn-theme.css">
+<link rel="stylesheet" href="../assets/style.css">
+
+<!-- 主题要在首帧前应用，避免闪白/闪黑 -->
+<script src="../../../assets/learn-theme.js"></script>
+<script>LearnTheme.apply();</script>
+</head>
+
+<body class="lesson-body">
+
+<nav class="lesson-bar">
+  <a href="../index.html">← 返回课程</a>
+  <span>复变函数与积分变换</span>
+  <span class="lesson-bar__no">0001</span>
+  <!-- 课件页自带主题开关：学生从文件管理器直接打开课件时也能切暗色 -->
+  <label class="syo-toggle syo-toggle--theme lesson-bar__toggle" title="切换深浅主题" aria-label="切换深浅主题">
+    <input type="checkbox" id="lesson-theme-checkbox" checked>
+    <span class="syo-toggle-track"></span>
+    <span class="syo-toggle-knob">
+      <svg class="syo-toggle-sun" viewBox="0 0 20 20" fill="none" aria-hidden="true"><circle cx="10" cy="10" r="3.5" stroke="#f57c00" stroke-width="1.5"/><path d="M10 2v2.5M10 15.5V18M2 10h2.5M15.5 10H18M4.34 4.34l1.77 1.77M13.89 13.89l1.77 1.77M4.34 15.66l1.77-1.77M13.89 6.11l1.77-1.77" stroke="#f57c00" stroke-width="1.2" stroke-linecap="round"/></svg>
+      <svg class="syo-toggle-moon" viewBox="0 0 20 20" fill="none" aria-hidden="true"><path d="M16.5 12.5A6 6 0 019 4.5a6 6 0 007.5 8z" stroke="#5c6bc0" stroke-width="1.5" stroke-linejoin="round"/></svg>
+    </span>
+  </label>
+</nav>
+
+<article class="lesson">
+
+  <header class="lesson-header">
+    <span class="lesson-header__eyebrow">0001 · 绪论：从相量到曼德博集</span>
+    <h1>绪论：从相量到曼德博集</h1>
+    <p class="lesson-goal"><b>本节目标：</b>能举出交流电路与分形图形的例子，并指认五章各自主考的题型。</p>
+  </header>
+
+  <!-- ── 正文：渲染器按内容文件（lessons/<序号>-<节点id>.md）产出，块词汇见 docs/规范/课件内容格式.md ── -->
+
+  <h2>同一个 i 的两个用处</h2>
+
+  <p>串联电路的阻抗记成复数：<span class="math-inline">Z = R + i\left(\omega L - \frac{1}{\omega C}\right)</span>。取 <span class="math-inline">R = 3\ \Omega</span>、感抗 <span class="math-inline">\omega L = 4\ \Omega</span>、忽略容抗，得 <span class="math-inline">Z = 3 + 4i</span>，模 <span class="math-inline">|Z| = 5</span>，辐角 <span class="math-inline">\arctan\frac{4}{3} \approx 0.93</span>（弧度，约 <span class="math-inline">53^\circ</span>）。电压幅值 <span class="math-inline">10\ \text{V}</span> 时，电流幅值是 <span class="math-inline">10/5 = 2\ \text{A}</span>，相位比电压落后 <span class="math-inline">0.93</span> 弧度。相量把一路正弦量记成 <span class="math-inline">U e^{i\varphi}</span>，同频相加就变成指数运算。</p>
+
+  <p>另一个场景与电路无关。取一个复数 <span class="math-inline">c</span>，从 <span class="math-inline">z_0 = 0</span> 出发反复做 <span class="math-inline">z_{n+1} = z_n^2 + c</span>：</p>
+
+  <ul>
+    <li><span class="math-inline">c = 0</span>：<span class="math-inline">0, 0, 0, \dots</span>，停在原点。</li>
+    <li><span class="math-inline">c = -1</span>：<span class="math-inline">0, -1, 0, -1, \dots</span>，两个数来回。</li>
+    <li><span class="math-inline">c = 1</span>：<span class="math-inline">0, 1, 2, 5, 26, 677, \dots</span>，几步就冲到上万。</li>
+  </ul>
+
+  <p>把迭代不逃向无穷的那些 <span class="math-inline">c</span> 涂上颜色，得到下图。</p>
+
+  <figure class="lesson-figure">
+    <img src="../assets/img/pool/绪论-分形-曼德博集迭代-本机-03.png" alt="一张分形图，深色区域由一个大的心脏形、左侧圆盘和周围若干小球组成，图上标出 c = -1 落在深色区域内、c = 1 落在深色区域外">
+    <figcaption>图 1 · 迭代 z² + c 时，深色区域里的 c 都不逃向无穷。（来源：本机生成（<code>assets/img/gen/绪论-分形-曼德博集迭代-本机-03.py</code>），许可：本项目自产）</figcaption>
+  </figure>
+
+  <p>两处用的是同一个 <span class="math-inline">i</span>：电路里它落在相位上，迭代里它让 <span class="math-inline">c</span> 铺满整个复平面。这门课把中间那套运算补齐——复数的四则、初等函数、解析性、积分、级数展开，最后到积分变换。</p>
+
+  <div class="quiz" data-quiz='[
+  {
+    "q": "下面四条说法，哪一条说的是相位，而不是大小？",
+    "opts": [
+      "电压幅值除以模，得电流幅值是 $10/5=2$ A",
+      "阻抗辐角 $0.93$ 弧度，就是电流比电压落后的相位",
+      "两段电阻串起来，总电阻等于这两段电阻相加的结果",
+      "$z^2+c$ 迭代几步到几千，说明 $c=1$ 逃逸"
+    ],
+    "ans": 1,
+    "why": "模只给幅值：$10/5=2\\ \\text{A}$。\n落后 $0.93$ 弧度是相位差，\n只能从辐角读出，大小里没有这条信息。\n另三条都只看大小：\n电阻相加、$c=1$ 那步只看模越来越大。"
+  },
+  {
+    "q": "迭代 $z_{n+1}=z_n^2+c$ 从 $z_0=0$ 出发：\n$c=-1$ 得 $0,-1,0,-1,\\dots$，\n$c=1$ 得 $0,1,2,5,26,677,\\dots$。\n哪一句把这件事实说对了？",
+    "opts": [
+      "$c=-1$ 的序列有界，在集里；$c=1$ 逃逸，不在集里",
+      "$c=-1$ 的序列收敛到 $0$；$c=1$ 收敛到无穷",
+      "$c=-1$ 与 $c=1$ 都在集里，$c=1$ 只是颜色浅",
+      "$c=-1$ 与 $c=1$ 都逃逸，只是逃得快慢不同"
+    ],
+    "ans": 0,
+    "why": "判据是序列有没有界，不是收不收敛：\n$c=-1$ 在 $0$ 与 $-1$ 之间来回，\n有界却不收敛，所以留在集里；\n$c=1$ 的模几步就上万，逃逸。\n说它收敛到 $0$ 是错的。"
+  }
+]'></div>
+
+  <h2>卷面 100 分怎么分</h2>
+
+  <p>合肥工大四套公开卷的卷面同构，合计 100 分（下表按 2022 A 卷的题目归类）：</p>
+
+  <table>
+    <thead>
+      <tr><th>题型</th><th>题数与分值</th><th>合计</th><th>这一档考什么</th></tr>
+    </thead>
+    <tbody>
+      <tr><td>填空</td><td>3 分 × 5 题</td><td>15 分</td><td>主值、级数求和、闭路积分、解析条件里的待定参数、傅里叶变换</td></tr>
+      <tr><td>选择</td><td>3 分 × 5 题</td><td>15 分</td><td>点集形状、收敛半径、可导与解析的判据、奇点类型</td></tr>
+      <tr><td>解答</td><td>6～10 分 × 9 题</td><td>70 分</td><td>九类固定计算题</td></tr>
+    </tbody>
+  </table>
+
+  <figure class="lesson-figure">
+    <img src="../assets/img/pool/绪论-卷面分值分布-解答题九道-本机-01.png" alt="上半是一条 100 分的长条，按 15、15、70 分成三段；下半九行横向条形图把解答题逐题列出，条长与分值成正比，右侧标出每题归属的章">
+    <figcaption>图 2 · 解答题 70 分逐题拆开：分值集中在第 4～8 题。（来源：本机生成（<code>assets/img/gen/绪论-卷面分值分布-解答题九道-本机-01.py</code>），许可：本项目自产）</figcaption>
+  </figure>
+
+  <p>这一页有两个数字要记：30 分的小题铺开在五章里，每题只考一个结论；70 分集中在九道大题上，其中第 4～8 题合计 49 分。</p>
+
+  <h2>五章怎么串</h2>
+
+  <p>教材五章按解题顺序排：</p>
+
+  <ul>
+    <li>第 1 章 复变函数与解析函数：先会算复数与初等函数，再用柯西-黎曼条件判断解析性。</li>
+    <li>第 2 章 复变函数的积分：解析之后，闭路积分才有柯西定理与柯西公式这两条捷径。</li>
+    <li>第 3 章 级数与留数：一整圈积分要一笔算完，就得把函数展开成洛朗级数，取 <span class="math-inline">z^{-1}</span> 的系数算留数。</li>
+    <li>第 4 章 傅里叶变换：级数取极限跨到非周期函数，得到频谱与变换。</li>
+    <li>第 5 章 拉普拉斯变换：给傅里叶变换乘一个衰减因子，能变的工程函数一下子变多。</li>
+  </ul>
+
+  <figure class="lesson-figure">
+    <img src="../assets/img/pool/绪论-五章主线-题型地图-本机-02.png" alt="五章自上而下连成一条链，每章给出要会算的事、落在卷面哪几题与合计分值，箭头旁注明两章之间的依赖">
+    <figcaption>图 3 · 五章主线：每章主考的题型与它占的分值。（来源：本机生成（<code>assets/img/gen/绪论-五章主线-题型地图-本机-02.py</code>），许可：本项目自产）</figcaption>
+  </figure>
+
+  <p>第 1 章与第 3 章合计占去一半以上的分；第 4 章一轮卷子只出 1～3 道小题；第 5 章只有 9～13 分，但那一题是整卷最靠练的一题。</p>
+
+  <div class="quiz" data-quiz='[
+  {
+    "q": "下面六条卷面题干，按主考的那一章归类\n（一条可能跨两章）：\n\n① 求 $z=-1+\\sqrt3 i$ 的模与辐角主值\n② 由 $u=x^2-y^2$ 求解析函数 $f(z)$\n③ 沿 $|z|=1$ 正向求 $\\oint\\frac{dz}{z-1}$\n④ 在 $1&lt;|z|&lt;2$ 环域上把函数展成洛朗级数\n⑤ 求 $\\frac1{1+i\\omega}$ 的傅里叶逆变换\n⑥ 用拉普拉斯变换解 $y&#39;&#39;+y=1$ 的初值问题\n\n选项按 ①～⑥ 的顺序给章号（用 ｜ 隔开）：",
+    "opts": [
+      "1｜1｜3｜3｜4｜5",
+      "1｜2｜2 或 3｜3｜4｜5",
+      "1｜1｜2 或 3｜3｜4｜5",
+      "2｜1｜3｜3｜4｜5"
+    ],
+    "ans": 2,
+    "why": "① 模与辐角、② 由调和函数求 $f(z)$ 都在第 1 章；\n④ 洛朗展开在第 3 章，⑤ 在第 4 章，⑥ 在第 5 章。\n只有 ③ 跨两章：圈内只有一个奇点，\n第 2 章的柯西公式与第 3 章的留数定理都能算完，\n所以写成 2 或 3。\n写成 1｜1｜3 少算了一条路。"
+  },
+  {
+    "q": "卷面第 4 题：沿 $|z|=1$ 正向求\n$\\oint\\frac{z+1}{z(z-2)}dz$。\n两条路各走一次，中间那步都要写出来：\n\n① 柯西公式那条：分子取哪个 $f(z)$、\n代哪个 $z_0$、答案是多少；\n② 留数定理那条：圈内有哪几个奇点、\n留数各是多少、答案是多少；\n③ 一句话：这题你选哪条，为什么。",
+    "answer": "① 取 $f(z)=\\frac{z+1}{z-2}$，$z_0=0$ 在圈内，\n$f(0)=-\\frac12$，\n故原式 $=2\\pi i\\cdot(-\\frac12)=-\\pi i$。\n（$z=2$ 在 $|z|=1$ 外，不参与。）\n\n② 圈内只有 $z=0$ 一个一阶极点，\n留数 $\\lim_{z\\to0}\\frac{z+1}{z-2}$\n$=-\\frac12$，\n原式 $=2\\pi i\\cdot(-\\frac12)=-\\pi i$。\n\n③ 两条都行、答案一样：\n圈内只有一个奇点时，两条路是同一个动作\n——把 $z_0$ 代进剩下的因子。\n圈内有两个以上奇点时才分家：\n留数定理一次加成 $2\\pi i\\sum\\operatorname{Res}$，\n柯西公式得一个个拆圈。",
+    "criteria": "① 三样都要写：$f(z)$、$z_0=0$、$-\\pi i$。\n得 $+\\pi i$ 是漏了 $f(0)=-\\frac12$ 的负号；\n只写答案不写 $f(z)$ 按部分通过。\n\n② 必须点明圈内只有 $z=0$、$z=2$ 在外；\n留数 $-\\frac12$；答案 $-\\pi i$。\n把 $z=2$ 也算进圈内会得 $2\\pi i$，按不通过。\n\n③ 说清「一个奇点时两条等价」\n或「多个奇点时留数一次加成」即通过；\n只说「留数更高级」这类空话按部分通过。"
+  }
+]'></div>
+
+  <h2>分数集中在五道题</h2>
+
+  <p>第 4～8 题合计 49 分，五道题的解法都是固定动作：</p>
+
+  <table>
+    <thead>
+      <tr><th>题</th><th>固定动作</th><th>分值</th></tr>
+    </thead>
+    <tbody>
+      <tr><td>4 沿正向圆周的闭路积分</td><td>找围道内的奇点 → 柯西公式或留数定理 → 挑一条算完</td><td>10 分</td></tr>
+      <tr><td>5 由调和函数求 <span class="math-inline">f(z)</span></td><td>验调和定参数 → 用柯西-黎曼条件求另一分量 → 回写成 <span class="math-inline">z</span> 并补常数</td><td>8～10 分</td></tr>
+      <tr><td>6 圆环域上的洛朗展开</td><td>定环域 → 部分分式拆开 → 凑 <span class="math-inline">1/(1-w)</span> 的形状 → 写出成立范围</td><td>10 分</td></tr>
+      <tr><td>7 奇点与相应的留数</td><td>列出有限复平面内的奇点与阶 → 按阶选留数公式 → 逐个算</td><td>10 分</td></tr>
+      <tr><td>8 用拉氏变换解微分方程</td><td>变换过去 → 解出像函数 → 部分分式 → 倒查表回到 <span class="math-inline">t</span> 域</td><td>9～10 分</td></tr>
+    </tbody>
+  </table>
+
+  <p>参考答案是逐行标分的，这五道题的每一步都对应卷面上一两分，所以练法是照着动作反复走，走到不查书。</p>
+
+  <div class="lesson-warn">
+    <b>概念简答不能空</b>
+    <p>第 9 题是概念简答：合肥工大卷给 3 分，西建大卷给到 10 分。问法固定——「解析的判别方法有哪几种」「复积分有哪些计算方法」「<span class="math-inline">\sin z</span> 与 <span class="math-inline">\sin x</span> 的性质异同」——每题写三条就给分，空着是零分。</p>
+  </div>
+
+  <h2>时间按分值排</h2>
+
+  <p>按上面的数把复习时间切三档：</p>
+
+  <ul>
+    <li>一档（每章 26～38 分）：第 1 章与第 3 章。五道大题里四道出自这两章。</li>
+    <li>二档（约 20 分）：第 2 章。第 3、4 题，加上挖洞与三条路的选型。</li>
+    <li>三档（合计 12～22 分）：第 4、5 章。以小题为主，靠附录 B 那张表与几条性质，花的时间最少；第 5 章那 9 分要拿到。</li>
+  </ul>
+
+  <p>限时卷上的作答顺序也按分值走：</p>
+
+  <ol>
+    <li>填空与选择（30 分，一题一分钟）。</li>
+    <li>解答第 1～3 题（18 分，纯运算）。</li>
+    <li>第 4～8 题（49 分，动作题）。</li>
+    <li>概念简答（3～10 分，最后写，写满三条）。</li>
+  </ol>
+
+  <p>一道题卡过 8 分钟就先跳过，回头再补。证明题不在本科目的范围：合肥工大四套卷的解答题全是计算题，西建大一份卷里有一道 5 分小证明（<span class="math-inline">\delta</span> 函数与 <span class="math-inline">e^{-i\omega t_0}</span> 构成傅里叶变换对），这类边角题可以放弃。</p>
+
+  <div class="quiz" data-quiz='[
+  {
+    "q": "120 分钟 100 分卷，\n四种作答顺序里哪一条最合适？",
+    "opts": [
+      "①填空选择 → ②第 1～3 题 → ③第 4～8 题 → ④简答",
+      "①第 4～8 题 → ②填空选择 → ③第 1～3 题 → ④简答",
+      "①简答 → ②填空选择 → ③第 4～8 题 → ④第 1～3 题",
+      "①第 1 章全做 → ②第 3 章 → ③填空选择 → ④简答"
+    ],
+    "ans": 0,
+    "why": "填空与选择 30 分、一题一分钟，先扫掉；\n第 1～3 题 18 分是纯运算；\n第 4～8 题 49 分是动作题，最费时间\n（第 4、6、7 题各 10 分，第 5、8 题 8～10 分）；\n简答 3～10 分放最后，写满三条。\n按章做要来回翻五章；\n简答放开头又挤掉了大题的时间。"
+  },
+  {
+    "q": "卷面 120 分钟 100 分。第 7 题\n（奇点与留数，10 分）已经卡了 8 分钟\n还没出来，这时最该做什么？",
+    "opts": [
+      "先跳过，去做第 8 题，最后回头再补这道",
+      "做到底，10 分的大题放弃了可惜，坐到做出来",
+      "擦掉重算，直到这一步算对，才继续往下做",
+      "换一条路，柯西公式换成留数，再卡 8 分钟"
+    ],
+    "ans": 0,
+    "why": "卷面的口径是一道题卡过 8 分钟就先跳过、\n回头再补：第 8 题 9～10 分，先拿到手。\n卡在原题上最贵，\n后面那 10 分没人替你拿。\n换条路再卡 8 分钟，等于把规则忘了。"
+  }
+]'></div>
+
+  <h2>图像画廊项目</h2>
+
+  <p>这门课配一个可视化项目「复变函数图像画廊」，四个实验课节点各推进一段：</p>
+
+  <ul>
+    <li>实验一：复数与方根画上复平面，含本页开头那张 <span class="math-inline">z^2 + c</span> 的迭代图。</li>
+    <li>实验二：解析函数的模与辐角着色，非解析函数作对照。</li>
+    <li>实验三：保角映射的网格变形。</li>
+    <li>实验四：围道、极点与留数画在同一张图上。</li>
+  </ul>
+
+  <p>每个概念讲完都会落成一张图；下面练习里的两条命令就是它的第一段代码。</p>
+
+  <h2>练习：两条命令</h2>
+
+  <div class="lesson-practice">
+    <div class="lesson-practice__head">
+      <span class="lesson-practice__level">上手做</span>
+      <span class="lesson-practice__title">两条命令：阻抗与迭代</span>
+    </div>
+
+      <p>Python 标准库 <code>cmath</code> 给出模与辐角主值；迭代只用到乘法与加法。跑之前先按前面的例子手算一遍。</p>
+
+      <pre data-lang="python"><code>import cmath
+Z = 3 + 4j
+print(abs(Z), cmath.phase(Z))
+print(10 / abs(Z))
+z, c = 0j, -1 + 0j
+for _ in range(6):
+    z = z * z + c
+    print(z)</code></pre>
+
+      <ol>
+        <li>第 1 条打出 <code>5.0 0.9272952180016122</code>：模是 <span class="math-inline">5</span>，辐角约 <span class="math-inline">0.93</span> 弧度（约 <span class="math-inline">53^\circ</span>），与相量那个例子对得上。</li>
+        <li>第 2 条打出 <code>2.0</code>：电压幅值 10 V 时电流幅值 2 A。</li>
+        <li>第 3 段六行输出只有 <code>(-1+0j)</code> 与 <code>0j</code> 交替，说明 <span class="math-inline">c = -1</span> 不逃逸；把 <code>c</code> 改成 <code>1 + 1j</code> 再跑，绝对值几步就上万，那就是逃逸。在输出里指出哪个是模、哪个是辐角主值，正是解答第 1 题的识别动作。</li>
+      </ol>
+  </div>
+
+  <ul class="lesson-resources">
+    <li>李君、于非非《复变函数与积分变换》<span class="lesson-resources__meta">书 · 纸质教材，五章顺序与小节名以它为准</span></li>
+    <li><a href="http://faculty.hfut.edu.cn/_resources/group1/M00/00/1C/rB_zR2ks_QyAOcheAAP1H6_9avI556.pdf">合肥工业大学期末试卷（含答案与逐题分值）</a><span class="lesson-resources__meta">试卷 · 四套整卷，本页的分值都按它统计</span></li>
+    <li><a href="https://higher.smartedu.cn/course/6a5ea0adb44e493c768f999a">国家高等教育智慧教育平台 · 复变函数与积分变换</a><span class="lesson-resources__meta">课程 · 官方简介逐字列出与本教材相同的五章</span></li>
+  </ul>
+
+  <!-- ── 提问提示：固定写法，别删 ── -->
+
+  <div class="lesson-ask">
+    <b>没看懂？随时问</b>
+    把看不懂的段落（或报错）原样复制回会话，说一句哪里不懂就行，我只解释这一段，不打断你的进度。
+  </div>
+
+  <!-- ── 上/下节课指针由渲染器按 curriculum.yaml 的 nodes 顺序算（第一课无 --prev、最后一课无 --next） ── -->
+
+  <nav class="lesson-nav" aria-label="上一课 / 下一课">
+    <a class="lesson-nav__link lesson-nav__link--next" href="0002-ch1-complex-basics.html">
+      <span class="lesson-nav__dir">下节课</span>
+      <span class="lesson-nav__title">复数的运算与几何表示</span>
+    </a>
+  </nav>
+
+  <footer class="lesson-footer">
+    StudyMate · 0001 绪论：从相量到曼德博集 · 本地学习工作区
+  </footer>
+
+</article>
+
+<script src="../../../assets/sayo/sayo.js"></script>
+<link rel="stylesheet" href="../../../assets/katex/katex.min.css">
+<script src="../../../assets/katex/katex.min.js" defer></script>
+<script src="../../../assets/lesson-math.js" defer></script>
+<script src="../assets/quiz.js" defer></script>
+<script src="../assets/lesson-toc.js" defer></script>
+<script>LearnTheme.wire(document.getElementById('lesson-theme-checkbox'));</script>
+</body>
+</html>
