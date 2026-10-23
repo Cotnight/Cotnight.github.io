@@ -1,0 +1,390 @@
+<!DOCTYPE html>
+<html lang="zh-CN" data-theme="dark">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>傅里叶级数与正交展开 · 复变函数与积分变换</title>
+
+<!-- 共享层在 .learning/assets/，课件在 .learning/subjects/<slug>/lessons/ 下，所以是 ../../../assets/ -->
+<link rel="stylesheet" href="../../../assets/sayo/sayo.css">
+<link rel="stylesheet" href="../../../assets/learn-theme.css">
+<link rel="stylesheet" href="../assets/style.css">
+
+<!-- 主题要在首帧前应用，避免闪白/闪黑 -->
+<script src="../../../assets/learn-theme.js"></script>
+<script>LearnTheme.apply();</script>
+</head>
+
+<body class="lesson-body">
+
+<nav class="lesson-bar">
+  <a href="../index.html">← 返回课程</a>
+  <span>复变函数与积分变换</span>
+  <span class="lesson-bar__no">0016</span>
+  <!-- 课件页自带主题开关：学生从文件管理器直接打开课件时也能切暗色 -->
+  <label class="syo-toggle syo-toggle--theme lesson-bar__toggle" title="切换深浅主题" aria-label="切换深浅主题">
+    <input type="checkbox" id="lesson-theme-checkbox" checked>
+    <span class="syo-toggle-track"></span>
+    <span class="syo-toggle-knob">
+      <svg class="syo-toggle-sun" viewBox="0 0 20 20" fill="none" aria-hidden="true"><circle cx="10" cy="10" r="3.5" stroke="#f57c00" stroke-width="1.5"/><path d="M10 2v2.5M10 15.5V18M2 10h2.5M15.5 10H18M4.34 4.34l1.77 1.77M13.89 13.89l1.77 1.77M4.34 15.66l1.77-1.77M13.89 6.11l1.77-1.77" stroke="#f57c00" stroke-width="1.2" stroke-linecap="round"/></svg>
+      <svg class="syo-toggle-moon" viewBox="0 0 20 20" fill="none" aria-hidden="true"><path d="M16.5 12.5A6 6 0 019 4.5a6 6 0 007.5 8z" stroke="#5c6bc0" stroke-width="1.5" stroke-linejoin="round"/></svg>
+    </span>
+  </label>
+</nav>
+
+<article class="lesson">
+
+  <header class="lesson-header">
+    <span class="lesson-header__eyebrow">0016 · 傅里叶级数与正交展开</span>
+    <h1>傅里叶级数与正交展开</h1>
+    <p class="lesson-goal"><b>本节目标：</b>能写出周期函数的傅里叶系数公式、算出方波的系数，并说清从级数到变换这一步是怎么跨过去的。</p>
+  </header>
+
+  <!-- ── 正文：渲染器按内容文件（lessons/<序号>-<节点id>.md）产出，块词汇见 docs/规范/课件内容格式.md ── -->
+
+  <h2>卷面怎么考</h2>
+
+  <p>本课的内容在七套公开卷子里（合肥工业大学 2022—2025 年 A、B 卷）没有出现过：填空、选择、解答三部分都考不到傅里叶级数本身。同一章里上卷面的是傅里叶变换与拉普拉斯变换，两者的分量差得很远。</p>
+
+  <table>
+    <thead>
+      <tr><th>卷子</th><th>填空</th><th>选择</th><th>解答</th></tr>
+    </thead>
+    <tbody>
+      <tr><td>2022—2024 年 A、B 卷（六套）</td><td>第 5 题求傅里叶变换，3 分</td><td>解析性、收敛半径、极点阶，3 分</td><td>第 8 题用拉普拉斯变换解微分方程，9 分</td></tr>
+      <tr><td>2025 年 A 卷</td><td>第 5 题求拉普拉斯变换，4 分</td><td>第 5 题问哪个函数不存在傅里叶变换，4 分</td><td>第 9 题同上，10 分</td></tr>
+    </tbody>
+  </table>
+
+  <p>六套卷的填空第 5 题依次给的是 <span class="math-inline">\sin t+i\cos t</span>、<span class="math-inline">e^{it}</span>、<span class="math-inline">\cos 3t</span>、常值函数的逆变换、常值函数 <span class="math-inline">-2</span>、<span class="math-inline">\delta(t-1)</span>，都是一行套公式就出结果的小题。</p>
+
+  <p><b>看懂频谱与系数公式即可，不要为傅里叶级数多花时间。</b> 本章要投入的是拉普拉斯变换——它每套卷子都占着一道 9～10 分的大题。本课只要求三件事：会写三角形式与复指数形式的系数公式、会算一个方波的系数、理解从级数到变换那一步怎么跨过去。</p>
+
+  <h2>唤醒：级数与正交性</h2>
+
+  <p>第 3 章的幂级数讲过把一个函数写成一串更简单的函数之和，这里的动作相同，只是把 <span class="math-inline">z^n</span> 换成 <span class="math-inline">\cos nx</span> 与 <span class="math-inline">\sin nx</span>。第 1 章的欧拉公式 <span class="math-inline">e^{i\theta}=\cos\theta+i\sin\theta</span> 让三角式与复指数式可以互换，本课的两种级数形式靠的就是这一条。还有一条来自定积分：三角函数在一个整周期上积出来常常是零，下一节把这件事说清，系数公式就跟着出来了。</p>
+
+  <h2>三角函数系的正交性</h2>
+
+  <p>「正交」这个词从向量的内积来：两个向量内积为零时称它们正交。搬到函数上，先要把内积定义出来。设 <span class="math-inline">f</span>、<span class="math-inline">g</span> 在 <span class="math-inline">[-l,l]</span> 上可积，定义</p>
+
+  <div class="math-block">\langle f,g\rangle=\int_{-l}^{l}f(x)\,g(x)\,dx,</div>
+
+  <p><span class="math-inline">\langle f,g\rangle=0</span> 时称 <span class="math-inline">f</span> 与 <span class="math-inline">g</span> 在 <span class="math-inline">[-l,l]</span> 上正交。复值函数的内积多一个共轭，写成 <span class="math-inline">\langle f,g\rangle=\int_{-l}^{l}f(x)\overline{g(x)}\,dx</span>，这样 <span class="math-inline">\langle f,f\rangle=\int|f|^2\,dx</span> 总是非负实数。</p>
+
+  <p>三角函数系 <span class="math-inline">1,\cos x,\sin x,\cos 2x,\sin 2x,\dots</span> 在 <span class="math-inline">[-\pi,\pi]</span> 上两两正交，每个函数与自己的内积是一个常数：</p>
+
+  <div class="math-block">\int_{-\pi}^{\pi}1\,dx=2\pi,\qquad \int_{-\pi}^{\pi}\cos^2nx\,dx=\int_{-\pi}^{\pi}\sin^2nx\,dx=\pi .</div>
+
+  <p>复指数系 <span class="math-inline">\{e^{inx}\}_{n\in\mathbb{Z}}</span> 在同一个区间上满足</p>
+
+  <div class="math-block">\int_{-\pi}^{\pi}e^{inx}\overline{e^{imx}}\,dx=\int_{-\pi}^{\pi}e^{i(n-m)x}\,dx=\begin{cases}2\pi,&amp;n=m,\\ 0,&amp;n\ne m.\end{cases}</div>
+
+  <p>这一组关系在本课只用在一处：把函数乘上其中一项再积分，其他项全部归零，只剩这一项前面的系数。下一节的系数公式就是这样抽出来的。</p>
+
+  <div class="quiz" data-quiz='[
+  {
+    "q": "三角函数系里，哪一对在 $[-\\pi,\\pi]$ 上正交？\n（正交＝两者乘积的积分为零）",
+    "opts": [
+      "$\\cos 2x$ 与 $\\sin 3x$",
+      "$\\cos 2x$ 与 $\\cos 2x$",
+      "$\\cos 2x$ 与 $2\\cos 2x$",
+      "$\\sin 3x$ 与 $2\\sin 3x$"
+    ],
+    "ans": 0,
+    "why": "频率不同的两项相乘，正负半周在一个整周期里\n互相抵消，积分是零。\n同名的自我内积不是零：\n$\\int_{-\\pi}^{\\pi}\\cos^2 2x\\,dx=\\pi$，\n乘上系数 $2$ 就是 $2\\pi$。\n系数公式前的 $\\frac1\\pi$ 就来自这个 $\\pi$。"
+  }
+]'></div>
+
+  <h2>三角形式的级数</h2>
+
+  <p>设 <span class="math-inline">f</span> 以 <span class="math-inline">2\pi</span> 为周期、在 <span class="math-inline">[-\pi,\pi]</span> 上可积，把它写成三角函数系的线性组合：</p>
+
+  <div class="math-block">f(x)\sim\frac{a_0}{2}+\sum_{n=1}^{\infty}\left(a_n\cos nx+b_n\sin nx\right).</div>
+
+  <p><span class="math-inline">\sim</span> 读作「展成」，表示右边是一列待定系数的级数，等号成立与否由后面的收敛条件决定。定系数的办法是两边各乘一项再积分：乘 <span class="math-inline">\cos kx</span> 后积分，由正交性右边只剩 <span class="math-inline">a_k\cos^2kx</span> 一项，得 <span class="math-inline">a_k\pi=\int_{-\pi}^{\pi}f\cos kx\,dx</span>；乘 <span class="math-inline">\sin kx</span> 同理。于是</p>
+
+  <div class="math-block">a_n=\frac{1}{\pi}\int_{-\pi}^{\pi}f(x)\cos nx\,dx,\qquad b_n=\frac{1}{\pi}\int_{-\pi}^{\pi}f(x)\sin nx\,dx,\qquad a_0=\frac{1}{\pi}\int_{-\pi}^{\pi}f(x)\,dx .</div>
+
+  <p>分母上的 <span class="math-inline">\pi</span> 来自 <span class="math-inline">\int\cos^2nx\,dx=\pi</span>。常数项写成 <span class="math-inline">\frac{a_0}{2}</span> 是为了让 <span class="math-inline">a_0</span> 与 <span class="math-inline">a_n</span> 共用一个公式；它的值就是 <span class="math-inline">f</span> 在一个周期上的平均值。级数里 <span class="math-inline">a_n\cos nx+b_n\sin nx</span> 叫 <span class="math-inline">n</span> 次谐波，<span class="math-inline">n=1</span> 那一项叫基波，<span class="math-inline">\frac{a_0}{2}</span> 叫直流分量。</p>
+
+  <h2>2π 与 2l 两套公式</h2>
+
+  <p>周期为 <span class="math-inline">2l</span> 时（<span class="math-inline">l\ne\pi</span>），把 <span class="math-inline">x</span> 换成 <span class="math-inline">\frac{\pi x}{l}</span>：三角函数里的 <span class="math-inline">nx</span> 变成 <span class="math-inline">\frac{n\pi x}{l}</span>，系数前的 <span class="math-inline">\frac{1}{\pi}</span> 变成 <span class="math-inline">\frac{1}{l}</span>，积分区间换成 <span class="math-inline">[-l,l]</span>：</p>
+
+  <div class="math-block">f(x)\sim\frac{a_0}{2}+\sum_{n=1}^{\infty}\left(a_n\cos\frac{n\pi x}{l}+b_n\sin\frac{n\pi x}{l}\right),</div>
+
+  <div class="math-block">a_n=\frac{1}{l}\int_{-l}^{l}f(x)\cos\frac{n\pi x}{l}\,dx,\qquad b_n=\frac{1}{l}\int_{-l}^{l}f(x)\sin\frac{n\pi x}{l}\,dx,\qquad a_0=\frac{1}{l}\int_{-l}^{l}f(x)\,dx .</div>
+
+  <p>两套混用时的错处集中在两处：三角函数的自变量里漏掉 <span class="math-inline">\frac{\pi}{l}</span>，以及系数前的 <span class="math-inline">\frac1\pi</span> 与 <span class="math-inline">\frac1l</span> 用反。判定办法是先看题目给的周期，取它的一半作为 <span class="math-inline">l</span>；写完代 <span class="math-inline">l=\pi</span> 进去，公式应当退回上面那一套。</p>
+
+  <table>
+    <thead>
+      <tr><th>周期</th><th>三角函数里的自变量</th><th>系数前的常数</th><th>积分区间</th></tr>
+    </thead>
+    <tbody>
+      <tr><td><span class="math-inline">2\pi</span></td><td><span class="math-inline">\cos nx</span>、<span class="math-inline">\sin nx</span></td><td><span class="math-inline">\frac{1}{\pi}</span></td><td><span class="math-inline">[-\pi,\pi]</span></td></tr>
+      <tr><td><span class="math-inline">2l</span></td><td><span class="math-inline">\cos\frac{n\pi x}{l}</span>、<span class="math-inline">\sin\frac{n\pi x}{l}</span></td><td><span class="math-inline">\frac{1}{l}</span></td><td><span class="math-inline">[-l,l]</span></td></tr>
+      <tr><td><span class="math-inline">T</span></td><td><span class="math-inline">\cos n\omega_0x</span>、<span class="math-inline">\sin n\omega_0x</span>，<span class="math-inline">\omega_0=\frac{2\pi}{T}</span></td><td><span class="math-inline">\frac{2}{T}</span></td><td>任取一个长度为 <span class="math-inline">T</span> 的区间</td></tr>
+    </tbody>
+  </table>
+
+  <p>最后一行与第二行是同一个公式：<span class="math-inline">T=2l</span> 时 <span class="math-inline">\frac{2}{T}=\frac1l</span>、<span class="math-inline">\omega_0=\frac{\pi}{l}</span>。</p>
+
+  <div class="quiz" data-quiz='[
+  {
+    "q": "设 $f$ 以 $2l$ 为周期，且 $l\\ne\\pi$。\n下面哪个 $a_n$ 写得对？",
+    "opts": [
+      "$a_n=\\frac1\\pi\\int_{-l}^{l}f(x)\\cos\\frac{n\\pi x}{l}dx$",
+      "$a_n=\\frac1l\\int_{-l}^{l}f(x)\\cos\\frac{n\\pi x}{l}dx$",
+      "$a_n=\\frac1l\\int_{-l}^{l}f(x)\\cos\\frac{n\\pi x}{2l}dx$",
+      "$a_n=\\frac1l\\int_{-\\pi}^{\\pi}f(x)\\cos\\frac{n\\pi x}{l}dx$"
+    ],
+    "ans": 1,
+    "why": "常数是 $\\frac1l$：分母等于半个周期，\n$2\\pi$ 周期时 $l=\\pi$ 才退成 $\\frac1\\pi$。\n自变量里带 $\\frac{\\pi}{l}$，\n不是 $\\frac{\\pi}{2l}$，也不是 $nx$。\n积分限跟着周期走，是 $[-l,l]$。\n三处混用任一处，这一空就没了。"
+  },
+  {
+    "q": "设 $f$ 以 $4$ 为周期，取积分区间 $[-2,2]$。\n① 写出 $b_n$ 的完整式子：\n常数、积分限、被积函数都要写。\n② $a_0$ 等于什么？\n两问都写成式子，别只写一个数。",
+    "answer": "先定 $l$：周期是 $4$，所以 $l=2$。\n\n$b_n=\\frac12\\int_{-2}^{2}f(x)\\sin\\frac{n\\pi x}{2}\\,dx$，\n\n$a_0=\\frac12\\int_{-2}^{2}f(x)\\,dx$。\n\n$a_0$ 就是 $f$ 在这个周期上的平均值。",
+    "criteria": "① 三样都得对：\n常数是 $\\frac12$，不是 $\\frac1\\pi$；\n自变量是 $\\frac{n\\pi x}{2}$，不是 $nx$；\n积分限是 $[-2,2]$，不是 $[-\\pi,\\pi]$。\n② $a_0$ 是 $\\frac12\\int_{-2}^{2}f(x)\\,dx$。\n两空各 2 分，写错一格扣一格。\n只写出 $l=2$ 不写式子，按不通过。"
+  }
+]'></div>
+
+  <h2>奇偶函数省一半</h2>
+
+  <p><span class="math-inline">[-l,l]</span> 关于原点对称，被积函数的奇偶性直接决定哪些积分是零：奇函数在对称区间上积分为零，偶函数在对称区间上的积分等于 <span class="math-inline">[0,l]</span> 上的两倍。</p>
+
+  <table>
+    <thead>
+      <tr><th><span class="math-inline">f</span> 的奇偶性</th><th>为零的系数</th><th>要算的系数</th></tr>
+    </thead>
+    <tbody>
+      <tr><td>奇函数 <span class="math-inline">f(-x)=-f(x)</span></td><td><span class="math-inline">a_n=0</span>（含 <span class="math-inline">a_0</span>）</td><td><span class="math-inline">b_n=\frac{2}{l}\int_{0}^{l}f(x)\sin\frac{n\pi x}{l}\,dx</span></td></tr>
+      <tr><td>偶函数 <span class="math-inline">f(-x)=f(x)</span></td><td><span class="math-inline">b_n=0</span></td><td><span class="math-inline">a_n=\frac{2}{l}\int_{0}^{l}f(x)\cos\frac{n\pi x}{l}\,dx</span></td></tr>
+    </tbody>
+  </table>
+
+  <p>判据来自「奇 × 偶 = 奇」：<span class="math-inline">f</span> 为奇时 <span class="math-inline">f\cos\frac{n\pi x}{l}</span> 是奇函数，<span class="math-inline">f\sin\frac{n\pi x}{l}</span> 是偶函数；<span class="math-inline">f</span> 为偶时两者对调。</p>
+
+  <p>这条简化的前提是区间关于原点对称。给的是 <span class="math-inline">[0,2l]</span> 这类平移过的区间时，先看 <span class="math-inline">f</span> 关于中点 <span class="math-inline">x=l</span> 的奇偶性，或者直接平移回 <span class="math-inline">[-l,l]</span>，不要拿原点对称的结论硬套。</p>
+
+  <div class="quiz" data-quiz='[
+  {
+    "q": "设 $f$ 在 $[-l,l]$ 上是奇函数，\n即 $f(-x)=-f(x)$。\n展成傅里叶级数时，\n哪些系数一定为零？",
+    "opts": [
+      "$a_n$ 与 $a_0$ 一定为零",
+      "$b_n$ 与 $a_0$ 一定为零",
+      "只有 $a_0$ 一项一定为零"
+    ],
+    "ans": 0,
+    "why": "奇乘偶得奇：\n$f(x)\\cos\\frac{n\\pi x}{l}$ 是奇函数，\n在对称区间上一积分就是零，\n所以 $a_n$（含 $a_0$）全为零。\n$f(x)\\sin\\frac{n\\pi x}{l}$ 是偶函数，\n$b_n$ 不为零。\n偶函数正好反过来：只剩 $a_n$。"
+  }
+]'></div>
+
+  <h2>方波：把系数算一遍</h2>
+
+  <p>例：<span class="math-inline">f</span> 以 <span class="math-inline">2\pi</span> 为周期，在一个周期内</p>
+
+  <div class="math-block">f(x)=\begin{cases}-1,&amp;-\pi&lt;x&lt;0,\\ \ \ 1,&amp;0&lt;x&lt;\pi.\end{cases}</div>
+
+  <p>第一步定奇偶。<span class="math-inline">f</span> 是奇函数，所以 <span class="math-inline">a_n=0</span>（<span class="math-inline">n=0,1,2,\dots</span>），只剩 <span class="math-inline">b_n</span>。第二步按公式算：</p>
+
+  <div class="math-block">b_n=\frac{1}{\pi}\int_{-\pi}^{\pi}f(x)\sin nx\,dx=\frac{2}{\pi}\int_{0}^{\pi}\sin nx\,dx=\frac{2}{n\pi}\left[-\cos nx\right]_{0}^{\pi}=\frac{2}{n\pi}\left(1-(-1)^n\right).</div>
+
+  <p><span class="math-inline">n</span> 为偶数时 <span class="math-inline">1-(-1)^n=0</span>，为奇数时等于 <span class="math-inline">2</span>，于是</p>
+
+  <div class="math-block">b_n=\frac{4}{n\pi}\ (n=1,3,5,\dots),\qquad b_n=0\ (n=2,4,6,\dots),</div>
+
+  <div class="math-block">f(x)\sim\frac{4}{\pi}\left(\sin x+\frac{\sin 3x}{3}+\frac{\sin 5x}{5}+\cdots\right).</div>
+
+  <p>方波只有奇次谐波，第 <span class="math-inline">n</span> 次谐波的幅度是 <span class="math-inline">\frac{4}{n\pi}</span>，按 <span class="math-inline">\frac1n</span> 递减。频谱的内容就是这一句。</p>
+
+  <figure class="lesson-figure">
+    <img src="../assets/img/pool/傅里叶级数-方波-部分和逼近-本机-01.png" alt="左格是周期 2π 的方波（灰虚线）与三条部分和曲线：蓝线只取 sin x 一项，橙线取到 sin 3x，绿线取到 sin 9x，绿线最贴近方波但在跳变处过冲；三条曲线在 x = 0 与 x = ±π 处都经过 0，红点标出这三处。右格写出展开式、bₙ = 4/(nπ)（n 为奇数）、bₙ = 0（n 为偶数）、aₙ = 0，下面是用线条颜色标出的图例">
+    <figcaption>图 1 · 项数增加，平顶变平、跳变变陡，跳变点本身始终取 0。（来源：本机生成（<code>assets/img/gen/傅里叶级数-方波-部分和逼近-本机-01.py</code>），许可：本项目自产）</figcaption>
+  </figure>
+
+  <h2>狄利克雷条件与间断点</h2>
+
+  <p>级数是否收敛到 <span class="math-inline">f</span>，由下面这组条件保证（狄利克雷条件，本课程只记结论）：设 <span class="math-inline">f</span> 以 <span class="math-inline">2l</span> 为周期，在一个周期内连续或只有有限个第一类间断点（左右极限都存在），并且只有有限个极值点，则 <span class="math-inline">f</span> 的傅里叶级数处处收敛，且</p>
+
+  <ul>
+    <li>在 <span class="math-inline">f</span> 的连续点 <span class="math-inline">x</span> 处，级数的和等于 <span class="math-inline">f(x)</span>；</li>
+    <li>在间断点 <span class="math-inline">x</span> 处，级数的和等于 <span class="math-inline">\frac{f(x^-)+f(x^+)}{2}</span>；</li>
+    <li>在区间端点 <span class="math-inline">x=\pm l</span> 处，级数的和等于 <span class="math-inline">\frac{f(-l^+)+f(l^-)}{2}</span>。</li>
+  </ul>
+
+  <p>方波在 <span class="math-inline">x=0</span> 处左右极限分别是 <span class="math-inline">-1</span> 与 <span class="math-inline">1</span>，级数在那里取值 <span class="math-inline">0</span>；<span class="math-inline">x=\pm\pi</span> 处同理。要写成等号就得把断点剔出来：</p>
+
+  <div class="math-block">\frac{4}{\pi}\left(\sin x+\frac{\sin 3x}{3}+\cdots\right)=\begin{cases}f(x),&amp;x\ne k\pi,\\ 0,&amp;x=k\pi.\end{cases}</div>
+
+  <p>代一个特殊点把级数化成数项级数求和，是傅里叶级数最可能出现的考法。把 <span class="math-inline">x=\frac{\pi}{2}</span> 代进去，左边是 <span class="math-inline">f\left(\frac{\pi}{2}\right)=1</span>，于是</p>
+
+  <div class="math-block">\frac{\pi}{4}=1-\frac13+\frac15-\frac17+\cdots .</div>
+
+  <p>把 <span class="math-inline">x=0</span> 代进去只得到 <span class="math-inline">0=0</span>，因为那里是间断点，级数的和不等于 <span class="math-inline">f(0)</span>。</p>
+
+  <div class="quiz" data-quiz='[
+  {
+    "q": "本课的方波：$f$ 以 $2\\pi$ 为周期，\n$-\\pi&lt;x&lt;0$ 时 $f(x)=-1$，\n$0&lt;x&lt;\\pi$ 时 $f(x)=1$。\n它的级数在 $x=0$ 处取值多少？\n在 $x=\\pi$ 处又取值多少？\n两问各填一个数。",
+    "answer": "两处都是 $0$。\n\n$x=0$ 是间断点：左极限 $-1$、右极限 $1$，\n级数取两者的平均 $\\frac{-1+1}{2}=0$。\n\n$x=\\pi$ 是区间端点：\n级数取 $\\frac{f(-\\pi^+)+f(\\pi^-)}{2}$，\n也就是 $\\frac{-1+1}{2}=0$。",
+    "criteria": "两空都填 $0$ 才算过，卷面这是 3 分的填空。\n关键是别写 $f(0)$：那儿本身没定义，\n级数取的是左右极限的平均。\n只对一个按部分通过；\n填 $1$ 或 $-1$ 是把断点当连续点处理了。"
+  }
+]'></div>
+
+  <h2>复指数形式</h2>
+
+  <p>欧拉公式 <span class="math-inline">e^{inx}=\cos nx+i\sin nx</span> 同时给出 <span class="math-inline">\cos nx=\frac{e^{inx}+e^{-inx}}{2}</span> 与 <span class="math-inline">\sin nx=\frac{e^{inx}-e^{-inx}}{2i}</span>。代入三角形式的级数、按 <span class="math-inline">e^{inx}</span> 归并同类项，得</p>
+
+  <div class="math-block">f(x)\sim\sum_{n=-\infty}^{+\infty}c_ne^{inx},\qquad c_n=\frac{1}{2\pi}\int_{-\pi}^{\pi}f(x)e^{-inx}\,dx .</div>
+
+  <p>两种形式的系数可以互算：</p>
+
+  <div class="math-block">c_0=\frac{a_0}{2},\qquad c_n=\frac{a_n-ib_n}{2}\ (n\ge 1),\qquad c_{-n}=\frac{a_n+ib_n}{2}\ (n\ge 1),</div>
+
+  <p>反过来是 <span class="math-inline">a_n=c_n+c_{-n}</span>、<span class="math-inline">b_n=i\left(c_n-c_{-n}\right)</span>。三角形式的 <span class="math-inline">a_n</span>、<span class="math-inline">b_n</span> 是两个实数，同一个谐波被拆成两个数；复指数形式的 <span class="math-inline">c_n</span> 是一个复数，模就是这一项的幅度，幅角是它的初相。</p>
+
+  <p>周期为 <span class="math-inline">2l</span> 时，把 <span class="math-inline">e^{inx}</span> 换成 <span class="math-inline">e^{i\frac{n\pi x}{l}}</span>，系数前的 <span class="math-inline">\frac{1}{2\pi}</span> 换成 <span class="math-inline">\frac{1}{2l}</span>。</p>
+
+  <p>方波（<span class="math-inline">n</span> 为奇数）的复指数系数由 <span class="math-inline">a_n=0</span>、<span class="math-inline">b_n=\frac{4}{n\pi}</span> 直接读出：<span class="math-inline">c_n=-\frac{2i}{n\pi}</span>，<span class="math-inline">c_{-n}=\frac{2i}{n\pi}</span>；<span class="math-inline">n</span> 为偶数与 <span class="math-inline">n=0</span> 时 <span class="math-inline">c_n=0</span>。</p>
+
+  <div class="quiz" data-quiz='[
+  {
+    "q": "某个 $2\\pi$ 周期函数的系数是\n$a_3=6$、$b_3=-8$。\n① 求 $c_3$ 与 $c_{-3}$。\n② $|c_3|$ 等于多少？",
+    "answer": "$c_3=\\frac{a_3-ib_3}{2}=\\frac{6+8i}{2}=3+4i$，\n$c_{-3}=\\frac{a_3+ib_3}{2}=\\frac{6-8i}{2}=3-4i$。\n\n$|c_3|=\\sqrt{3^2+4^2}=5$，\n与 $|c_{-3}|$ 相等：\n$c_{-3}=\\overline{c_3}$。",
+    "criteria": "① 两式符号不能对调：\n$c_3=\\frac{a_n-ib_n}{2}$、\n$c_{-3}=\\frac{a_n+ib_n}{2}$，\n$b_3=-8$ 代进去要变成 $+8i$。\n得 $3+4i$ 与 $3-4i$；\n写成 $6+8i$（漏了除 2）按不通过。\n② 必须是 $5$。\n按三角形式算 $\\sqrt{a_3^2+b_3^2}=10$，\n那是两项合起来的幅度，模只取一半。"
+  }
+]'></div>
+
+  <h2>频谱看什么</h2>
+
+  <p>把 <span class="math-inline">|c_n|</span> 按 <span class="math-inline">n</span> 排开画成一根根柱子，得到的图叫幅度谱；把 <span class="math-inline">\arg c_n</span> 按 <span class="math-inline">n</span> 排开叫相位谱，两者合起来叫频谱。方波的幅度谱里只有奇数位置有柱子，高度是 <span class="math-inline">\frac{2}{n\pi}</span>。</p>
+
+  <figure class="lesson-figure">
+    <img src="../assets/img/pool/傅里叶级数-方波-频谱-奇次谐波-本机-02.png" alt="横轴是谐波次数 n（-10 到 10），奇次位置各有一根蓝色竖线，顶部标出高度 0.637、0.212、0.127、0.091、0.071，偶次位置在轴上是灰色小点，n = 0 处是红点；橙色虚线穿过各竖线顶端，标为包络 2/(nπ)；右栏写出 cₙ = −2i/(nπ)（n 为奇数）、偶次为 0、c₀ = 0，以及 n = 1、3、5、7 的幅度值与 c₋ₙ 与 cₙ 共轭">
+    <figcaption>图 2 · 偶次谐波为零，次数越高柱子越低，但不会消失。（来源：本机生成（<code>assets/img/gen/傅里叶级数-方波-频谱-奇次谐波-本机-02.py</code>），许可：本项目自产）</figcaption>
+  </figure>
+
+  <p>三条要读出来的结论：</p>
+
+  <ul>
+    <li>偶次谐波为零。方波在一个周期里正负各占一半，它在 <span class="math-inline">\cos 2kx</span> 与 <span class="math-inline">\sin 2kx</span> 上的投影正好相互抵消。</li>
+    <li>幅度按 <span class="math-inline">\frac1n</span> 递减而永远不为零。跳变越陡需要的高频越多，上一张图里取到九次谐波才贴近方波，原因就在这里。</li>
+    <li><span class="math-inline">c_{-n}</span> 与 <span class="math-inline">c_n</span> 共轭，两根柱子一样高、相位相反。负频率没有单独的物理含义，它是复指数写法带出来的配对项。</li>
+  </ul>
+
+  <h2>级数怎么走到变换</h2>
+
+  <p>级数只对周期函数给出。把周期记作 <span class="math-inline">T</span>，基频 <span class="math-inline">\omega_0=\frac{2\pi}{T}</span>，复指数形式写成</p>
+
+  <div class="math-block">f(t)=\sum_{n=-\infty}^{+\infty}c_ne^{in\omega_0t},\qquad c_n=\frac{1}{T}\int_{0}^{T}f(t)e^{-in\omega_0t}\,dt .</div>
+
+  <p>相邻两根谱线的间距是 <span class="math-inline">\Delta\omega=\omega_0=\frac{2\pi}{T}</span>，把和式改写成以它为步长的形式：</p>
+
+  <div class="math-block">f(t)=\frac{1}{2\pi}\sum_{n=-\infty}^{+\infty}\left(Tc_n\right)e^{in\omega_0t}\,\Delta\omega .</div>
+
+  <p><span class="math-inline">T\to+\infty</span> 时，<span class="math-inline">\Delta\omega\to0</span>，一根根谱线连成连续的一片；每根的高度 <span class="math-inline">c_n\to0</span>，乘积 <span class="math-inline">Tc_n</span> 却趋于有限值，记作 <span class="math-inline">F(\omega_n)</span>。求和随之变成积分：</p>
+
+  <div class="math-block">f(t)=\frac{1}{2\pi}\int_{-\infty}^{+\infty}F(\omega)e^{i\omega t}\,d\omega,\qquad F(\omega)=\int_{-\infty}^{+\infty}f(t)e^{-i\omega t}\,dt .</div>
+
+  <p>后一个式子叫傅里叶变换，前一个叫傅里叶逆变换。离散谱换成连续谱、<span class="math-inline">c_n</span> 换成 <span class="math-inline">F(\omega)</span>，就是这一步的全部内容；下一课从这两个式子开始。</p>
+
+  <figure class="lesson-figure">
+    <img src="../assets/img/pool/傅里叶级数-级数到变换-周期增大-本机-03.png" alt="上排三格是同一个矩形脉冲在周期等于 4、8、16 时的频谱，每格标出 n = 0 那根谱线的高度 c₀ 为 0.500、0.250、0.125，以及相邻谱线间距 2π/T 约 1.57、0.79、0.39；三格的谱线一根比一根密、一根比一根矮，橙色虚线包络形状不变。下排一条 T 趋于无穷的箭头，下面写三步说明与两个式子：周期函数的求和式、周期趋于无穷时的积分式，以及 F(ω) 的定义">
+    <figcaption>图 3 · 周期变大时谱线变密、每根变矮，包络不动，极限就是连续谱。（来源：本机生成（<code>assets/img/gen/傅里叶级数-级数到变换-周期增大-本机-03.py</code>），许可：本项目自产）</figcaption>
+  </figure>
+
+  <h2>练习：算一次系数</h2>
+
+  <div class="lesson-practice">
+    <div class="lesson-practice__head">
+      <span class="lesson-practice__level">练习</span>
+      <span class="lesson-practice__title">手算一遍，再用几行代码核对</span>
+    </div>
+
+      <p>第 1 步，手算。用 <span class="math-inline">b_n=\frac{2}{\pi}\int_{0}^{\pi}\sin nx\,dx</span> 算出方波的 <span class="math-inline">b_1</span>、<span class="math-inline">b_2</span>、<span class="math-inline">b_3</span>，写成三个小数（保留三位）。</p>
+
+      <p>第 2 步，核对。把下面这段存成 <code>fourier.py</code> 跑一次，三行输出就是上一步的三个数：</p>
+
+      <pre data-lang="python"><code>from math import pi, sin
+def b(n, N=200001):
+    h = 2*pi/(N-1)
+    return sum((-1 if (-pi + i*h) &lt; 0 else 1)*sin(n*(-pi + i*h))*h for i in range(N))/pi
+for n in (1, 2, 3):
+    print(n, round(b(n), 3))</code></pre>
+
+      <p>输出 <code>1 1.273</code>、<code>2 -0.0</code>、<code>3 0.424</code>，与手算的 <span class="math-inline">\frac{4}{\pi}=1.273</span>、<span class="math-inline">0</span>、<span class="math-inline">\frac{4}{3\pi}=0.424</span> 一致。第二行的 <code>-0.0</code> 就是 <span class="math-inline">0</span>，浮点积分的符号残留。</p>
+
+      <p>第 3 步，改一行看变化。把 <code>(1, 2, 3)</code> 改成 <code>(1, 2, 3, 4, 5, 6)</code> 再跑：偶次仍然全是 <span class="math-inline">0</span>，奇次的数按 <span class="math-inline">\frac1n</span> 变小。</p>
+
+      <p>第 4 步，看间断点。把循环换成下面这几行，算的是部分和在 <span class="math-inline">x=\frac{\pi}{2}</span> 与 <span class="math-inline">x=0</span> 的值：</p>
+
+      <pre data-lang="python"><code>from math import pi, sin
+for K in (1, 2, 5, 50):
+    S = lambda x, K=K: 4/pi*sum(sin((2*k-1)*x)/(2*k-1) for k in range(1, K+1))
+    print(K, round(S(pi/2), 3), round(S(0), 3))</code></pre>
+
+      <p><span class="math-inline">x=\frac{\pi}{2}</span> 一列是 <code>1.273</code>、<code>0.849</code>、<code>1.063</code>、<code>0.994</code>，往 <span class="math-inline">1</span> 靠近，因为那里是连续点，<span class="math-inline">f\left(\frac{\pi}{2}\right)=1</span>；<span class="math-inline">x=0</span> 一列恒为 <code>0.0</code>，因为那里是间断点，级数取左右极限的平均。</p>
+  </div>
+
+  <h2>带走的公式卡</h2>
+
+  <table>
+    <thead>
+      <tr><th>要写的东西</th><th>写法</th></tr>
+    </thead>
+    <tbody>
+      <tr><td>正交性</td><td><span class="math-inline">\int_{-\pi}^{\pi}\cos nx\cos kx\,dx=\int_{-\pi}^{\pi}\sin nx\sin kx\,dx=0</span>（<span class="math-inline">n\ne k</span>），自身为 <span class="math-inline">\pi</span></td></tr>
+      <tr><td>三角形式（<span class="math-inline">2\pi</span>）</td><td><span class="math-inline">f(x)\sim\frac{a_0}{2}+\sum\left(a_n\cos nx+b_n\sin nx\right)</span></td></tr>
+      <tr><td>系数（<span class="math-inline">2\pi</span>）</td><td><span class="math-inline">a_n=\frac1\pi\int_{-\pi}^{\pi}f\cos nx\,dx</span>，<span class="math-inline">b_n=\frac1\pi\int_{-\pi}^{\pi}f\sin nx\,dx</span></td></tr>
+      <tr><td>系数（<span class="math-inline">2l</span>）</td><td><span class="math-inline">a_n=\frac1l\int_{-l}^{l}f(x)\cos\frac{n\pi x}{l}dx</span>，<span class="math-inline">b_n</span> 同形换 <span class="math-inline">\sin</span></td></tr>
+      <tr><td>奇偶简化</td><td>奇函数只有 <span class="math-inline">b_n</span>，偶函数只有 <span class="math-inline">a_n</span></td></tr>
+      <tr><td>复指数形式</td><td><span class="math-inline">f(x)\sim\sum c_ne^{inx}</span>，<span class="math-inline">c_n=\frac{1}{2\pi}\int_{-\pi}^{\pi}f(x)e^{-inx}dx</span></td></tr>
+      <tr><td>两种形式互换</td><td><span class="math-inline">c_0=\frac{a_0}{2}</span>，<span class="math-inline">c_n=\frac{a_n-ib_n}{2}</span>，<span class="math-inline">c_{-n}=\frac{a_n+ib_n}{2}</span></td></tr>
+      <tr><td>间断点</td><td>级数取 <span class="math-inline">\frac{f(x^-)+f(x^+)}{2}</span></td></tr>
+      <tr><td>方波</td><td><span class="math-inline">b_n=\frac{4}{n\pi}</span>（<span class="math-inline">n</span> 奇），只有奇次谐波，<span class="math-inline">\vert c_n\vert=\frac{2}{n\pi}</span></td></tr>
+      <tr><td>级数到变换</td><td><span class="math-inline">T\to+\infty</span>，<span class="math-inline">\Delta\omega\to0</span>，<span class="math-inline">Tc_n\to F(\omega)</span>，求和变积分</td></tr>
+    </tbody>
+  </table>
+
+  <ul class="lesson-resources">
+    <li>李君、于非非《复变函数与积分变换》§4.1 积分变换的预备知识、§4.2 傅里叶级数<span class="lesson-resources__meta">书 · 纸质教材，本课的讲法与系数公式以它为准</span></li>
+    <li><a href="http://www.lamda.nju.edu.cn/yehj/dsp2020/9.pdf">拉普拉斯变换与傅里叶变换（南京大学数字信号处理课程讲义）</a><span class="lesson-resources__meta">讲义 · 连续周期信号的傅里叶级数与四类变换的对照表，偏「怎么算」</span></li>
+    <li><a href="http://faculty.hfut.edu.cn/_resources/group1/M00/00/1C/rB_zR2ks_QyAOcheAAP1H6_9avI556.pdf">合肥工业大学期末试卷（含答案与逐题分值）</a><span class="lesson-resources__meta">试卷 · 七套卷合计，傅里叶变换落在填空或选择，拉普拉斯变换是 9～10 分的解答题</span></li>
+  </ul>
+
+  <!-- ── 提问提示：固定写法，别删 ── -->
+
+  <div class="lesson-ask">
+    <b>没看懂？随时问</b>
+    把看不懂的段落（或报错）原样复制回会话，说一句哪里不懂就行，我只解释这一段，不打断你的进度。
+  </div>
+
+  <!-- ── 上/下节课指针由渲染器按 curriculum.yaml 的 nodes 顺序算（第一课无 --prev、最后一课无 --next） ── -->
+
+  <nav class="lesson-nav" aria-label="上一课 / 下一课">
+    <a class="lesson-nav__link lesson-nav__link--prev" href="0015-exp4-residue-contour.html">
+      <span class="lesson-nav__dir">上节课</span>
+      <span class="lesson-nav__title">实验四：围道上的留数</span>
+    </a>
+    <a class="lesson-nav__link lesson-nav__link--next" href="0017-ch4-fourier-transform.html">
+      <span class="lesson-nav__dir">下节课</span>
+      <span class="lesson-nav__title">傅里叶变换：定义与性质</span>
+    </a>
+  </nav>
+
+  <footer class="lesson-footer">
+    StudyMate · 0016 傅里叶级数与正交展开 · 本地学习工作区
+  </footer>
+
+</article>
+
+<script src="../../../assets/sayo/sayo.js"></script>
+<link rel="stylesheet" href="../../../assets/katex/katex.min.css">
+<script src="../../../assets/katex/katex.min.js" defer></script>
+<script src="../../../assets/lesson-math.js" defer></script>
+<script src="../assets/quiz.js" defer></script>
+<script src="../assets/lesson-toc.js" defer></script>
+<script>LearnTheme.wire(document.getElementById('lesson-theme-checkbox'));</script>
+</body>
+</html>
