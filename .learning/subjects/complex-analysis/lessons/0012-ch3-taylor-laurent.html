@@ -1,0 +1,371 @@
+<!DOCTYPE html>
+<html lang="zh-CN" data-theme="dark">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>泰勒级数与洛朗级数 · 复变函数与积分变换</title>
+
+<!-- 共享层在 .learning/assets/，课件在 .learning/subjects/<slug>/lessons/ 下，所以是 ../../../assets/ -->
+<link rel="stylesheet" href="../../../assets/sayo/sayo.css">
+<link rel="stylesheet" href="../../../assets/learn-theme.css">
+<link rel="stylesheet" href="../assets/style.css">
+
+<!-- 主题要在首帧前应用，避免闪白/闪黑 -->
+<script src="../../../assets/learn-theme.js"></script>
+<script>LearnTheme.apply();</script>
+</head>
+
+<body class="lesson-body">
+
+<nav class="lesson-bar">
+  <a href="../index.html">← 返回课程</a>
+  <span>复变函数与积分变换</span>
+  <span class="lesson-bar__no">0012</span>
+  <!-- 课件页自带主题开关：学生从文件管理器直接打开课件时也能切暗色 -->
+  <label class="syo-toggle syo-toggle--theme lesson-bar__toggle" title="切换深浅主题" aria-label="切换深浅主题">
+    <input type="checkbox" id="lesson-theme-checkbox" checked>
+    <span class="syo-toggle-track"></span>
+    <span class="syo-toggle-knob">
+      <svg class="syo-toggle-sun" viewBox="0 0 20 20" fill="none" aria-hidden="true"><circle cx="10" cy="10" r="3.5" stroke="#f57c00" stroke-width="1.5"/><path d="M10 2v2.5M10 15.5V18M2 10h2.5M15.5 10H18M4.34 4.34l1.77 1.77M13.89 13.89l1.77 1.77M4.34 15.66l1.77-1.77M13.89 6.11l1.77-1.77" stroke="#f57c00" stroke-width="1.2" stroke-linecap="round"/></svg>
+      <svg class="syo-toggle-moon" viewBox="0 0 20 20" fill="none" aria-hidden="true"><path d="M16.5 12.5A6 6 0 019 4.5a6 6 0 007.5 8z" stroke="#5c6bc0" stroke-width="1.5" stroke-linejoin="round"/></svg>
+    </span>
+  </label>
+</nav>
+
+<article class="lesson">
+
+  <header class="lesson-header">
+    <span class="lesson-header__eyebrow">0012 · 泰勒级数与洛朗级数</span>
+    <h1>泰勒级数与洛朗级数</h1>
+    <p class="lesson-goal"><b>本节目标：</b>能把函数在指定区域展开成泰勒级数或洛朗级数。</p>
+  </header>
+
+  <!-- ── 正文：渲染器按内容文件（lessons/<序号>-<节点id>.md）产出，块词汇见 docs/规范/课件内容格式.md ── -->
+
+  <h2>卷面怎么考</h2>
+
+  <p>本课在公开试卷上的位置固定，问法只有一种形状：给一个函数与一两个环域，要你写出展开式。</p>
+
+  <ul>
+    <li>解答题，10 分。合肥工业大学 2022 年卷的解答题第 6 题：「确定函数 <span class="math-inline">f(z)=\frac{z+1}{(z-1)^2}</span> 在圆环域 (1) <span class="math-inline">0&lt;|z|&lt;1</span>；(2) <span class="math-inline">1&lt;|z|&lt;+\infty</span> 内的洛朗级数展开式。」合肥工大 2025 年卷把同一形状的题压到 5 分，只留 <span class="math-inline">1&lt;|z|&lt;2</span> 一个环域。西安建筑科技大学那份卷把它排在第五大题（10 分）「求函数在以下各圆环内的罗朗展式」，两问以同一个奇点为心，一问在内、一问在外。</li>
+    <li>填空，3～4 分，只问区域有多大，不要级数。2025 年卷问「<span class="math-inline">f(z)=\frac{\cos z}{z-3}</span> 在 <span class="math-inline">z=i</span> 处泰勒展开等式成立的最大圆域半径」；2023 年卷问「<span class="math-inline">f(z)=\frac{1}{(z+5)\sin z}</span> 可以在圆环域 <span class="math-inline">0&lt;|z|&lt;R</span> 内作洛朗展开，<span class="math-inline">R</span> 的最大值」。</li>
+    <li>选择，3～4 分，问哪个区域不能展开。2024 年卷的选择第 4 题给「<span class="math-inline">f(z)=\frac{z-1}{z^2-z-2}</span> 不能在哪个区域内作洛朗展开」四个候选环域，其中 <span class="math-inline">0&lt;|z|&lt;2</span> 把奇点 <span class="math-inline">-1</span> 圈在里面，那就是答案；2025 年卷的选择第 4 题反过来，给四个函数与各自的区域，问哪一个不能展开成双边幂级数。两处的判据同一条：区域里 <span class="math-inline">f</span> 要处处解析。</li>
+    <li>分给在步骤上。参考答案把「<span class="math-inline">f(z)</span> 的奇点是 <span class="math-inline">1,2</span>，因此 <span class="math-inline">f(z)</span> 在这两个圆环域内都解析」写成第一行，每凑一个几何级数标 1～3 分，最后合并系数再标 2 分。</li>
+  </ul>
+
+  <p>本课只求会算。定理的证明与存在性的讨论都不在考核范围内，下面给出的结论直接拿来用。</p>
+
+  <h2>唤醒：两个旧式子</h2>
+
+  <p>高等数学里对 <span class="math-inline">|x|&lt;1</span> 有</p>
+
+  <div class="math-block">\frac{1}{1-x}=1+x+x^2+\cdots=\sum_{n=0}^{\infty}x^n .</div>
+
+  <p>右端是公比为 <span class="math-inline">x</span> 的等比级数。本课几乎每一步都归结到这条等式：先把要展开的函数拆成若干项，再让每一项凑成 <span class="math-inline">\frac{1}{1-w}</span> 的样子。等号旁边的 <span class="math-inline">|x|&lt;1</span> 与等式本身同等重要——<span class="math-inline">w</span> 取成什么，决定了这一项在哪块区域里成立。</p>
+
+  <p>第二个旧式子是实变函数的泰勒展开：若 <span class="math-inline">f</span> 在 <span class="math-inline">x_0</span> 处有各阶导数，则对 <span class="math-inline">|x-x_0|&lt;R</span> 有</p>
+
+  <div class="math-block">f(x)=\sum_{n=0}^{\infty}\frac{f^{(n)}(x_0)}{n!}(x-x_0)^n .</div>
+
+  <p>复变函数里同一件事仍然成立，差别在于成立范围由奇点定下来。幂级数与收敛半径的算法上一课已学，这里直接使用结论。</p>
+
+  <h2>泰勒级数：系数从哪来</h2>
+
+  <p>设 <span class="math-inline">f(z)</span> 在圆盘 <span class="math-inline">|z-z_0|&lt;R</span> 内解析，则在该圆盘内</p>
+
+  <div class="math-block">f(z)=\sum_{n=0}^{\infty}c_n(z-z_0)^n,\qquad c_n=\frac{f^{(n)}(z_0)}{n!}=\frac{1}{2\pi i}\oint_C\frac{f(\zeta)}{(\zeta-z_0)^{n+1}}\,d\zeta ,</div>
+
+  <p>其中 <span class="math-inline">C</span> 是圆盘内绕 <span class="math-inline">z_0</span> 一圈的正向简单闭曲线。这个展开称为 <span class="math-inline">f</span> 在 <span class="math-inline">z_0</span> 处的<b>泰勒级数</b>，<span class="math-inline">z_0=0</span> 时也叫麦克劳林级数。泰勒（B. Taylor）在 1715 年给出的是实变量的形式，复变量的这个结论由柯西建立。</p>
+
+  <p>两个等号说的是同一件事：第一个等号把系数写成高阶导数，第二个等号正是第 9 课的高阶导数公式。系数全部来自 <span class="math-inline">f</span> 在 <span class="math-inline">z_0</span> 的高阶导数，所以只要 <span class="math-inline">f</span> 在圆盘内解析，展开就自动存在。卷面上很少让你用导数算系数，用得多的是下面这张表与它的换元。</p>
+
+  <table>
+    <thead>
+      <tr><th>函数</th><th>展开式</th><th>成立范围</th></tr>
+    </thead>
+    <tbody>
+      <tr><td><span class="math-inline">\frac{1}{1-z}</span></td><td><span class="math-inline">\sum_{n=0}^{\infty}z^n</span></td><td><span class="math-inline">\vert z\vert&lt;1</span></td></tr>
+      <tr><td><span class="math-inline">\frac{1}{1+z}</span></td><td><span class="math-inline">\sum_{n=0}^{\infty}(-1)^n z^n</span></td><td><span class="math-inline">\vert z\vert&lt;1</span></td></tr>
+      <tr><td><span class="math-inline">\frac{1}{(1-z)^2}</span></td><td><span class="math-inline">\sum_{n=0}^{\infty}(n+1)z^n</span></td><td><span class="math-inline">\vert z\vert&lt;1</span></td></tr>
+      <tr><td><span class="math-inline">e^z</span></td><td><span class="math-inline">\sum_{n=0}^{\infty}\frac{z^n}{n!}</span></td><td>全平面</td></tr>
+      <tr><td><span class="math-inline">\sin z</span></td><td><span class="math-inline">\sum_{n=0}^{\infty}\frac{(-1)^n z^{2n+1}}{(2n+1)!}</span></td><td>全平面</td></tr>
+      <tr><td><span class="math-inline">\cos z</span></td><td><span class="math-inline">\sum_{n=0}^{\infty}\frac{(-1)^n z^{2n}}{(2n)!}</span></td><td>全平面</td></tr>
+    </tbody>
+  </table>
+
+  <p>第三行由第一行逐项求导得到：<span class="math-inline">\frac{1}{(1-z)^2}</span> 是 <span class="math-inline">\frac{1}{1-z}</span> 的导数，右边逐项求导，<span class="math-inline">z^n</span> 变成 <span class="math-inline">nz^{n-1}</span>，重排后得到 <span class="math-inline">(n+1)z^n</span>。合肥工大卷的参考答案就是用「先求导再合并」处理这一类分母带平方的函数的。</p>
+
+  <p>展开中心不在原点时，先提常数、再把 <span class="math-inline">z-z_0</span> 当作新变量。求 <span class="math-inline">e^z</span> 在 <span class="math-inline">z=i</span> 处的展开：</p>
+
+  <div class="math-block">e^z=e^{i}\,e^{z-i}=e^{i}\sum_{n=0}^{\infty}\frac{(z-i)^n}{n!} .</div>
+
+  <p>圆越大的极限由奇点定：<b>泰勒展开成立的最大圆域半径等于 <span class="math-inline">z_0</span> 到 <span class="math-inline">f</span> 最近奇点的距离</b>。填空考的正是这一条。<span class="math-inline">f(z)=\frac{\cos z}{z-3}</span> 的奇点只有 <span class="math-inline">3</span>（分子 <span class="math-inline">\cos z</span> 处处解析），<span class="math-inline">z_0=i</span> 到它的距离是 <span class="math-inline">|i-3|=\sqrt{10}</span>，所以最大圆域半径是 <span class="math-inline">\sqrt{10}</span>，卷面上写这个数。</p>
+
+  <div class="quiz" data-quiz='[
+  {
+    "q": "$f(z)=\\frac{\\cos z}{z-3}$ 在 $z=i$ 处作泰勒展开，\n成立的圆域半径最大是多少？",
+    "opts": [
+      "$\\sqrt{10}$",
+      "$\\sqrt{2}$",
+      "$\\sqrt{17}$",
+      "$\\sqrt{5}$"
+    ],
+    "ans": 0,
+    "why": "奇点只有 $z=3$（$\\cos z$ 处处解析），\n$|i-3|=\\sqrt{10}$：半径就是到最近奇点的距离。"
+  },
+  {
+    "q": "填空（3 分）：\n$f(z)=\\frac{1}{(z+5)\\sin z}$ 可以在圆环域 $0&lt;|z|&lt;R$ 内\n作洛朗展开，$R$ 的最大值是多少？\n要写出三样：奇点全找出来、最近的那个到原点多远、结论。",
+    "answer": "奇点：$z=-5$，以及 $\\sin z$ 的零点\n$0,\\ \\pm\\pi,\\ \\pm2\\pi,\\dots$\n\n环域 $0&lt;|z|&lt;R$ 已经把 $z=0$ 挖掉，不算它；\n剩下最近的奇点是 $z=\\pm\\pi$，到原点距离 $\\pi$。\n（$z=-5$ 距原点 $5$，比 $\\pi$ 远，不起作用。）\n\n所以 $R$ 的最大值是 $\\pi$。",
+    "criteria": "① 奇点找全：$z=-5$ 与 $\\sin z$ 的全部零点；\n② 说清 $0&lt;|z|&lt;R$ 已把原点挖掉、所以原点不算；\n③ 答 $\\pi$，并说它来自 $z=\\pm\\pi$。\n只写 $\\pi$ 没有来历算部分通过；\n答 $5$ 是把 $z=-5$ 当成最近的，不通过。"
+  }
+]'></div>
+
+  <h2>洛朗级数：环域与负幂项</h2>
+
+  <p>洛朗（P. A. Laurent）在 1843 年把展开推广到函数带奇点的情形：只要求函数在一个圆环里解析，中心附近可以带奇点。教材因此称它为<b>洛朗级数</b>；西建大那份卷写作「罗朗」，指的是同一件事。</p>
+
+  <p><b>环形域</b>（环域）指两个同心圆之间的部分，记作 <span class="math-inline">r&lt;|z-z_0|&lt;R</span>，其中 <span class="math-inline">0\le r&lt;R\le+\infty</span>。<span class="math-inline">r=0</span> 时它退成去心邻域 <span class="math-inline">0&lt;|z-z_0|&lt;R</span>，<span class="math-inline">R=+\infty</span> 时退成圆外区域 <span class="math-inline">|z-z_0|&gt;r</span>。这两端都是环域的特例，卷面上都出现过。</p>
+
+  <p>设 <span class="math-inline">f(z)</span> 在环域 <span class="math-inline">r&lt;|z-z_0|&lt;R</span> 内解析，则在该环域内</p>
+
+  <div class="math-block">f(z)=\sum_{n=-\infty}^{+\infty}c_n(z-z_0)^n,\qquad c_n=\frac{1}{2\pi i}\oint_C\frac{f(\zeta)}{(\zeta-z_0)^{n+1}}\,d\zeta ,</div>
+
+  <p>其中 <span class="math-inline">C</span> 是环域内绕 <span class="math-inline">z_0</span> 一圈的正向简单闭曲线。展开在这条环域内唯一：同一个环域里，无论用哪种办法算出来的系数都相同。</p>
+
+  <p>与泰勒级数相比，指数从 <span class="math-inline">-\infty</span> 起，出现了 <span class="math-inline">z-z_0</span> 的负幂项。<span class="math-inline">n&lt;0</span> 的项合称<b>主要部分</b>，<span class="math-inline">n\ge 0</span> 的项在环域内给出一个解析函数，合称解析部分。环域内部不许有奇点，奇点只能待在内圆以内（含 <span class="math-inline">z_0</span> 自己）或外圆以外——负幂项就是这些奇点留下的痕迹。只剩解析部分时，它就是泰勒级数。</p>
+
+  <p>系数公式同样是理论上的路。卷面上的洛朗展开一律走下一节的间接展开法，系数公式只用来看清 <span class="math-inline">c_{-1}</span> 的地位。</p>
+
+  <figure class="lesson-figure">
+    <img src="../assets/img/pool/洛朗-级数-负幂项与主要部分-本机-02.png" alt="上下两组方框把洛朗级数的项按指数排开；负幂那组是省略号、c 负二除以 z 减 z 零的平方、c 负一除以 z 减 z 零，称主要部分，其中 c 负一一项用红框标出；非负幂那组是 c 零、c 一乘 z 减 z 零、c 二乘 z 减 z 零的平方，称解析部分；下方两张卡片写明绕环域内一圈的积分等于 2πi 乘 c 负一，以及以奇点为心时 c 负一就是该点的留数">
+    <figcaption>图 1 · 负幂项是洛朗级数独有的部分，<span class="math-inline">c_{-1}</span> 单独决定绕一圈的积分。（来源：本机生成（<code>assets/img/gen/洛朗-级数-负幂项与主要部分-本机-02.py</code>），许可：本项目自产）</figcaption>
+  </figure>
+
+  <div class="quiz" data-quiz='[
+  {
+    "q": "同一函数在 $1&lt;|z|&lt;2$ 里的洛朗级数，\n与它在 $|z|&lt;1$ 里的泰勒级数相比，差别在哪？",
+    "opts": [
+      "出现负幂项，源自内圆里的奇点",
+      "出现正幂项，源自外圆外的奇点",
+      "收敛区域变成整个复平面",
+      "系数不再唯一，可以逐点任取"
+    ],
+    "ans": 0,
+    "why": "环域里不许有奇点，被关进内圆的奇点\n只能用 $z$ 的负幂描述——那就是主要部分。"
+  }
+]'></div>
+
+  <h2>环域怎么定</h2>
+
+  <p>展开的前提是环域里没有奇点。所以动笔的第一件事是把 <span class="math-inline">f</span> 的奇点找全，再看题目给的环域有没有把它们圈进去。</p>
+
+  <p>环域的边界由奇点到中心的距离决定。以 <span class="math-inline">z_0</span> 为心，把各奇点到 <span class="math-inline">z_0</span> 的距离从小到大排成一列，相邻两个距离之间就是一个环域：最内一圈从 <span class="math-inline">z_0</span> 自己起（若 <span class="math-inline">z_0</span> 是奇点则是 <span class="math-inline">0&lt;|z-z_0|&lt;\cdots</span>），最外一圈到 <span class="math-inline">+\infty</span>。卷面给的就是这种分法。</p>
+
+  <table>
+    <thead>
+      <tr><th>题面的样子</th><th>动作</th></tr>
+    </thead>
+    <tbody>
+      <tr><td>已经给了环域，如 <span class="math-inline">1&lt;\vert z\vert&lt;2</span></td><td>照它做，先确认环内没有奇点，再定每一项提什么</td></tr>
+      <tr><td>问「能在哪个区域内展开」</td><td>数每个候选区域里的奇点，有奇点即排除</td></tr>
+      <tr><td>问「展开成立的最大圆域半径」</td><td>量 <span class="math-inline">z_0</span> 到最近奇点的距离</td></tr>
+      <tr><td>问「环域 <span class="math-inline">0&lt;\vert z\vert&lt;R</span> 中 <span class="math-inline">R</span> 的最大值」</td><td>同上，取最近奇点到中心的距离</td></tr>
+    </tbody>
+  </table>
+
+  <p>以原点为心展开 <span class="math-inline">f(z)=\frac{1}{(z-1)(z-2)}</span> 为例，奇点是 <span class="math-inline">1</span> 与 <span class="math-inline">2</span>，两条分界圆是 <span class="math-inline">|z|=1</span> 与 <span class="math-inline">|z|=2</span>，平面被切成 <span class="math-inline">|z|&lt;1</span>、<span class="math-inline">1&lt;|z|&lt;2</span>、<span class="math-inline">|z|&gt;2</span> 三块。同一个函数若以 <span class="math-inline">z=1</span> 为心展开，距离变成 <span class="math-inline">0</span>（奇点 <span class="math-inline">1</span> 本身，要挖掉）与 <span class="math-inline">1</span>（奇点 <span class="math-inline">2</span>），环域是 <span class="math-inline">0&lt;|z-1|&lt;1</span> 与 <span class="math-inline">|z-1|&gt;1</span>。一道题的两问通常各取一种分法，先看清 <span class="math-inline">z_0</span> 再排距离。</p>
+
+  <p>填空那两处按这一条算。<span class="math-inline">\frac{1}{(z+5)\sin z}</span> 的奇点是 <span class="math-inline">z=-5</span> 与 <span class="math-inline">\sin z</span> 的零点 <span class="math-inline">0,\pm\pi,\pm2\pi,\dots</span>；环域 <span class="math-inline">0&lt;|z|&lt;R</span> 已经把 <span class="math-inline">z=0</span> 挖掉，剩下最近的是 <span class="math-inline">z=\pm\pi</span>，所以 <span class="math-inline">R</span> 的最大值是 <span class="math-inline">\pi</span>。</p>
+
+  <figure class="lesson-figure">
+    <img src="../assets/img/pool/洛朗-环域-奇点切分三个环域-本机-01.png" alt="左格复平面上半径 1 与 2 的两条圆把平面分成三块，奇点 1 与 2 落在两条分界圆上，三块分别标着模小于 1、模介于 1 与 2 之间、模大于 2；右格按三块各列出 1 除以 z 减 1 与 1 除以 z 减 2 的前几项，圆盘里两项都是正幂，中间环一正一负，外面两项都是负幂">
+    <figcaption>图 2 · 奇点落在分界圆上，圆内圆外各自没有奇点，三块因此各能展开一次；右格是后面例题要算出来的三套写法。（来源：本机生成（<code>assets/img/gen/洛朗-环域-奇点切分三个环域-本机-01.py</code>），许可：本项目自产）</figcaption>
+  </figure>
+
+  <div class="quiz" data-quiz='[
+  {
+    "q": "$f(z)=\\frac{z-1}{z^2-z-2}$ 不能在下列哪个区域内\n作洛朗展开？",
+    "opts": [
+      "$0&lt;|z|&lt;2$",
+      "$2&lt;|z|&lt;4$",
+      "$0&lt;|z+1|&lt;2$",
+      "$1&lt;|z+1|&lt;3$"
+    ],
+    "ans": 0,
+    "why": "奇点是 $-1$ 与 $2$；$0&lt;|z|&lt;2$ 把 $-1$ 圈在里面\n（$|-1|=1&lt;2$），区域内不解析，展不开。"
+  }
+]'></div>
+
+  <h2>间接展开法：四步</h2>
+
+  <p>10 分的大题按四步给分，顺序不要调换。</p>
+
+  <p><b>第一步，定环域。</b> 找出全部奇点，确认题目给的环域里没有它们。这一行要写在卷面上，参考答案给 1 分。</p>
+
+  <p><b>第二步，选中心。</b> 题目给的环域写成 <span class="math-inline">|z-z_0|</span> 的式子，<span class="math-inline">z_0</span> 就是展开中心，所有项都要凑成 <span class="math-inline">z-z_0</span> 与 <span class="math-inline">\frac{1}{z-z_0}</span> 的组合。中心一旦选错，后面四步全部作废。</p>
+
+  <p><b>第三步，拆部分分式。</b> 把有理函数拆成 <span class="math-inline">\frac{A}{z-a}+\frac{B}{z-b}+\cdots</span>。例如</p>
+
+  <div class="math-block">\frac{1}{(z-1)(z-2)}=\frac{1}{z-2}-\frac{1}{z-1} .</div>
+
+  <p>拆法两种：两边乘 <span class="math-inline">z-a</span> 后令 <span class="math-inline">z\to a</span>，或者待定系数解方程。分母有重根时多写一层，<span class="math-inline">\frac{1}{(z-1)^2}</span> 与 <span class="math-inline">\frac{1}{z-1}</span> 各占一项。</p>
+
+  <p><b>第四步，凑几何级数并写成立范围。</b> 每一项只有一种拆法能对上环域，判据是 <span class="math-inline">|z|</span> 与 <span class="math-inline">|a|</span> 谁大：</p>
+
+  <ul>
+    <li>在 <span class="math-inline">|z|&lt;|a|</span> 里提常数：<span class="math-inline">\frac{1}{z-a}=-\frac{1}{a}\cdot\frac{1}{1-z/a}=-\sum_{n=0}^{\infty}\frac{z^n}{a^{n+1}}</span>，成立范围 <span class="math-inline">|z|&lt;|a|</span>。</li>
+    <li>在 <span class="math-inline">|z|&gt;|a|</span> 里提 <span class="math-inline">\frac{1}{z}</span>：<span class="math-inline">\frac{1}{z-a}=\frac{1}{z}\cdot\frac{1}{1-a/z}=\sum_{n=0}^{\infty}\frac{a^n}{z^{n+1}}</span>，成立范围 <span class="math-inline">|z|&gt;|a|</span>。</li>
+  </ul>
+
+  <p>每写一个几何级数，就在等号右边标出它成立的区域；几块的成立范围求交集，必须正好是题目给的那条环域。交集比题目给的环域小，说明某一块提错了公因子。</p>
+
+  <div class="lesson-warn">
+    <b>成立范围要写在等号右边</b>
+    <p>判据只有一条：这一项所在的位置，<span class="math-inline">|z|</span> 比 <span class="math-inline">|a|</span> 大还是小。写成不写成立范围一般不影响得分，可它正是判断提哪个公因子的依据，省掉它，两个环域的幂次就容易抄反。</p>
+  </div>
+
+  <div class="quiz" data-quiz='[
+  {
+    "q": "同学写 $f(z)=\\frac{1}{(z-1)(z-2)}$ 在 $1&lt;|z|&lt;2$ 里的展开：\n\n```text\nf = 1/(z-2) - 1/(z-1)\n1/(z-2) = -Σ z^n / 2^(n+1)      (|z|&lt;2)\n1/(z-1) = -Σ z^n                (|z|&lt;1)\n所以 f = Σ (1 - 1/2^(n+1)) z^n ,  1&lt;|z|&lt;2\n```\n\n① 错在哪一行？\n② 判断该提常数还是提 $\\frac1z$ 的判据是什么？\n③ 写出正确的那一项（含成立范围）。",
+    "answer": "错在第三行（$\\frac{1}{z-1}$ 那一项），最后一行也因此抄成了\n泰勒级数那一支。\n\n判据只有一条：在这一项里比 $|z|$ 与 $|a|$ 谁大。\n在 $1&lt;|z|&lt;2$ 里 $|z|&gt;1$，所以提 $\\frac1z$：\n\n```text\n1/(z-1) = (1/z)·1/(1-1/z) = Σ 1/z^n ,  |z|&gt;1\n```\n\n正确的展开是\n$$f(z)=-\\sum_{n\\ge1}\\frac{1}{z^n}-\\sum_{n\\ge0}\\frac{z^n}{2^{n+1}}$$\n即 $c_{-n}=-1$（$n\\ge1$）、$c_0=-\\frac12$、$c_n=-2^{-(n+1)}$。",
+    "criteria": "① 点到 $\\frac{1}{z-1}$ 那一行；\n② 说清判据：$|z|&gt;|a|$ 提 $\\frac1z$，$|z|&lt;|a|$ 才提常数；\n③ 写出 $\\sum_{n\\ge1}\\frac{1}{z^n}$ 并标成立范围 $|z|&gt;1$。\n三条齐才算通过；只说\"范围写错了\"没给正确分支\n算部分通过；照抄他最后那行算不通过。"
+  }
+]'></div>
+
+  <h2>同一个函数三个环域</h2>
+
+  <p>以 <span class="math-inline">f(z)=\frac{1}{(z-1)(z-2)}=\frac{1}{z-2}-\frac{1}{z-1}</span> 为例，奇点是 <span class="math-inline">1</span> 与 <span class="math-inline">2</span>，中心取原点，三个环域各算一次。</p>
+
+  <p>在 <span class="math-inline">|z|&lt;1</span> 里两项都落在圆内，都提常数：</p>
+
+  <div class="math-block">\frac{1}{z-2}=-\frac{1}{2}\cdot\frac{1}{1-z/2}=-\sum_{n=0}^{\infty}\frac{z^n}{2^{n+1}},\qquad \frac{1}{z-1}=-\frac{1}{1-z}=-\sum_{n=0}^{\infty}z^n ,</div>
+
+  <div class="math-block">f(z)=\sum_{n=0}^{\infty}\Big(1-\frac{1}{2^{n+1}}\Big)z^n=\frac{1}{2}+\frac{3}{4}z+\frac{7}{8}z^2+\cdots</div>
+
+  <p>在 <span class="math-inline">1&lt;|z|&lt;2</span> 里，<span class="math-inline">\frac{1}{z-1}</span> 落在圆外，提 <span class="math-inline">\frac{1}{z}</span>；<span class="math-inline">\frac{1}{z-2}</span> 仍在圆内，提常数：</p>
+
+  <div class="math-block">\frac{1}{z-1}=\frac{1}{z}\cdot\frac{1}{1-1/z}=\sum_{n=1}^{\infty}\frac{1}{z^n},\qquad \frac{1}{z-2}=-\sum_{n=0}^{\infty}\frac{z^n}{2^{n+1}} ,</div>
+
+  <div class="math-block">f(z)=-\sum_{n=1}^{\infty}\frac{1}{z^n}-\sum_{n=0}^{\infty}\frac{z^n}{2^{n+1}} =-\frac{1}{z}-\frac{1}{z^2}-\cdots-\frac{1}{2}-\frac{z}{4}-\frac{z^2}{8}-\cdots</div>
+
+  <p>在 <span class="math-inline">|z|&gt;2</span> 里两项都在圆外，都提 <span class="math-inline">\frac{1}{z}</span>：</p>
+
+  <div class="math-block">\frac{1}{z-1}=\sum_{n=1}^{\infty}\frac{1}{z^n},\qquad \frac{1}{z-2}=\frac{1}{z}\cdot\frac{1}{1-2/z}=\sum_{n=0}^{\infty}\frac{2^n}{z^{n+1}} ,</div>
+
+  <div class="math-block">f(z)=\sum_{n=1}^{\infty}\frac{2^{n-1}-1}{z^n}=\frac{1}{z^2}+\frac{3}{z^3}+\frac{7}{z^4}+\frac{15}{z^5}+\cdots</div>
+
+  <p>第三条展开可以在 <span class="math-inline">z=3</span> 处验算：<span class="math-inline">f(3)=\frac{1}{(3-1)(3-2)}=\frac{1}{2}</span>，而右端代入 <span class="math-inline">z=3</span> 得 <span class="math-inline">\frac{1}{9}+\frac{3}{27}+\frac{7}{81}+\frac{15}{243}+\cdots=\frac{1}{2}</span>，两者一致。<span class="math-inline">z=3</span> 落在第三条环域 <span class="math-inline">|z|&gt;2</span> 里，却在前两条环域之外，那两条展开在这一点发散：每一条展开只在它自己的环域内成立。</p>
+
+  <p>三项的差别全在幂次：同一个 <span class="math-inline">\frac{1}{z-2}</span>，在 <span class="math-inline">|z|&lt;2</span> 的两条环域里是 <span class="math-inline">z</span> 的幂，在 <span class="math-inline">|z|&gt;2</span> 里是 <span class="math-inline">\frac{1}{z}</span> 的幂；同一个 <span class="math-inline">\frac{1}{z-1}</span>，在 <span class="math-inline">|z|&lt;1</span> 里是 <span class="math-inline">z</span> 的幂，在另外两条环域里是 <span class="math-inline">\frac{1}{z}</span> 的幂。判据始终是 <span class="math-inline">|z|</span> 与奇点距离谁大。</p>
+
+  <p>第一条环域里没有负幂项，那一支就是泰勒级数。第二、三条里的负幂项来自内圆里面的奇点：奇点被关在环域的内圆里，展开就只能用 <span class="math-inline">\frac{1}{z}</span> 的幂去描述它。</p>
+
+  <div class="quiz" data-quiz='[
+  {
+    "q": "10 分题（合肥工大卷的形状）：\n$f(z)=\\frac{z-1}{z^2+3z+2}$，\n① 在 $0&lt;|z|&lt;1$ 内展开；\n② 在 $|z+1|&gt;1$ 内展开。\n两问都按四步写：奇点与解析范围、部分分式、\n凑成的几何级数（每个标出成立范围）、合并后的系数。",
+    "answer": "奇点是 $-1$ 与 $-2$，两个环域里都没有它们，\n所以两处都能展开（这一行值 1 分）。\n\n先拆部分分式：\n$$f(z)=\\frac{-2}{z+1}+\\frac{3}{z+2}$$\n\n① $0&lt;|z|&lt;1$：两项都在圆内，都提常数\n$$-\\frac{2}{z+1}=\\sum_{n\\ge0}2(-1)^{n+1}z^n$$\n$$\\frac{3}{z+2}=\\sum_{n\\ge0}\\frac{3(-1)^n}{2^{n+1}}z^n$$\n合并：$c_n=(-1)^n\\left(\\frac{3}{2^{n+1}}-2\\right)$，\n即 $-\\frac12+\\frac54z-\\frac{13}{8}z^2+\\cdots$，\n成立范围 $|z|&lt;1$。\n\n② $|z+1|&gt;1$：令 $w=z+1$，两项都提 $\\frac1w$\n$$-\\frac{2}{w}$$\n$$\\frac{3}{w+1}=\\sum_{n\\ge0}\\frac{3(-1)^n}{w^{n+1}}$$\n合并：$c_{-1}=-2+3=1$，\n$c_{-m}=3(-1)^{m-1}$（$m\\ge2$，第一项只给 $c_{-1}$），\n即 $f=\\frac{1}{w}-\\frac{3}{w^2}+\\frac{3}{w^3}-\\cdots$，\n成立范围 $|z+1|&gt;1$。",
+    "criteria": "① 写出奇点 $-1,\\ -2$ 并说明两环域内解析（1 分）；\n② 部分分式 $\\frac{-2}{z+1}+\\frac{3}{z+2}$（1 分）；\n③ ①里两个几何级数都提常数、成立范围都写 $|z|&lt;1$，\n合并成 $c_n=(-1)^n\\left(\\frac{3}{2^{n+1}}-2\\right)$（3 分）；\n④ ②里换元 $w=z+1$ 后提 $\\frac1w$，范围写 $|z+1|&gt;1$（3 分）；\n⑤ ②的负幂系数 $c_{-1}=1$、$c_{-m}=3(-1)^{m-1}$（2 分）。\n②只写正幂项、或漏掉 $-\\frac{2}{w}$ 那一项，\n这一步的分数归零，整题最多部分通过。"
+  }
+]'></div>
+
+  <h2>负幂项里最关键的一项</h2>
+
+  <p>把 <span class="math-inline">n=-1</span> 代进系数公式，分母的幂变成 <span class="math-inline">(\zeta-z_0)^{0}=1</span>，于是</p>
+
+  <div class="math-block">c_{-1}=\frac{1}{2\pi i}\oint_C f(\zeta)\,d\zeta,\qquad\text{即}\qquad \oint_C f(z)\,dz=2\pi i\,c_{-1} .</div>
+
+  <p>沿环域内任意一条绕 <span class="math-inline">z_0</span> 一圈的正向闭曲线积分，值只由这一个系数定下来，其余系数都不参与。上一节的三条展开里，<span class="math-inline">c_{-1}</span> 可以直接从系数读出来：<span class="math-inline">1&lt;|z|&lt;2</span> 那条里是 <span class="math-inline">-1</span>，<span class="math-inline">|z|&gt;2</span> 那条里是 <span class="math-inline">0</span>。</p>
+
+  <p>在 <span class="math-inline">0&lt;|z-z_0|&lt;R</span> 这样的去心邻域里，<span class="math-inline">z_0</span> 是 <span class="math-inline">f</span> 的孤立奇点，<span class="math-inline">c_{-1}</span> 有一个专门的名字：<span class="math-inline">f</span> 在 <span class="math-inline">z_0</span> 的<b>留数</b>，记作 <span class="math-inline">\operatorname{Res}[f,z_0]</span>。第 14 课起的留数定理整章都建立在它上面：闭路积分的值等于 <span class="math-inline">2\pi i</span> 乘圈内各奇点的留数之和。卷面上求「圆环内的洛朗展式」与求「奇点处的留数」因此是同一套动作的两半，前者要全部系数，后者只要 <span class="math-inline">c_{-1}</span>。</p>
+
+  <p>两种情形要分清。环域以奇点为心时（如 <span class="math-inline">0&lt;|z-i|&lt;1</span>），<span class="math-inline">c_{-1}</span> 就是那一个奇点的留数；环域不以奇点为心时（如 <span class="math-inline">1&lt;|z|&lt;2</span>），<span class="math-inline">c_{-1}</span> 仍由同一条公式定义，但它等于环内各奇点留数之和，问「某点的留数」时不能用它顶替。西建大卷的第五大题两问都以奇点为心，答完两问顺手写出 <span class="math-inline">c_{-1}</span>，这一题就与下一章接上了。</p>
+
+  <div class="quiz" data-quiz='[
+  {
+    "q": "$f(z)=\\frac{1}{(z-1)(z-2)}$ 在 $1&lt;|z|&lt;2$ 里的展开\n有 $c_{-1}=-1$。那么 $\\oint_{|z|=1.5}f(z)\\,dz$ 等于多少？",
+    "opts": [
+      "$-2\\pi i$",
+      "$2\\pi i$",
+      "$-\\pi i$",
+      "$-4\\pi i$"
+    ],
+    "ans": 0,
+    "why": "$\\oint_C f\\,dz=2\\pi i\\,c_{-1}=-2\\pi i$：\n其余系数都不参与，这一项就够。"
+  }
+]'></div>
+
+  <h2>练习：三个环域各写一遍</h2>
+
+  <div class="lesson-practice">
+    <div class="lesson-practice__head">
+      <span class="lesson-practice__level">上手做</span>
+      <span class="lesson-practice__title">三个环域各展开一次</span>
+    </div>
+
+      <p>第一问：中心取原点，把 <span class="math-inline">f(z)=\frac{1}{(z-1)(z-2)}</span> 在 <span class="math-inline">|z|&lt;1</span>、<span class="math-inline">1&lt;|z|&lt;2</span>、<span class="math-inline">|z|&gt;2</span> 里各展开一次。每一步只写两行——几何级数连同它的成立范围，再把两块相加。</p>
+
+      <p>第二问：把中心换成奇点，<span class="math-inline">f(z)=\frac{1}{z(z-1)}</span> 在 <span class="math-inline">0&lt;|z|&lt;1</span> 与 <span class="math-inline">|z|&gt;1</span> 里各展开一次（合肥工大卷那道 10 分题就是这个形状），两问都顺手写出 <span class="math-inline">c_{-1}</span>，看它在哪一问为零。</p>
+
+      <p>第三问：把用过的三条判据抄进纸笔题型整理册——环域由奇点距离切分、<span class="math-inline">|z|</span> 与距离谁大就提谁、每个几何级数都标出成立范围，每条配一道自己的例题。</p>
+
+      <p>本课的小 lab 收在科目目录的 <a href="../lab/">lab/</a> 下、目录名以 <code>0012</code> 开头：任务书与断言都在那里，<code>lab/README.md</code> 写着任务表与卡壳时的提示顺序。</p>
+  </div>
+
+  <h2>带走的公式卡</h2>
+
+  <table>
+    <thead>
+      <tr><th>要写的东西</th><th>写法</th></tr>
+    </thead>
+    <tbody>
+      <tr><td>泰勒级数</td><td><span class="math-inline">f(z)=\sum_{n=0}^{\infty}c_n(z-z_0)^n</span>，<span class="math-inline">c_n=\frac{f^{(n)}(z_0)}{n!}</span></td></tr>
+      <tr><td>泰勒展开的最大圆域半径</td><td><span class="math-inline">z_0</span> 到最近奇点的距离</td></tr>
+      <tr><td>洛朗级数</td><td><span class="math-inline">f(z)=\sum_{n=-\infty}^{+\infty}c_n(z-z_0)^n</span>，在 <span class="math-inline">r&lt;\vert z-z_0\vert&lt;R</span> 内</td></tr>
+      <tr><td>圆内提常数</td><td><span class="math-inline">\vert z\vert&lt;\vert a\vert</span> 时 <span class="math-inline">\frac{1}{z-a}=-\frac{1}{a}\cdot\frac{1}{1-z/a}</span></td></tr>
+      <tr><td>圆外提 <span class="math-inline">\frac{1}{z}</span></td><td><span class="math-inline">\vert z\vert&gt;\vert a\vert</span> 时 <span class="math-inline">\frac{1}{z-a}=\frac{1}{z}\cdot\frac{1}{1-a/z}</span></td></tr>
+      <tr><td>负幂项的地位</td><td><span class="math-inline">\oint_C f\,dz=2\pi i\,c_{-1}</span>；以奇点为心时它就是该点的留数</td></tr>
+    </tbody>
+  </table>
+
+  <ul class="lesson-resources">
+    <li>李君、于非非《复变函数与积分变换》§3.3 泰勒级数与洛朗级数<span class="lesson-resources__meta">书 · 纸质教材，定义、术语与例题以它为准</span></li>
+    <li><a href="http://faculty.hfut.edu.cn/_resources/group1/M00/00/1C/rB_zR2ks_QyAOcheAAP1H6_9avI556.pdf">合肥工业大学期末试卷（含答案与逐题分值）</a><span class="lesson-resources__meta">试卷 · 解答题第 6 题为圆环域洛朗展开，10 分，2025 年卷压成 5 分一问；填空里两处只问半径与 <span class="math-inline">R</span> 的最大值</span></li>
+    <li><a href="https://netedu.xauat.edu.cn/jpkc/netclass/jpkc/fbhs/dir/other/复变函数与积分变换试题及答案12.pdf">复变函数与积分变换试题及答案（西安建筑科技大学）</a><span class="lesson-resources__meta">试卷 · 第五大题为圆环内罗朗展式，10 分，两问以同一奇点为心</span></li>
+    <li><a href="https://netedu.xauat.edu.cn/jpkc/netclass/jpkc/fbhs/dir/other/复变积分B集习题.pdf">复变积分 B 集习题（西安建筑科技大学，按节分组）</a><span class="lesson-resources__meta">习题 · 第四章「级数」的题组排到幂级数（4.1、4.2），展开题按卷面大题的形状练</span></li>
+  </ul>
+
+  <!-- ── 提问提示：固定写法，别删 ── -->
+
+  <div class="lesson-ask">
+    <b>没看懂？随时问</b>
+    把看不懂的段落（或报错）原样复制回会话，说一句哪里不懂就行，我只解释这一段，不打断你的进度。
+  </div>
+
+  <!-- ── 上/下节课指针由渲染器按 curriculum.yaml 的 nodes 顺序算（第一课无 --prev、最后一课无 --next） ── -->
+
+  <nav class="lesson-nav" aria-label="上一课 / 下一课">
+    <a class="lesson-nav__link lesson-nav__link--prev" href="0011-ch3-power-series.html">
+      <span class="lesson-nav__dir">上节课</span>
+      <span class="lesson-nav__title">幂级数与收敛半径</span>
+    </a>
+    <a class="lesson-nav__link lesson-nav__link--next" href="0013-ch3-zeros-poles.html">
+      <span class="lesson-nav__dir">下节课</span>
+      <span class="lesson-nav__title">奇点分类：零点与极点</span>
+    </a>
+  </nav>
+
+  <footer class="lesson-footer">
+    StudyMate · 0012 泰勒级数与洛朗级数 · 本地学习工作区
+  </footer>
+
+</article>
+
+<script src="../../../assets/sayo/sayo.js"></script>
+<link rel="stylesheet" href="../../../assets/katex/katex.min.css">
+<script src="../../../assets/katex/katex.min.js" defer></script>
+<script src="../../../assets/lesson-math.js" defer></script>
+<script src="../assets/quiz.js" defer></script>
+<script src="../assets/lesson-toc.js" defer></script>
+<script>LearnTheme.wire(document.getElementById('lesson-theme-checkbox'));</script>
+</body>
+</html>

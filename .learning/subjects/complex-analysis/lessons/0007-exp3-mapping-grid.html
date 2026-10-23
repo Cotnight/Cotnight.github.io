@@ -1,0 +1,355 @@
+<!DOCTYPE html>
+<html lang="zh-CN" data-theme="dark">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>实验三：保角映射的网格实验 · 复变函数与积分变换</title>
+
+<!-- 共享层在 .learning/assets/，课件在 .learning/subjects/<slug>/lessons/ 下，所以是 ../../../assets/ -->
+<link rel="stylesheet" href="../../../assets/sayo/sayo.css">
+<link rel="stylesheet" href="../../../assets/learn-theme.css">
+<link rel="stylesheet" href="../assets/style.css">
+
+<!-- 主题要在首帧前应用，避免闪白/闪黑 -->
+<script src="../../../assets/learn-theme.js"></script>
+<script>LearnTheme.apply();</script>
+</head>
+
+<body class="lesson-body">
+
+<nav class="lesson-bar">
+  <a href="../index.html">← 返回课程</a>
+  <span>复变函数与积分变换</span>
+  <span class="lesson-bar__no">0007</span>
+  <!-- 课件页自带主题开关：学生从文件管理器直接打开课件时也能切暗色 -->
+  <label class="syo-toggle syo-toggle--theme lesson-bar__toggle" title="切换深浅主题" aria-label="切换深浅主题">
+    <input type="checkbox" id="lesson-theme-checkbox" checked>
+    <span class="syo-toggle-track"></span>
+    <span class="syo-toggle-knob">
+      <svg class="syo-toggle-sun" viewBox="0 0 20 20" fill="none" aria-hidden="true"><circle cx="10" cy="10" r="3.5" stroke="#f57c00" stroke-width="1.5"/><path d="M10 2v2.5M10 15.5V18M2 10h2.5M15.5 10H18M4.34 4.34l1.77 1.77M13.89 13.89l1.77 1.77M4.34 15.66l1.77-1.77M13.89 6.11l1.77-1.77" stroke="#f57c00" stroke-width="1.2" stroke-linecap="round"/></svg>
+      <svg class="syo-toggle-moon" viewBox="0 0 20 20" fill="none" aria-hidden="true"><path d="M16.5 12.5A6 6 0 019 4.5a6 6 0 007.5 8z" stroke="#5c6bc0" stroke-width="1.5" stroke-linejoin="round"/></svg>
+    </span>
+  </label>
+</nav>
+
+<article class="lesson">
+
+  <header class="lesson-header">
+    <span class="lesson-header__eyebrow">0007 · 实验三：保角映射的网格实验</span>
+    <h1>实验三：保角映射的网格实验</h1>
+    <p class="lesson-goal"><b>本节目标：</b>做出 <span class="math-inline">z^2</span>、<span class="math-inline">e^z</span>、<span class="math-inline">1/z</span> 的网格变形图并指出直角是否被保持——<code>python test_mapping_grid.py</code> 打出 <code>OK</code>，<code>out/</code> 里留下五份数据，<code>out/angles.csv</code> 里只有 <span class="math-inline">z^2</span> 的原点量出 180°。</p>
+  </header>
+
+  <!-- ── 正文：渲染器按内容文件（lessons/<序号>-<节点id>.md）产出，块词汇见 docs/规范/课件内容格式.md ── -->
+
+  <p>这是图像画廊的第三块。第 4 课给了 <span class="math-inline">e^z</span> 与 <span class="math-inline">z^\alpha</span> 的映照特点，第 5 课说清了导数的几何意义，实验二把柯西-黎曼条件变成了逐点的数值检验。这一课把三样合起来，只问一件事： <b>铺一张方格纸，按 <span class="math-inline">w=f(z)</span> 送过去，交角还是不是直角？</b></p>
+
+  <p>验收的那句话是：<b>做出 <span class="math-inline">z^2</span>、<span class="math-inline">e^z</span>、<span class="math-inline">1/z</span> 的网格变形图，指出直角是否被保持。</b> 结论一句话：格子弯是常态，直角由 <span class="math-inline">f'(z)\ne0</span> 决定。</p>
+
+  <h2>这次要交出什么</h2>
+
+  <p>三样东西，交到 <a href="../lab/0007-mapping-grid/"><code>lab/0007-mapping-grid</code></a>：</p>
+
+  <table>
+    <thead>
+      <tr><th>交出什么</th><th>落在哪</th><th>一句话说明</th></tr>
+    </thead>
+    <tbody>
+      <tr><td><code>mapping_grid.py</code> 里 9 个函数</td><td><code>lab/0007-mapping-grid/mapping_grid.py</code></td><td>铺网格、逐点映射、量夹角、找临界点、存表</td></tr>
+      <tr><td><code>out/</code> 五份 CSV</td><td><code>lab/0007-mapping-grid/out/</code></td><td>三张变形网格 + 一张局部放大 + 一张结论表</td></tr>
+      <tr><td>三句结论</td><td>写进 notebook，或直接回话</td><td>第 3 步给了该写哪三句</td></tr>
+    </tbody>
+  </table>
+
+  <p>三个要画的映射与判据已经写好、<b>别改</b>：<code>f_sq</code>、<code>f_exp</code>、<code>f_inv</code> 是这次要送过去的三个函数， <code>MAPPINGS</code> 是它们各自的参数窗口，<code>is_conformal</code> 由你填的 <code>angle_defect</code> 推出来。你填的是它们下面的 9 处留白。</p>
+
+  <p>任务表、装环境、卡壳顺序都在 <a href="../lab/README.md"><code>lab/README.md</code></a> 里，找标题「实验三 · 保角映射的网格实验」。</p>
+
+  <h2>怎么算过</h2>
+
+  <p>被验收的要求拆成三条，逐条都有可观察的证据：</p>
+
+  <ol>
+    <li><b>能跑</b>：<code>python test_mapping_grid.py</code> 打出 <code>OK</code>（38 条断言）。这是「网格送过去 + 夹角量出来」的硬证据。</li>
+    <li><b>有数据</b>：<code>out/</code> 里五份文件，三张网格各 450 行（2 族 × 9 条 × 25 点）；<code>out/angles.csv</code> 十行，其中<b>只有 <span class="math-inline">z^2</span> 在 <span class="math-inline">0</span> 的那两行是 <code>180.0000</code></b>，其余八行在 84.5° 到 116.6° 之间，把 δ 缩小就收敛到 90° 上下。</li>
+    <li><b>说得出</b>：三句结论各一句（第 3 步给的），并且能指着 <code>out/angles.csv</code> 的某一行说出「这一行为什么是 90°」「为什么 <code>1/z</code> 在极点旁边伸缩率 50 倍、角度却还是 90°」。</li>
+  </ol>
+
+  <p>三档结论：</p>
+
+  <ul>
+    <li><b>通过</b>：三条都成立。差一步：数据对了，但说不出「δ 是什么、为什么要能缩小」。</li>
+    <li><b>部分通过</b>：测试 <code>OK</code>，但 <code>out/angles.csv</code> 的 <code>stretch</code> 列不对（<span class="math-inline">e^z</span> 不是 <code>2.71828</code>、<span class="math-inline">1/z</span> 不是 <code>50</code>、<span class="math-inline">z^2</span> 在原点不是 <code>0</code>）——导数或窗口有问题；或者数据齐了却说不出「<span class="math-inline">1/z</span> 在极点旁边为什么还是直角」。</li>
+    <li><b>不通过</b>：只填了函数、没有 <code>out/</code> 五份数据；或表里十行全是 <code>90.0000</code>（180° 那一行算丢了，等于这一课什么都没量出来）。</li>
+  </ul>
+
+  <div class="lesson-warn">
+    <b>说懂了不算</b>
+    <p>这一课只认三样：<code>OK</code> 的测试输出、<code>out/</code> 里那五份数据、三句能对到某一行的结论。三样到手才算过。</p>
+  </div>
+
+  <h2>三步走</h2>
+
+  <div class="lesson-practice">
+    <div class="lesson-practice__head">
+      <span class="lesson-practice__level">上手做</span>
+      <span class="lesson-practice__title">第 1 步 · 填 9 个函数</span>
+    </div>
+
+      <p>打开 <a href="../lab/0007-mapping-grid/mapping_grid.py"><code>mapping_grid.py</code></a>，按 <a href="../lab/README.md"><code>lab/README.md</code></a> 的任务表填，<b>填一个验一个</b>：</p>
+
+      <pre data-lang="term"><code>$ cd lab/0007-mapping-grid
+$ python test_mapping_grid.py -k step1</code></pre>
+
+      <p>还没动手时跑全量是 <code>FAILED (errors=38)</code>、退出码 1——先红后绿，这是设计。</p>
+  </div>
+
+  <div class="lesson-practice">
+    <div class="lesson-practice__head">
+      <span class="lesson-practice__level">上手做</span>
+      <span class="lesson-practice__title">第 2 步 · 跑自检交出 out/</span>
+    </div>
+
+      <p>九步填完后跑一次全量，再把自检跑一遍：</p>
+
+      <pre data-lang="term"><code>$ python test_mapping_grid.py
+$ python test_mapping_grid.py -k selfcheck</code></pre>
+
+      <p>第二个命令会写出 <code>out/curves-z2.csv</code>、<code>out/curves-exp.csv</code>、<code>out/curves-inv.csv</code>、 <code>out/zoom-z2-origin.csv</code>、<code>out/angles.csv</code>。自检全绿才算数据出来了：它同时验了「三张网格的形状」与「原点 180°、极点旁边 90°」这两头。</p>
+  </div>
+
+  <div class="lesson-practice">
+    <div class="lesson-practice__head">
+      <span class="lesson-practice__level">上手做</span>
+      <span class="lesson-practice__title">第 3 步 · 写三句结论</span>
+    </div>
+
+      <p>只要三句，别写小作文：</p>
+
+      <ol>
+        <li><span class="math-inline">z^2</span> 的网格是两族抛物线，<span class="math-inline">e^z</span> 是同心圆加射线，<span class="math-inline">1/z</span> 是过原点的圆——格子全被弯过，但交点仍是 90°。</li>
+        <li>唯一量出 180° 的是 <span class="math-inline">z^2</span> 的原点，而它正是唯一满足 <span class="math-inline">f'(z)=0</span> 的点：<b>保角 ⟺ 导数非零</b>。</li>
+        <li>「角度不对」有两种来源——缩小 δ 后收敛到 90° 的是放大不够，钉在 180° 不动的是临界点。</li>
+      </ol>
+
+      <p>第 3 句是这一课的重点：它把「量出来的偏差」和「真的坏了」分开了。这也是实验二那条「残差 <span class="math-inline">10^{6}</span> 是差分跨了割线，不是函数不解析」的几何版。</p>
+  </div>
+
+  <h2>网格为什么会变形</h2>
+
+  <p>把三条像写出来，格子怎么弯就一目了然。设 <span class="math-inline">z=x+iy</span>：</p>
+
+  <table>
+    <thead>
+      <tr><th>映射</th><th>竖线 <span class="math-inline">x=c</span> 的像</th><th>横线 <span class="math-inline">y=d</span> 的像</th></tr>
+    </thead>
+    <tbody>
+      <tr><td><span class="math-inline">w=z^2</span></td><td>抛物线 <span class="math-inline">u=c^2-\dfrac{v^2}{4c^2}</span></td><td>抛物线 <span class="math-inline">u=\dfrac{v^2}{4d^2}-d^2</span></td></tr>
+      <tr><td><span class="math-inline">w=e^z</span></td><td>圆 <span class="math-inline">\lvert w\rvert=e^c</span>（同心圆，越靠右半径越大）</td><td>射线 <span class="math-inline">\arg w=d</span></td></tr>
+      <tr><td><span class="math-inline">w=1/z</span></td><td>过原点的圆，圆心 <span class="math-inline">\left(\frac{1}{2c},0\right)</span>、半径 <span class="math-inline">\frac{1}{2c}</span></td><td>过原点的圆，圆心 <span class="math-inline">\left(0,-\frac{1}{2d}\right)</span>、半径 <span class="math-inline">\frac{1}{2\lvert d\rvert}</span></td></tr>
+    </tbody>
+  </table>
+
+  <p>实测对得上：<span class="math-inline">e^z</span> 把 <span class="math-inline">x=-1</span> 那条竖线送到半径 <code>0.367879441171</code>（<span class="math-inline">=e^{-1}</span>）的圆， <span class="math-inline">x=2</span> 那条送到 <code>7.389056099</code>（<span class="math-inline">=e^2</span>）；<span class="math-inline">1/z</span> 把 <span class="math-inline">x=0.1</span> 那条送到圆心 <span class="math-inline">(5,0)</span>、半径 <span class="math-inline">5</span> 的圆（线上每点到 <span class="math-inline">(5,0)</span> 的距离都是 <code>5.0</code>）；<span class="math-inline">z^2</span> 的像代进抛物线的方程，残差是 <code>0.0</code>。</p>
+
+  <p><b>弯不是重点。</b> 保角映射本来就该弯：它在每一点把图形放大 <span class="math-inline">\lvert f'(z_0)\rvert</span> 倍、转过 <span class="math-inline">\arg f'(z_0)</span> 角，其余什么都不做。所以同一张方格纸送去以后，格子会拉长、压扁、打转，但<b>两条线的交角不动</b>——只要那一处 <span class="math-inline">f'(z_0)\ne0</span>。第 5 课那句「<span class="math-inline">\lvert f'(z_0)\rvert</span> 是伸缩率、 <span class="math-inline">\arg f'(z_0)</span> 是旋转角」，在图上就是这个样子。</p>
+
+  <figure class="lesson-figure lesson-figure--inline" role="img" aria-label="左格是规整的方格纸，右格是被映射揉过的曲线网格，两族曲线的交点处标着直角记号">
+<svg viewBox="0 0 160 72" role="img" aria-hidden="true">
+<g fill="none" stroke="currentColor" stroke-width="0.7">
+<rect x="6" y="12" width="48" height="48"/>
+<line x1="22" y1="12" x2="22" y2="60"/>
+<line x1="38" y1="12" x2="38" y2="60"/>
+<line x1="6" y1="28" x2="54" y2="28"/>
+<line x1="6" y1="44" x2="54" y2="44"/>
+<path d="M92 60 C 106 42, 122 28, 152 14"/>
+<path d="M92 60 C 112 56, 134 36, 152 14"/>
+<path d="M104 60 C 118 48, 132 32, 152 26"/>
+<path d="M118 60 C 130 52, 142 38, 154 32"/>
+<path d="M92 46 C 110 38, 132 26, 152 22"/>
+<path d="M118 46 l6 -6 l6 6"/>
+</g>
+</svg>
+    <figcaption>图 1 · 方格纸被一个保角映射揉过：格子弯了、尺度和方向变了，交点处的直角还在。</figcaption>
+  </figure>
+
+  <h2>直角什么时候坏</h2>
+
+  <p>看不到导数也没关系：在交点处取一个<b>小十字</b>——两条臂 <span class="math-inline">z_0\to z_0+\delta</span> 与 <span class="math-inline">z_0\to z_0+i\delta</span>，它们本身成 90°。把两条臂送过去，量两条像的弦的夹角：</p>
+
+  <div class="math-block">\theta=\angle\Big(f(z_0+\delta)-f(z_0),\ f(z_0+i\delta)-f(z_0)\Big).</div>
+
+  <p>这就是「把交点放大到 δ 尺度以后看到的角」，也就是局部放大图的数值版。<span class="math-inline">\delta=10^{-4}</span> 实测：</p>
+
+  <table>
+    <thead>
+      <tr><th>打点</th><th>夹角</th><th>伸缩率 <span class="math-inline">\lvert f'\rvert</span></th><th>判定</th></tr>
+    </thead>
+    <tbody>
+      <tr><td><span class="math-inline">z^2</span> 在 <span class="math-inline">1+i</span></td><td>90.0029°</td><td>2.82843</td><td>保角</td></tr>
+      <tr><td><span class="math-inline">z^2</span> 在 <span class="math-inline">0</span></td><td><b>180.0000°</b></td><td>0</td><td>临界点：90° 被加倍，直角没了</td></tr>
+      <tr><td><span class="math-inline">e^z</span> 在 <span class="math-inline">0</span></td><td>90.0029°</td><td>1</td><td>保角</td></tr>
+      <tr><td><span class="math-inline">e^z</span> 在 <span class="math-inline">1+i</span></td><td>90.0029°</td><td>2.71828</td><td>保角</td></tr>
+      <tr><td><span class="math-inline">1/z</span> 在 <span class="math-inline">i</span></td><td>89.9943°</td><td>1</td><td>保角</td></tr>
+      <tr><td><span class="math-inline">1/z</span> 在 <span class="math-inline">0.1+0.1i</span></td><td>89.9427°</td><td>50</td><td>保角（极点旁边，尺度炸了，直角还在）</td></tr>
+    </tbody>
+  </table>
+
+  <p><b>δ 是放大倍数，不是随便一个小数。</b> 它得比「到临界点的距离」小得多，否则量到的是那一段曲线的平均弯曲。同一批点只换 δ，实测：</p>
+
+  <table>
+    <thead>
+      <tr><th>打点</th><th>δ = <span class="math-inline">10^{-2}</span></th><th>δ = <span class="math-inline">10^{-3}</span></th><th>δ = <span class="math-inline">10^{-4}</span></th><th>δ = <span class="math-inline">10^{-6}</span></th></tr>
+    </thead>
+    <tbody>
+      <tr><td><span class="math-inline">z^2</span> 在 <span class="math-inline">0.01</span></td><td>116.5651°</td><td>92.8624°</td><td>90.2865°</td><td>90.0029°</td></tr>
+      <tr><td><span class="math-inline">1/z</span> 在 <span class="math-inline">0.1+0.1i</span></td><td>84.5474°</td><td>89.4299°</td><td>89.9427°</td><td>89.9994°</td></tr>
+      <tr><td><span class="math-inline">z^2</span> 在 <span class="math-inline">0</span></td><td>180.0000°</td><td>180.0000°</td><td>180.0000°</td><td>180.0000°</td></tr>
+    </tbody>
+  </table>
+
+  <p>前两行的偏差随 δ 变小而<b>收敛到 90°</b>（放大不够），最后一行钉在 180° 不动（真的坏了）。判据不是「偏差大不大」，而是「缩小 δ 以后还大不大」。</p>
+
+  <div class="lesson-tip">
+    <b>判据本身只有一行</b>
+    <p>保角 ⟺ <span class="math-inline">f'(z_0)\ne0</span>。所以「临界点」就是网格点里 <span class="math-inline">\lvert f'(z)\rvert\approx0</span> 的那些： <span class="math-inline">z^2</span> 找到 <code>[0j]</code>（原点正好是格点），<span class="math-inline">e^z</span> 与 <span class="math-inline">1/z</span> 在各自的窗口里一个也没有。这份列表与「量出 180° 的那些点」是同一批。</p>
+  </div>
+
+  <h2>极点旁边：坏的不是角度</h2>
+
+  <p>大纲这一条原本写的是「看 <span class="math-inline">1/z</span> 的极点附近角度怎样坏掉」。量完发现事情反了一半： <b>角度没坏，坏的是尺度。</b></p>
+
+  <p><span class="math-inline">1/z</span> 的导数是 <span class="math-inline">-1/z^2</span>，在 <span class="math-inline">z\ne0</span> 处处非零，所以它在定义域里处处保角。实测在 <span class="math-inline">z_0=0.1+0.1i</span> 处：伸缩率 <span class="math-inline">\lvert f'\rvert=1/\lvert z\rvert^2=50</span>，旋转角 <span class="math-inline">90°</span>，十字夹角 <code>89.9427°</code>——直角还在。坏掉的是图幅：网格里离极点最近的那个点到原点的距离只有 <span class="math-inline">0.1414</span>，它的像却被扔到 <code>7.07</code> 倍远的地方（原窗口最远的点才 2.83），画在图上就是「被撕到画布外」。</p>
+
+  <p>所以这一课真正要记住的是分工：</p>
+
+  <ul>
+    <li><b>临界点</b>（<span class="math-inline">z^2</span> 的原点，<span class="math-inline">f'=0</span>）：角度被改，90° 变 180°，缩 δ 也救不回来；</li>
+    <li><b>极点</b>（<span class="math-inline">1/z</span> 的原点，<span class="math-inline">f'\to\infty</span>）：点不在定义域里，网格踩上去直接抛 <code>ZeroDivisionError</code>；旁边的点角度照样是直角，只是尺度炸了；</li>
+    <li>两者的共同判据都是导数：一个为零、一个无穷，都不属于「<span class="math-inline">f'</span> 有限且非零」，所以都不在「<span class="math-inline">f'(z_0)\ne0</span> 的那一片」里。</li>
+  </ul>
+
+  <h2>不装包也能自检</h2>
+
+  <p><code>test_mapping_grid.py</code> 只用标准库（<code>cmath</code> / <code>csv</code> / <code>math</code> / <code>unittest</code>），不装 numpy、matplotlib、Jupyter 都能跑。本机两个解释器的实测输出：</p>
+
+  <pre data-lang="term"><code>$ python test_mapping_grid.py                 # Python 3.13.15，只有标准库
+Ran 38 tests in 0.010s
+
+OK</code></pre>
+
+  <pre data-lang="term"><code>$ python test_mapping_grid.py                 # bundled runtime，Python 3.12.14 + numpy 2.3.5
+Ran 38 tests in 0.011s
+
+OK</code></pre>
+
+  <p>留白态是 <code>FAILED (errors=38)</code>、退出码 1——先红也量过。</p>
+
+  <p>想看「图」但没有 matplotlib：把映射后的网格当字符画打印出来，只用标准库，先算所有像点的包围盒，再把每个点落到格子上。实测 <span class="math-inline">w=z^2</span>（实部 <span class="math-inline">-1..1</span>、虚部 <span class="math-inline">-2..2</span>）：</p>
+
+  <pre data-lang="term"><code>                      #
+                 ##########
+            #######      #######
+        #####      ######      #####
+     ####   ########    ########   ####
+   ############    ######    ############
+ ###########   ##############   ###########
+##########  ####################  ##########
+#############################################
+#     ##  ########################  ##     #
+##########  ####################  ##########
+ ###########   ##############   ###########
+   ############    ######    ############
+     ####   ########    ########   ####
+        #####      ######      #####
+            #######      #######
+                 ##########
+                      #</code></pre>
+
+  <p>两族抛物线正交地铺开——格子弯成这样，交点却还是 90°。代码在 <a href="../lab/README.md"><code>lab/README.md</code></a> 第七节，字符画与 <code>out/curves-z2.csv</code> 是同一批数字。</p>
+
+  <h2>最可能卡在哪</h2>
+
+  <table>
+    <thead>
+      <tr><th>症状或报错</th><th>原因</th><th>去哪一步</th></tr>
+    </thead>
+    <tbody>
+      <tr><td><code>NotImplementedError: 第 N 步还没写</code></td><td>那一步还没填，不是环境坏了</td><td>任务表第 N 行</td></tr>
+      <tr><td>网格右边 / 上边少一截</td><td>参数写了 <code>k / n</code>，应为 <code>k / (n - 1)</code></td><td>第 1 步</td></tr>
+      <tr><td>十字的夹角翻了个面</td><td>竖线方向反了（从 <code>im_max</code> 往下走）</td><td>第 2 步</td></tr>
+      <tr><td><code>ZeroDivisionError</code></td><td><span class="math-inline">1/z</span> 的网格框进了原点；该避开就避开，该抛就抛</td><td>第 3 步</td></tr>
+      <tr><td><code>ValueError: math domain error</code></td><td>余弦没夹回 <span class="math-inline">[-1,1]</span> 就喂 <code>acos</code></td><td>第 4 步</td></tr>
+      <tr><td>直角量出 <code>1.5708</code></td><td>返回的是弧度，忘了 <code>math.degrees</code></td><td>第 4 步</td></tr>
+      <tr><td><span class="math-inline">z^2</span> 在原点量出 90°</td><td>量的是原像的夹角（永远 90°），要量像的弦</td><td>第 5 步</td></tr>
+      <tr><td>保角点量出 116° 上下</td><td>δ 比到临界点的距离还大</td><td>第 5 步</td></tr>
+      <tr><td>导数差 2 倍</td><td>分母写成 <code>h</code>，应为 <code>2 * h</code></td><td>第 7 步</td></tr>
+      <tr><td>偏差列全是 <code>0.0000</code></td><td>用了四位小数，应换 <code>"{:.6g}"</code></td><td>第 9 步</td></tr>
+    </tbody>
+  </table>
+
+  <h2>自查清单</h2>
+
+  <ol>
+    <li><code>python test_mapping_grid.py</code> 打出 <code>OK</code>（38 条，退出码 0）。</li>
+    <li><code>out/</code> 是五份文件：<code>curves-z2.csv</code>、<code>curves-exp.csv</code>、<code>curves-inv.csv</code>、<code>zoom-z2-origin.csv</code>、<code>angles.csv</code>。</li>
+    <li>三张网格各 450 行（表头之外），第一列出现 <code>V</code> 与 <code>H</code> 两种值。</li>
+    <li><code>out/angles.csv</code> 十行里只有 <span class="math-inline">z^2</span> 在 <code>0</code> 的两行是 <code>180.0000</code>，<code>stretch</code> 分别是 <code>2.82843</code>、<code>0</code>、<code>2.71828</code>、<code>50</code>。</li>
+    <li>能说出 δ 是什么、为什么 <span class="math-inline">z^2</span> 在 <code>0.01</code> 的两行一个是 116.5651°、一个是 90.2865°。</li>
+    <li>第 3 步那三句是你自己写的，不是抄课件的整段。</li>
+  </ol>
+
+  <h2>卡壳了怎么走</h2>
+
+  <ol>
+    <li>先读断言最后一行：<code>AssertionError</code> 后面通常带着期望值与实际值，差 90°、差端点、差符号都在那里。</li>
+    <li>对不上就查 <a href="../lab/README.md"><code>lab/README.md</code></a> 第九节的症状对表，按症状定位到哪一步。</li>
+    <li>还不对，只打开参考解里<b>卡住的那一个函数</b>（<a href="../lab/solutions/0007-mapping-grid/mapping_grid.py"><code>solutions/0007-mapping-grid/mapping_grid.py</code></a>），看完立刻自己重写一遍。</li>
+  </ol>
+
+  <h2>下一步</h2>
+
+  <p>实验四「围道上的留数」会把前三块的图并进同一份画廊 notebook，再叠上极点与围道这一层：围道也是按参数采点（第 9 课 <code>cauchy_tool.py</code> 里的 <code>circle_points</code>），「采点 → 送过去 → 存 CSV」这套动作这一课已经练过了。所以 <code>mapping_grid.py</code> 与 <code>out/</code> 别删。</p>
+
+  <ul class="lesson-resources">
+    <li>李君、于非非《复变函数与积分变换》§1.4 导数的几何意义（伸缩率与旋转角）、§1.3 指数函数与幂函数的映照特点<span class="lesson-resources__meta">书 · 三条像的公式以它为准</span></li>
+    <li><a href="0005-ch1-analytic.html">第 5 课：可导与解析的判定</a><span class="lesson-resources__meta">课件 · 「伸缩率与旋转角」那两句的出处</span></li>
+    <li><a href="0004-ch1-elementary.html">第 4 课：初等函数</a><span class="lesson-resources__meta">课件 · <span class="math-inline">e^z</span> 与 <span class="math-inline">z^\alpha</span> 的映照特点</span></li>
+    <li><a href="0006-exp2-analytic-gallery.html">实验二：解析函数长什么样</a><span class="lesson-resources__meta">课件 · 逐点数值检验的做法，这一课换成量夹角</span></li>
+  </ul>
+
+  <!-- ── 提问提示：固定写法，别删 ── -->
+
+  <div class="lesson-ask">
+    <b>没看懂？随时问</b>
+    把看不懂的段落（或报错）原样复制回会话，说一句哪里不懂就行，我只解释这一段，不打断你的进度。
+  </div>
+
+  <!-- ── 上/下节课指针由渲染器按 curriculum.yaml 的 nodes 顺序算（第一课无 --prev、最后一课无 --next） ── -->
+
+  <nav class="lesson-nav" aria-label="上一课 / 下一课">
+    <a class="lesson-nav__link lesson-nav__link--prev" href="0006-exp2-analytic-gallery.html">
+      <span class="lesson-nav__dir">上节课</span>
+      <span class="lesson-nav__title">实验二：解析函数长什么样</span>
+    </a>
+    <a class="lesson-nav__link lesson-nav__link--next" href="0008-ch2-integral-direct.html">
+      <span class="lesson-nav__dir">下节课</span>
+      <span class="lesson-nav__title">复积分的概念与直接计算</span>
+    </a>
+  </nav>
+
+  <footer class="lesson-footer">
+    StudyMate · 0007 实验三：保角映射的网格实验 · 本地学习工作区
+  </footer>
+
+</article>
+
+<script src="../../../assets/sayo/sayo.js"></script>
+<link rel="stylesheet" href="../../../assets/katex/katex.min.css">
+<script src="../../../assets/katex/katex.min.js" defer></script>
+<script src="../../../assets/lesson-math.js" defer></script>
+<script src="../assets/quiz.js" defer></script>
+<script src="../assets/lesson-toc.js" defer></script>
+<script>LearnTheme.wire(document.getElementById('lesson-theme-checkbox'));</script>
+</body>
+</html>

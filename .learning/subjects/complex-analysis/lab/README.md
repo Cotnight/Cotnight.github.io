@@ -1467,3 +1467,1030 @@ OK
 - 课上那张「三条路怎么选」的选型卡，本节这四个函数正好各管一行：解析 → `closed_integral` 得 $0$；
   圈里有奇点 → `composite_integral` 挖洞；开路径 → `contour_integral`；分支不定 → `arc_integral`
   分两支各算一次。
+
+
+---
+
+# 第 12 课 · 展开系数核对器（0012-laurent-coeff-tool）
+
+上面几节分别是第 5 课（CR 检查器）、实验一、实验二、第 9 课（柯西积分公式）与第 10 课
+（柯西积分定理与复合闭路）。本节是第 12 课「泰勒级数与洛朗级数」的小 lab，跟哪一节都不互相依赖：
+各用各的目录、各跑各的测试。
+
+第 9 课验的是「围道积分算出来的值对不对」，这一节验的是**展开系数**：把
+
+$$ c_k=\frac{1}{2\pi i}\oint_C\frac{f(\zeta)}{(\zeta-z_0)^{k+1}}\,d\zeta $$
+
+沿环域里的一条圆周真积一遍，再拿卷面上写出来的 $\sum c_n(z-z_0)^n$ 去对照。
+系数对上，那道 10 分大题就多一层保险；抄串环域、漏掉负幂部分，围道积分当场不认。
+
+工具要做的事一句话：**把卷面那四步（定环域 → 拆部分分式 → 凑几何级数 → 合并系数）写成代码，
+让围道积分去验它。**
+
+## 一、要交出什么
+
+| 交付物 | 落在哪 | 怎么算合格 |
+|---|---|---|
+| `laurent_tool.py` 里 8 个留白函数 | `lab/0012-laurent-coeff-tool/laurent_tool.py` | `python test_laurent_tool.py` 打出 `OK`（29 条断言） |
+| 一张三条环域的系数对照卡（纸笔，不用交文件） | 手边 / 纸笔题型整理册 | 第 8 步填完后能十秒内说出 $|z|<1$、$1<|z|<2$、$|z|>2$ 三套系数各长什么样 |
+
+`out/`、CSV、图都不用交——这一节只产代码。
+
+## 二、环境依赖
+
+**只要 Python 3.8+，只用标准库（`cmath`、`math`、`unittest`），不装任何第三方包。**
+
+- 复数是内置类型 `complex`，$1j$ 就是虚数单位，$e^{i\theta}$ 写 `cmath.exp(1j * theta)`；
+- $2\pi i$ 写成 `2j * math.pi`（文件里已经给成 `TAU_I`）——这样不会把 $i$ 丢掉；
+- 测试用内置 `unittest`，`python test_laurent_tool.py` 直接跑。
+
+本机实测两个解释器都能跑同一份代码：`D:/Program Files/Python313/python.exe`（Python 3.13.15，
+只有标准库）与带 numpy 的
+`C:\Users\Administrator\.dsh\dsh-runtimes\dsh-primary-runtime\dependencies\python\python.exe`
+（Python 3.12.14 + numpy 2.3.5），两边都是 `Ran 29 tests … OK`。这一节用不到 numpy，
+命令里的 `python` 换成本机任意一个 3.8+ 都可以。
+
+## 三、目录
+
+```
+lab/
+├── README.md                              ← 本文件（第 5 课 + 实验一 + 实验二 + 第 9/10/12 课）
+├── 0012-laurent-coeff-tool/
+│   ├── laurent_tool.py                    ← 你要填的 8 个函数（留白）
+│   └── test_laurent_tool.py               ← 29 条断言，自动判分
+└── solutions/
+    └── 0012-laurent-coeff-tool/
+        ├── laurent_tool.py                ← 参考解（做完才看）
+        └── README.md                      ← 每一步为什么这样写、常见错法与实测值
+```
+
+## 四、怎么算做完
+
+进到任务目录，跑：
+
+```term
+$ cd lab/0012-laurent-coeff-tool
+$ python test_laurent_tool.py
+```
+
+现在（还没动手）会是这样——29 个 ERROR，**退出码 1**：
+
+```term
+$ python test_laurent_tool.py
+test_step1_count_and_radius (__main__.Step1_围道采样.test_step1_count_and_radius) ... ERROR
+test_step1_counterclockwise (__main__.Step1_围道采样.test_step1_counterclockwise) ... ERROR
+...
+NotImplementedError: 第 1 步还没写：contour_points —— 见 lab/README.md 任务表第 1 行
+...
+Ran 29 tests in 0.005s
+
+FAILED (errors=29)
+```
+
+最后那行 `FAILED (errors=29)` 是重点：**留白态必须是不通过的**，退出码 1
+（PowerShell 里紧接着跑 `echo $LASTEXITCODE` 能看到 1）。
+
+八步填完、跑出下面这两行，就算做完（退出码 0）：
+
+```term
+$ python test_laurent_tool.py
+...
+Ran 29 tests in 0.024s
+
+OK
+```
+
+只验某一步（填一步验一步，别一次填完）：
+
+```term
+$ python test_laurent_tool.py -k step3
+...
+Ran 3 tests in 0.002s
+
+OK
+```
+
+`-k` 后面**大小写要照写**（`step3` 能选中，`Step3` 也行，写成 `steps3` 就是 `NO TESTS RAN`、退出码 5）。
+
+## 五、任务表
+
+| 步 | 填哪个函数 | 要算出什么 | 立刻验 |
+|---|---|---|---|
+| 1 | `contour_points` | 环域内绕 $z_0$ 一圈的圆周上等距的 $n$ 个点（逆时针） | `-k step1` |
+| 2 | `coeff_integral` | 单个系数 $c_k=\frac{1}{2\pi i}\oint\frac{f(\zeta)}{(\zeta-z_0)^{k+1}}d\zeta$（$k$ 可为负） | `-k step2` |
+| 3 | `coeffs` | 一次算一组 $k$ 的系数，返回 `{k: c_k}` | `-k step3` |
+| 4 | `series_value` | 拿系数表在 $z$ 处求和（正幂负幂一起算） | `-k step4` |
+| 5 | `truncation_error` | 有限项截断误差 $\lvert S(z)-f(z)\rvert$ | `-k step5` |
+| 6 | `partial_fractions` | $\frac{1}{(z-a)(z-b)}=\frac{A}{z-a}+\frac{B}{z-b}$ 的两个权重 | `-k step6` |
+| 7 | `geom_coeffs` | $\frac{1}{z-a}$ 的两支系数（$\lvert z\rvert<\lvert a\rvert$ 与 $\lvert z\rvert>\lvert a\rvert$） | `-k step7` |
+| 8 | `ring_coeffs` | 环域里 $\frac{1}{(z-a)(z-b)}$ 的整套系数（环域名取 `inner`/`middle`/`outer`） | `-k step8` |
+| 9 | —（不用填） | 把课件那三条展开 + 真题两问整表跑一遍 | `-k step9` |
+
+文件里已经写好的两个小工具是 `closed_range` 与 `f_lesson`（例题 $f(z)=\frac{1}{(z-1)(z-2)}$），
+常数是 `TAU_I`、`DEFAULT_N`——照它们的用法往下填，**别改**。
+
+## 六、逐步做
+
+### 第 1 步 · 围道采样
+
+$$ \zeta_k=z_0+r\,e^{i\theta_k},\qquad \theta_k=\frac{2\pi k}{n},\ k=0,1,\dots,n-1 . $$
+
+从 $z_0+r$ 出发、逆时针走一圈，就是「正向简单闭曲线」。围道要**绕在环域里面**：第 2 步的系数
+就在这条圆上积出来。
+
+$n$ 取 512 不是凑数：梯形法对圆周上的解析被积函数收敛极快，误差按 $(d/r)^n$ 掉（$d$ 是离圆心最近的
+奇点距离）。实测中间环域 $1<|z|<2$（$r=1.5$、$d=1$）的 $c_1$：$n=16$ 误差 $4.1\times10^{-3}$、
+$n=32$ 是 $2.7\times10^{-5}$、$n=64$ 是 $2.5\times10^{-9}$、$n=128$ 已经到 $10^{-16}$。
+
+**两个坑**：忘了乘 `radius`（点全落在圆心，第 2 步马上 `ZeroDivisionError`）；角度写成
+$-2\pi k/n$（整圈顺时针，第 2 步的系数全体变号，$c_0$ 得 $-0.5$ 而不是 $0.5$）。
+
+写完后 `python test_laurent_tool.py -k step1`，应看到 `OK`（3 个测试）。
+
+### 第 2 步 · 系数积分（这一步最容易错）
+
+$$ c_k=\frac{1}{2\pi i}\oint_C\frac{f(\zeta)}{(\zeta-z_0)^{k+1}}\,d\zeta . $$
+
+围道换了参数，$dz$ 也得跟着换：
+
+$$ \zeta=z_0+r e^{i\theta}\ \Longrightarrow\ dz=i\,r\,e^{i\theta}\,d\theta=i\,\Delta\theta\,(\zeta-z_0),
+\qquad \Delta\theta=\frac{2\pi}{n}. $$
+
+所以每一项是 `f(z) / (z - center) ** (k + 1) * (1j * dtheta * (z - center))`，$n$ 项加起来再除以 `TAU_I`。
+
+$k$ 可以是负数：$k=-1$ 时分母是 $(\zeta-z_0)^0=1$，这就是后面留数要用的 $c_{-1}$；$k=-2$ 是
+$(\zeta-z_0)^{-1}$，负幂项正是这样一项项积出来的。
+
+**三个坑，断言各抓一个**（括号里是实测值）：
+
+1. **$dz$ 只写 $\Delta\theta$**：$c_1$ 得 `0.0`，全套系数都是 0——被积函数对了，微分丢了。
+2. **漏掉 $(\zeta-z_0)$**（写成 $i\,\Delta\theta$）：$c_0$ 得 `0.75`、$c_1$ 得 `0.875`，正确是 `0.5`、`0.75`。
+   这是第 8 课「$dz$ 忘了换元」那个坑的同一处。
+3. **分母用 $2\pi$ 而不是 $2\pi i$**：结果整体转 $90°$，$c_0$ 得 `0.5j`（模对、方向错）。
+
+### 第 3 步 · 一组系数
+
+只是循环：`{k: coeff_integral(f, k, center, radius, n) for k in ks}`。键就是传入的那几个整数
+（负号也要带着），**别在这里改默认的 $n$**——半径给错了，负幂项会整个消失。
+
+写下这三个数自己核对：中间环域 $1<|z|<2$ 取 $r=1.5$，得 $c_0=-1/2$、$c_1=-1/4$、$c_{-1}=c_{-2}=-1$。
+
+### 第 4 步 · 级数求和
+
+$$ S(z)=\sum_k c_k\,(z-z_0)^k , $$
+
+正幂负幂一起算——$1<|z|<2$ 那条展开本来就一半正幂一半负幂，只算一半是验不出东西的。
+Python 里负幂直接写 `(z - center) ** k`（$k$ 为负时它会照算），不用自己取倒数。空系数表返回
+`0`，不是 `None`。
+
+### 第 5 步 · 截断误差
+
+$$ \bigl|S(z)-f(z)\bigr| . $$
+
+这一步把「项数够不够」量出来。实测（$e^z$ 的麦克劳林系数，$z=1$ 处）：
+
+| 取到第几项 | 误差 |
+|---|---|
+| $n=2$（到 $1/2!$） | $2.2\times10^{-1}$ |
+| $n=5$ | $1.6\times10^{-3}$ |
+| $n=8$ | $3.1\times10^{-6}$ |
+| $n=11$ | $2.3\times10^{-9}$ |
+
+同一个函数，系数表换成 $|z|>2$ 那条负幂展开、在 $z=3$ 处回代：取 40 项时误差 $9.0\times10^{-8}$，
+因为负幂那一支的项按 $(2/3)^n$ 掉。**同一张系数表出了自己的环域就发散**，这也是「每一条展开只在
+它自己的环域内成立」的数值形态。
+
+### 第 6 步 · 部分分式
+
+$$ \frac{1}{(z-a)(z-b)}=\frac{A}{z-a}+\frac{B}{z-b},\qquad A=\frac{1}{a-b},\ B=\frac{1}{b-a}. $$
+
+做法就是「遮住一个因式、把那个根代进去」：遮住 $z-a$、令 $z=a$，右边只剩 $A$。
+**权重跟着 $a$、$b$ 走**：交换 $a$、$b$ 时两个权重跟着换（断言专门传了一次 `(2, 1)`）。
+漏掉负号的话，三点恒等式在 $z=0.3$ 处差 `1.68`——正是两倍的 $1/((z-1)(z-2))$。
+
+### 第 7 步 · 几何级数系数（两支）
+
+$$ \frac{1}{z-a}=
+\begin{cases}
+-\dfrac{1}{a}\cdot\dfrac{1}{1-z/a}=-\displaystyle\sum_{n\ge0}\frac{z^n}{a^{n+1}}, & |z|<|a|,\\[2mm]
+\dfrac{1}{z}\cdot\dfrac{1}{1-a/z}=\displaystyle\sum_{n\ge0}\frac{a^n}{z^{n+1}}, & |z|>|a|.
+\end{cases} $$
+
+所以系数表只有一支非零：`inside=True` 时 $c_n=-a^{-(n+1)}$（$n\ge0$）；否则 $c_{-n-1}=a^n$（$n\ge0$）。
+
+**判据始终是 $|z|$ 与 $|a|$ 谁大**，写反了第 8 步三个环域全串。$a=2$ 的两支实测：
+
+| 支 | 前四项系数 |
+|---|---|
+| $\lvert z\rvert<2$（提常数） | $c_0=-\tfrac12$、$c_1=-\tfrac14$、$c_2=-\tfrac18$、$c_3=-\tfrac1{16}$ |
+| $\lvert z\rvert>2$（提 $1/z$） | $c_{-1}=1$、$c_{-2}=2$、$c_{-3}=4$、$c_{-4}=8$ |
+
+第 7 步还有一条交叉验证：`geom_coeffs(2, True, 2)` 与围道积分算出来的
+$\frac{1}{z-2}$ 的 $c_0,c_1,c_2$ 要逐项对上——纸面与数值互证，是这一节的核心动作。
+
+### 第 8 步 · 环域系数（卷面四步的代码版）
+
+`ring` 三个值，按奇点到原点的距离分级（$a$、$b$ 谁近谁远由 $|a|$、$|b|$ 自己比）：
+
+| `ring` | 环域 | 两项各走哪一支 |
+|---|---|---|
+| `'inner'` | $\lvert z\rvert<\lvert a\rvert<\lvert b\rvert$ | 都提常数（只有正幂） |
+| `'middle'` | $\lvert a\rvert<\lvert z\rvert<\lvert b\rvert$ | 近的那项提 $1/z$，远的那项提常数 |
+| `'outer'` | $\lvert z\rvert>\lvert b\rvert$ | 都提 $1/z$（只有负幂） |
+
+先拆部分分式拿两个权重，再对每个奇点取第 7 步的系数表、乘权重、**按 $k$ 累加**进同一张表——
+同一个幂次是两项相加，不是覆盖。实测 $f(z)=\frac{1}{(z-1)(z-2)}$ 的三个环域：
+
+| 环域 | 系数（前几项） |
+|---|---|
+| $\lvert z\rvert<1$ | $c_0=\tfrac12$、$c_1=\tfrac34$、$c_2=\tfrac78$、$c_3=\tfrac{15}{16}$ |
+| $1<\lvert z\rvert<2$ | $c_{-1}=c_{-2}=-1$；$c_0=-\tfrac12$、$c_1=-\tfrac14$ |
+| $\lvert z\rvert>2$ | $c_{-1}=0$、$c_{-2}=1$、$c_{-3}=3$、$c_{-4}=7$ |
+
+**两个坑**：假设 `a` 更近（写成「`a` 提常数、`b` 提 $1/z$」也能过 `(1, 2)` 那几条，一传 `(2, 1)` 就错）；
+同幂次用 `=` 覆盖（`outer` 的 $c_{-3}$ 会得 $-1$ 或 $4$，正确是 $-1+4=3$）。
+
+### 第 9 步 · 整表自检（不用填）
+
+`-k step9` 跑两张表，每张都是「纸面公式 vs 围道积分」：
+
+| 表 | 内容 |
+|---|---|
+| 课件三条展开 | $\lvert z\rvert<1$：$c_n=1-2^{-(n+1)}$；$1<\lvert z\rvert<2$：$c_0=-\tfrac12$、$c_n=-2^{-(n+1)}$、$c_{-n}=-1$；$\lvert z\rvert>2$：$c_{-n}=2^{n-1}-1$ |
+| 合肥工大卷 10 分题 | $f(z)=\frac{z+1}{(z-1)^2}$：$0<\lvert z\rvert<1$ 里 $c_0=1$、$c_n=2n+1$；$\lvert z\rvert>1$ 里 $c_{-1}=1$、$c_{-m}=2m-1$ |
+
+它全绿，说明你的工具和纸面结论对上了——这就是这一节的交付证据。
+
+## 七、卡壳的时候，按这个顺序走
+
+1. **先读断言最后一行**：`期望 X，实际 Y`。两个数一比，差符号、差因子、差一个 $i$、差一位幂次，都看得出来。
+2. **按症状对表**（右列数值是实测值，不是估计）：
+
+   | 症状 | 大概率是 |
+   |---|---|
+   | step1 / step2 抛 `ZeroDivisionError` | `contour_points` 忘了乘 `radius`，点全在圆心 |
+   | step2 全部系数都是 `0` | $dz$ 只写了 $\Delta\theta$，微分没换元 |
+   | step2 $c_0$ 得 `0.75`、正确 `0.5` | $dz$ 漏了 $(\zeta-z_0)$ 那一段 |
+   | step2 系数是纯虚数（$c_0$ 得 `0.5j`） | 分母写了 $2\pi$，应为 $2\pi i$（`TAU_I`） |
+   | step2 系数全体变号 | 围道顺时针了，角度写成 $-2\pi k/n$ |
+   | step3 负幂项全是 `0`、正幂项却对 | 半径取到了奇点外面（比如中间环域用 $r=0.5$） |
+   | step3 / step9 差 $10^{-5}$ 量级 | `DEFAULT_N` 被改小了，采样不够（见第 1 步那张表） |
+   | step4 抛 `TypeError` | 系数表空时返回了 `None`，应返回 `0` |
+   | step6 三点恒等式差一个符号 | 两个权重对调了，或漏了负号 |
+   | step7 / step8 三个环域全串 | 第 7 步两支写反了：`|z|<|a|` 才提常数 |
+   | step8 `outer` 的 $c_{-3}$ 得 `-1` 或 `4` | 同幂次覆盖了，应相加（正确 `3`） |
+   | step8 传 `(2, 1)` 才错 | 没有先按 $\lvert a\rvert$、$\lvert b\rvert$ 排谁近谁远 |
+
+3. **还不对，再看参考解**：`solutions/0012-laurent-coeff-tool/laurent_tool.py`，
+   **先只读卡住的那一个函数**，对照完立刻回来自己写一遍（第 9 步验的是整表，整段拷会让你跳过判断过程）。
+
+参考解那一步为什么这样写，`solutions/0012-laurent-coeff-tool/README.md` 里有逐条说明。
+
+## 八、做完之后的对照方式
+
+把参考解拷进任务目录、覆盖同名文件，再跑一次：
+
+```term
+$ copy ..\solutions\0012-laurent-coeff-tool\laurent_tool.py .    # Windows
+$ python test_laurent_tool.py
+...
+Ran 29 tests in 0.024s
+
+OK
+```
+
+**先自己全绿、再对照**：直接拷参考解会跳过判断过程，第 9 步验的正是「你的系数和纸面公式对不对得上」。
+
+## 九、和后面几课的关系
+
+- **第 13 课（奇点分类：零点与极点）**要按洛朗展开的负幂项分组判断奇点类型，第 8、9 步的系数表
+  就是「负幂部分到第几项」的直接答案；
+- **第 14 课（留数与留数定理）**只要一个数：`coeff_integral(f, -1, z0, r)` 就是 $c_{-1}$，
+  也是以奇点为心展开时的留数；
+- **实验四（围道上的留数）**要把围道画出来、把极点标在图上，`contour_points` 与 `ring_coeffs`
+  这两件东西照用。
+
+---
+
+# 实验三 · 保角映射的网格实验（0007-mapping-grid）
+
+上面几节是这门课已经做过的几个小 lab（第 5 课的 CR 检查器、实验一、实验二、第 9 课、第 10 课、
+第 12 课），各用各的目录、各跑各的测试。本节是**实验三**，它验收的那句话是：
+**做出 $z^2$、$e^z$、$1/z$ 的网格变形图，指出直角是否被保持。**
+
+它接在实验二后面长，不从零开始：
+
+- 实验二问「导数存不存在」，本课问「导数的几何意义长什么样」——同一条导数，换个问法；
+- 采点、逐点算一个数、存成 CSV、用字符画看形状，这一整套流程与实验一、实验二完全一致；
+- 实验二的 `jacobian` 在这里换成「十字夹角」：$\det J=\lvert f'(z)\rvert^2$ 为零的点，
+  就是本课量出 180° 的那个点。
+
+三个目录各跑各的测试，互不依赖：`cr_tool.py`、`gallery.py`、`analytic_gallery.py` 都别删，
+也不要改。
+
+---
+
+## 一、要交出什么
+
+| 交付物 | 落在哪 | 怎么算合格 |
+|---|---|---|
+| `mapping_grid.py` 里 9 个留白函数 | `lab/0007-mapping-grid/mapping_grid.py` | `python test_mapping_grid.py` 打出 `OK`（38 条断言） |
+| `out/curves-z2.csv`、`out/curves-exp.csv`、`out/curves-inv.csv` | `lab/0007-mapping-grid/out/` | 每份 450 行（$2$ 族 × $9$ 条 × $25$ 点），列是 `family,line,k,re,im` |
+| `out/zoom-z2-origin.csv` | 同上 | $z^2$ 在原点附近的局部放大网格，也是 450 行 |
+| `out/angles.csv` | 同上 | 10 行结论表：每行一个测点，含夹角、偏差、伸缩率、判定 |
+| 三句结论（写进 notebook，或直接回话） | — | 见第七节末，三条各一句 |
+
+`out/` 里的 CSV 就是「网格变形图」与「结论表」的数据：没有 matplotlib 也能把它们交出来，
+图只是数据的另一种画法（第七节给了只用标准库的字符画）。
+
+## 二、环境依赖
+
+**只要 Python 3.8+，只用标准库（`cmath` / `csv` / `math` / `unittest`）**，不装任何第三方包。
+
+- numpy **不需要**（这一课没有需要向量化的步骤：450 个点的双层循环跑完不到 0.1 秒）；
+- matplotlib 与 Jupyter **完全不需要**：交付物是 CSV，画图是可选的第八节。
+
+本机实测的两个解释器：`D:/Program Files/Python313/python.exe`（3.13.15，只有标准库）与
+bundled runtime（3.12.14 + numpy 2.3.5）。命令里的 `python` 按你自己的环境换。
+
+## 三、目录
+
+```
+lab/
+├── README.md                            ← 本文件：各节合集（每节末尾都写着「和别节的关系」）
+├── 0005-cr-check-tool/                  ← 第 5 课：CR 检查器
+├── 0003-gallery/                        ← 实验一：方根与迭代图
+├── 0006-analytic-gallery/               ← 实验二：解析性对照
+├── 0009-cauchy-formula-tool/            ← 第 9 课：柯西公式核对
+├── 0010-cauchy-closed-contour/          ← 第 10 课：复合闭路
+├── 0012-laurent-coeff-tool/             ← 第 12 课：展开系数核对
+├── 0007-mapping-grid/                   ← 本课（实验三）
+│   ├── mapping_grid.py                  ← 你要填的 9 个函数（留白）
+│   ├── test_mapping_grid.py             ← 38 条断言，自动判分
+│   └── out/                             ← 自检写出五份数据
+└── solutions/
+    ├── 0005-cr-check-tool/
+    ├── 0003-gallery/
+    ├── 0006-analytic-gallery/
+    ├── 0009-cauchy-formula-tool/
+    ├── 0010-cauchy-closed-contour/
+    ├── 0012-laurent-coeff-tool/
+    └── 0007-mapping-grid/
+        ├── mapping_grid.py              ← 参考解（做完才看）
+        └── README.md                    ← 九个函数为什么这样写、常见错法、实测数据
+```
+
+## 四、怎么算做完
+
+进到任务目录，跑：
+
+```term
+$ cd lab/0007-mapping-grid
+$ python test_mapping_grid.py
+```
+
+现在（还没动手）会是这样——38 条全是 ERROR，**退出码 1**：
+
+```term
+$ python test_mapping_grid.py
+...
+NotImplementedError: 第 1 步还没写：segment_points —— 见 lab/README.md 任务表第 1 行
+...
+Ran 38 tests in 0.008s
+
+FAILED (errors=38)
+```
+
+九步填完、跑出下面这两行，数值这一半才算做完（退出码 0）：
+
+```term
+$ python test_mapping_grid.py
+...
+Ran 38 tests in 0.010s
+
+OK
+```
+
+只验某一步（填一步验一步，别一次填完）：`python test_mapping_grid.py -k step5`。
+`-k` 后面写测试名里的一段：`step1` … `step9`、`selfcheck`。
+
+## 五、任务表
+
+| 步 | 填哪个函数 | 要算出什么 | 立刻验（条数） |
+|---|---|---|---|
+| 1 | `segment_points` | 线段 $a\to b$ 上等距的 $n$ 个点（含两端） | `-k step1`（3） |
+| 2 | `grid_lines` | 铺参数网格：竖线族 $x$ 固定、横线族 $y$ 固定 | `-k step2`（4） |
+| 3 | `map_grid` | 整张网格逐点送过去（形状不变） | `-k step3`（4） |
+| 4 | `angle_between` | 两个向量的夹角（**度**），零向量给 `None` | `-k step4`（4） |
+| 5 | `cross_angle` | 局部十字的像的夹角——直角还在不在的直接测量 | `-k step5`（4） |
+| 6 | `angle_defect` | 夹角离 90° 差多少度（`is_conformal` 已经给好） | `-k step6`（4） |
+| 7 | `derivative_at` | 数值导数 $f'(z_0)$：模是伸缩率、辐角是旋转角 | `-k step7`（4） |
+| 8 | `critical_points` | 网格点里 $\lvert f'(z)\rvert\approx0$ 的那些（临界点） | `-k step8`（3） |
+| 9 | `save_curves_csv`、`save_angles_csv` | 网格数据与结论表存成 CSV | `-k step9`（4） |
+| — | 不用填 | 整块自检：三张网格 + 十行结论表，写出 `out/` 五份 | `-k selfcheck`（4） |
+
+已经写好的六个样例（`f_sq`、`f_exp`、`f_inv`、`MAPPINGS`、`is_conformal` 与那几个常量）
+照它们的用法往下填，**别改**：第 5、7、8 步的断言按它们算。
+
+## 六、逐步做
+
+### 第 1 步 · 线段铺点
+
+$$ z_k=a+(b-a)\frac{k}{n-1},\qquad k=0,1,\dots,n-1 . $$
+
+**唯一容易错的地方**是分母：写 $k/n$ 时最后一个点只走到全程的 $\dfrac{n-1}{n}$，网格右边永远
+差一截。图上看不出来（只是「小了点」），第 3 步一逐点比对就露。$n<2$ 要抛 `ValueError`。
+
+写完后 `python test_mapping_grid.py -k step1`，应看到 `OK`（3 个测试）。
+
+### 第 2 步 · 铺参数网格
+
+竖线族：$x=c$ 逐条，每条从 $(c,\ \text{im\_min})$ 走到 $(c,\ \text{im\_max})$；
+横线族：$y=d$ 逐条，每条从 $(\text{re\_min},\ d)$ 走到 $(\text{re\_max},\ d)$。
+两族都拿第 1 步的 `segment_points` 铺。
+
+**两个坑**：两族各写一遍循环（其中一族的端点必然取错）；竖线方向反了（从 `im_max` 往下走），
+第 5 步的十字会跟着反——图看不出问题，角度却从 90° 变成 270° 那一侧。
+
+### 第 3 步 · 把整张网格送过去
+
+这一步就是「网格变形」本身：$w=z^2$ 把直线送成抛物线，$w=e^z$ 送成圆与射线，
+$w=1/z$ 送成过原点的圆。**形状不变量是「几条线、每线几点」**，代码里就是两层列表推导。
+
+**唯一要忍住的地方**：不要 `try/except` 把 `1/z` 在原点处的 `ZeroDivisionError` 吞掉。
+极点不在定义域里，网格踩上去就该抛——这就是「极点」这两个字的数值形态。
+
+### 第 4 步 · 夹角（单位是度）
+
+$$\cos\theta=\frac{v_xw_x+v_yw_y}{\lvert v\rvert\,\lvert w\rvert},\qquad \theta=\arccos(\cdots)\ \text{再换度}.$$
+
+**两个坑**：忘了把余弦夹回 $[-1,1]$（浮点偶尔给 $-1.0000000000000002$，`acos` 抛
+`ValueError`）；返回了弧度。零向量返回 `None`——$\lvert z\rvert^2$ 那种「虚部恒等于 0」的
+情形就是靠这条兜住的（实验二的第 6 步踩过同一个坑）。
+
+### 第 5 步 · 小十字：直角还在吗
+
+在 $z_0$ 处取一个十字：两条臂 $z_0\to z_0+\delta$、$z_0\to z_0+i\delta$，它们本身成直角。
+把它们**送过去**，量两条像的弦
+
+$$ w_1=f(z_0+\delta)-f(z_0),\qquad w_2=f(z_0+i\delta)-f(z_0), $$
+
+的夹角。保角的映射给 $90°$，$z^2$ 在原点给 $180°$。
+
+**这一格是整节课的关键，也是「局部放大图」的数值版**：$\delta$ 就是放大倍数。
+实测同一个 $\delta=10^{-4}$ 下：
+
+| 打点 | 夹角 | 说明 |
+|---|---|---|
+| $z^2$ 在 $1+i$ | 90.0029° | 保角 |
+| $z^2$ 在 $0$ | 180.0000° | 90° 被加倍，直角没了 |
+| $e^z$ 在 $0$ 与 $1+i$ | 90.0029° | 保角（$e^z$ 的导数处处非零） |
+| $1/z$ 在 $i$ | 89.9943° | 保角 |
+| $1/z$ 在 $0.1+0.1i$ | 89.9427° | 极点旁边：伸缩率已到 50 倍，直角**还在** |
+
+**$\delta$ 不能乱取**：它得比「到临界点的距离」小得多。$z^2$ 在 $0.01$ 处，$\delta=10^{-2}$
+量出 116.5651°，$\delta=10^{-4}$ 就回到 90.2865°——前者是「放大不够」，不是「直角坏了」。
+
+### 第 6 步 · 偏差与判据
+
+$$\text{defect}=\lvert\theta-90°\rvert .$$
+
+取绝对值（$84.5°$ 与 $95.5°$ 都不是直角），量不出夹角时返回 `90.0`（按「没了」算）。
+`is_conformal` 已经给好：`defect <= 0.5` 就算直角还在。容差 0.5° 是有余量的——实测保角点的
+偏差在 $3\times10^{-3}$ 到 $0.06$ 度，临界点是 $90$ 度，两边差四个数量级。
+
+### 第 7 步 · 数值导数（伸缩率与旋转角）
+
+$$ f'(z_0)\approx\frac{f(z_0+h)-f(z_0-h)}{2h},\qquad h=10^{-6}. $$
+
+$|f'(z_0)|$ 是**伸缩率**，$\arg f'(z_0)$ 是**旋转角**——第 5 课 §1.4 那两句原话。
+实测：$z^2$ 在 $2+i$ 处是 $4+2i$（伸缩率 $4.47$、旋转 $26.57°$）、$e^z$ 在 $0$ 处是 $1$、
+$1/z$ 在 $i$ 处是 $1$、$1/z$ 在 $0.1+0.1i$ 处是 $50i$（伸缩率 $50$、旋转 $90°$）。
+和 `cr_tool.py` 的 `d_dx` 是同一行代码，只是换了个名字。
+
+### 第 8 步 · 临界点
+
+就是「网格点里 $\lvert f'(z)\rvert\le10^{-9}$ 的那些」。实测：
+
+| 映射 | 临界点 |
+|---|---|
+| $z^2$ | `[0j]`（原点正好是格点：第 5 条竖线 × 第 5 条横线） |
+| $e^z$ | `[]`（导数处处非零） |
+| $1/z$ | `[]`（导数 $-1/z^2$ 在窗口内没有零点） |
+
+**这个列表与「量出 180° 的那些点」是同一批**：保角失效的点只有临界点。
+
+### 第 9 步 · 两张表存盘
+
+`save_curves_csv`：一行一个点，列 `family,line,k,re,im`，返回数据行数（$450$）。
+`save_angles_csv`：一行一个测点，列 `map,z0,delta,angle_deg,defect_deg,stretch,verdict`。
+
+**两个坑**：`open` 少了 `newline=""`（Windows 每行变两行）；偏差用四位小数（$2.9\times10^{-3}$
+变 `0.0029`、$2.8\times10^{-5}$ 变 `0.0000`，跟「坏掉了」分不开，所以用 `"{:.6g}"`）。
+
+### 整块自检（不用填）
+
+`-k selfcheck` 跑三个映射、量十个测点，写出五份数据：
+
+| 文件 | 内容 |
+|---|---|
+| `out/curves-z2.csv` | $z^2$ 的变形网格：两族抛物线 |
+| `out/curves-exp.csv` | $e^z$ 的变形网格：同心圆 + 射线 |
+| `out/curves-inv.csv` | $1/z$ 的变形网格：过原点的圆 |
+| `out/zoom-z2-origin.csv` | 原点附近 $[-0.3,0.3]^2$ 的放大网格（像正好是整图的 $0.09$ 倍） |
+| `out/angles.csv` | 十行结论表（下表） |
+
+`out/angles.csv` 实测原样：
+
+```text
+map,z0,delta,angle_deg,defect_deg,stretch,verdict
+z^2,1+1i,1e-04,90.0029,0.00286472,2.82843,保角
+z^2,0,1e-04,180.0000,90,0,临界点：角度加倍
+z^2,0,1e-02,180.0000,90,0,临界点：角度加倍
+z^2,0.01,1e-02,116.5651,26.5651,0.02,偏差待核对：缩小 δ
+z^2,0.01,1e-04,90.2865,0.286477,0.02,保角
+e^z,0,1e-04,90.0029,0.00286479,1,保角
+e^z,1+1i,1e-04,90.0029,0.00286479,2.71828,保角
+1/z,i,1e-04,89.9943,0.00572958,1,保角
+1/z,0.1+0.1i,1e-04,89.9427,0.0572671,50,保角
+1/z,0.1+0.1i,1e-02,84.5474,5.45262,50,偏差待核对：缩小 δ
+```
+
+它全绿 + 这张表对得上，就是这一节的交付证据。
+
+---
+
+## 七、不装 matplotlib 也能看图
+
+交付物是 CSV，但你还是想「看见」形状。把映射后的网格当字符画打出来就行，只要标准库：
+
+```python
+import mapping_grid as mg
+
+
+def show(f, window, width=45, height=17, lines=13, points=120):
+    v, h = mg.map_grid(f, mg.grid_lines(*window, lines, points))
+    pts = [(w.real, w.imag) for fam in (v, h) for line in fam for w in line]
+    xs = [p[0] for p in pts]
+    ys = [p[1] for p in pts]
+    x0, x1, y0, y1 = min(xs), max(xs), min(ys), max(ys)
+    canvas = [[" "] * width for _ in range(height)]
+    for x, y in pts:
+        col = int((x - x0) / (x1 - x0) * (width - 1))
+        row = height - 1 - int((y - y0) / (y1 - y0) * (height - 1))
+        canvas[row][col] = "#"
+    print("\n".join("".join(line) for line in canvas))
+
+
+for name, f, window in mg.MAPPINGS:
+    print(name)
+    show(f, window)
+```
+
+实测输出（$w=z^2$ 那一张，实部 $-1..1$、虚部 $-2..2$）：
+
+```term
+w = z^2
+                      #
+                 ##########
+            #######      #######
+        #####      ######      #####
+     ####   ########    ########   ####
+   ############    ######    ############
+ ###########   ##############   ###########
+##########  ####################  ##########
+#############################################
+#     ##  ########################  ##     #
+##########  ####################  ##########
+ ###########   ##############   ###########
+   ############    ######    ############
+     ####   ########    ########   ####
+        #####      ######      #####
+            #######      #######
+                 ##########
+                      #
+```
+
+两族抛物线：竖线 $x=c$ 送成 $u=c^2-\dfrac{v^2}{4c^2}$，横线 $y=d$ 送成 $u=\dfrac{v^2}{4d^2}-d^2$。
+**格子全弯了，交点却仍是直角**——这就是「保角」和「变形」互不矛盾的样子。
+
+把窗口换成 `ZOOM_WINDOW`（$[-0.3,0.3]^2$）再画，形状一模一样、只小一圈：$z^2$ 在原点附近是
+二次的，像正好是整图的 $0.3^2=0.09$ 倍（实测实部 $-0.090..0.090$、虚部 $-0.180..0.180$）。
+真正不正常的是原点那一处——两条坐标线的像都倒在实轴上。
+
+五份数据出来后，**结论段三句话**（写进 notebook，或直接回话）：
+
+1. $z^2$ 的网格是两族抛物线，$e^z$ 是同心圆加射线，$1/z$ 是过原点的圆——格子全被弯过，
+   但弯不影响直角：这三张图的交点都还是 90°（`out/angles.csv` 里 `angle_deg` 全是 90 上下）。
+2. 唯一量出 180° 的是 $z^2$ 的原点，而它正是唯一满足 $f'(z)=0$ 的点（`stretch` 那一列是 0）：
+   **直角被保持 ⟺ 导数非零**；$1/z$ 在极点旁边伸缩率已到 50 倍，角度仍是 90°。
+3. 「角度不对」有两种来源：缩小 $\delta$ 后收敛到 90° 的是放大不够（$z^2$ 在 0.01 处
+   从 116.6° 收到 90.3°），钉在 180° 不动的是临界点——判据是「还收不收」，不是「差多少」。
+
+---
+
+## 八、装了 matplotlib 就画出来（可选）
+
+```python
+import matplotlib.pyplot as plt
+import mapping_grid as mg
+
+v, h = mg.map_grid(mg.f_sq, mg.grid_lines(*mg.SQ_WINDOW))
+for line in v + h:
+    plt.plot([w.real for w in line], [w.imag for w in line], lw=0.6, color="steelblue")
+plt.gca().set_aspect("equal")
+plt.title("w = z^2 把方格纸揉成两族抛物线")
+plt.show()
+```
+
+把 `mg.f_sq` 换成 `mg.f_exp`（窗口换 `mg.EXP_WINDOW`）或 `mg.f_inv`（窗口换 `mg.INV_WINDOW`），
+就是另外两张。`set_aspect("equal")` 不能省：不然直角会被画布比例压成别的角度——
+那就成了「画图制造出来的不保角」，与函数无关。
+
+## 九、卡壳的时候，按这个顺序走
+
+1. **先读断言最后一行**：`AssertionError` 后面一般带着期望值与实际值。差 90°、差一个符号、
+   差一个端点，都在那一行看得出来。
+2. **按症状对表**：
+
+   | 症状 | 大概率是 |
+   |---|---|
+   | step1 最后一条线不在 `re_max` 上 | 参数用了 `k / n`，应写 `k / (n - 1)` |
+   | step1 报 `ZeroDivisionError` | `n = 1` 时除的是 0，先抛 `ValueError` |
+   | step2 竖线从 `im_max` 往下走 / 十字翻了个面 | 竖线方向反了，应自下而上 |
+   | step2 同一族的点实部不相等 | 内层用了另一个下标，`x` 没固定住 |
+   | step3 形状变成一维 / 少了一层 | 两层列表推导只写了一层 |
+   | step3 得不到 `ZeroDivisionError` | 用 `try/except` 吞掉了（或把 0 换成了别的数） |
+   | step4 抛 `ValueError: math domain error` | 余弦没夹回 $[-1,1]$ |
+   | step4 直角量出 1.5708 | 返回的是弧度，没 `math.degrees` |
+   | step5 $z^2$ 在原点量出 90° | 量的是**原像**的夹角（永远是 90°），要量像的弦 |
+   | step5 保角点量出 116° 上下 | $\delta$ 比到临界点的距离还大，换小一号 |
+   | step6 偏差是负的 | 忘了取绝对值 |
+   | step6 `TypeError: NoneType` | 没处理「量不出夹角」的那条分支 |
+   | step7 导数差 2 倍 | 分母写成 `h`，应为 `2 * h` |
+   | step7 导数是个纯虚数 | 漏了 `2h` 里的实数性，或把 `1j` 加到了错的地方 |
+   | step8 `1/z` 抛 `ZeroDivisionError` | 把原点放进了待查点集 |
+   | step8 结果顺序乱 / 有重复 | 用了 `set` |
+   | step9 文件里每行之间有空白行 | `open` 少了 `newline=""` |
+   | step9 复数列写成 `(1+2j)` | 没拆成 `w.real` 与 `w.imag` |
+   | step9 偏差列全是 `0.0000` | 用了四位小数，应换 `"{:.6g}"` |
+
+3. **还不对，再看参考解**：`solutions/0007-mapping-grid/mapping_grid.py`，
+   **先只读卡住的那一个函数**，对照完立刻回来自己写一遍（自检验的是「你填完以后数据对不对」）。
+
+参考解那一步为什么这样写、常见错法逐条列，`solutions/0007-mapping-grid/README.md` 里有。
+
+## 十、做完之后的对照方式
+
+把参考解拷进任务目录、覆盖同名文件，再跑一次：
+
+```term
+$ copy ..\solutions\0007-mapping-grid\mapping_grid.py .    # Windows
+$ python test_mapping_grid.py
+...
+Ran 38 tests in 0.010s
+
+OK
+```
+
+**先自己全绿、再对照**。两者差别如果只在写法（列表推导还是 `for`），不用改；
+如果差在端点、方向、$\delta$ 或格式精度，那就是你图和数据出错的根源。
+
+## 十一、和前后几节的关系
+
+- **实验二（解析函数长什么样）**：那里逐点验 CR 条件，`jacobian` 等于
+  $u_xv_y-u_yv_x=\lvert f'(z)\rvert^2$。本课的「十字夹角 180°」与「`critical_points` 找到
+  $z=0$」与「`jacobian` 等于零」是同一件事的三种量法。
+  顺带一条对照：$\bar z$ 的十字夹角**也是 90°**（它只把方位翻了过来），所以「夹角没变」同样
+  判不出解析——要判方向还得看 `jacobian` 的符号，这就是实验二那条「正交不等于解析」的几何版。
+- **实验四（围道上的留数）**：那里的围道也是按参数采点（`circle_points`），把极点画在图上、
+  把围道叠上去，用的就是本课「采点 → 送过去 → 存 CSV」这同一套流程。所以
+  `mapping_grid.py` 与 `out/` 别删。
+
+# 第 14 课 · 留数与留数定理的数值核对（0014-residue-contour）
+
+上面几节分别是第 5 课（CR 检查器）、实验一、实验二、第 9 课与第 10 课。本节是第 14 课
+「留数与留数定理」的小 lab，各节互不影响：各用各的目录、各跑各的测试。
+
+前面第 9 课验的是**柯西公式**（分母幂次 → 求几阶导），这一节验的是**留数**：
+把四条留数算法各写成函数，再拿 $\dfrac{1}{2\pi i}\oint_{|z-z_0|=\rho}f\,dz$
+这个小圆上的数值围道积分当裁判。两种算法对得上，卷面上「算留数」那一步才叫真的会。
+
+工具的用法一句话：**先按公式算出留数，再让数值围道积分去验它。**
+
+---
+
+## 一、要交出什么
+
+| 交付物 | 落在哪 | 怎么算合格 |
+|---|---|---|
+| `residue_lab.py` 里 12 个留白函数 | `lab/0014-residue-contour/residue_lab.py` | `python test_residue_lab.py` 打出 `OK`（53 条断言） |
+| 一张默写卡（纸笔，不用交文件） | 纸笔题型整理册 | 四种算法三十秒默完，见课件「上手做」第 1 条 |
+
+`out/`、CSV、图都不用交——这一节只产代码。
+
+## 二、环境依赖
+
+**只要 Python 3.8+，只用标准库（`cmath`、`math`、`unittest`），不装任何第三方包。**
+
+- 复数是内置类型 `complex`，`1j` 就是虚数单位，$e^{i\theta}$ 写 `cmath.exp(1j * theta)`；
+- $2\pi i$ 写成 `2j * math.pi`（文件里已经给成 `TAU`）——这样不会把 $i$ 丢掉；
+- 测试用内置 `unittest`，`python test_residue_lab.py` 直接跑。
+
+本机实测两个解释器都能跑同一份代码：`D:/Program Files/Python313/python.exe`
+（Python 3.13.15，只有标准库）与带 numpy 的
+`C:\Users\Administrator\.dsh\dsh-runtimes\dsh-primary-runtime\dependencies\python\python.exe`
+（Python 3.12.14），两边都是 `Ran 53 tests … OK`。命令里的 `python` 换成本机任意一个 3.8+ 都可以。
+
+## 三、目录
+
+```
+lab/
+├── README.md                              ← 本文件（各课各一节）
+├── 0014-residue-contour/
+│   ├── residue_lab.py                     ← 你要填的 12 个函数（留白）
+│   └── test_residue_lab.py                ← 53 条断言，自动判分
+└── solutions/
+    └── 0014-residue-contour/
+        ├── residue_lab.py                 ← 参考解（做完才看）
+        └── README.md                      ← 每一步为什么这样写、常见错法
+```
+
+## 四、怎么算做完
+
+进到任务目录，跑：
+
+```term
+$ cd lab/0014-residue-contour
+$ python test_residue_lab.py
+```
+
+现在（还没动手）会是这样——53 个 ERROR，**退出码 1**：
+
+```term
+$ python test_residue_lab.py
+test_selfcheck_contour_table (__main__.Selfcheck_整表自检...) ... ERROR
+...
+NotImplementedError: 第 9 步还没写：residue_pole_m —— 见 lab/README.md 任务表第 9 行
+...
+Ran 53 tests in 0.008s
+
+FAILED (errors=53)
+```
+
+最后那行 `FAILED (errors=53)` 是重点：**留白态必须是不通过的**，退出码 1
+（PowerShell 里紧接着跑 `echo $LASTEXITCODE` 能看到 1）。
+
+十二步填完、跑出下面这两行，就算做完（退出码 0）：
+
+```term
+$ python test_residue_lab.py
+...
+Ran 53 tests in 0.026s
+
+OK
+```
+
+只验某一步（填一步验一步，别一次填完）：
+
+```term
+$ python test_residue_lab.py -k step9
+...
+Ran 5 tests in 0.002s
+
+OK
+```
+
+`-k` 后面是**子串**匹配，所以第 1 步要写成 `-k step1_`（带下划线）：
+`-k step1` 会连 `step10`、`step11`、`step12` 一起选中，跑出 19 条（不是环境坏了）。
+
+## 五、任务表
+
+| 步 | 填哪个函数 | 要算出什么 | 立刻验 |
+|---|---|---|---|
+| 1 | `circle_points` | 围道 $\lvert z-a\rvert=r$ 上等距的 $n$ 个点（逆时针） | `-k step1_` |
+| 2 | `closed_integral` | 数值围道积分 $\oint_C f\,dz$（$dz=i\Delta\theta\,(z-a)$） | `-k step2` |
+| 3 | `inside` | 奇点 $z_0$ 在圈内还是圈外（边界不算） | `-k step3` |
+| 4 | `poly_eval` | 升幂系数多项式的值（霍纳） | `-k step4` |
+| 5 | `deriv_poly` | 多项式的一阶导（给 $Q'(z_0)$ 用） | `-k step5` |
+| 6 | `strip_factor` | 把 $(z-z_0)^m$ 从分母里除干净（综合除法） | `-k step6` |
+| 7 | `deriv_n` | $0$／$1$／$2$ 阶数值导（$g^{(m-1)}$ 用它） | `-k step7` |
+| 8 | `residue_simple` | 一阶极点：$P(z_0)/Q'(z_0)$ | `-k step8` |
+| 9 | `residue_pole_m` | $m$ 阶极点：$\frac{1}{(m-1)!}g^{(m-1)}(z_0)$ | `-k step9` |
+| 10 | `residue_by_integral` | 兜底：$\frac{1}{2\pi i}\oint_{|z-z_0|=\rho}f\,dz$（本性奇点走这条） | `-k step10` |
+| 11 | `contour_by_residues` | 留数定理：$2\pi i$ 乘圈内留数之和 | `-k step11` |
+| 12 | `contour_missing_poles` | **故意写错的那一版**：圈内只算第一个奇点 | `-k step12` |
+| — | 不用填 | 课件那几道真题整表自检 | `-k selfcheck` |
+
+文件里已经写好的常数是 `DEFAULT_N`、`DEFAULT_H`、`DEFAULT_H2`、`TOL_EXACT`、
+`TOL_VALUE`、`TWO_PI`、`TAU`——照它们的用法往下填，**别改**。
+
+## 六、逐步做
+
+### 第 1 步 · 围道采样
+
+$$ z_k=a+r\,e^{i\theta_k},\qquad \theta_k=\frac{2\pi k}{n},\ k=0,1,\dots,n-1 . $$
+
+从 $a+r$ 出发、逆时针走一圈，正好是「正向简单闭曲线」。$n$ 取 2048 就够：
+梯形法对周期解析被积函数的误差按 $(d/r)^n$ 掉（$d$ 是奇点到圆心的距离），2048 点已经到机器精度。
+
+**坑**：忘了乘 `radius`，点全落在圆心上；角度写成 $-2\pi k/n$ 方向就反了。
+
+### 第 2 步 · $dz$ 换成什么（这一步最容易错）
+
+$z=a+r e^{i\theta}$ 求微分：
+
+$$ dz=i\,r\,e^{i\theta}\,d\theta=i\,\Delta\theta\,(z-a),\qquad \Delta\theta=\frac{2\pi}{n}. $$
+
+于是每一项是 `f(z_k) * (1j * dtheta * (z_k - center))`。
+
+**两个坑**：漏掉 `1j`，$\oint dz/z$ 会算出 $2\pi$（实数，没有 $i$）；漏掉 `(z_k - center)`，
+常数被积函数会算出 $2\pi i$ 而不是 $0$。`test_step2_constant_is_zero` 与
+`test_step2_uses_center` 各抓一个。
+
+### 第 3 步 · 奇点在圈内还是圈外
+
+$\lvert z_0-\text{center}\rvert<\text{radius}$ 才算圈内，**严格小于**：距离恰好等于半径时
+奇点压在围道上，两条前提都不满足。写成 $\lvert z_0\rvert$ 是最常见的错法——
+圆心一离开原点就数错，`test_step3_outside` 里那个点 $z_0=-0.5$ 就专门验这件事：
+它的 $\lvert z_0\rvert=0.5<1.5$，但离圆心 $1$ 的距离正好 $1.5$，**不在**圈内。
+
+### 第 4 步 · 多项式求值
+
+系数按**升幂**给：$z^3+5z^2+8z+4$ 写成 `[4, 8, 5, 1]`。霍纳法从最高次系数往下卷，
+`total = total * z + c` 循环一遍。空列表当零多项式，返回 `0`。
+
+### 第 5 步 · 多项式求导
+
+$z^k$ 求导得 $k\,z^{k-1}$，所以新列表第 $k-1$ 项是 `k * coeffs[k]`，从 $k=1$ 取到末尾。
+常数导成空列表（`poly_eval` 对它给 $0$，写成 `[0]` 也行）。
+
+这一条只为一阶极点那条分式公式服务：$\operatorname{Res}=\dfrac{P(z_0)}{Q'(z_0)}$。
+
+### 第 6 步 · 综合除法（把 $(z-z_0)^m$ 除干净）
+
+按降幂做霍纳：$b_0=d_0$、$b_i=d_i+z_0b_{i-1}$，最后一位 $b_n$ 是余数，前面 $n$ 位就是商。
+除 $m$ 次就是 $m$ 阶极点要的那个 $\tilde Q$。
+
+为什么需要它：$m$ 阶极点公式里的括号是 $(z-z_0)^m f(z)=\dfrac{P}{\tilde Q}$，
+$\tilde Q$ 在 $z_0$ 处不为零，这个商才在 $z_0$ 解析、才谈得上求导。
+
+$z^3+5z^2+8z+4=(z+1)(z+2)^2$：除 $(z+2)$ 一次得 $z^2+3z+2$，除两次得 $z+1$。
+
+### 第 7 步 · 数值求导
+
+$$ g'(z_0)\approx\frac{g(z_0+h)-g(z_0-h)}{2h},\qquad
+   g''(z_0)\approx\frac{g(z_0+h)-2g(z_0)+g(z_0-h)}{h^2}. $$
+
+三件事：
+
+1. **`order = 0` 直接返回 `g(z0)`**——$m=1$ 那一行是「零阶导、直接代 $z_0$」，对应 $0!=1$。
+   这一条写不出来，两条极点公式就分不开。
+2. **二阶差分要除以 $h^2$**，所以步长换 `DEFAULT_H2 = 1e-4`；用 `1e-6` 会被舍入误差抬到
+   $10^{-3}$ 量级（第 5 课的 `laplacian` 踩的是同一个坑）。
+3. 这里算出来的导**不是精确值**：实测 `m=3`、$g=\cos z$ 那一类差 $2\times10^{-8}$ 量级，
+   是截断误差不是算错——`TOL_VALUE = 1e-6` 就是为它留的。
+
+### 第 8 步 · 一阶极点
+
+$$\operatorname{Res}=\frac{P(z_0)}{Q'(z_0)}. $$
+
+一行：`poly_eval(num, z0) / poly_eval(deriv_poly(den), z0)`。
+
+$Q'(z_0)=0$ 说明 $z_0$ 是分母的重根，**一阶公式算不出数**——`test_step8_double_root_raises`
+要求这里直接抛 `ZeroDivisionError`。这不是 bug，是信号：回去重新定阶，换第 9 步的公式。
+课件那个 warn 块讲的正是这件事。
+
+### 第 9 步 · $m$ 阶极点
+
+$$\operatorname{Res}=\frac{1}{(m-1)!}\lim_{z\to z_0}\frac{d^{\,m-1}}{dz^{\,m-1}}\Big[(z-z_0)^mf(z)\Big]. $$
+
+三格对应三行：
+
+```text
+q = strip_factor(den, z0, m)                    # 括号内那个函数的分母
+g = lambda z: poly_eval(num, z) / poly_eval(q, z)
+return deriv_n(g, z0, m - 1) / math.factorial(m - 1)
+```
+
+求导阶数与阶乘**用的是同一个数 $m-1$**，写成 `m - 1` 就不会错位。
+断言里 $(1+z+z^2)/z^3$ 在 $0$ 处必须得 $1$：乘 $z^3$ 后求二阶导得 $2$，再除 $2!$——
+**忘了那个 $2!$ 就会写 $2$**，这正是课件点出的「$m\ge3$ 最常见的丢分处」。
+
+### 第 10 步 · 兜底：小圆上的围道积分
+
+$$\operatorname{Res}=\frac{1}{2\pi i}\oint_{|z-z_0|=\rho}f(z)\,dz . $$
+
+本性奇点**只有这一条**：$\lim(z-z_0)^mf$ 对任何 $m$ 都不收敛，代 $z_0$ 无处可代，
+只能展开读 $c_{-1}$——而「展开读 $c_{-1}$」的数值版本就是这个小圆积分。
+
+$\rho$ 要小到圈内只剩 $z_0$ 一个奇点。三个实测值：$\operatorname{Res}[e^{1/z},0]=1$、
+$\operatorname{Res}[z^2e^{1/z},0]=1/6$、$\operatorname{Res}[\sin z/z^3,0]=0$
+（最后这个是填空 3 分那道，展开一步读出 $c_{-1}=0$）。
+
+它也是**所有**奇点的复核手段：第 8、9 步的两个公式，断言都拿它对照过一遍。
+
+### 第 11 步 · 留数定理
+
+$$\oint_C f\,dz=2\pi i\sum_{|z_k-a|<r}\operatorname{Res}[f,z_k]. $$
+
+`poles` 是一串配方 `(奇点位置, 该点的留数)`，先按第 3 步筛，再把圈内的加起来乘 `TAU`。
+
+**两个坑**：漏乘 `TAU` 得到的是留数之和（差一个 $2\pi i$）；把圈外的也加进来是最常见的失分。
+`test_step11_outside_excluded` 用同两个奇点换一条 $|z|=1$ 的围道验后者：答案必须是 $0$。
+`test_step11_cancellation` 验的是另一种 $0$——$1+(-1)=0$，两个非零留数抵消，
+**不是**「圈内没奇点」，这两种 $0$ 卷面上不能混。
+
+### 第 12 步 · 漏掉奇点的对照（这一步是排错，不是新公式）
+
+`contour_missing_poles` 是**故意写错**的那一版：圈内有两个奇点，它只算第一个。
+它对应卷面上「围道内有两个奇点只算一个」那个失分点。
+
+拿题目 $\oint_{|z|=8}\dfrac{e^z\,dz}{(z-\pi i)(z-2\pi i)^2}$ 对照，三个数实测：
+
+| 算法 | 结果 |
+|---|---|
+| 数值围道积分（裁判） | `2.0000000000000204+1.2732395447351617j` |
+| 正确：两个留数都算 | `2.0000000000000018+1.2732395447351612j` |
+| 错版：只算 $\pi i$ | `0+0.6366197723675809j` |
+
+理论值是 $2+\frac{4}{\pi}i$。数值积分与正版对到 $10^{-15}$，与错版差一个多单位——
+**围道积分站哪边，哪边就是对的**，这就是这一节的核验方式。
+换 $1/((z+1)(z+2)^2)$ 沿 $|z|=3$ 更狠：正解是 $0$，只算 $-1$ 会得到 $6.283185307179586i$。
+
+`test_step12_single_pole_same` 是反向的对照：圈内只有一个奇点时两版必然相等——
+所以两者的差异**只可能**来自漏点，不是别的地方写错了。
+
+### 整表自检（不用填）
+
+`-k selfcheck` 把课件那几道真题一张表跑完：
+
+| 题 | 围道/奇点 | 理论值 |
+|---|---|---|
+| $\cos z/(z^2(z^2-\pi^2))$ | 奇点 $0$（二阶） | $0$ |
+| 同上 | 奇点 $\pi$（一阶） | $-\frac{1}{2\pi^3}$ |
+| 同上 | 奇点 $-\pi$（一阶） | $\frac{1}{2\pi^3}$ |
+| $e^z/(z-1)^3$ | 奇点 $1$（三阶） | $\frac{e}{2}$ |
+| $(z^2-\pi^2)/(z\sin z)$ | 奇点 $2\pi$（一阶） | $\frac{3\pi}{2}$ |
+| $1/((z+1)(z+2)^2)$ | $\lvert z\rvert=3$ | $0$ |
+| $e^z/((z-\pi i)(z-2\pi i)^2)$ | $\lvert z\rvert=8$ | $2+\frac{4}{\pi}i$ |
+| $e^{iz}/(z^2-3\pi z+2\pi^2)$ | $\lvert z-3\rvert=4$ | $4i$ |
+
+每一行都验两列：**数值围道积分**与**按公式算的 $2\pi i\sum$ 留数**，两列都要落在理论值上；
+最后一条 `test_selfcheck_zero_sum` 验「算完核对」那一行：全部有限留数之和为零
+（$1+(-1)=0$；$0-\frac{1}{2\pi^3}+\frac{1}{2\pi^3}=0$）。
+
+它全绿，说明你的工具和纸面结论对上了——这就是这一节的交付证据。
+
+## 七、卡壳的时候，按这个顺序走
+
+1. **先读断言最后一行**：`期望 X，实际 Y`。两个数一比，差符号、差因子、差一个 $i$ 都看得出来。
+2. **按症状对表**：
+
+   | 症状 | 大概率是 |
+   |---|---|
+   | step1 所有点都落在圆心上 | 忘了乘 `radius` |
+   | step1 相邻角差是负的 / 点顺时针排 | 角度写成 $-2\pi k/n$ |
+   | step2 $\oint dz/z$ 得 $2\pi$（实数） | $dz$ 漏了 `1j` |
+   | step2 常数被积函数得 $2\pi i$ 而不是 $0$ | $dz$ 漏了 `(z_k - center)` |
+   | step2 圆心不在原点时全错 | $dz$ 里的 `(z_k - center)` 写成了 `z_k` |
+   | step3 围道上的点被判成圈内 | 写成了 `<=`，应为 `<` |
+   | step3 圆心一挪就数错奇点 | 用了 `abs(z0)`，应为 `abs(z0 - center)` |
+   | step4 多项式值全带小尾巴 / 差得离谱 | 系数当降幂读了，应按升幂 |
+   | step6 除完商还是零 / 余数没丢 | 综合除法把最后那一位余数也算进商了 |
+   | step7 二阶导数量级离谱（$10^{-3}$ 以上误差） | 用了 `DEFAULT_H`，应换 `DEFAULT_H2` |
+   | step7 `order=0` 报错或返回奇怪的值 | 漏了「零阶导直接代 $z_0$」这一支 |
+   | step9 $m=3$ 差 2 倍 / 差 6 倍 | 阶乘写了 `m!`，或求导阶数写了 `m`——两处都要 `m - 1` |
+   | step9 正确值是 $1$ 而得到 $2$ | 漏了 $\frac{1}{(m-1)!}$（这一条就是那个丢分点的代码版） |
+   | step11 结果是留数之和，少了 $i$ | 漏乘 `TAU`（`2j * math.pi`） |
+   | step11 换小围道还有非零值 | 圈外的奇点也加进来了 |
+   | step10 小圆积分算出的留数不对 | `radius` 太大，圈里混进了第二个奇点 |
+   | selfcheck 只有「公式」那一列差 $10^{-8}$ | 正常，是 `deriv_n` 的截断误差，不是错 |
+
+3. **还不对，再看参考解**：`solutions/0014-residue-contour/residue_lab.py`，
+   **先只读卡住的那一个函数**，对照完立刻回来自己写一遍（整块自检验的是整表，整段拷会让你跳过判断过程）。
+
+参考解那一步为什么这样写，`solutions/0014-residue-contour/README.md` 里有逐条说明。
+
+## 八、做完之后的对照方式
+
+把参考解拷进任务目录、覆盖同名文件，再跑一次：
+
+```term
+$ copy ..\solutions\0014-residue-contour\residue_lab.py .    # Windows
+$ python test_residue_lab.py
+...
+Ran 53 tests in 0.026s
+
+OK
+```
+
+**先自己全绿、再对照**。两者的差别如果只在写法（列表推导还是 `for`），不用改；
+如果差在求导阶数、阶乘位置、`TAU`、圈内判定，那就是卷面上丢分的根源。
+
+## 九、和实验四的关系
+
+实验四（围道上的留数）要把极点、围道与数值积分画在同一张图上，并在 notebook 里核验
+$\oint_C f\,dz=2\pi i\sum$ 留数。它要的两个零件都是这一节产出的：
+`contour_by_residues`（右边那一半）和 `closed_integral`（左边那一半），
+`circle_points` 采出来的点列直接就是图上那条围道。所以 `residue_lab.py` 别删。

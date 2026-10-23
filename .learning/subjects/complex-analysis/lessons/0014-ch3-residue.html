@@ -1,0 +1,427 @@
+<!DOCTYPE html>
+<html lang="zh-CN" data-theme="dark">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>留数与留数定理 · 复变函数与积分变换</title>
+
+<!-- 共享层在 .learning/assets/，课件在 .learning/subjects/<slug>/lessons/ 下，所以是 ../../../assets/ -->
+<link rel="stylesheet" href="../../../assets/sayo/sayo.css">
+<link rel="stylesheet" href="../../../assets/learn-theme.css">
+<link rel="stylesheet" href="../assets/style.css">
+
+<!-- 主题要在首帧前应用，避免闪白/闪黑 -->
+<script src="../../../assets/learn-theme.js"></script>
+<script>LearnTheme.apply();</script>
+</head>
+
+<body class="lesson-body">
+
+<nav class="lesson-bar">
+  <a href="../index.html">← 返回课程</a>
+  <span>复变函数与积分变换</span>
+  <span class="lesson-bar__no">0014</span>
+  <!-- 课件页自带主题开关：学生从文件管理器直接打开课件时也能切暗色 -->
+  <label class="syo-toggle syo-toggle--theme lesson-bar__toggle" title="切换深浅主题" aria-label="切换深浅主题">
+    <input type="checkbox" id="lesson-theme-checkbox" checked>
+    <span class="syo-toggle-track"></span>
+    <span class="syo-toggle-knob">
+      <svg class="syo-toggle-sun" viewBox="0 0 20 20" fill="none" aria-hidden="true"><circle cx="10" cy="10" r="3.5" stroke="#f57c00" stroke-width="1.5"/><path d="M10 2v2.5M10 15.5V18M2 10h2.5M15.5 10H18M4.34 4.34l1.77 1.77M13.89 13.89l1.77 1.77M4.34 15.66l1.77-1.77M13.89 6.11l1.77-1.77" stroke="#f57c00" stroke-width="1.2" stroke-linecap="round"/></svg>
+      <svg class="syo-toggle-moon" viewBox="0 0 20 20" fill="none" aria-hidden="true"><path d="M16.5 12.5A6 6 0 019 4.5a6 6 0 007.5 8z" stroke="#5c6bc0" stroke-width="1.5" stroke-linejoin="round"/></svg>
+    </span>
+  </label>
+</nav>
+
+<article class="lesson">
+
+  <header class="lesson-header">
+    <span class="lesson-header__eyebrow">0014 · 留数与留数定理</span>
+    <h1>留数与留数定理</h1>
+    <p class="lesson-goal"><b>本节目标：</b>能按奇点类型默写四种留数算法，并用留数定理算出闭路积分。</p>
+  </header>
+
+  <!-- ── 正文：渲染器按内容文件（lessons/<序号>-<节点id>.md）产出，块词汇见 docs/规范/课件内容格式.md ── -->
+
+  <h2>卷面怎么考</h2>
+
+  <p>留数是本章分值最高的一处，卷面上一共三种落点：</p>
+
+  <ul>
+    <li>解答题，7～10 分，两种问法。其一，求 <span class="math-inline">f(z)</span> 在有限复平面内的奇点和相应的留数，不要求积分；其二，用留数算出沿正向圆周一整圈的积分。合肥工业大学 2022～2024 的卷子里，这类题排在第 4、6、7 题上，题面形如 <span class="math-inline">f(z)=\frac{\cos z}{z^2(z^2-\pi^2)}</span>、<span class="math-inline">f(z)=\frac{1}{(z+1)(z+2)^2}</span>、<span class="math-inline">\oint_{|z|=8}\frac{e^z\,dz}{(z-\pi i)(z-2\pi i)^2}</span>。西安建筑科技大学的第三大题同为 10 分，题面是「应用留数的相关定理计算」一个沿圆周的积分。</li>
+    <li>填空，3 分。直接问某个点上的留数，例如 <span class="math-inline">\tan z</span> 在 <span class="math-inline">z=\frac{\pi}{2}</span> 处的留数、<span class="math-inline">\operatorname{Res}\left[\frac{\sin z}{z^3},0\right]</span>。</li>
+    <li>选择，3 分。给出一个函数与一个点，问它属于哪一类奇点，选项通常是一阶极点、<span class="math-inline">m</span> 阶极点、本性奇点、可去奇点这四个类型名。</li>
+  </ul>
+
+  <p>这三种落点共用同一串动作：<b>定奇点与阶 → 选规则 → 算留数 → 求和乘 <span class="math-inline">2\pi i</span></b>。本课把前两步压成一张选型表，后两步练到不查书。</p>
+
+  <h2>留数是洛朗的 c₋₁</h2>
+
+  <p>前面已经练过洛朗展开：<span class="math-inline">f</span> 在去心邻域 <span class="math-inline">0&lt;|z-z_0|&lt;R</span> 内解析时，可以写成只在这个环域里成立的级数</p>
+
+  <div class="math-block">f(z)=\sum_{n=-\infty}^{+\infty}c_n(z-z_0)^n =\cdots+\frac{c_{-2}}{(z-z_0)^2}+\frac{c_{-1}}{z-z_0}+c_0+c_1(z-z_0)+\cdots</div>
+
+  <p>负幂项部分刻画奇点，正幂项部分与解析函数无异。其中 <span class="math-inline">c_{-1}</span> 这一项特殊：沿以 <span class="math-inline">z_0</span> 为心、半径 <span class="math-inline">\rho&lt;R</span> 的圆周逆时针积分一圈，除它之外的每一项都积成 <span class="math-inline">0</span>（其余负幂项有原函数 <span class="math-inline">\frac{(z-z_0)^{n+1}}{n+1}</span>，正幂项在全平面上解析），只剩下</p>
+
+  <div class="math-block">\oint_{|z-z_0|=\rho}\frac{c_{-1}}{z-z_0}\,dz=2\pi i\,c_{-1}.</div>
+
+  <p>这就是留数这个名称的来处：展开式中在环路积分里留下来的那一项。形式化地写：</p>
+
+  <p><b>定义</b>　设 <span class="math-inline">z_0</span> 是 <span class="math-inline">f(z)</span> 的孤立奇点，<span class="math-inline">f</span> 在 <span class="math-inline">0&lt;|z-z_0|&lt;R</span> 内的洛朗展开中 <span class="math-inline">\frac{1}{z-z_0}</span> 的系数为 <span class="math-inline">c_{-1}</span>，则称 <span class="math-inline">c_{-1}</span> 为 <span class="math-inline">f(z)</span> 在 <span class="math-inline">z_0</span> 处的<b>留数</b>，记作 <span class="math-inline">\operatorname{Res}[f(z),z_0]</span>。</p>
+
+  <p>两条直接推论，卷面上都用得上：</p>
+
+  <ul>
+    <li>留数就是洛朗展开的 <span class="math-inline">c_{-1}</span>，因此算留数与做洛朗展开是同一件事，只是不必写出整个级数。</li>
+    <li>可去奇点处的留数必为 <span class="math-inline">0</span>：可去奇点的洛朗展开没有负幂项，<span class="math-inline">c_{-1}=0</span>。</li>
+  </ul>
+
+  <p><b>例</b>　求 <span class="math-inline">f(z)=\frac{1}{z^2(z-1)}</span> 在 <span class="math-inline">z_0=0</span> 处的留数。</p>
+
+  <p>在 <span class="math-inline">0&lt;|z|&lt;1</span> 内把 <span class="math-inline">\frac{1}{z-1}</span> 凑成几何级数 <span class="math-inline">\frac{1}{z-1}=-\frac{1}{1-z}=-(1+z+z^2+\cdots)</span>，于是</p>
+
+  <div class="math-block">f(z)=-\frac{1}{z^2}(1+z+z^2+\cdots)=-\frac{1}{z^2}-\frac1z-1-z-\cdots</div>
+
+  <p>读出 <span class="math-inline">c_{-1}=-1</span>，即 <span class="math-inline">\operatorname{Res}[f(z),0]=-1</span>。</p>
+
+  <figure class="lesson-figure">
+    <img src="../assets/img/pool/留数-四种算法-选型-本机-01.png" alt="最上面一栏是定奇点与阶；下面四行依次是可去奇点、一阶极点、m 阶极点、本性奇点，每行中列写出该条规则（可去写零、一阶用极限式、m 阶用阶乘与求导式、本性走洛朗展开），右列给出两个卷面例子">
+    <figcaption>图 1 · 四种算法与各自适用的奇点类型，后面四节逐条展开。（来源：本机生成（<code>assets/img/gen/留数-四种算法-选型-本机-01.py</code>），许可：本项目自产）</figcaption>
+  </figure>
+
+  <div class="quiz" data-quiz='[
+  {
+    "q": "$f(z)=\\frac{1}{z^2(z-1)}$，已知\n$\\operatorname{Res}[f,0]=-1$。\n若改在 $1&lt;|z|&lt;+\\infty$ 内展开，\n这条展开的 $c_{-1}$ 是多少？",
+    "opts": [
+      "$0$；这个 $c_{-1}$ 不是留数",
+      "$-1$；留数与环域无关",
+      "$0$；说明该点的留数也是 $0$",
+      "$1$；正幂项贡献了这一项"
+    ],
+    "ans": 0,
+    "why": "留数只用去心邻域 $0&lt;|z|&lt;1$ 的展开，\n那里 $c_{-1}=-1$；换到 $1&lt;|z|&lt;+\\infty$\n得到的是另一条级数 $\\frac1{z^3}+\\frac1{z^4}+\\cdots$，\n它的 $c_{-1}=0$，不能当留数用。"
+  }
+]'></div>
+
+  <h2>一阶极点</h2>
+
+  <p><span class="math-inline">z_0</span> 是 <span class="math-inline">f</span> 的一阶极点时，洛朗展开的最低负幂项是 <span class="math-inline">\frac{c_{-1}}{z-z_0}</span>，两边乘上 <span class="math-inline">z-z_0</span> 再取极限，其余各项含 <span class="math-inline">(z-z_0)</span> 的正幂，全部归零，于是</p>
+
+  <div class="math-block">\operatorname{Res}[f(z),z_0]=\lim_{z\to z_0}(z-z_0)f(z).</div>
+
+  <p>形式上还有一条更省事的分式版本。若 <span class="math-inline">f(z)=\frac{P(z)}{Q(z)}</span>，<span class="math-inline">P(z_0)\ne0</span>，<span class="math-inline">Q(z_0)=0</span>、<span class="math-inline">Q'(z_0)\ne0</span>（即 <span class="math-inline">z_0</span> 是分母的一阶零点），则</p>
+
+  <div class="math-block">\operatorname{Res}[f(z),z_0]=\frac{P(z_0)}{Q'(z_0)}.</div>
+
+  <p>三个卷面例子，都用这两条式子：</p>
+
+  <ul>
+    <li><span class="math-inline">f(z)=\tan z=\frac{\sin z}{\cos z}</span>，<span class="math-inline">z_0=\frac{\pi}{2}</span>。这是填空 3 分那一道。分母一阶零点，<span class="math-inline">(\cos z)'=-\sin z</span>，故 <span class="math-inline">\operatorname{Res}=\frac{\sin(\pi/2)}{-\sin(\pi/2)}=-1</span>。</li>
+    <li><span class="math-inline">f(z)=\frac{e^{iz}}{z^2-3\pi z+2\pi^2}</span>，<span class="math-inline">z_0=\pi</span>。分母分解为 <span class="math-inline">(z-\pi)(z-2\pi)</span>，极限式给 <span class="math-inline">\operatorname{Res}=\frac{e^{i\pi}}{\pi-2\pi}=\frac{1}{\pi}</span>。</li>
+    <li><span class="math-inline">f(z)=\frac{z^2-\pi^2}{z\sin z}</span>，<span class="math-inline">z_0=2\pi</span>。分子在 <span class="math-inline">2\pi</span> 处不为零，分母导数为 <span class="math-inline">\sin z+z\cos z</span>，得 <span class="math-inline">\operatorname{Res}=\frac{4\pi^2-\pi^2}{0+2\pi}=\frac{3\pi}{2}</span>。</li>
+  </ul>
+
+  <div class="lesson-warn">
+    <b>分母是重根时一阶公式失效</b>
+    <p>同一个函数 <span class="math-inline">f(z)=\frac{1}{z^2(z-1)}</span> 在 <span class="math-inline">z_0=0</span> 处，极限式写成 <span class="math-inline">\lim_{z\to0}\frac{1}{z(z-1)}</span>，分母趋于 <span class="math-inline">0</span>、结果发散，一阶公式没有给出数。出现这种情况说明 <span class="math-inline">z_0</span> 的阶数不是一阶，要回去重新定阶，再换下一节的公式。判断阶数的动作在上一课已经练过：看分母的零点阶数，并先用分子约掉同阶零点。</p>
+  </div>
+
+  <div class="quiz" data-quiz='[
+  {
+    "q": "① 写出两条公式（都是一阶极点）：\n$z_0$ 的极限式、$f=P/Q$ 的分式式，\n分式式还要附上成立条件。\n\n② 求 $\\operatorname{Res}[\\tan z,\\pi/2]$。\n\n③ 求 $z_0=2\\pi$ 处的留数，函数是\n$\\frac{z^2-\\pi^2}{z\\sin z}$。",
+    "answer": "① $\\operatorname{Res}=\\lim_{z\\to z_0}(z-z_0)f(z)$；\n$f=\\frac PQ$ 时 $\\operatorname{Res}=\\frac{P(z_0)}{Q&#39;(z_0)}$，\n条件是 $P(z_0)\\ne0$、$Q(z_0)=0$、$Q&#39;(z_0)\\ne0$。\n\n② $\\tan z=\\frac{\\sin z}{\\cos z}$，分母一阶零点，\n$Q&#39;=-\\sin z$ 在 $z_0=\\frac{\\pi}{2}$ 处是 $-1$，\n故留数 $=\\frac{1}{-1}=-1$。\n\n③ 分子在 $2\\pi$ 处是 $3\\pi^2\\ne0$；\n$Q&#39;=\\sin z+z\\cos z$ 在 $2\\pi$ 处是 $2\\pi$；\n故留数 $=\\frac{3\\pi^2}{2\\pi}=\\frac{3\\pi}{2}$。",
+    "criteria": "三问按点给分。\n① 两条式子都要对：极限式乘的是 $(z-z_0)$、\n分式式是 $\\frac{P(z_0)}{Q&#39;(z_0)}$。漏成立条件、\n把 $Q&#39;(z_0)$ 写成 $Q(z_0)$ 按部分通过。\n② 必须是 $-1$。写成 $1$ 是漏了分母的负号。\n③ 必须是 $\\frac{3\\pi}{2}$，且要写出两步：\n先确认分子不为零，再用分母导数 $2\\pi$。\n直接把 $2\\pi$ 代进分子得 $4\\pi^2-\\pi^2=3\\pi^2$ 就交，\n按部分通过（少了除以 $Q&#39;$ 这一步）。"
+  }
+]'></div>
+
+  <h2>m 阶极点</h2>
+
+  <p><span class="math-inline">z_0</span> 是 <span class="math-inline">m</span> 阶极点时，把 <span class="math-inline">(z-z_0)^mf(z)</span> 在 <span class="math-inline">z_0</span> 邻域的展开按幂次排开：</p>
+
+  <div class="math-block">(z-z_0)^mf(z)=c_{-m}+c_{-m+1}(z-z_0)+\cdots+c_{-1}(z-z_0)^{m-1}+c_0(z-z_0)^m+\cdots</div>
+
+  <p>求 <span class="math-inline">m-1</span> 阶导之后，<span class="math-inline">c_{-1}(z-z_0)^{m-1}</span> 这一项变成 <span class="math-inline">(m-1)!\,c_{-1}</span>，幂次低于 <span class="math-inline">m-1</span> 的项变成 <span class="math-inline">0</span>，幂次高于 <span class="math-inline">m-1</span> 的项含 <span class="math-inline">(z-z_0)</span> 的正幂、在 <span class="math-inline">z_0</span> 处取值为 <span class="math-inline">0</span>。于是得到一般公式：</p>
+
+  <div class="math-block">\operatorname{Res}[f(z),z_0]=\frac{1}{(m-1)!}\lim_{z\to z_0}\frac{d^{\,m-1}}{dz^{\,m-1}}\Big[(z-z_0)^m f(z)\Big].</div>
+
+  <p>三个位置各管一件事，默写时按这三格逐个对：先把 <span class="math-inline">f</span> 乘上 <span class="math-inline">(z-z_0)^m</span> 化成在 <span class="math-inline">z_0</span> 解析的函数，再求 <span class="math-inline">m-1</span> 阶导，最后乘系数 <span class="math-inline">\frac{1}{(m-1)!}</span> 并代 <span class="math-inline">z_0</span>。</p>
+
+  <table>
+    <thead>
+      <tr><th><span class="math-inline">m</span></th><th>求几阶导</th><th>系数 <span class="math-inline">\frac{1}{(m-1)!}</span></th><th>公式退化成</th></tr>
+    </thead>
+    <tbody>
+      <tr><td><span class="math-inline">1</span></td><td><span class="math-inline">0</span> 阶，直接代 <span class="math-inline">z_0</span></td><td><span class="math-inline">1</span></td><td>一阶极点公式</td></tr>
+      <tr><td><span class="math-inline">2</span></td><td><span class="math-inline">1</span> 阶</td><td><span class="math-inline">1</span></td><td>乘 <span class="math-inline">(z-z_0)^2</span> 后求一次导</td></tr>
+      <tr><td><span class="math-inline">3</span></td><td><span class="math-inline">2</span> 阶</td><td><span class="math-inline">\frac12</span></td><td>乘 <span class="math-inline">(z-z_0)^3</span> 后求两次导</td></tr>
+      <tr><td><span class="math-inline">4</span></td><td><span class="math-inline">3</span> 阶</td><td><span class="math-inline">\frac16</span></td><td>乘 <span class="math-inline">(z-z_0)^4</span> 后求三次导</td></tr>
+    </tbody>
+  </table>
+
+  <p><span class="math-inline">m=1</span> 那一行与上一节是同一条式子，因为 <span class="math-inline">0!=1</span> 且零阶导就是函数本身。所以整张表只需记一条：<b>分母的幂次 <span class="math-inline">m</span> 决定求 <span class="math-inline">m-1</span> 阶导，也决定阶乘的位置</b>。</p>
+
+  <p><b>例</b>　<span class="math-inline">f(z)=\frac{1}{(z+1)(z+2)^2}</span>，求 <span class="math-inline">z_0=-2</span> 处的留数（这是 10 分题里的第二项）。</p>
+
+  <p><span class="math-inline">z_0=-2</span> 是二阶极点，<span class="math-inline">m=2</span>，乘 <span class="math-inline">(z+2)^2</span> 后剩下 <span class="math-inline">\frac{1}{z+1}</span>，求一阶导再代 <span class="math-inline">-2</span>：</p>
+
+  <div class="math-block">\operatorname{Res}[f(z),-2]=\frac{1}{1!}\left[\left(\frac{1}{z+1}\right)'\right]_{z=-2}=-\frac{1}{(z+1)^2}\Big|_{z=-2}=-1.</div>
+
+  <p><b>例</b>　<span class="math-inline">f(z)=\frac{e^z}{(z-1)^3}</span>，求 <span class="math-inline">z_0=1</span> 处的留数。<span class="math-inline">m=3</span>，乘 <span class="math-inline">(z-1)^3</span> 得 <span class="math-inline">e^z</span>，求二阶导仍为 <span class="math-inline">e^z</span>，系数 <span class="math-inline">\frac{1}{2!}</span>：</p>
+
+  <div class="math-block">\operatorname{Res}[f(z),1]=\frac{1}{2!}\lim_{z\to1}e^z=\frac{e}{2}.</div>
+
+  <p>这一题里若漏掉 <span class="math-inline">\frac{1}{2!}</span> 就会写成 <span class="math-inline">e</span>，与正确答案差两倍——这是 <span class="math-inline">m\ge3</span> 的题最常见的丢分处。</p>
+
+  <div class="quiz" data-quiz='[
+  {
+    "q": "求 $\\frac{1+z+z^2}{z^3}$ 在 $z_0=0$ 处的留数。\n同学的解答：\n\n「$0$ 是三阶极点，乘 $z^3$ 后是\n$1+z+z^2$，它的二阶导是 $2$，\n故留数为 $2$。」\n\n① 根因是什么？\n② 正确答案是多少？\n③ 以后怎么自查这一步？",
+    "answer": "① 漏了系数 $\\frac{1}{(m-1)!}=\\frac12$。\n$m=3$ 时 $(m-1)!=2$，不是 $1$。\n乘 $z^3$、求二阶导这两步都对。\n\n② $2\\cdot\\frac12=1$。\n\n③ 三格逐个对：先乘 $(z-z_0)^m$，\n再求 $m-1$ 阶导，最后除 $(m-1)!$。\n求导阶数与阶乘用的是同一个 $m-1$。",
+    "criteria": "三问按点给分。\n① 必须点出「漏了 $\\frac{1}{(m-1)!}$」（写漏 $\\frac12$\n也成）；只说「算错了」「公式没记熟」按不通过。\n② 必须是 $1$；答 $2$ 说明根因没找到。\n③ 要落到「乘因子、求导、阶乘」三格一起对，\n并说出阶乘是 $(m-1)!$。只写「再检查一遍」\n按部分通过——这条错法的自查点就是那个阶乘。"
+  }
+]'></div>
+
+  <h2>本性奇点</h2>
+
+  <p>本性奇点处没有可用的极限式：<span class="math-inline">\lim_{z\to z_0}(z-z_0)^m f(z)</span> 对任何 <span class="math-inline">m</span> 都不收敛，代 <span class="math-inline">z_0</span> 无处可代。这类点只剩一条路——写出洛朗展开，直接读 <span class="math-inline">\frac{1}{z-z_0}</span> 的系数。</p>
+
+  <p><b>例</b>　<span class="math-inline">f(z)=e^{1/z}</span>，<span class="math-inline">z_0=0</span>。在 <span class="math-inline">0&lt;|z|&lt;+\infty</span> 内</p>
+
+  <div class="math-block">e^{1/z}=1+\frac1z+\frac{1}{2!\,z^2}+\frac{1}{3!\,z^3}+\cdots</div>
+
+  <p>故 <span class="math-inline">\operatorname{Res}[e^{1/z},0]=1</span>。</p>
+
+  <p><b>例</b>　<span class="math-inline">f(z)=z^2e^{1/z}</span>，<span class="math-inline">z_0=0</span>。上面那串乘上 <span class="math-inline">z^2</span>：</p>
+
+  <div class="math-block">z^2e^{1/z}=z^2+z+\frac12+\frac{1}{3!\,z}+\frac{1}{4!\,z^2}+\cdots</div>
+
+  <p><span class="math-inline">\frac1z</span> 的系数来自 <span class="math-inline">\frac{1}{3!}</span>，故留数为 <span class="math-inline">\frac16</span>。乘法里对位要对准：找 <span class="math-inline">c_{-1}</span> 就是找「分母恰好是一次方」的那一项。</p>
+
+  <p>展开法对任何奇点都成立，因此它也是兜底手段。填空 3 分那道 <span class="math-inline">\operatorname{Res}\left[\frac{\sin z}{z^3},0\right]</span> 就属于这种情况：用二阶极点的公式需要对 <span class="math-inline">\frac{\sin z}{z}</span> 求导再取极限（属于 <span class="math-inline">\frac00</span> 型，要另作处理），而展开一步读出</p>
+
+  <div class="math-block">\frac{\sin z}{z^3}=\frac{1}{z^2}-\frac16+\frac{z^2}{5!}-\cdots,\qquad c_{-1}=0,</div>
+
+  <p>答案直接是 <span class="math-inline">0</span>。</p>
+
+  <div class="quiz" data-quiz='[
+  {
+    "q": "本性奇点没有极限式，只能展开读 $c_{-1}$。\n三个留数各写出展开：\n\n① $\\operatorname{Res}[e^{1/z},0]$\n\n② $\\operatorname{Res}[z^2e^{1/z},0]$\n\n③ $\\operatorname{Res}[\\frac{\\sin z}{z^3},0]$\n\n④ 可去奇点：$\\operatorname{Res}[\\frac{\\sin z}{z},0]$",
+    "answer": "① 在 $0&lt;|z|&lt;+\\infty$ 内\n$e^{1/z}=1+\\frac1z+\\frac{1}{2!z^2}+\\cdots$，\n故 $c_{-1}=1$。\n\n② 把上一串乘上 $z^2$，$\\frac1z$ 的系数\n来自 $z^2\\cdot\\frac{1}{3!z^3}$，故 $c_{-1}=\\frac16$。\n\n③ $\\frac{\\sin z}{z^3}=\\frac{1}{z^2}-\\frac16+\\cdots$，\n没有 $\\frac1z$ 这一项，故 $c_{-1}=0$。\n\n④ $\\frac{\\sin z}{z}=1-\\frac{z^2}{3!}+\\cdots$，\n没有负幂项，故 $c_{-1}=0$。",
+    "criteria": "四个值：$1$、$\\frac16$、$0$、$0$，各配一句展开。\n① 只写 $1$ 不写展开，按部分通过。\n② 对位错是这一步的典型失分：写成 $\\frac12$ 是取了\n$z^2\\cdot\\frac{1}{2!z^2}$（那是常数项），按不通过。\n③ 必须写 $0$，并指出展开里没有一次方倒幂项；\n按二阶极点公式硬求导（$\\frac{\\sin z}{z}$ 在 $0$ 处是\n$\\frac00$ 型）算不下去，说明这条路本来就不该走。\n④ 必须写 $0$，理由要落在「可去奇点没有负幂项」，\n只说「可去奇点所以是 0」不算——那是背结论。"
+  }
+]'></div>
+
+  <h2>留数定理</h2>
+
+  <p>把每个奇点的 <span class="math-inline">2\pi i\,c_{-1}</span> 加起来的动作，写成一条定理：</p>
+
+  <p><b>留数定理</b>　设 <span class="math-inline">C</span> 为正向简单闭曲线，<span class="math-inline">f(z)</span> 在 <span class="math-inline">C</span> 及其内部除有限个孤立奇点 <span class="math-inline">z_1,z_2,\dots,z_n</span> 外处处解析，且这些奇点都不在 <span class="math-inline">C</span> 上，则</p>
+
+  <div class="math-block">\oint_C f(z)\,dz=2\pi i\sum_{k=1}^{n}\operatorname{Res}[f(z),z_k].</div>
+
+  <p>三个条件各对应一句检查：围道取正向；奇点只算落在 <span class="math-inline">C</span> 内部的；奇点不能落在 <span class="math-inline">C</span> 上。第二章的柯西公式算出来的每一项 <span class="math-inline">2\pi i\,g(z_0)</span>，就是 <span class="math-inline">2\pi i</span> 乘该点的留数，两条路的结果一致，留数定理把「一个奇点一项」压成一行。</p>
+
+  <p>固定动作四步，10 分题照写：</p>
+
+  <ol>
+    <li><b>定奇点与阶</b>：分母（或被积函数本身）为 <span class="math-inline">0</span> 的点，逐个定成可去奇点、<span class="math-inline">m</span> 阶极点或本性奇点。</li>
+    <li><b>选规则</b>：可去奇点写 <span class="math-inline">0</span>，一阶极点用极限式，<span class="math-inline">m\ge2</span> 用阶乘与求导式，本性奇点展开。</li>
+    <li><b>算留数</b>：每个奇点单独一格，写清乘的是哪个因子、求的是几阶导。</li>
+    <li><b>求和乘 <span class="math-inline">2\pi i</span></b>：把落在围道内的留数相加，再乘 <span class="math-inline">2\pi i</span>。</li>
+  </ol>
+
+  <p><b>例</b>　<span class="math-inline">C</span> 为 <span class="math-inline">|z|=3</span>，求 <span class="math-inline">\oint_C\frac{dz}{(z+1)(z+2)^2}</span>。</p>
+
+  <p>奇点 <span class="math-inline">-1</span>（一阶）与 <span class="math-inline">-2</span>（二阶）都在圈内。两个留数前面已经算过：<span class="math-inline">\operatorname{Res}[f,-1]=1</span>（按一阶公式，<span class="math-inline">\frac{1}{(z+2)^2}\big|_{z=-1}=1</span>），<span class="math-inline">\operatorname{Res}[f,-2]=-1</span>。相加为 <span class="math-inline">0</span>，故积分为 <span class="math-inline">0</span>。两个非零的留数正好抵消，答案写一个 <span class="math-inline">0</span> 收尾。</p>
+
+  <p><b>例</b>　<span class="math-inline">C</span> 为 <span class="math-inline">|z|=8</span>，求 <span class="math-inline">\oint_C\frac{e^z\,dz}{(z-\pi i)(z-2\pi i)^2}</span>。奇点 <span class="math-inline">\pi i</span>（一阶）与 <span class="math-inline">2\pi i</span>（二阶）都在圈内：</p>
+
+  <div class="math-block">\operatorname{Res}[f,\pi i]=\frac{e^{\pi i}}{(\pi i-2\pi i)^2}=\frac{-1}{-\pi^2}=\frac{1}{\pi^2},</div>
+
+  <div class="math-block">\operatorname{Res}[f,2\pi i]=\left[\left(\frac{e^z}{z-\pi i}\right)'\right]_{z=2\pi i} =\frac{e^z(z-\pi i-1)}{(z-\pi i)^2}\Big|_{z=2\pi i}=\frac{1-\pi i}{\pi^2}.</div>
+
+  <div class="math-block">\oint_{|z|=8}f\,dz=2\pi i\left(\frac{1}{\pi^2}+\frac{1-\pi i}{\pi^2}\right)=2\pi i\cdot\frac{2-\pi i}{\pi^2}=2+\frac{4}{\pi}i.</div>
+
+  <h3>圈内的奇点数</h3>
+
+  <p>围道圈住几个奇点，就直接决定求和有几项，这一步在奇点个数多的时候最容易出错。<span class="math-inline">\tan z</span> 是一个典型：它的奇点是 <span class="math-inline">\frac{\pi}{2}+k\pi</span>（<span class="math-inline">k</span> 为整数），一共无穷多个，但任何一个有界围道里只装得下有限个。</p>
+
+  <p><b>例</b>　<span class="math-inline">C</span> 为 <span class="math-inline">|z|=2</span>，求 <span class="math-inline">\oint_C\tan z\,dz</span>。</p>
+
+  <p><span class="math-inline">\tan z</span> 每个奇点都是一阶极点，留数都是 <span class="math-inline">\frac{\sin z}{-\sin z}=-1</span>。落在 <span class="math-inline">|z|=2</span> 内的只有 <span class="math-inline">\pm\frac{\pi}{2}</span>（<span class="math-inline">|\pm\frac{\pi}{2}|\approx1.571&lt;2</span>），而 <span class="math-inline">\pm\frac{3\pi}{2}</span> 已经满足 <span class="math-inline">|\pm\frac{3\pi}{2}|\approx4.712&gt;2</span>，在圈外。于是</p>
+
+  <div class="math-block">\oint_{|z|=2}\tan z\,dz=2\pi i\,(-1-1)=-4\pi i.</div>
+
+  <p>两个点都数进去是这一题的分界线：只算 <span class="math-inline">+\frac{\pi}{2}</span> 会得到 <span class="math-inline">-2\pi i</span>，把 <span class="math-inline">\frac{3\pi}{2}</span> 也算进来会得到 <span class="math-inline">-6\pi i</span>。</p>
+
+  <figure class="lesson-figure">
+    <img src="../assets/img/pool/留数-围道与奇点-计数-本机-02.png" alt="三格复平面，每格下方写着结果。第一格是 1/((z+1)(z+2)²) 与半径 3 的圆，圈内两个点标着 −1 与 −2（二阶）；第二格是 tan z 与半径 2 的圆，圈内只有 π/2 与 −π/2，圈外的 ±3π/2 画成灰圈；第三格是 exp(z)/((z−πi)(z−2πi)²) 与半径 8 的圆，圈内 πi 与 2πi（二阶）两点">
+    <figcaption>图 2 · 同一个被积函数换一条围道，圈进来的奇点就变了，求和项数随之一变。（来源：本机生成（<code>assets/img/gen/留数-围道与奇点-计数-本机-02.py</code>），许可：本项目自产）</figcaption>
+  </figure>
+
+  <div class="quiz" data-quiz='[
+  {
+    "q": "10 分大题：$C$ 为 $|z-3|=4$ 正向，\n被积函数\n$\\frac{e^{iz}}{z^2-3\\pi z+2\\pi^2}$，\n求 $\\oint_C f\\,dz$。\n\n① 圈内的奇点有哪几个，各几阶？\n② 两个留数各是多少？\n③ 积分值（写出 $2\\pi i$ 那一步）",
+    "answer": "① 分母 $=(z-\\pi)(z-2\\pi)$，奇点\n$\\pi$、$2\\pi$，各一阶；\n$|\\pi-3|\\approx0.14&lt;4$、\n$|2\\pi-3|\\approx3.28&lt;4$，都在圈内。\n\n② 在 $\\pi$ 处 $\\frac{e^{i\\pi}}{\\pi-2\\pi}=\\frac1\\pi$；\n在 $2\\pi$ 处 $\\frac{e^{2\\pi i}}{2\\pi-\\pi}=\\frac1\\pi$。\n\n③ 和为 $\\frac2\\pi$，故\n$\\oint_C f\\,dz=2\\pi i\\cdot\\frac2\\pi=4i$。",
+    "criteria": "三问按点给分，答案 $4i$。\n① 两个奇点与阶都要有，且说明它们都在圈内\n（按 $|z_0-3|&lt;4$ 判，不是按 $|z_0|$）。\n② 两个都是 $\\frac1\\pi$；把 $e^{i\\pi}$ 写成 $1$\n会得到 $-\\frac2\\pi i$，按不通过。\n③ 必须写出 $2\\pi i\\sum$ 这一步。\n只算圈内一个奇点得 $2i$（这正是「围道内奇点没数清」），\n按不通过；漏乘 $2\\pi i$ 得 $\\frac2\\pi$，按不通过。"
+  }
+]'></div>
+
+  <h2>求全部奇点与留数</h2>
+
+  <p>第一种问法不含围道，题面写「求 <span class="math-inline">f(z)</span> 在<b>有限复平面内</b>的奇点和相应的留数」。这句话的含义有三条：</p>
+
+  <ul>
+    <li>奇点列表要写全，凡分母为零的有限点都要列出，并注明类型与阶数；</li>
+    <li>每个奇点都要给出留数，不管它离原点多远；</li>
+    <li>答案里不乘 <span class="math-inline">2\pi i</span>，也算不到无穷远点（无穷远点不算有限复平面内的点）。</li>
+  </ul>
+
+  <p><b>例</b>（10 分题）　<span class="math-inline">f(z)=\frac{\cos z}{z^2(z^2-\pi^2)}</span>，求有限复平面内的奇点与相应留数。</p>
+
+  <p>分母的零点是 <span class="math-inline">0</span>（二阶）与 <span class="math-inline">\pm\pi</span>（各一阶），分子在三点都不为零，故类型就是 <span class="math-inline">0</span> 二阶极点、<span class="math-inline">\pm\pi</span> 一阶极点。</p>
+
+  <p><span class="math-inline">z_0=0</span> 用二阶公式，乘 <span class="math-inline">(z-0)^2</span> 后剩下 <span class="math-inline">\frac{\cos z}{z^2-\pi^2}</span>：</p>
+
+  <div class="math-block">\operatorname{Res}[f,0]=\left[\left(\frac{\cos z}{z^2-\pi^2}\right)'\right]_{z=0} =\frac{-\sin z(z^2-\pi^2)-2z\cos z}{(z^2-\pi^2)^2}\Big|_{z=0}=0.</div>
+
+  <p><span class="math-inline">\pm\pi</span> 各用一阶公式，把对方的一阶因子留给分母之外的因子：</p>
+
+  <div class="math-block">\operatorname{Res}[f,\pi]=\frac{\cos z}{z^2(z+\pi)}\Big|_{z=\pi}=-\frac{1}{2\pi^3}, \qquad \operatorname{Res}[f,-\pi]=\frac{\cos z}{z^2(z-\pi)}\Big|_{z=-\pi}=\frac{1}{2\pi^3}.</div>
+
+  <p>三个留数写齐，答案就到此为止。若题面在后面追加一句「并计算 <span class="math-inline">\oint_{|z|=4}f\,dz</span>」，才进入上一节的动作：三个点都在圈内，相加得 <span class="math-inline">0</span>，积分也是 <span class="math-inline">0</span>。</p>
+
+  <p>同一道题里奇点类型常常混在一起。2024 年卷有一道 <span class="math-inline">f(z)=\frac{z^2-\pi^2}{z\sin z}</span>：<span class="math-inline">0</span> 是二阶极点；<span class="math-inline">\pm\pi</span> 处分子分母各自一阶为零，抵消之后是可去奇点，留数 <span class="math-inline">0</span>；其余 <span class="math-inline">k\pi</span>（<span class="math-inline">k\ne0,\pm1</span>）是一阶极点。定阶这一步与上一课的判据完全相同，先定阶再选规则。</p>
+
+  <div class="quiz" data-quiz='[
+  {
+    "q": "10 分大题（求的是奇点与留数，\n不是积分）：\n$f(z)=\\frac{z+\\cos z}{z(z-\\pi)(z+\\pi)}$\n\n① 有限复平面内的奇点有哪几个？\n各是什么类型、几阶？\n② 三个留数逐个写出来。\n③ 三个相加是多少？这题要不要\n乘 $2\\pi i$？",
+    "answer": "① 分母零点 $0,\\pm\\pi$，分子在这三点\n分别取 $1$、$\\pi-1$、$-\\pi-1$，都不为零，\n故三处都是一阶极点。\n\n② 三个留数：\n在 $0$ 处：$\\frac{1}{-\\pi^2}=-\\frac{1}{\\pi^2}$\n在 $\\pi$ 处：$\\frac{\\pi-1}{2\\pi^2}$\n在 $-\\pi$ 处：$-\\frac{\\pi+1}{2\\pi^2}$\n\n③ 相加得 $-\\frac{2}{\\pi^2}$。题面只问\n奇点与留数，不乘 $2\\pi i$；\n若追加一圈积分才是\n$2\\pi i\\cdot(-\\frac{2}{\\pi^2})=-\\frac{4i}{\\pi}$。",
+    "criteria": "三问按点给分。\n① 三个奇点缺一不可（$0$ 与 $\\pm\\pi$），\n且都要判成一阶极点并说明分子不为零。\n漏掉 $0$、或把 $\\pm\\pi$ 判成可去奇点，按不通过。\n② 三个留数：$-\\frac{1}{\\pi^2}$、$\\frac{\\pi-1}{2\\pi^2}$、\n$-\\frac{\\pi+1}{2\\pi^2}$。少一个按部分通过。\n③ 必须答「不乘 $2\\pi i$」——这一问就是\n「求留数」与「求积分」两种问法的分界。\n答成 $2\\pi i$ 乘上去，按不通过。"
+  }
+]'></div>
+
+  <h2>无穷远点的留数</h2>
+
+  <p>把 <span class="math-inline">z_0=\infty</span> 也当作奇点看。设 <span class="math-inline">f</span> 在 <span class="math-inline">R&lt;|z|&lt;+\infty</span> 内解析，在该环域的展开为 <span class="math-inline">f(z)=\sum_{n=-\infty}^{+\infty}c_nz^n</span>，则定义</p>
+
+  <div class="math-block">\operatorname{Res}[f(z),\infty]=-c_{-1}.</div>
+
+  <p>多出来一个负号：绕无穷远点一圈的正向，在 <span class="math-inline">z</span> 平面上表现为沿顺时针走一圈。两条结论由此得到，卷面上都用得上：</p>
+
+  <ul>
+    <li><b>留数定理的圈外版本</b>：<span class="math-inline">\oint_{|z|=R}f\,dz=2\pi i\sum_{|z_k|&lt;R}\operatorname{Res}[f,z_k]=-2\pi i\sum_{|z_k|&gt;R}\operatorname{Res}[f,z_k]</span>，右端的和里含无穷远点这一项。</li>
+    <li><b>全平面留数和为零</b>：若 <span class="math-inline">f</span> 在扩充复平面上只有有限个奇点，则全部留数（含 <span class="math-inline">\infty</span> 的）之和为 <span class="math-inline">0</span>。</li>
+  </ul>
+
+  <p>第二条是算完之后的核对手段：把 10 分题里列出的留数全部相加，结果应当是 <span class="math-inline">0</span>；也可以反过来，围道内奇点难算时改算圈外。</p>
+
+  <p><b>例</b>　<span class="math-inline">f(z)=\frac{z+1}{z^2}</span>。在 <span class="math-inline">|z|&gt;0</span> 内展开为 <span class="math-inline">\frac1z+\frac{1}{z^2}</span>，<span class="math-inline">c_{-1}=1</span>，故 <span class="math-inline">\operatorname{Res}[f,\infty]=-1</span>；而 <span class="math-inline">\operatorname{Res}[f,0]=1</span>，两者相加为 <span class="math-inline">0</span>。</p>
+
+  <p><b>例</b>　<span class="math-inline">C</span> 为 <span class="math-inline">|z|=2</span>，求 <span class="math-inline">\oint_C\frac{dz}{z^2(z-3)}</span>。圈内只有 <span class="math-inline">0</span> 这一个二阶极点：<span class="math-inline">\operatorname{Res}[f,0]=\left[\left(\frac{1}{z-3}\right)'\right]_{z=0}=-\frac{1}{9}</span>，积分是 <span class="math-inline">-\frac{2\pi i}{9}</span>。用圈外核对：<span class="math-inline">\operatorname{Res}[f,3]=\frac{1}{3^2}=\frac19</span>；分母三次、分子零次，<span class="math-inline">\operatorname{Res}[f,\infty]=0</span>（展开中 <span class="math-inline">c_{-1}=0</span>）；圈外之和 <span class="math-inline">\frac19</span>，乘 <span class="math-inline">-2\pi i</span> 得 <span class="math-inline">-\frac{2\pi i}{9}</span>，两条路一致。</p>
+
+  <p>有理函数的无穷远点留数有一条速判：分母次数比分子次数至少高二次时 <span class="math-inline">\operatorname{Res}[f,\infty]=0</span>。</p>
+
+  <div class="lesson-note">
+    <b>无穷远点是不是奇点与留数是否为零是两件事</b>
+    <p><span class="math-inline">f(z)=\frac{z+1}{z^2}</span> 在无穷远点是二阶零点，而 <span class="math-inline">\operatorname{Res}[f,\infty]=-1</span> 并不为零。奇点类型说的是点邻近的性态，留数只是展开式中 <span class="math-inline">c_{-1}</span> 这一个数。</p>
+  </div>
+
+  <figure class="lesson-figure">
+    <img src="../assets/img/pool/留数-无穷远点-留数和为零-本机-03.png" alt="左侧复平面上一条半径 2 的圆，圈内是二阶极点 0，圈外是一阶极点 3 与虚线连到的无穷远点标记；右侧三块文字分别写着无穷远点留数等于负的 c 下标负一、全部留数（含无穷远点）之和为零与圈内之和等于圈外之和取负号，最后一块是 1/(z²(z−3)) 沿半径 2 的圆积分的两条路算法">
+    <figcaption>图 3 · 圈外只剩无穷远点时，圈内的和可以由圈外的和取负号读出。（来源：本机生成（<code>assets/img/gen/留数-无穷远点-留数和为零-本机-03.py</code>），许可：本项目自产）</figcaption>
+  </figure>
+
+  <div class="quiz" data-quiz='[
+  {
+    "q": "$f(z)=\\frac{z+1}{z^2}$，问\n$\\operatorname{Res}[f,\\infty]$ 等于多少？\n（用「全平面留数之和为 $0$」核一下）",
+    "opts": [
+      "$-1$；$c_{-1}=1$ 再取负号",
+      "$1$；$c_{-1}=1$ 就是留数",
+      "$0$；分母比分子高两次",
+      "$2$；二阶极点的两项相加"
+    ],
+    "ans": 0,
+    "why": "在 $|z|&gt;0$ 内 $f=\\frac1z+\\frac1{z^2}$，\n$c_{-1}=1$，故留数 $=-c_{-1}=-1$。\n与 $\\operatorname{Res}[f,0]=1$ 相加为 $0$，\n正好对上全平面留数和为零。"
+  }
+]'></div>
+
+  <h2>上手做</h2>
+
+  <div class="lesson-practice">
+    <div class="lesson-practice__head">
+      <span class="lesson-practice__level">上手做</span>
+      <span class="lesson-practice__title">默写四种算法与一道 10 分题</span>
+    </div>
+
+      <p>这一课动手做两件事。第一种是记忆动作，第二种是完整算题。</p>
+
+      <ol>
+        <li>写一张默写卡。四列：奇点类型、选哪条规则、公式怎么写、卷面例子。四种算法各自三十秒默完，写完盖上答案自查三处——一阶极点的极限里乘的是 <span class="math-inline">(z-z_0)</span>、<span class="math-inline">m</span> 阶极点公式的系数是 <span class="math-inline">\frac{1}{(m-1)!}</span>、本性奇点一律走展开。卡片收进纸笔题型整理册，与上一章的「三条路选型卡」并排。</li>
+      </ol>
+
+      <ol>
+        <li>独立算一道 10 分题，两种问法各写一遍。先按「求有限复平面内的奇点与相应留数」写全，再把它当成围道积分算一次，四步逐行留在纸上。收尾时用「全平面留数和为零」核对：把所有有限留数相加，与 <span class="math-inline">-\operatorname{Res}[f,\infty]</span> 对一遍，对不上说明某一步的阶数或阶乘用错了。</li>
+      </ol>
+
+      <p>本课的小 lab 收在科目目录的 <a href="../lab/">lab/</a> 下、目录名以 <code>0014</code> 开头：任务书、断言与参考解都在那里，<code>lab/README.md</code> 写着任务表与卡壳时的提示顺序。lab 的手写留数函数会与数值围道积分对照，算错的公式在那里会直接暴露成数值差。</p>
+  </div>
+
+  <h2>带走的公式卡</h2>
+
+  <table>
+    <thead>
+      <tr><th>题面给什么</th><th>用哪条</th><th>卷面位置</th></tr>
+    </thead>
+    <tbody>
+      <tr><td>可去奇点</td><td>留数写 <span class="math-inline">0</span></td><td>填空、选择</td></tr>
+      <tr><td>一阶极点</td><td><span class="math-inline">\lim_{z\to z_0}(z-z_0)f(z)</span>；分式可用 <span class="math-inline">\frac{P(z_0)}{Q'(z_0)}</span></td><td>填空 3 分、解答题 10 分的第一项</td></tr>
+      <tr><td><span class="math-inline">m</span> 阶极点</td><td><span class="math-inline">\frac{1}{(m-1)!}\lim_{z\to z_0}\frac{d^{m-1}}{dz^{m-1}}\big[(z-z_0)^mf(z)\big]</span></td><td>解答题 10 分</td></tr>
+      <tr><td>本性奇点</td><td>展开后读 <span class="math-inline">c_{-1}</span></td><td>填空 3 分</td></tr>
+      <tr><td>沿正向闭曲线的积分</td><td><span class="math-inline">2\pi i\sum</span> 圈内留数</td><td>解答题 10 分</td></tr>
+      <tr><td>求有限复平面内的奇点与留数</td><td>列出全部有限奇点，各配留数，不乘 <span class="math-inline">2\pi i</span></td><td>解答题 10 分</td></tr>
+      <tr><td>圈内留数难算</td><td>改算圈外（含 <span class="math-inline">\infty</span>）之和再取负号</td><td>解答题 10 分</td></tr>
+      <tr><td>算完核对</td><td>全部留数（含 <span class="math-inline">\infty</span>）之和为 <span class="math-inline">0</span></td><td>自查</td></tr>
+    </tbody>
+  </table>
+
+  <ul class="lesson-resources">
+    <li>李君、于非非《复变函数与积分变换》§3.5 留数与留数定理<span class="lesson-resources__meta">书 · 纸质教材，留数的定义、两条极点公式与无穷远点留数的写法以它为准</span></li>
+    <li><a href="http://faculty.hfut.edu.cn/_resources/group1/M00/00/1C/rB_zR2ks_QyAOcheAAP1H6_9avI556.pdf">合肥工业大学期末试卷（含答案与逐题分值）</a><span class="lesson-resources__meta">试卷 · 解答题第 7 题连续多套是「求有限复平面内的奇点与相应留数」或「用留数算闭路积分」，本课的例子取自其中四道</span></li>
+    <li><a href="https://netedu.xauat.edu.cn/jpkc/netclass/jpkc/fbhs/dir/other/复变函数与积分变换试题及答案12.pdf">复变函数与积分变换试题及答案（西安建筑科技大学）</a><span class="lesson-resources__meta">试卷 · 第三大题 10 分即留数应用，填空第 6 题直接问一个留数</span></li>
+    <li><a href="https://netedu.xauat.edu.cn/jpkc/netclass/jpkc/fbhs/dir/other/复变积分B集习题.pdf">复变积分 B 集习题（按节分组）</a><span class="lesson-resources__meta">习题 · 5.2 留数及留数定理一节的题组，含 <span class="math-inline">\oint_{|z|=n}\tan z\,dz</span> 这类数奇点的题</span></li>
+  </ul>
+
+  <!-- ── 提问提示：固定写法，别删 ── -->
+
+  <div class="lesson-ask">
+    <b>没看懂？随时问</b>
+    把看不懂的段落（或报错）原样复制回会话，说一句哪里不懂就行，我只解释这一段，不打断你的进度。
+  </div>
+
+  <!-- ── 上/下节课指针由渲染器按 curriculum.yaml 的 nodes 顺序算（第一课无 --prev、最后一课无 --next） ── -->
+
+  <nav class="lesson-nav" aria-label="上一课 / 下一课">
+    <a class="lesson-nav__link lesson-nav__link--prev" href="0013-ch3-zeros-poles.html">
+      <span class="lesson-nav__dir">上节课</span>
+      <span class="lesson-nav__title">奇点分类：零点与极点</span>
+    </a>
+    <a class="lesson-nav__link lesson-nav__link--next" href="0015-exp4-residue-contour.html">
+      <span class="lesson-nav__dir">下节课</span>
+      <span class="lesson-nav__title">实验四：围道上的留数</span>
+    </a>
+  </nav>
+
+  <footer class="lesson-footer">
+    StudyMate · 0014 留数与留数定理 · 本地学习工作区
+  </footer>
+
+</article>
+
+<script src="../../../assets/sayo/sayo.js"></script>
+<link rel="stylesheet" href="../../../assets/katex/katex.min.css">
+<script src="../../../assets/katex/katex.min.js" defer></script>
+<script src="../../../assets/lesson-math.js" defer></script>
+<script src="../assets/quiz.js" defer></script>
+<script src="../assets/lesson-toc.js" defer></script>
+<script>LearnTheme.wire(document.getElementById('lesson-theme-checkbox'));</script>
+</body>
+</html>
