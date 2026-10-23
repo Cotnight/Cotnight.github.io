@@ -1,0 +1,263 @@
+<!DOCTYPE html>
+<html lang="zh-CN" data-theme="dark">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>实验一：把复数画上复平面 · 复变函数与积分变换</title>
+
+<!-- 共享层在 .learning/assets/，课件在 .learning/subjects/<slug>/lessons/ 下，所以是 ../../../assets/ -->
+<link rel="stylesheet" href="../../../assets/sayo/sayo.css">
+<link rel="stylesheet" href="../../../assets/learn-theme.css">
+<link rel="stylesheet" href="../assets/style.css">
+
+<!-- 主题要在首帧前应用，避免闪白/闪黑 -->
+<script src="../../../assets/learn-theme.js"></script>
+<script>LearnTheme.apply();</script>
+</head>
+
+<body class="lesson-body">
+
+<nav class="lesson-bar">
+  <a href="../index.html">← 返回课程</a>
+  <span>复变函数与积分变换</span>
+  <span class="lesson-bar__no">0003</span>
+  <!-- 课件页自带主题开关：学生从文件管理器直接打开课件时也能切暗色 -->
+  <label class="syo-toggle syo-toggle--theme lesson-bar__toggle" title="切换深浅主题" aria-label="切换深浅主题">
+    <input type="checkbox" id="lesson-theme-checkbox" checked>
+    <span class="syo-toggle-track"></span>
+    <span class="syo-toggle-knob">
+      <svg class="syo-toggle-sun" viewBox="0 0 20 20" fill="none" aria-hidden="true"><circle cx="10" cy="10" r="3.5" stroke="#f57c00" stroke-width="1.5"/><path d="M10 2v2.5M10 15.5V18M2 10h2.5M15.5 10H18M4.34 4.34l1.77 1.77M13.89 13.89l1.77 1.77M4.34 15.66l1.77-1.77M13.89 6.11l1.77-1.77" stroke="#f57c00" stroke-width="1.2" stroke-linecap="round"/></svg>
+      <svg class="syo-toggle-moon" viewBox="0 0 20 20" fill="none" aria-hidden="true"><path d="M16.5 12.5A6 6 0 019 4.5a6 6 0 007.5 8z" stroke="#5c6bc0" stroke-width="1.5" stroke-linejoin="round"/></svg>
+    </span>
+  </label>
+</nav>
+
+<article class="lesson">
+
+  <header class="lesson-header">
+    <span class="lesson-header__eyebrow">0003 · 实验一：把复数画上复平面</span>
+    <h1>实验一：把复数画上复平面</h1>
+    <p class="lesson-goal"><b>本节目标：</b>做出能画出方根分布与 <span class="math-inline">z^2+c</span> 迭代图的 Notebook——两张图看得出结构，<code>python test_gallery.py</code> 打出 <code>OK</code>。</p>
+  </header>
+
+  <!-- ── 正文：渲染器按内容文件（lessons/<序号>-<节点id>.md）产出，块词汇见 docs/规范/课件内容格式.md ── -->
+
+  <p>这是图像画廊的第一块。前面几课算的是「模、辐角、方根」，这一课把它们搬到屏幕上，让结构自己显出来： <span class="math-inline">n</span> 个方根为什么排成正多边形，<span class="math-inline">z^2+c</span> 反复迭代为什么有的点飞快逃向无穷、有的被牢牢抓住。</p>
+
+  <h2>这次要交出什么</h2>
+
+  <p>三样东西，交到 <a href="../lab/0003-gallery/"><code>lab/0003-gallery</code></a> 里：</p>
+
+  <table>
+    <thead>
+      <tr><th>交出什么</th><th>落在哪</th><th>一句话说明</th></tr>
+    </thead>
+    <tbody>
+      <tr><td><code>gallery.py</code> 里 8 个函数</td><td><code>lab/0003-gallery/gallery.py</code></td><td>方根、逃逸步数、铺网格、存 CSV</td></tr>
+      <tr><td><code>gallery.ipynb</code></td><td><code>lab/0003-gallery/gallery.ipynb</code></td><td>画廊第一块：两张图 + 两句结论</td></tr>
+      <tr><td><code>out/roots.csv</code>、<code>out/grid.csv</code></td><td><code>lab/0003-gallery/out/</code></td><td>两张图背后的数据，测试会写出来</td></tr>
+    </tbody>
+  </table>
+
+  <p>任务表、装环境、卡壳顺序都在 <a href="../lab/README.md"><code>lab/README.md</code></a> 里。那份文件里还留着第 5 课那个小 lab 的一整节，找标题「实验一 · 复变函数图像画廊（0003-gallery）」就是这一课。</p>
+
+  <p><code>out/</code> 里那两份 CSV 就是「图的数据」。没有画图库也能把它们交出来——图只是数据的另一种画法。</p>
+
+  <h2>怎么算过</h2>
+
+  <p>被验收的那一课要求是「做出能画出方根分布与 <span class="math-inline">z^2+c</span> 迭代图的 Notebook」。把它拆成三条，逐条都有可观察的证据：</p>
+
+  <ol>
+    <li><b>能跑</b>：<code>gallery.ipynb</code> 从头 Run All 不报错。这是「做出 Notebook」的硬证据。</li>
+    <li><b>画得出</b>：图里有东西——方根的 5 个点等距落在同一个圆周上；缩略图能看出边界，不是全黑、全白或上下颠倒。</li>
+    <li><b>算得对</b>：<code>python test_gallery.py</code> 打出 <code>OK</code>（28 条断言，管方根的模与角、<span class="math-inline">|z|&gt;2</span> 的严格判据、网格行序、CSV 格式）。</li>
+  </ol>
+
+  <p>三档结论：</p>
+
+  <ul>
+    <li><b>通过</b>：三条都成立，并且你能指着代码说出「哪一行让方根等距」「凭什么 <span class="math-inline">|z|&gt;2</span> 就一定逃逸」。</li>
+    <li><b>部分通过</b>：图出来了但断言没全绿（数值有错）；或断言全绿但 notebook 跑不起来、图看不出结构。</li>
+    <li><b>不通过</b>：只填了函数没有 notebook，或者 notebook 里的图是空的、上下颠倒、只有一两个点。</li>
+  </ul>
+
+  <div class="lesson-warn">
+    <b>说懂了不算</b>
+    <p>这一课只认三样东西：能跑的 notebook、看得清的图、<code>OK</code> 的测试输出。三样都到手才算过。</p>
+  </div>
+
+  <h2>三步走</h2>
+
+  <div class="lesson-practice">
+    <div class="lesson-practice__head">
+      <span class="lesson-practice__level">上手做</span>
+      <span class="lesson-practice__title">第 1 步 · 填 8 个函数</span>
+    </div>
+
+      <p>打开 <a href="../lab/0003-gallery/gallery.py"><code>gallery.py</code></a>，按 <a href="../lab/README.md"><code>lab/README.md</code></a> 的任务表填，<b>填一个验一个</b>：</p>
+
+      <pre data-lang="term"><code>$ cd lab/0003-gallery
+$ python test_gallery.py -k step1</code></pre>
+
+      <p>还没动手时跑全量是 <code>FAILED (errors=28)</code>、退出码 1——先红后绿，这是设计。八步填完跑出 <code>OK</code>，数值这一半就有了。</p>
+  </div>
+
+  <div class="lesson-practice">
+    <div class="lesson-practice__head">
+      <span class="lesson-practice__level">上手做</span>
+      <span class="lesson-practice__title">第 2 步 · 组装 notebook</span>
+    </div>
+
+      <p>在 <code>lab/0003-gallery/</code> 里新建 <code>gallery.ipynb</code>，四个 cell：导入、方根分布图、缩略图、结论。代码已经写在 <code>lab/README.md</code> 第七节，照抄即可。两个关键点：</p>
+
+      <ul>
+        <li>notebook 要与 <code>gallery.py</code> 同一个目录，所以在这个目录里启动 <code>jupyter notebook</code>；</li>
+        <li>复数不能整体喂给画图函数，<b>必须显式分离实部与虚部</b>——这是本课第一大坑。</li>
+      </ul>
+  </div>
+
+  <div class="lesson-practice">
+    <div class="lesson-practice__head">
+      <span class="lesson-practice__level">上手做</span>
+      <span class="lesson-practice__title">第 3 步 · 写两句结论</span>
+    </div>
+
+      <p>结论 cell 只要两句话，别写小作文：</p>
+
+      <ol>
+        <li><span class="math-inline">n</span> 个方根的模都等于 <span class="math-inline">\sqrt[n]{|z_0|}</span>、相邻夹角都是 <span class="math-inline">360^\circ/n</span>，所以连起来是正 <span class="math-inline">n</span> 边形。</li>
+        <li><span class="math-inline">|z|</span> 某一步一旦超过 2 就必然飞向无穷，所以「第几步超过 2」能把复平面染成一张有边界的图。</li>
+      </ol>
+  </div>
+
+  <h2>方根为什么成正多边形</h2>
+
+  <p>你跳过的那一节里有个公式，这一课要用它，直接补在这儿。<span class="math-inline">z_0\ne0</span> 的 <span class="math-inline">n</span> 个 <span class="math-inline">n</span> 次方根是</p>
+
+  <div class="math-block">z_k=\sqrt[n]{|z_0|}\;e^{i(\theta+2k\pi)/n},\qquad \theta=\operatorname{Arg} z_0,\quad k=0,1,\dots,n-1 .</div>
+
+  <p>两件事从式子里直接读出来：模都是 <span class="math-inline">\sqrt[n]{|z_0|}</span>，所以都在同一个圆上；相邻两个根的角度差是 <span class="math-inline">2\pi/n</span>，所以等角排开。圆 + 等角 = 正 <span class="math-inline">n</span> 边形，重心在原点——于是 <span class="math-inline">n</span> 个根加起来正好是 0。</p>
+
+  <p>拿 <span class="math-inline">z_0=1+i</span>、<span class="math-inline">n=5</span> 手算一遍：<span class="math-inline">|z_0|=\sqrt2</span>、<span class="math-inline">\theta=45^\circ</span>，所以模是 <span class="math-inline">\sqrt[10]{2}\approx1.0718</span>，五个角度依次是 <span class="math-inline">9^\circ,81^\circ,153^\circ,225^\circ,297^\circ</span>（每隔 <span class="math-inline">72^\circ</span>）。画出来就是这幅正五边形。</p>
+
+  <div class="lesson-warn">
+    <b>别用角度制算方根</b>
+    <p><code>cmath.phase</code> 给的是弧度，<code>cmath.exp</code> 吃的也是弧度。中途转成度数再塞回公式，整张图会转错一个角度—— 测试第一条抓的就是这个数。</p>
+  </div>
+
+  <h2>迭代图的边界怎么来</h2>
+
+  <p>迭代规则只有一行：<span class="math-inline">z\mapsto z^2+c</span>。从 <span class="math-inline">z_0=0</span> 出发、让 <span class="math-inline">c</span> 跑遍平面，那些<b>永不逃逸</b>的 <span class="math-inline">c</span> 组成曼德博集；固定 <span class="math-inline">c</span>、让起点跑，得到朱利亚集。这一课做前者当缩略图。</p>
+
+  <p>为什么可以用「<span class="math-inline">|z|&gt;2</span>」判逃逸：若某步 <span class="math-inline">|z|&gt;2</span> 且 <span class="math-inline">|z|\ge|c|</span>，则</p>
+
+  <div class="math-block">|z^2+c|\;\ge\;|z|^2-|c|\;\ge\;|z|\bigl(|z|-1\bigr)\;&gt;\;|z| ,</div>
+
+  <p>模每一步都在涨，一定飞出去。反过来说，被抓住的点永远在 <span class="math-inline">|z|\le2</span> 的圈里。</p>
+
+  <p>颜色就是<b>逃逸步数</b>：越靠近边界，需要越多的步数才飞出去，颜色越亮；集内用迭代预算把它涂满。所以 <code>max_iter</code> 太小，边界会糊成一片、看不出分形结构——这是本课第二常见的坑。</p>
+
+  <h2>不装包也能自检</h2>
+
+  <p><code>test_gallery.py</code> 只用标准库（<code>cmath</code>、<code>csv</code>、<code>math</code>、<code>unittest</code>），装不装画图库都能跑。本机实测（Python 3.13.15，没装 numpy）：</p>
+
+  <pre data-lang="term"><code>$ python test_gallery.py
+Ran 28 tests in 0.008s
+
+OK (skipped=2)</code></pre>
+
+  <p>装了 numpy 的解释器上是 <code>Ran 28 tests</code>、<code>OK</code>（第 8 步不跳过），两条都算过。所以顺序可以是：先填函数、先把 <code>out/*.csv</code> 交出来，画图等装好环境再补。</p>
+
+  <h2>装环境</h2>
+
+  <p>画图与 notebook 需要三样包，本机没有，请在你自己的电脑上装（或自己装到本机）：</p>
+
+  <pre data-lang="sh"><code>pip install numpy matplotlib jupyter</code></pre>
+
+  <p>装完进任务目录再启动：</p>
+
+  <pre data-lang="sh"><code>cd lab/0003-gallery
+jupyter notebook</code></pre>
+
+  <h2>最可能卡在哪</h2>
+
+  <table>
+    <thead>
+      <tr><th>症状或报错</th><th>原因</th><th>去哪一步</th></tr>
+    </thead>
+    <tbody>
+      <tr><td><code>No module named 'matplotlib'</code></td><td>没装画图库，函数与自检不受影响</td><td>先跑测试，装好再画图</td></tr>
+      <tr><td><code>No module named 'gallery'</code></td><td>notebook 不在 <code>lab/0003-gallery/</code> 里启动</td><td>第 2 步</td></tr>
+      <tr><td><code>TypeError: only size-1 arrays ...</code></td><td>把复数整体喂给了散点函数</td><td>分离实部与虚部</td></tr>
+      <tr><td>缩略图上下颠倒</td><td><code>grid[0]</code> 是最下面一行，而画图函数默认把第 0 行画在最上面</td><td>加 <code>origin='lower'</code></td></tr>
+      <tr><td>方根挤成一团、只看到一个点</td><td>漏了 <span class="math-inline">2k\pi</span> 的 <code>k</code>，或循环写成 <code>range(1)</code></td><td>第 1 步</td></tr>
+      <tr><td>图案整体转了个角度</td><td>辐角用了角度制</td><td>第 1 步</td></tr>
+      <tr><td>边界糊成一片</td><td><code>max_iter</code> 太小（先用 60，再试 120）</td><td>第 3 步</td></tr>
+      <tr><td>圆被画成椭圆</td><td>没设等比例坐标轴</td><td>第 2 步的 <code>set_aspect('equal')</code></td></tr>
+      <tr><td>CSV 每行之间有空白行</td><td><code>open</code> 少了 <code>newline=''</code></td><td>第 6 步</td></tr>
+    </tbody>
+  </table>
+
+  <h2>自查清单</h2>
+
+  <ol>
+    <li><code>python test_gallery.py</code> 打出 <code>OK</code>（没装 numpy 时 <code>OK (skipped=2)</code> 也算）。</li>
+    <li><code>out/roots.csv</code> 是 6 行（表头一行 + 5 个根），<code>out/grid.csv</code> 是 24 行、每行 40 个整数。</li>
+    <li><code>gallery.ipynb</code> 从头 Run All 不报错。</li>
+    <li>方根图上 5 个点在同一个圆上，连起来是正五边形。</li>
+    <li>缩略图方向正确：左端是 <span class="math-inline">c=-2</span> 那一侧，最上面一行对应 <span class="math-inline">y=1.25</span>。</li>
+    <li>结论 cell 里是你自己的两句话，不是抄课件的整段。</li>
+  </ol>
+
+  <h2>卡壳了怎么走</h2>
+
+  <ol>
+    <li>先读断言最后一行：<code>AssertionError</code> 后面通常带着期望值与实际值，差 <span class="math-inline">2k\pi</span>、差一个 <span class="math-inline">1/n</span>、差符号都在那里。</li>
+    <li>对不上就查 <a href="../lab/README.md"><code>lab/README.md</code></a> 第八节的症状对表，按症状定位到具体哪一步。</li>
+    <li>还不对，只打开参考解里<b>卡住的那一个函数</b>（<a href="../lab/solutions/0003-gallery/gallery.py"><code>solutions/0003-gallery/gallery.py</code></a>），看完立刻自己重写一遍——整段拷会让你跳过判断过程。</li>
+  </ol>
+
+  <h2>下一步</h2>
+
+  <p>实验二「解析函数长什么样」会在同一份 notebook 上继续长：复用这里的坐标换算与存盘函数，改画 <span class="math-inline">e^z</span>、 <span class="math-inline">\sin z</span>、<span class="math-inline">\operatorname{Ln} z</span> 的模—辐角着色图，再加一层数值差分来检验柯西-黎曼条件。所以 <code>gallery.py</code> 与 <code>out/</code> 别删，下一块图要接在它上面。</p>
+
+  <ul class="lesson-resources">
+    <li>李君、于非非《复变函数与积分变换》§1.2 复数的几何表示与几何运算、§1.1 乘幂与方根<span class="lesson-resources__meta">书 · 方根与几何表示以它为准</span></li>
+    <li>第 1 节课件转换稿<span class="lesson-resources__meta">讲义 · 只有小节骨架（公式不可提取），用来确认老师讲过哪些小节</span></li>
+  </ul>
+
+  <!-- ── 提问提示：固定写法，别删 ── -->
+
+  <div class="lesson-ask">
+    <b>没看懂？随时问</b>
+    把看不懂的段落（或报错）原样复制回会话，说一句哪里不懂就行，我只解释这一段，不打断你的进度。
+  </div>
+
+  <!-- ── 上/下节课指针由渲染器按 curriculum.yaml 的 nodes 顺序算（第一课无 --prev、最后一课无 --next） ── -->
+
+  <nav class="lesson-nav" aria-label="上一课 / 下一课">
+    <a class="lesson-nav__link lesson-nav__link--prev" href="0002-ch1-complex-basics.html">
+      <span class="lesson-nav__dir">上节课</span>
+      <span class="lesson-nav__title">复数的运算与几何表示</span>
+    </a>
+    <a class="lesson-nav__link lesson-nav__link--next" href="0004-ch1-elementary.html">
+      <span class="lesson-nav__dir">下节课</span>
+      <span class="lesson-nav__title">初等函数：指数、三角与对数</span>
+    </a>
+  </nav>
+
+  <footer class="lesson-footer">
+    StudyMate · 0003 实验一：把复数画上复平面 · 本地学习工作区
+  </footer>
+
+</article>
+
+<script src="../../../assets/sayo/sayo.js"></script>
+<link rel="stylesheet" href="../../../assets/katex/katex.min.css">
+<script src="../../../assets/katex/katex.min.js" defer></script>
+<script src="../../../assets/lesson-math.js" defer></script>
+<script src="../assets/quiz.js" defer></script>
+<script src="../assets/lesson-toc.js" defer></script>
+<script>LearnTheme.wire(document.getElementById('lesson-theme-checkbox'));</script>
+</body>
+</html>

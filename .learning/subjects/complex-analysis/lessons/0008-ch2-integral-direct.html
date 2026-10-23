@@ -1,0 +1,429 @@
+<!DOCTYPE html>
+<html lang="zh-CN" data-theme="dark">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>复积分的概念与直接计算 · 复变函数与积分变换</title>
+
+<!-- 共享层在 .learning/assets/，课件在 .learning/subjects/<slug>/lessons/ 下，所以是 ../../../assets/ -->
+<link rel="stylesheet" href="../../../assets/sayo/sayo.css">
+<link rel="stylesheet" href="../../../assets/learn-theme.css">
+<link rel="stylesheet" href="../assets/style.css">
+
+<!-- 主题要在首帧前应用，避免闪白/闪黑 -->
+<script src="../../../assets/learn-theme.js"></script>
+<script>LearnTheme.apply();</script>
+</head>
+
+<body class="lesson-body">
+
+<nav class="lesson-bar">
+  <a href="../index.html">← 返回课程</a>
+  <span>复变函数与积分变换</span>
+  <span class="lesson-bar__no">0008</span>
+  <!-- 课件页自带主题开关：学生从文件管理器直接打开课件时也能切暗色 -->
+  <label class="syo-toggle syo-toggle--theme lesson-bar__toggle" title="切换深浅主题" aria-label="切换深浅主题">
+    <input type="checkbox" id="lesson-theme-checkbox" checked>
+    <span class="syo-toggle-track"></span>
+    <span class="syo-toggle-knob">
+      <svg class="syo-toggle-sun" viewBox="0 0 20 20" fill="none" aria-hidden="true"><circle cx="10" cy="10" r="3.5" stroke="#f57c00" stroke-width="1.5"/><path d="M10 2v2.5M10 15.5V18M2 10h2.5M15.5 10H18M4.34 4.34l1.77 1.77M13.89 13.89l1.77 1.77M4.34 15.66l1.77-1.77M13.89 6.11l1.77-1.77" stroke="#f57c00" stroke-width="1.2" stroke-linecap="round"/></svg>
+      <svg class="syo-toggle-moon" viewBox="0 0 20 20" fill="none" aria-hidden="true"><path d="M16.5 12.5A6 6 0 019 4.5a6 6 0 007.5 8z" stroke="#5c6bc0" stroke-width="1.5" stroke-linejoin="round"/></svg>
+    </span>
+  </label>
+</nav>
+
+<article class="lesson">
+
+  <header class="lesson-header">
+    <span class="lesson-header__eyebrow">0008 · 复积分的概念与直接计算</span>
+    <h1>复积分的概念与直接计算</h1>
+    <p class="lesson-goal"><b>本节目标：</b>能用参数化法直接算出一段曲线上的复积分。</p>
+  </header>
+
+  <!-- ── 正文：渲染器按内容文件（lessons/<序号>-<节点id>.md）产出，块词汇见 docs/规范/课件内容格式.md ── -->
+
+  <h2>卷面怎么考</h2>
+
+  <p>本章在公开试卷上有三处位置，三处考的都是算。</p>
+
+  <ul>
+    <li>解答题第 3 题，5～7 分：沿一段折线或一段参数曲线求积分。合肥工业大学连续四套卷的这道题分别是：沿 <span class="math-inline">i\to i-\pi\to-\pi</span> 的折线求 <span class="math-inline">\int_C\cos^2 z\,dz</span>；沿 <span class="math-inline">1\to 1+i\to i</span> 的折线求 <span class="math-inline">\int_C(\operatorname{Re}z+\operatorname{Im}z)\,dz</span>；沿单位圆从 <span class="math-inline">1</span> 逆时针转到 <span class="math-inline">i</span> 的圆弧求 <span class="math-inline">\int_C\frac{dz}{z}</span>。</li>
+    <li>填空与选择，3～4 分：给一条正向闭曲线，填 <span class="math-inline">\oint_C</span> 的值，被积函数是 <span class="math-inline">z</span>、<span class="math-inline">\bar z</span> 或 <span class="math-inline">\frac1z</span> 的有限项组合。</li>
+    <li>概念简答，3 分：「复积分的计算方法或公式有哪些」。参考答案罗列了八条，头两条是列出参数方程 <span class="math-inline">z=z(t)</span> 把积分写成 <span class="math-inline">t</span> 的积分，以及单连通区域内解析函数的积分用原函数计算。</li>
+  </ul>
+
+  <p>本课把第 3 题的两条路分开练：曲线能参数化就用参数化硬算；被积函数解析，就先看能不能用原函数代端点。填空里的闭路积分下一节才展开，本课只要求会用参数化算出 <span class="math-inline">\oint\frac{dz}{z}=2\pi i</span> 这一个结果。</p>
+
+  <h2>唤醒：参数化与定积分</h2>
+
+  <p>一段曲线用一个参数 <span class="math-inline">t</span> 描述：</p>
+
+  <div class="math-block">z(t)=x(t)+iy(t),\qquad \alpha\le t\le\beta.</div>
+
+  <p><span class="math-inline">t</span> 从 <span class="math-inline">\alpha</span> 增到 <span class="math-inline">\beta</span> 的方向就是曲线 <span class="math-inline">C</span> 的方向。卷面上出现的有两种：</p>
+
+  <ul>
+    <li>从 <span class="math-inline">z_0</span> 到 <span class="math-inline">z_1</span> 的直线段：<span class="math-inline">z(t)=z_0+(z_1-z_0)t</span>，<span class="math-inline">0\le t\le 1</span>。</li>
+    <li>半径为 <span class="math-inline">r</span> 的圆弧：<span class="math-inline">z(t)=re^{it}</span>，<span class="math-inline">t</span> 从起点的辐角到终点的辐角。逆时针走时 <span class="math-inline">t</span> 增大。</li>
+  </ul>
+
+  <p>沿曲线做的定积分按实部虚部拆成两个实积分：</p>
+
+  <div class="math-block">\int_C f(z)\,dz=\int_\alpha^\beta f(z(t))z'(t)\,dt=\int_\alpha^\beta P(t)\,dt+i\int_\alpha^\beta Q(t)\,dt.</div>
+
+  <p>计算只剩两个动作：把 <span class="math-inline">z</span> 换成 <span class="math-inline">z(t)</span>，把 <span class="math-inline">dz</span> 换成 <span class="math-inline">z'(t)dt</span>。剩下的定积分按实函数的方法算，出现的原函数都是 <span class="math-inline">\sin</span>、<span class="math-inline">\cos</span>、<span class="math-inline">e^{at}</span>、<span class="math-inline">t^n</span> 这一级。</p>
+
+  <p>计算里反复用到三条复数关系：</p>
+
+  <div class="math-block">\bar z=x-iy,\qquad |z|^2=z\bar z,\qquad \frac1z=\frac{\bar z}{|z|^2}\quad(z\ne 0).</div>
+
+  <p>代入 <span class="math-inline">z=re^{i\theta}</span> 得 <span class="math-inline">\bar z=re^{-i\theta}</span>、<span class="math-inline">\frac1z=\frac1r e^{-i\theta}</span>。这两条把含 <span class="math-inline">\bar z</span> 与 <span class="math-inline">\frac1z</span> 的被积函数也变成指数函数；指数函数相乘时指数相加，积分立刻化成一元定积分。</p>
+
+  <h2>积分的定义</h2>
+
+  <p>复积分的定义与定积分同形。在 <span class="math-inline">C</span> 上按方向依次取分点 <span class="math-inline">z_0,z_1,\dots,z_n</span>（<span class="math-inline">z_0</span> 是起点、<span class="math-inline">z_n</span> 是终点），第 <span class="math-inline">k</span> 段的弧长记 <span class="math-inline">\Delta s_k</span>，在每段上任取一点 <span class="math-inline">\zeta_k</span>，作和</p>
+
+  <div class="math-block">\sum_{k=1}^{n}f(\zeta_k)\Delta z_k,\qquad \Delta z_k=z_k-z_{k-1}.</div>
+
+  <p>当 <span class="math-inline">\max\Delta s_k\to 0</span> 时这个和趋于一个与分点、与 <span class="math-inline">\zeta_k</span> 取法都无关的复数，就称它为 <span class="math-inline">f</span> 沿 <span class="math-inline">C</span> 的积分：</p>
+
+  <div class="math-block">\int_C f(z)\,dz=\lim_{\max\Delta s_k\to 0}\sum_{k=1}^{n}f(\zeta_k)\Delta z_k.</div>
+
+  <p>这个量称为 <span class="math-inline">f</span> 沿 <span class="math-inline">C</span> 的<b>复积分</b>。<span class="math-inline">C</span> 闭合时记号写作 <span class="math-inline">\oint_C</span>。</p>
+
+  <p>把 <span class="math-inline">f=u+iv</span> 与 <span class="math-inline">dz=dx+i\,dy</span> 代进定义，可以得到它与实函数曲线积分的联系：</p>
+
+  <div class="math-block">\int_C f\,dz=\int_C(u\,dx-v\,dy)+i\int_C(v\,dx+u\,dy).</div>
+
+  <p>这一式在卷面上几乎不用。它的用处是说明方向、分段与线性这几条性质与高等数学里的第二型曲线积分一致，不必重新记一套。</p>
+
+  <table>
+    <thead>
+      <tr><th>性质</th><th>写法</th></tr>
+    </thead>
+    <tbody>
+      <tr><td>线性</td><td><span class="math-inline">\int_C(\alpha f+\beta g)\,dz=\alpha\int_C f\,dz+\beta\int_C g\,dz</span></td></tr>
+      <tr><td>方向反转变号</td><td><span class="math-inline">\int_{C^{-}}f\,dz=-\int_C f\,dz</span></td></tr>
+      <tr><td>分段可加</td><td><span class="math-inline">C=C_1+C_2</span> 时 <span class="math-inline">\int_C f\,dz=\int_{C_1}f\,dz+\int_{C_2}f\,dz</span></td></tr>
+      <tr><td>模的估计</td><td><span class="math-inline">\left\lvert\int_C f\,dz\right\rvert\le\int_C\lvert f\rvert\,\lvert dz\rvert</span></td></tr>
+    </tbody>
+  </table>
+
+  <p>方向反转变号的理由只有一句：沿 <span class="math-inline">C^{-}</span> 走时每个 <span class="math-inline">\Delta z_k</span> 的方向都与原来相反，取极限后整体差一个负号。</p>
+
+  <div class="quiz" data-quiz='[
+  {
+    "q": "下面四条性质，哪一条写错了？\n四条的 $C$ 都是同一段有向曲线。",
+    "opts": [
+      "$\\int_{C^{-}}f(z)\\,dz=-\\int_C f(z)\\,dz$",
+      "$\\left|\\int_C f(z)\\,dz\\right|=\\int_C\\left|f(z)\\right|\\left|dz\\right|$",
+      "$\\int_C(\\alpha f+\\beta g)\\,dz=\\alpha\\int_C f\\,dz+\\beta\\int_C g\\,dz$",
+      "$\\int_{C_1+C_2}f(z)\\,dz=\\int_{C_1}f(z)\\,dz+\\int_{C_2}f(z)\\,dz$"
+    ],
+    "ans": 1,
+    "why": "模的估计是不等号：\n$\\left|\\int_C f(z)\\,dz\\right|\\le\\int_C\\left|f(z)\\right|\\left|dz\\right|$。\n要取等号得 $f\\,dz$ 的辐角沿 $C$ 处处相同，\n一般做不到。其余三条都对。"
+  },
+  {
+    "q": "设 $C$ 是从 $0$ 到 $1$、再从 $1$ 到 $1+i$ 的折线，\n已知 $\\int_C f\\,dz=1+2i$。\n三个小问各填一个值，每个值后补一句理由：\n\n① $\\int_{C^-}f\\,dz$ 等于多少？\n② 若第一段 $C_1$（$0\\to1$）上是 $3$，\n则第二段 $C_2$（$1\\to1+i$）上等于多少？\n③ 若另有 $\\int_C g\\,dz=i$，\n求 $\\int_C(2f-3g)\\,dz$。",
+    "answer": "① $-1-2i$。\n反向走时每段 $\\Delta z_k$ 都反号，\n取极限后整体差一个负号。\n\n② $(1+2i)-3=-2+2i$。\n分段可加：$\\int_C=\\int_{C_1}+\\int_{C_2}$，\n移项即得。\n\n③ $2(1+2i)-3i=2+i$。\n系数与常数都能提到积分号外（线性）。",
+    "criteria": "三个值都对才算通过。\n① 必须是 $-1-2i$：反向整体变号；\n只把实部变号写成 $1-2i$ 按部分通过。\n② 必须是 $-2+2i$：由分段可加移项；\n把 $3$ 加回去得 $4+2i$ 是把方向算反了。\n③ 必须是 $2+i$：$2(1+2i)=2+4i$，\n再减 $3i$。得 $2+7i$ 是把 $-3g$ 写成 $+3g$；\n得 $1+2i$ 是漏了系数 $2$。\n每问都补一句理由（反向反号／分段可加／线性），\n只给数字不写理由按部分通过。"
+  }
+]'></div>
+
+  <h2>参数化计算法</h2>
+
+  <p>参数化的三件事固定成三行：</p>
+
+  <ol>
+    <li>写出 <span class="math-inline">z=z(t)</span> 与 <span class="math-inline">t</span> 的范围。</li>
+    <li>求导得 <span class="math-inline">dz=z'(t)\,dt</span>。</li>
+    <li>把被积函数里的 <span class="math-inline">z</span> 全换成 <span class="math-inline">z(t)</span>，常数不动。</li>
+  </ol>
+
+  <p>第 2 行是最容易漏的一步。漏掉 <span class="math-inline">z'(t)dt</span>、直接对 <span class="math-inline">f(z(t))</span> 关于 <span class="math-inline">t</span> 积分，得到的是另一个量，卷面上还看不出错在哪。</p>
+
+  <p>例（2025 年卷，5 分）：<span class="math-inline">C</span> 是从 <span class="math-inline">1</span> 沿单位圆 <span class="math-inline">|z|=1</span> 逆时针转到 <span class="math-inline">i</span> 的圆弧，求 <span class="math-inline">\int_C\frac{dz}{z}</span>。</p>
+
+  <p>曲线是 <span class="math-inline">z=e^{i\theta}</span>，<span class="math-inline">\theta</span> 从 <span class="math-inline">0</span> 到 <span class="math-inline">\frac{\pi}{2}</span>；<span class="math-inline">dz=ie^{i\theta}d\theta</span>；被积函数 <span class="math-inline">\frac1z=e^{-i\theta}</span>。代入：</p>
+
+  <div class="math-block">\int_C\frac{dz}{z}=\int_0^{\pi/2}e^{-i\theta}\cdot ie^{i\theta}\,d\theta=i\int_0^{\pi/2}d\theta=\frac{\pi i}{2}.</div>
+
+  <p>参考答案按「参数方程 2 分、<span class="math-inline">dz</span> 1 分、算完 2 分」给分，其中 <span class="math-inline">e^{-i\theta}</span> 与 <span class="math-inline">e^{i\theta}</span> 相乘得 <span class="math-inline">1</span> 这一步要写出来。</p>
+
+  <p>同一个被积函数走一整圈，<span class="math-inline">\theta</span> 从 <span class="math-inline">0</span> 到 <span class="math-inline">2\pi</span>：</p>
+
+  <div class="math-block">\oint_{|z|=1}\frac{dz}{z}=i\int_0^{2\pi}d\theta=2\pi i.</div>
+
+  <p>这个 <span class="math-inline">2\pi i</span> 在本章后面反复出现。本课把它当参数化的结果记住；它为什么恰好是 <span class="math-inline">2\pi i</span>，下一节由柯西积分公式说明。</p>
+
+  <p>被积函数含 <span class="math-inline">\bar z</span> 时同样代入。<span class="math-inline">C</span> 为上半单位圆周从 <span class="math-inline">1</span> 到 <span class="math-inline">-1</span>，求 <span class="math-inline">\int_C\bar z\,dz</span>：</p>
+
+  <div class="math-block">z=e^{i\theta},\quad \theta:0\to\pi,\quad dz=ie^{i\theta}d\theta,\quad \bar z=e^{-i\theta},</div>
+
+  <div class="math-block">\int_C\bar z\,dz=\int_0^{\pi}e^{-i\theta}\cdot ie^{i\theta}\,d\theta=i\pi.</div>
+
+  <div class="quiz" data-quiz='[
+  {
+    "q": "$C$ 是 $|z|=1$ 上从 $1$ 逆时针到 $i$ 的圆弧。\n求 $\\int_C z\\bar z\\,dz$。分三行写：\n\n① $z(t)$ 与参数范围；\n② $dz$（把 $z&#39;(t)dt$ 这一步写出来）；\n③ 定积分的值。\n\n再加一句：若漏掉 $dz$ 的换元、\n直接把 $z\\bar z$ 对参数积分，会得哪个错值？",
+    "answer": "$z=e^{i\\theta}$，$0\\le\\theta\\le\\frac{\\pi}{2}$。\n$dz=ie^{i\\theta}d\\theta$。\n$z\\bar z=|z|^2=1$，被积函数在 $C$ 上恒为 $1$。\n\n$\\int_C z\\bar z\\,dz=\\int_0^{\\pi/2}ie^{i\\theta}d\\theta$\n$=e^{i\\pi/2}-e^0=i-1$。\n\n漏换元算的是 $\\int_0^{\\pi/2}1\\,d\\theta=\\frac{\\pi}{2}$，\n一个实数，与 $i-1$ 完全不像。",
+    "criteria": "按卷面三步给分，缺一步按部分通过：\n① $z=e^{i\\theta}$ 与范围 $0\\to\\frac{\\pi}{2}$ 都要写。\n② 必须出现 $dz=ie^{i\\theta}d\\theta$。\n③ 结果 $i-1$；写成 $1-i$ 是上下限方向反了。\n自查一句：$z\\bar z=1$ 要先化掉，\n不化就积不出来。\n漏换元的错值必须写出 $\\frac{\\pi}{2}$（实数）；\n答不出这一问，说明 $dz$ 那一步还没当成动作。"
+  }
+]'></div>
+
+  <h2>沿折线分段算</h2>
+
+  <p>折线由几段直线接成，参数化按段进行，每段各自从 <span class="math-inline">t=0</span> 起算，最后相加。</p>
+
+  <p>例（2024 年卷，6 分）：<span class="math-inline">C</span> 为从 <span class="math-inline">1</span> 到 <span class="math-inline">1+i</span> 再到 <span class="math-inline">i</span> 的折线段，求 <span class="math-inline">\int_C(\operatorname{Re}z+\operatorname{Im}z)\,dz</span>。</p>
+
+  <p>被积函数是 <span class="math-inline">\operatorname{Re}z+\operatorname{Im}z=x+y</span>，含 <span class="math-inline">x</span> 与 <span class="math-inline">y</span> 的式子不能当成 <span class="math-inline">z</span> 的解析函数处理，分段算。</p>
+
+  <p>第一段 <span class="math-inline">C_1</span>，从 <span class="math-inline">1</span> 到 <span class="math-inline">1+i</span>，取 <span class="math-inline">z=1+it</span>，<span class="math-inline">0\le t\le 1</span>：</p>
+
+  <div class="math-block">dz=i\,dt,\qquad \operatorname{Re}z+\operatorname{Im}z=1+t,</div>
+
+  <div class="math-block">\int_{C_1}(\operatorname{Re}z+\operatorname{Im}z)\,dz=\int_0^1(1+t)i\,dt=\frac32 i.</div>
+
+  <p>第二段 <span class="math-inline">C_2</span>，从 <span class="math-inline">1+i</span> 竖直向下到 <span class="math-inline">i</span>，取 <span class="math-inline">z=1+i-t</span>，<span class="math-inline">0\le t\le 1</span>：</p>
+
+  <div class="math-block">dz=-\,dt,\qquad \operatorname{Re}z+\operatorname{Im}z=2-t,</div>
+
+  <div class="math-block">\int_{C_2}(\operatorname{Re}z+\operatorname{Im}z)\,dz=\int_0^1-(2-t)\,dt=-\frac32.</div>
+
+  <p>两段相加：</p>
+
+  <div class="math-block">\int_C(\operatorname{Re}z+\operatorname{Im}z)\,dz=-\frac32+\frac32 i.</div>
+
+  <figure class="lesson-figure">
+    <img src="../assets/img/pool/复积分-参数化计算-折线分段-本机-01.png" alt="左侧复平面上画着从 1 到 1 加 i 再到 i 的折线，两段各带方向箭头并标 C 一与 C 二；右侧三格依次列出两段的参数式、dz、被积函数与定积分结果，最后一格是两段相加得负二分之三加二分之三 i">
+    <figcaption>图 1 · 折线分成两段各算一次，两段的 <span class="math-inline">dz</span> 分别换成 <span class="math-inline">i\,dt</span> 与 <span class="math-inline">-dt</span>。（来源：本机生成（<code>assets/img/gen/复积分-参数化计算-折线分段-本机-01.py</code>），许可：本项目自产）</figcaption>
+  </figure>
+
+  <p>参考答案的给分是「分段计算 1 分，每段的参数式与 <span class="math-inline">dz</span> 各 1 分，两个定积分各 1 分，相加 1 分」，六分全在这些动作上。</p>
+
+  <p>三个容易出错的地方：</p>
+
+  <ul>
+    <li>第二段接着第一段的 <span class="math-inline">t</span> 往下算。两段的 <span class="math-inline">t</span> 各从 <span class="math-inline">0</span> 起，互不相干。</li>
+    <li>竖直段 <span class="math-inline">dz</span> 的符号。写成 <span class="math-inline">z=1+i-t</span> 时 <span class="math-inline">dz=-dt</span>；写成 <span class="math-inline">z=i+t</span> 时 <span class="math-inline">dz=dt</span>，但这时 <span class="math-inline">t</span> 从 <span class="math-inline">0</span> 到 <span class="math-inline">1</span> 对应的是从 <span class="math-inline">i</span> 到 <span class="math-inline">1+i</span>，方向与题目给的反了。</li>
+    <li>漏掉一段。最后一行必须是两段之和。</li>
+  </ul>
+
+  <div class="quiz" data-quiz='[
+  {
+    "q": "$C$ 从 $0$ 沿实轴到 $2$，再竖直向上到 $2+2i$。\n求 $\\int_C(\\operatorname{Re}z+\\operatorname{Im}z)\\,dz$。\n\n① 两段各写参数式、$dz$、该段的定积分，\n最后相加；\n② 若第二段改成从 $2+2i$ 竖直向下到 $2$，\n答案改成多少（只写结果）。",
+    "answer": "① 第一段 $z=t$，$0\\le t\\le2$，$dz=dt$，\n$\\operatorname{Re}z+\\operatorname{Im}z=t$，\n$\\int_{C_1}=\\int_0^2t\\,dt=2$。\n\n第二段 $z=2+it$，$0\\le t\\le2$，$dz=i\\,dt$，\n$\\operatorname{Re}z+\\operatorname{Im}z=2+t$，\n$\\int_{C_2}=\\int_0^2(2+t)i\\,dt=6i$。\n\n相加：$2+6i$。\n\n② 第二段反走，那一段变号，\n合计 $2-6i$。",
+    "criteria": "① 两段都要有参数式、$dz$、该段定积分三样。\n第一段 $2$，第二段 $6i$，相加 $2+6i$。\n三处常错：只算一段就写答案；\n竖直段把 $dz$ 写成 $dt$（丢了 $i$）；\n被积函数写成常数 $2$（忘了 $\\operatorname{Im}z=t$）。\n② 只要 $2-6i$；\n第一段也跟着变号写成 $-2-6i$，\n说明方向符号还没落到每一段上。"
+  }
+]'></div>
+
+  <h2>闭合路径的方向</h2>
+
+  <p>闭曲线要定方向。沿曲线走时区域保持在左手边，这个方向称为<b>正向</b>；圆、方框、椭圆这类简单闭曲线的正向就是逆时针。同一条曲线反向走一遍，积分差一个负号。</p>
+
+  <p>两个闭路积分可以直接写出来：</p>
+
+  <div class="math-block">\oint_{|z|=1}z\,dz=0,\qquad \oint_{|z|=1}\frac{dz}{z}=2\pi i.</div>
+
+  <p>第一条用参数化验一遍：<span class="math-inline">z=e^{i\theta}</span>，<span class="math-inline">dz=ie^{i\theta}d\theta</span>，</p>
+
+  <div class="math-block">\oint_{|z|=1}z\,dz=\int_0^{2\pi}e^{i\theta}\cdot ie^{i\theta}\,d\theta=\frac12\Big[e^{2i\theta}\Big]_0^{2\pi}=0,</div>
+
+  <p>末一步用了 <span class="math-inline">e^{4\pi i}=1</span>。第二条是上面算过的结果。</p>
+
+  <p>两条的答案形态不同，区别落在被积函数在圈内有没有奇点。这一条下一节成为柯西积分定理与柯西积分公式的分界，本课只要求会算。</p>
+
+  <p>方向写反时两条都变号：<span class="math-inline">\oint_{C^{-}}\frac{dz}{z}=-2\pi i</span>。填空题里 <span class="math-inline">\oint</span> 这个记号已经含了方向，答案按正向给。</p>
+
+  <div class="lesson-note">
+    <b>这条 C 就是实验四要画的那个</b>
+    <p>图像画廊的实验四会把围道 <span class="math-inline">C</span> 与极点画在同一张复平面上，标出 <span class="math-inline">C</span> 把哪些奇点圈在里面。圈内外的个数一确定，<span class="math-inline">\oint_C</span> 的值就由圈内留数之和给出。本课练的 <span class="math-inline">\oint\frac{dz}{z}=2\pi i</span> 是这张图上最简单的一例：圈内只有一个极点 <span class="math-inline">0</span>，它的留数是 <span class="math-inline">1</span>。</p>
+  </div>
+
+  <div class="quiz" data-quiz='[
+  {
+    "q": "下面是同学的解法，错处不止一个。\n题目：$C$ 为 $|z|=2$ 顺时针一周，\n求 $\\oint_C\\left(z+\\frac1z\\right)dz$。\n\n同学写：圆周以逆时针为正向，\n故 $\\oint_C z\\,dz=2\\pi i$；\n又 $\\oint_C\\frac{dz}{z}=\\pi i$；\n所以原式 $=2\\pi i+\\pi i=3\\pi i$。\n\n① 逐处指出错在哪；\n② 给出正确的结果。",
+    "answer": "三处错。\n\n① 方向：题给顺时针，是负向，\n整个结果要带负号。\n② $\\oint_{|z|=2}z\\,dz=0$。\n参数化验一次：$\\frac12\\left[e^{2i\\theta}\\right]_0^{2\\pi}=0$。\n③ $\\oint_{|z|=2}\\frac{dz}{z}=2\\pi i$，不是 $\\pi i$；\n走满一圈才乘出 $2\\pi i$。\n\n正确结果：$0-2\\pi i=-2\\pi i$。",
+    "criteria": "三处都要指到，漏一处按部分通过：\n方向（顺时针＝负向，整体变号）；\n$\\oint z\\,dz=0$；\n$\\oint\\frac{dz}{z}=2\\pi i$。\n正确结果必须是 $-2\\pi i$。\n漏掉方向那条会答成 $2\\pi i$——\n填空题丢的就是这一分。\n只说「错了」不说错在哪，按不通过。"
+  }
+]'></div>
+
+  <h2>原函数代端点</h2>
+
+  <p>若 <span class="math-inline">f</span> 在包含 <span class="math-inline">C</span> 的一个区域内解析，则 <span class="math-inline">f</span> 在该区域内有原函数 <span class="math-inline">F</span>（即 <span class="math-inline">F'=f</span>），且</p>
+
+  <div class="math-block">\int_C f(z)\,dz=F(z_1)-F(z_0),</div>
+
+  <p><span class="math-inline">z_0</span> 与 <span class="math-inline">z_1</span> 是 <span class="math-inline">C</span> 的起点与终点。右端只用到两个端点，与 <span class="math-inline">C</span> 的形状无关，这就是积分与路径无关。这一条在下一节由柯西积分定理给出，本课先把它当计算规则：先判被积函数解析，解析就只用原函数代端点。</p>
+
+  <p>例（2022 年卷，6 分）：<span class="math-inline">C</span> 为从 <span class="math-inline">i</span> 到 <span class="math-inline">i-\pi</span> 再到 <span class="math-inline">-\pi</span> 的折线，求 <span class="math-inline">\int_C\cos^2 z\,dz</span>。</p>
+
+  <p><span class="math-inline">\cos^2 z</span> 在复平面上解析。先用半角公式降次：</p>
+
+  <div class="math-block">\cos^2 z=\frac{1+\cos 2z}{2},\qquad F(z)=\frac z2+\frac{\sin 2z}{4}.</div>
+
+  <p>起点 <span class="math-inline">i</span>、终点 <span class="math-inline">-\pi</span>，中间那个拐点 <span class="math-inline">i-\pi</span> 不参与计算：</p>
+
+  <div class="math-block">\int_C\cos^2 z\,dz=F(-\pi)-F(i)=-\frac{\pi}{2}-\left(\frac i2+\frac{\sin 2i}{4}\right).</div>
+
+  <p>把 <span class="math-inline">\sin 2i=i\sinh 2=\frac{i(e^2-e^{-2})}{2}</span> 代进去，整理得</p>
+
+  <div class="math-block">-\frac{\pi}{2}+\frac{e^{-2}-4-e^2}{8}i.</div>
+
+  <p>参考答案的第一步写的就是「由于 <span class="math-inline">\cos^2 z</span> 解析」，接着是降次与原函数，折线的两段一次都没有出现。这道题在整份卷里最省时间：认出被积函数解析之后，路径形状就不影响答案。</p>
+
+  <p>同一个结论在填空与选择里也出现。从 <span class="math-inline">0</span> 到 <span class="math-inline">3+i</span> 求 <span class="math-inline">\int_C(z+2)dz</span>，被积函数是多项式，沿直线、沿实轴折一次、沿虚轴折一次三条路都得</p>
+
+  <div class="math-block">F(3+i)-F(0)=\left(\frac{z^2}{2}+2z\right)\Big|_{0}^{3+i}=10+5i.</div>
+
+  <p>参数曲线同样只看端点。2024 年卷的选择题：有向曲线 <span class="math-inline">C:z(t)=\sin 2t+2i\cos t</span>，<span class="math-inline">t\in[0,\pi]</span>，则 <span class="math-inline">\int_C z\,dz</span> 等于（A）<span class="math-inline">0</span>（B）<span class="math-inline">-2i</span>（C）<span class="math-inline">-4i</span>（D）<span class="math-inline">4i</span>。被积函数 <span class="math-inline">z</span> 的原函数是 <span class="math-inline">\frac{z^2}{2}</span>，端点 <span class="math-inline">z(0)=2i</span>、<span class="math-inline">z(\pi)=-2i</span>，两端代入得</p>
+
+  <div class="math-block">\frac{(-2i)^2-(2i)^2}{2}=0,</div>
+
+  <p>选 A。这条曲线是椭圆的一段，参数式复杂，端点却一算就出。</p>
+
+  <h3>什么时候不能代端点</h3>
+
+  <p>含 <span class="math-inline">\bar z</span>、<span class="math-inline">\operatorname{Re}z</span>、<span class="math-inline">\operatorname{Im}z</span>、<span class="math-inline">|z|</span> 的被积函数不解析，原函数那条路走不通，只能参数化。同一对端点换一条路，结果就变。从 <span class="math-inline">0</span> 到 <span class="math-inline">1+i</span> 求 <span class="math-inline">\int_C\bar z\,dz</span>：</p>
+
+  <ul>
+    <li>沿直线段，<span class="math-inline">z=t+it</span>：<span class="math-inline">\bar z=t-it</span>，<span class="math-inline">dz=(1+i)dt</span>，被积函数乘以 <span class="math-inline">dz</span> 得 <span class="math-inline">2t\,dt</span>，积分得 <span class="math-inline">1</span>。</li>
+    <li>先沿实轴到 <span class="math-inline">1</span>、再竖直上去：实轴段 <span class="math-inline">\int_0^1 t\,dt=\frac12</span>；竖直段 <span class="math-inline">z=1+it</span>，<span class="math-inline">\bar z=1-it</span>，<span class="math-inline">dz=i\,dt</span>，<span class="math-inline">\int_0^1(i+t)\,dt=\frac12+i</span>；两段合计 <span class="math-inline">1+i</span>。</li>
+  </ul>
+
+  <p>两条路给出两个值，<span class="math-inline">\bar z</span> 因此没有原函数。</p>
+
+  <figure class="lesson-figure">
+    <img src="../assets/img/pool/复积分-原函数-路径无关对照-本机-02.png" alt="左右两格复平面对照。左格从 0 到 3 加 i 画了直线、先沿实轴后向上、先沿虚轴后向右三条路，都标着同一个值 10 加 5i；右格从 0 到 1 加 i 画了直线与先向右后向上两条路，分别标 1 与 1 加 i">
+    <figcaption>图 2 · 左格 <span class="math-inline">z+2</span> 解析，三条路同值；右格 <span class="math-inline">\bar z</span> 不解析，两条路两个值。（来源：本机生成（<code>assets/img/gen/复积分-原函数-路径无关对照-本机-02.py</code>），许可：本项目自产）</figcaption>
+  </figure>
+
+  <p>判据只有一句：被积函数写成 <span class="math-inline">z</span> 的解析表达式（多项式、<span class="math-inline">e^z</span>、<span class="math-inline">\sin z</span>、<span class="math-inline">\cos z</span>、<span class="math-inline">\frac{1}{z-z_0}</span> 这类）就能代端点；出现 <span class="math-inline">\bar z</span>、<span class="math-inline">x</span>、<span class="math-inline">y</span>、<span class="math-inline">|z|</span> 就是参数化的活。</p>
+
+  <div class="quiz" data-quiz='[
+  {
+    "q": "① 从 $0$ 到 $1+i$，求 $\\int_C(z^2+2z)\\,dz$。\n写原函数与两端代入，补一句为什么不管路径。\n\n② 从 $0$ 到 $2+i$ 求 $\\int_C\\bar z\\,dz$，\n两条路各算一次：\n直线段；先沿实轴到 $2$ 再竖直向上到 $2+i$。\n写出两个值，再说一句这题为什么不能代端点。",
+    "answer": "① $F(z)=\\frac{z^3}{3}+z^2$。\n$z=1+i$ 时 $z^2=2i$，$z^3=-2+2i$，\n$F(1+i)=-\\frac23+\\frac83 i$，$F(0)=0$。\n$\\int_C=-\\frac23+\\frac83 i$。\n理由：多项式处处解析，积分只看两端点。\n\n② 直线段 $z=(2+i)t$，$0\\le t\\le1$，\n$\\bar z=(2-i)t$，$dz=(2+i)\\,dt$，\n$\\bar z\\,dz=5t\\,dt$，积分得 $\\frac52$。\n\n折线：$z=t$（$t:0\\to2$）得 $\\int_0^2t\\,dt=2$；\n$z=2+it$（$t:0\\to1$）时 $\\bar z=2-it$，$dz=i\\,dt$，\n$\\int_0^1(2i+t)\\,dt=\\frac12+2i$。\n合计 $\\frac52+2i$。\n\n两个值不等：$\\bar z$ 不解析，没有原函数，\n端点法就此失效。",
+    "criteria": "① 原函数 $\\frac{z^3}{3}+z^2$ 要写出来；\n只给端点式不写原函数，按部分通过。\n结果 $-\\frac23+\\frac83 i$；\n两端代反得 $\\frac23-\\frac83 i$。\n理由落在「解析」两字上才算对。\n\n② 直线段 $\\frac52$、折线 $\\frac52+2i$，\n两个值都要写。\n折线第二段漏 $i$（$dz=dt$）会得实数，\n这是最常错的一步。\n结论落在「$\\bar z$ 不解析」上；\n只说两个值不等按部分通过。"
+  }
+]'></div>
+
+  <h2>估值不等式</h2>
+
+  <p>最后一条用来给上界。若 <span class="math-inline">|f(z)|\le M</span> 在 <span class="math-inline">C</span> 上处处成立，<span class="math-inline">C</span> 的长度为 <span class="math-inline">L</span>，则</p>
+
+  <div class="math-block">\left\lvert\int_C f(z)\,dz\right\rvert\le\int_C\lvert f(z)\rvert\,\lvert dz\rvert\le ML.</div>
+
+  <p>这一条叫<b>估值不等式</b>；公开卷的参考答案把它写作「长大不等式」，指的是同一件事。做法两步固定：先在 <span class="math-inline">C</span> 上估 <span class="math-inline">|f|</span> 的上界 <span class="math-inline">M</span>，再乘 <span class="math-inline">C</span> 的长度 <span class="math-inline">L</span>。</p>
+
+  <p>例：估计 <span class="math-inline">\left\lvert\oint_{|z|=1}\frac{dz}{z^2+3}\right\rvert</span>。</p>
+
+  <p>在 <span class="math-inline">|z|=1</span> 上，由 <span class="math-inline">|z^2+3|\ge 3-|z|^2=2</span> 得</p>
+
+  <div class="math-block">\left\lvert\frac{1}{z^2+3}\right\rvert\le\frac12.</div>
+
+  <p>圈长 <span class="math-inline">L=2\pi</span>，于是</p>
+
+  <div class="math-block">\left\lvert\oint_{|z|=1}\frac{dz}{z^2+3}\right\rvert\le\frac12\cdot 2\pi=\pi.</div>
+
+  <p>这类题只要上界。写答案时把 <span class="math-inline">M</span> 与 <span class="math-inline">L</span> 分开写清楚，别在 <span class="math-inline">L</span> 上混进 <span class="math-inline">2\pi i</span>。</p>
+
+  <div class="quiz" data-quiz='[
+  {
+    "q": "估计 $\\left|\\oint_{|z|=2}\\frac{z}{z^2+3}\\,dz\\right|$ 的一个上界。\n写清三样：\n\n① 圈长 $L$；\n② 圈上 $\\left|f\\right|$ 的上界 $M$，\n要写出 $|z^2+3|$ 下界那一步；\n③ 结论写成「$\\le$ 某个数」。",
+    "answer": "$L=2\\pi\\cdot2=4\\pi$。\n在 $|z|=2$ 上 $|z^2+3|\\ge|z|^2-3=1$，\n故 $\\left|f\\right|=\\frac{|z|}{|z^2+3|}\\le\\frac21=2$，\n即 $M=2$。\n\n$\\left|\\oint_C f\\,dz\\right|\\le ML=2\\cdot4\\pi=8\\pi$。",
+    "criteria": "三样写全才算通过：\n① $L=4\\pi$。写成 $2\\pi$ 是忘了乘半径；\n写成 $2\\pi i$ 是把长度和积分混在一起。\n② $|z^2+3|\\ge|z|^2-3=1$ 必须出现；\n只写 $M=2$ 这一步不给分。\n③ 结论必须是 $\\le8\\pi$；\n写成 $=8\\pi$ 错在等号。\n另外 $|z|$ 取圈上的最大值 $2$，\n不是在圈内找最大。"
+  },
+  {
+    "q": "在 $|z|=1$ 上给 $|z^2+3|$ 估一个下界，\n哪一步是对的？",
+    "opts": [
+      "$|z^2+3|\\ge3-|z|^2=2$",
+      "$|z^2+3|\\ge|z|^2+3=4$",
+      "$|z^2+3|\\le3-|z|^2=2$",
+      "$|z^2+3|\\ge|z|^2-3=-2$"
+    ],
+    "ans": 0,
+    "why": "用 $|z_1+z_2|\\ge|z_1|-|z_2|$，\n取 $z_1=3$、$z_2=z^2$ 得 $\\ge3-|z|^2=2$。\n另三条各错一处：\n当成模可加（$\\ge4$）、不等式方向反、\n估出负数（模不会是负的）。"
+  }
+]'></div>
+
+  <h2>轻量练习</h2>
+
+  <div class="lesson-practice">
+    <div class="lesson-practice__head">
+      <span class="lesson-practice__level">练习</span>
+      <span class="lesson-practice__title">三条式子，每步只看一个结果</span>
+    </div>
+
+      <p>三条各算一遍，写在工作本上，每条只留一行结果。</p>
+
+      <ol>
+        <li>把 <span class="math-inline">\int_C\bar z\,dz</span>（<span class="math-inline">C</span>: <span class="math-inline">z=e^{i\theta}</span>，<span class="math-inline">0\le\theta\le\frac{\pi}{2}</span>）写成 <span class="math-inline">\theta</span> 的定积分并算出值。代换完成后被积函数只剩指数函数相乘，结果是 <span class="math-inline">\frac{\pi i}{2}</span>。</li>
+      </ol>
+
+      <ol>
+        <li>用原函数算 <span class="math-inline">\int_C(z+2)dz</span>，<span class="math-inline">C</span> 从 <span class="math-inline">0</span> 到 <span class="math-inline">3+i</span>。三种走法任选一条，答案都是 <span class="math-inline">10+5i</span>；折线的中间点不必写。</li>
+      </ol>
+
+      <ol>
+        <li>把第 2 题的被积函数换成 <span class="math-inline">\bar z+2</span>，沿同一条直线段再算一次：<span class="math-inline">z=(3+i)t</span>，<span class="math-inline">\bar z=(3-i)t</span>，<span class="math-inline">dz=(3+i)dt</span>，被积函数乘以 <span class="math-inline">dz</span> 后只剩实数项，结果是 <span class="math-inline">11+2i</span>。与 <span class="math-inline">10+5i</span> 不等，端点法在含 <span class="math-inline">\bar z</span> 的题上就此失效。</li>
+      </ol>
+
+      <p>做完把「什么时候用参数化、什么时候用原函数」这一行写进纸笔题型整理册的选型卡；柯西定理与柯西积分公式学完后，这张卡上会多出两条路，本章四节正好凑成四条。</p>
+  </div>
+
+  <h2>带走的公式卡</h2>
+
+  <table>
+    <thead>
+      <tr><th>题面给什么</th><th>用哪条</th><th>卷面位置</th></tr>
+    </thead>
+    <tbody>
+      <tr><td>一段曲线（直线、折线、圆弧），被积函数含 <span class="math-inline">\bar z</span>、<span class="math-inline">\operatorname{Re}z</span>、<span class="math-inline">\operatorname{Im}z</span></td><td>参数化：写 <span class="math-inline">z(t)</span>，<span class="math-inline">dz=z'(t)dt</span>，折线按段相加</td><td>解答题第 3 题</td></tr>
+      <tr><td>被积函数是 <span class="math-inline">z</span> 的解析表达式，题只给端点</td><td>原函数代端点 <span class="math-inline">F(z_1)-F(z_0)</span></td><td>解答题第 3 题</td></tr>
+      <tr><td>正向闭曲线</td><td>逆时针为正向；<span class="math-inline">\oint z\,dz=0</span>，<span class="math-inline">\oint\frac{dz}{z}=2\pi i</span></td><td>填空、选择</td></tr>
+      <tr><td>要一个上界</td><td><span class="math-inline">\left\lvert\int_C f\,dz\right\rvert\le ML</span></td><td>填空、证明小题</td></tr>
+    </tbody>
+  </table>
+
+  <ul class="lesson-resources">
+    <li>李君、于非非《复变函数与积分变换》§2.1 复变函数积分的概念<span class="lesson-resources__meta">书 · 纸质教材，定义、性质与参数化法的写法以它为准</span></li>
+    <li><a href="http://faculty.hfut.edu.cn/_resources/group1/M00/00/1C/rB_zR2ks_QyAOcheAAP1H6_9avI556.pdf">合肥工业大学期末试卷（含答案与逐题分值）</a><span class="lesson-resources__meta">试卷 · 解答题第 3 题连续四套都是本课题型，每步分值可直接对照</span></li>
+    <li><a href="https://netedu.xauat.edu.cn/jpkc/netclass/jpkc/fbhs/dir/other/复变积分B集习题.pdf">复变积分解题集 B 集习题（西安建筑科技大学，按节分组）</a><span class="lesson-resources__meta">习题 · §3.1 分概念、性质与计算三组，参数化与分段题都在这一节</span></li>
+  </ul>
+
+  <!-- ── 提问提示：固定写法，别删 ── -->
+
+  <div class="lesson-ask">
+    <b>没看懂？随时问</b>
+    把看不懂的段落（或报错）原样复制回会话，说一句哪里不懂就行，我只解释这一段，不打断你的进度。
+  </div>
+
+  <!-- ── 上/下节课指针由渲染器按 curriculum.yaml 的 nodes 顺序算（第一课无 --prev、最后一课无 --next） ── -->
+
+  <nav class="lesson-nav" aria-label="上一课 / 下一课">
+    <a class="lesson-nav__link lesson-nav__link--prev" href="0007-exp3-mapping-grid.html">
+      <span class="lesson-nav__dir">上节课</span>
+      <span class="lesson-nav__title">实验三：保角映射的网格实验</span>
+    </a>
+    <a class="lesson-nav__link lesson-nav__link--next" href="0009-ch2-cauchy-formula.html">
+      <span class="lesson-nav__dir">下节课</span>
+      <span class="lesson-nav__title">柯西积分公式与高阶导数</span>
+    </a>
+  </nav>
+
+  <footer class="lesson-footer">
+    StudyMate · 0008 复积分的概念与直接计算 · 本地学习工作区
+  </footer>
+
+</article>
+
+<script src="../../../assets/sayo/sayo.js"></script>
+<link rel="stylesheet" href="../../../assets/katex/katex.min.css">
+<script src="../../../assets/katex/katex.min.js" defer></script>
+<script src="../../../assets/lesson-math.js" defer></script>
+<script src="../assets/quiz.js" defer></script>
+<script src="../assets/lesson-toc.js" defer></script>
+<script>LearnTheme.wire(document.getElementById('lesson-theme-checkbox'));</script>
+</body>
+</html>
