@@ -21,6 +21,12 @@ nodes:
   ch5-laplace-properties: { status: 未开始, mastery: 0 }
   ch5-laplace-inverse-apply: { status: 未开始, mastery: 0 }
   final-mock-exam: { status: 未开始, mastery: 0 }
-misconceptions: []
+misconceptions:
+  - topic: "复平面与二元函数的类比"
+    question: "能不能把复平面类比于二元函数的图像（z=x+y），积分微分思路也类比？"
+    misunderstanding: "想把复变函数当二元函数的曲面来想象，并用 z=x+y 这类实值表达式作例子；实际复变函数图像需四维，且 z=x+y 的 CR 条件不成立、处处不可导。"
+    answer_summary: "复平面当 R² 用可以；复变函数须当平面到平面的映射；复积分是两条实曲线积分，柯西定理=格林公式+CR；复可导=实可微+CR，解析性与多值性在实多元里无对应物。"
+    follow_up: "用 f(z)=z 与 f(z)=x+y 对照算四个偏导与 CR；再看 0005 与 0009 两课。"
+    importance: medium
 project:
   current: "复变函数图像画廊（Python 可视化）：复数运算 → 解析函数图像 → 保角映射 → 留数围道，由易到难与课程同步；四个实验课节点各推进一段。"
