@@ -1,10 +1,10 @@
-updated_at: "2026-10-15T00:06:30"
+updated_at: "2026-10-24T00:00:00"
 nodes:
-  ch1-intro: { status: 学习中, mastery: 0, notes: "首次课进行中；绪论用「相量 vs 曼德博集」开场，落点是同一个 i 在工程与图形两处出现" }
-  ch1-complex-basics: { status: 未开始, mastery: 0 }
+  ch1-intro: { status: 未开始, mastery: 0, notes: "学生跳过；课件已补出（0001），供回头查阅" }
+  ch1-complex-basics: { status: 未开始, mastery: 0, notes: "学生跳过；课件已补出（0002），供回头查阅" }
   exp1-complex-gallery: { status: 未开始, mastery: 0 }
-  ch1-elementary: { status: 未开始, mastery: 0 }
-  ch1-analytic: { status: 未开始, mastery: 0 }
+  ch1-elementary: { status: 初步理解, mastery: 0.3, notes: "学生自述已学（2026-10-24）；未提交 7 道练习作答、无证据，掌握度保守记 0.3" }
+  ch1-analytic: { status: 初步理解, mastery: 0.3, notes: "学生自述已学（2026-10-24）；未提交 6 道练习作答、未做 lab，掌握度保守记 0.3；已问 CR 相关概念（复平面类比），误解已纠正" }
   exp2-analytic-gallery: { status: 未开始, mastery: 0 }
   exp3-mapping-grid: { status: 未开始, mastery: 0 }
   ch2-integral-direct: { status: 未开始, mastery: 0 }
